@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bukit Padangan - Resto Alam & Modern</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Bukit <span>Padangan</span></div>
+        <ul class="nav-links">
+            <li><a href="#home">Beranda</a></li>
+            <li><a href="#about">Tentang</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#" class="btn-reservasi" onclick="openModal(event)">Reservasi</a></li>
+        </ul>
+        <div class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h3>Selamat Datang di</h3>
+            <h1>Bukit Padangan</h1>
+            <p>Nikmati hidangan lezat dengan suasana asri pegunungan yang menenangkan.</p>
+            <div class="hero-info">
+                <span><i class="far fa-clock"></i> Buka 11.00 - 22.00</span>
+            </div>
+            <button class="btn-cta" onclick="openModal(event)">Lakukan Reservasi</button>
+        </div>
+    </section>
+
+    <section id="about" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Suasana Alam & Rasa Otentik</h2>
+            <p class="section-desc">
+                Terletak di jalur Gunungwungkal, kami menyajikan perpaduan kenyamanan modern dengan kearifan lokal.
+            </p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-mountain"></i>
+                    <h4>Pemandangan Asri</h4>
+                    <p>Udara sejuk dan view hijau.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-utensils"></i>
+                    <h4>Masakan Khas</h4>
+                    <p>Cita rasa nusantara yang kaya.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-coffee"></i>
+                    <h4>Modern Cafe</h4>
+                    <p>Kopi dan camilan kekinian.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Bukit Padangan</h3>
+                <p>Food & Drink | Family & Nature</p>
+            </div>
+            <div class="footer-section">
+                <h4>Kontak Admin</h4>
+                <p>Klik tombol reservasi untuk chat langsung.</p>
+                <p><i class="fab fa-whatsapp"></i> 0852-9046-2715 (Admin 1)</p>
+                <p><i class="fab fa-whatsapp"></i> 0823-2353-5747 (Admin 2)</p>
+            </div>
+            <div class="footer-section">
+                <h4>Lokasi</h4>
+                <a href="https://maps.app.goo.gl/Jy3esudVxSzx93m48" target="_blank" class="map-link">
+                    <i class="fas fa-map-marker-alt"></i> Jl. Raya Gunungwungkal-Gulangpongge <br>
+                    (Klik untuk lihat peta)
+                </a>
+                <p style="margin-top: 10px;">Buka Setiap Hari: 11.00 - 22.00 WIB</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Bukit Padangan. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <div id="reservationModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3>Pilih Kontak Reservasi</h3>
+            <p>Silakan pilih admin untuk melanjutkan ke WhatsApp:</p>
+
+            <div class="admin-options">
+                <a href="https://wa.me/6285290462715" target="_blank" class="admin-card">
+                    <i class="fab fa-whatsapp"></i>
+                    <div>
+                        <strong>Admin 1</strong>
+                        <span>0852-9046-2715</span>
+                    </div>
+                </a>
+
+                <a href="https://wa.me/6282323535747" target="_blank" class="admin-card">
+                    <i class="fab fa-whatsapp"></i>
+                    <div>
+                        <strong>Admin 2</strong>
+                        <span>0823-2353-5747</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
