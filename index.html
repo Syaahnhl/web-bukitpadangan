@@ -73,7 +73,7 @@
     <section id="menu" class="section-padding menu-section">
         <div class="container">
             <h2 class="section-title">Menu Unggulan Kami</h2>
-            <p class="section-desc">Pilihan hidangan terbaik untuk menemani momen santai Anda di Bukit Padangan.</p>
+            <p class="section-desc">Pilihan hidangan terbaik untuk menemani momen santai Anda. Tambahkan menu ke keranjang untuk Pre-order langsung!</p>
             
             <!-- Category Tabs -->
             <div class="menu-tabs">
@@ -86,7 +86,7 @@
             <!-- Menu Grid -->
             <div class="menu-grid">
                 <!-- Makanan -->
-                <div class="menu-item show" data-category="makanan">
+                <div class="menu-item show" data-category="makanan" data-id="ayam-madu" data-name="Ayam Bakar Madu Padangan" data-price="28000">
                     <div class="menu-img">
                         <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop" alt="Ayam Bakar Bukit Padangan">
                     </div>
@@ -96,14 +96,14 @@
                         <p>Ayam bakar bumbu rempah pilihan dilapisi madu murni, disajikan dengan sambal terasi khas.</p>
                         <div class="menu-footer">
                             <span class="menu-price">Rp 28.000</span>
-                            <div class="menu-rating">
-                                <i class="fas fa-star"></i> 4.9
-                            </div>
+                            <button class="btn-add-cart" onclick="addToCart('ayam-madu', 'Ayam Bakar Madu Padangan', 28000)">
+                                <i class="fas fa-plus"></i> Tambah
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="menu-item show" data-category="makanan">
+                <div class="menu-item show" data-category="makanan" data-id="nasgor-rempah" data-name="Nasi Goreng Rempah Parahyangan" data-price="22000">
                     <div class="menu-img">
                         <img src="https://images.unsplash.com/photo-1608897013039-887f21d8c804?q=80&w=600&auto=format&fit=crop" alt="Nasi Goreng Bukit">
                     </div>
@@ -112,14 +112,14 @@
                         <p>Nasi goreng dengan aroma rempah khas, telur mata sapi, kerupuk, dan irisan ayam gurih.</p>
                         <div class="menu-footer">
                             <span class="menu-price">Rp 22.000</span>
-                            <div class="menu-rating">
-                                <i class="fas fa-star"></i> 4.8
-                            </div>
+                            <button class="btn-add-cart" onclick="addToCart('nasgor-rempah', 'Nasi Goreng Rempah Parahyangan', 22000)">
+                                <i class="fas fa-plus"></i> Tambah
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="menu-item show" data-category="makanan">
+                <div class="menu-item show" data-category="makanan" data-id="gurame-crispy" data-name="Gurame Terbang Crispy" data-price="45000">
                     <div class="menu-img">
                         <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=600&auto=format&fit=crop" alt="Gurame Terbang">
                     </div>
@@ -129,15 +129,15 @@
                         <p>Gurame segar digoreng garing berbentuk terbang, disajikan bersama lalapan segar dan sambal kecap.</p>
                         <div class="menu-footer">
                             <span class="menu-price">Rp 45.000</span>
-                            <div class="menu-rating">
-                                <i class="fas fa-star"></i> 4.9
-                            </div>
+                            <button class="btn-add-cart" onclick="addToCart('gurame-crispy', 'Gurame Terbang Crispy', 45000)">
+                                <i class="fas fa-plus"></i> Tambah
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Minuman -->
-                <div class="menu-item show" data-category="minuman">
+                <div class="menu-item show" data-category="minuman" data-id="kopi-aren" data-name="Kopi Gula Aren Padangan" data-price="18000">
                     <div class="menu-img">
                         <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=600&auto=format&fit=crop" alt="Kopi Khas">
                     </div>
@@ -147,14 +147,14 @@
                         <p>Espresso premium berpadu susu segar dan gula aren murni pilihan, pas untuk udara sejuk.</p>
                         <div class="menu-footer">
                             <span class="menu-price">Rp 18.000</span>
-                            <div class="menu-rating">
-                                <i class="fas fa-star"></i> 4.9
-                            </div>
+                            <button class="btn-add-cart" onclick="addToCart('kopi-aren', 'Kopi Gula Aren Padangan', 18000)">
+                                <i class="fas fa-plus"></i> Tambah
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="menu-item show" data-category="minuman">
+                <div class="menu-item show" data-category="minuman" data-id="es-kelapa-madu" data-name="Es Kelapa Muda Madu Lemon" data-price="15000">
                     <div class="menu-img">
                         <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop" alt="Es Degan Madu">
                     </div>
@@ -163,15 +163,15 @@
                         <p>Air kelapa muda segar dicampur madu alami, perasan lemon, dan selasih penyegar dahaga.</p>
                         <div class="menu-footer">
                             <span class="menu-price">Rp 15.000</span>
-                            <div class="menu-rating">
-                                <i class="fas fa-star"></i> 4.7
-                            </div>
+                            <button class="btn-add-cart" onclick="addToCart('es-kelapa-madu', 'Es Kelapa Muda Madu Lemon', 15000)">
+                                <i class="fas fa-plus"></i> Tambah
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Cemilan -->
-                <div class="menu-item show" data-category="cemilan">
+                <div class="menu-item show" data-category="cemilan" data-id="mendoan-gunung" data-name="Tempe Mendoan Gunung" data-price="12000">
                     <div class="menu-img">
                         <img src="https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?q=80&w=600&auto=format&fit=crop" alt="Mendoan Hangat">
                     </div>
@@ -180,14 +180,14 @@
                         <p>Tempe mendoan lebar digoreng setengah matang berbalut tepung bumbu daun bawang, hangat dan gurih.</p>
                         <div class="menu-footer">
                             <span class="menu-price">Rp 12.000</span>
-                            <div class="menu-rating">
-                                <i class="fas fa-star"></i> 4.8
-                            </div>
+                            <button class="btn-add-cart" onclick="addToCart('mendoan-gunung', 'Tempe Mendoan Gunung', 12000)">
+                                <i class="fas fa-plus"></i> Tambah
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="menu-item show" data-category="cemilan">
+                <div class="menu-item show" data-category="cemilan" data-id="pisang-crispy" data-name="Pisang Goreng Crispy Caramel" data-price="14000">
                     <div class="menu-img">
                         <img src="https://images.unsplash.com/photo-1514517604298-cf80e0fb7f1e?q=80&w=600&auto=format&fit=crop" alt="Pisang Goreng Keju">
                     </div>
@@ -196,9 +196,9 @@
                         <p>Pisang geprek goreng tepung renyah dengan taburan keju cheddar parut dan saus karamel lezat.</p>
                         <div class="menu-footer">
                             <span class="menu-price">Rp 14.000</span>
-                            <div class="menu-rating">
-                                <i class="fas fa-star"></i> 4.8
-                            </div>
+                            <button class="btn-add-cart" onclick="addToCart('pisang-crispy', 'Pisang Goreng Crispy Caramel', 14000)">
+                                <i class="fas fa-plus"></i> Tambah
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -271,12 +271,55 @@
         </div>
     </footer>
 
+    <!-- FLOATING CART BUTTON -->
+    <div id="floatingCart" class="floating-cart" onclick="toggleCartDrawer()">
+        <i class="fas fa-shopping-basket"></i>
+        <span id="cartCount" class="cart-badge">0</span>
+    </div>
+
+    <!-- CART DRAWER / MODAL -->
+    <div id="cartDrawer" class="cart-drawer">
+        <div class="cart-drawer-content">
+            <div class="cart-drawer-header">
+                <h3>Keranjang Pre-Order</h3>
+                <span class="close-drawer" onclick="toggleCartDrawer()">&times;</span>
+            </div>
+            
+            <div id="cartItemsList" class="cart-items-list">
+                <!-- Dynamically populated -->
+                <p class="empty-cart-text">Keranjang masih kosong. Tambahkan hidangan dari menu!</p>
+            </div>
+
+            <div class="cart-drawer-footer">
+                <div class="cart-total-row">
+                    <span>Subtotal:</span>
+                    <strong id="cartSubtotal">Rp 0</strong>
+                </div>
+                <!-- Action Buttons: (1) Checkout to Reservation (2) Direct Kaching link (future integration ready) -->
+                <button class="btn-checkout" onclick="checkoutCart()">
+                    Lanjut ke Form Reservasi
+                </button>
+                
+                <a id="kachingDirectLink" href="#" target="_blank" class="btn-kaching-checkout disabled" onclick="handleKachingCheckout(event)">
+                    <i class="fas fa-bolt"></i> Order via Kachingku (Segera)
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- RESERVATION MODAL (INTERAKTIF FORM) -->
     <div id="reservationModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h3>Form Reservasi Meja</h3>
+            <h3>Form Reservasi & Pre-Order</h3>
             <p>Lengkapi formulir reservasi Anda di bawah ini:</p>
+
+            <!-- Pre-order summary card inside form (if any items selected) -->
+            <div id="formPreorderSummary" class="form-preorder-summary" style="display: none;">
+                <h4>Ringkasan Pre-Order Menu:</h4>
+                <div id="summaryItemsList"></div>
+                <div class="summary-total">Total: <strong id="summaryTotal">Rp 0</strong></div>
+            </div>
 
             <form id="reservationForm" onsubmit="submitReservation(event)">
                 <div class="form-group">
@@ -319,7 +362,7 @@
                 </div>
 
                 <button type="submit" class="btn-submit-res">
-                    <i class="fab fa-whatsapp"></i> Kirim via WhatsApp
+                    <i class="fab fa-whatsapp"></i> Kirim Form via WhatsApp
                 </button>
             </form>
         </div>

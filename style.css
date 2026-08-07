@@ -15,6 +15,8 @@
     --font-body: 'Poppins', sans-serif;
     --wa-green: #25D366;
     /* Warna Resmi WhatsApp */
+    --kaching-blue: #0F4C5C;
+    /* Warna Brand Kaching */
     --border-color: #e5e0d3;
 }
 
@@ -26,7 +28,6 @@
 
 html {
     scroll-behavior: smooth;
-    /* Agar scroll halus saat klik menu */
     scroll-padding-top: 80px; /* Offset navbar sticky */
 }
 
@@ -263,7 +264,7 @@ ul {
 }
 
 /* =========================================
-   5. MENU SECTION
+   5. MENU SECTION & PRE-ORDER
    ========================================= */
 .menu-section {
     background-color: #f3efe6;
@@ -334,7 +335,6 @@ ul {
 .menu-img img {
     width: 100%;
     height: 100%;
-    object-cover: cover;
     object-fit: cover;
     transition: transform 0.5s ease;
 }
@@ -390,13 +390,25 @@ ul {
     color: var(--primary-green);
 }
 
-.menu-rating {
-    font-size: 0.9rem;
+.btn-add-cart {
+    background-color: var(--primary-green);
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-family: var(--font-body);
     font-weight: 600;
-    color: #ffb703;
+    font-size: 0.85rem;
+    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-add-cart:hover {
+    background-color: var(--accent-gold);
+    transform: scale(1.05);
 }
 
 /* =========================================
@@ -537,7 +549,291 @@ footer {
 }
 
 /* =========================================
-   8. MODAL / POPUP RESERVASI
+   8. FLOATING CART & DRAWER
+   ========================================= */
+.floating-cart {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 65px;
+    height: 65px;
+    background-color: var(--primary-green);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(45, 74, 34, 0.4);
+    z-index: 999;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid white;
+}
+
+.floating-cart:hover {
+    transform: scale(1.1) translateY(-3px);
+    background-color: var(--accent-gold);
+    box-shadow: 0 10px 35px rgba(212, 163, 115, 0.5);
+}
+
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--accent-gold);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+}
+
+/* Cart Drawer */
+.cart-drawer {
+    position: fixed;
+    top: 0;
+    right: -400px; /* Sembunyi default di kanan */
+    width: 400px;
+    max-width: 100%;
+    height: 100vh;
+    background-color: white;
+    z-index: 1500;
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+    transition: right 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-drawer.open {
+    right: 0;
+}
+
+.cart-drawer-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.cart-drawer-header {
+    padding: 20px;
+    border-bottom: 1px solid #f0eae1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-cream);
+}
+
+.cart-drawer-header h3 {
+    font-family: var(--font-heading);
+    color: var(--primary-green);
+    font-size: 1.4rem;
+}
+
+.close-drawer {
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.3s;
+}
+
+.close-drawer:hover {
+    color: var(--primary-green);
+}
+
+.cart-items-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.empty-cart-text {
+    text-align: center;
+    color: #888;
+    font-size: 0.95rem;
+    margin-top: 40px;
+}
+
+/* Cart Item Card */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #f3efe6;
+}
+
+.cart-item-details h5 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.cart-item-details span {
+    font-size: 0.85rem;
+    color: var(--primary-green);
+    font-weight: 700;
+}
+
+.cart-item-qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #FAF9F6;
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.qty-btn {
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: var(--text-dark);
+    padding: 2px 5px;
+}
+
+.qty-btn:hover {
+    color: var(--primary-green);
+}
+
+.qty-val {
+    font-size: 0.85rem;
+    font-weight: 600;
+    width: 20px;
+    text-align: center;
+}
+
+.btn-remove-item {
+    background: none;
+    border: none;
+    color: #c94c4c;
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 5px;
+    transition: transform 0.2s;
+}
+
+.btn-remove-item:hover {
+    transform: scale(1.1);
+}
+
+/* Drawer Footer */
+.cart-drawer-footer {
+    padding: 20px;
+    border-top: 1px solid #f0eae1;
+    background-color: var(--bg-cream);
+}
+
+.cart-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: var(--text-dark);
+}
+
+.cart-total-row strong {
+    font-size: 1.3rem;
+    color: var(--primary-green);
+}
+
+.btn-checkout {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.btn-checkout:hover {
+    background-color: var(--accent-gold);
+}
+
+.btn-kaching-checkout {
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+    background-color: var(--kaching-blue);
+    color: white !important;
+    border: none;
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.btn-kaching-checkout.disabled {
+    opacity: 0.7;
+    background-color: #72969f;
+    cursor: not-allowed;
+}
+
+.btn-kaching-checkout:not(.disabled):hover {
+    background-color: #0c3d49;
+    transform: translateY(-1px);
+}
+
+/* =========================================
+   9. FORM SUMMARY CARD
+   ========================================= */
+.form-preorder-summary {
+    background-color: #f3efe6;
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.form-preorder-summary h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--primary-green);
+    margin-bottom: 8px;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 4px;
+}
+
+.summary-item-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 8px;
+    margin-top: 8px;
+}
+
+/* =========================================
+   10. MODAL / POPUP RESERVASI
    ========================================= */
 .modal {
     display: none;
@@ -563,6 +859,8 @@ footer {
     position: relative;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
     animation: zoomIn 0.3s ease;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .close-btn {
@@ -664,7 +962,7 @@ input:focus, select:focus {
 }
 
 /* =========================================
-   9. ANIMASI & RESPONSIVE (MOBILE)
+   11. ANIMASI & RESPONSIVE (MOBILE)
    ========================================= */
 @keyframes fadeInUp {
     from {
@@ -741,5 +1039,18 @@ input:focus, select:focus {
     .form-row {
         grid-template-columns: 1fr;
         gap: 0;
+    }
+    
+    .floating-cart {
+        bottom: 20px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
+        font-size: 1.3rem;
+    }
+    
+    .cart-drawer {
+        width: 100%;
+        right: -100%;
     }
 }
