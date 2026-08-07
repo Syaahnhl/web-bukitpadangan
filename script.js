@@ -22,7 +22,104 @@ if (kachingDirectLink) {
     kachingDirectLink.href = KACHING_ORDER_URL;
 }
 
-// 1. FUNGSI KERANJANG BELANJA (CART)
+// =========================================
+// 1. TOP PROMO BAR FUNCTION
+// =========================================
+function closePromoBar() {
+    const promoBar = document.getElementById("promoBar");
+    const navbar = document.querySelector(".navbar");
+    if (promoBar) {
+        promoBar.style.transform = "translateY(-100%)";
+        setTimeout(() => {
+            promoBar.style.display = "none";
+            document.body.style.paddingTop = "70px"; // Adjust body padding
+            if (navbar) navbar.style.top = "0"; // Move navbar to very top
+        }, 300);
+    }
+}
+
+// =========================================
+// 2. TESTIMONIAL SLIDER CAROUSEL
+// =========================================
+let currentSlideIndex = 0;
+const slides = document.querySelectorAll(".testimonial-slide");
+const dots = document.querySelectorAll(".dot");
+let slideInterval;
+
+function showSlide(index) {
+    if (slides.length === 0) return;
+    
+    // Reset index bounds
+    if (index >= slides.length) currentSlideIndex = 0;
+    else if (index < 0) currentSlideIndex = slides.length - 1;
+    else currentSlideIndex = index;
+
+    // Sembunyikan semua slides dan nonaktifkan dots
+    slides.forEach(slide => slide.classList.remove("active"));
+    dots.forEach(dot => dot.classList.remove("active"));
+
+    // Tampilkan slide aktif
+    slides[currentSlideIndex].classList.add("active");
+    if (dots[currentSlideIndex]) dots[currentSlideIndex].classList.add("active");
+}
+
+function currentSlide(index) {
+    clearInterval(slideInterval); // Reset auto-scroll timer on click
+    showSlide(index);
+    startAutoSlide(); // Re-start timer
+}
+
+function startAutoSlide() {
+    slideInterval = setInterval(() => {
+        showSlide(currentSlideIndex + 1);
+    }, 6000); // Ganti slide setiap 6 detik
+}
+
+// Inisialisasi Slider
+if (slides.length > 0) {
+    showSlide(0);
+    startAutoSlide();
+}
+
+// =========================================
+// 3. LIGHTBOX GALLERY ZOOM
+// =========================================
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+const lightboxCaption = document.getElementById("lightboxCaption");
+let activeImageIndex = 0;
+
+// Ambil list semua gambar di dalam grid galeri
+const galleryImages = Array.from(document.querySelectorAll(".gallery-item img"));
+
+function openLightbox(index) {
+    if (!lightbox || galleryImages.length === 0) return;
+    activeImageIndex = index;
+    lightbox.style.display = "flex";
+    
+    // Tampilkan gambar dan caption
+    const activeImg = galleryImages[activeImageIndex];
+    lightboxImg.src = activeImg.src;
+    lightboxCaption.innerText = activeImg.alt || "Galeri Bukit Padangan";
+}
+
+function closeLightbox() {
+    if (lightbox) lightbox.style.display = "none";
+}
+
+function changeLightboxImage(delta, event) {
+    if (event) event.stopPropagation(); // Mencegah modal tertutup karena event click di bubble up
+    let newIndex = activeImageIndex + delta;
+    
+    if (newIndex >= galleryImages.length) newIndex = 0;
+    else if (newIndex < 0) newIndex = galleryImages.length - 1;
+    
+    openLightbox(newIndex);
+}
+
+// =========================================
+// 4. KERANJANG BELANJA (CART SYSTEM)
+// =========================================
 function addToCart(id, name, price) {
     const existingItem = cart.find(item => item.id === id);
     if (existingItem) {
@@ -116,14 +213,14 @@ function toggleCartDrawer() {
 
 // Handler klik order via Kachingku
 function handleKachingCheckout(event) {
-    // Tombol aktif, klik langsung membuka halaman Kaching di tab baru.
-    // Jika ada menu terpilih, kita bisa tampilkan toast info sederhana.
     if (cart.length > 0) {
         alert("Mengarahkan Tuan ke Menu Digital Kachingku. Silakan pilih kembali menu Anda di sana untuk pembayaran digital instan!");
     }
 }
 
-// 2. MODAL & RESERVASI HANDLERS
+// =========================================
+// 5. MODAL & RESERVASI HANDLERS
+// =========================================
 function openModal(event) {
     if (event) event.preventDefault();
     modal.style.display = "flex";
@@ -159,7 +256,9 @@ window.onclick = function (event) {
     }
 }
 
-// 3. LOGIKA FILTER CATEGORY TABS
+// =========================================
+// 6. LOGIKA FILTER CATEGORY TABS
+// =========================================
 function filterMenu(category) {
     // Ganti class active pada tab button
     const buttons = document.querySelectorAll(".tab-btn");
@@ -179,7 +278,9 @@ function filterMenu(category) {
     });
 }
 
-// 4. SUBMIT RESERVASI (FORM WA AUTO-GENERATE)
+// =========================================
+// 7. SUBMIT RESERVASI (FORM WA AUTO-GENERATE)
+// =========================================
 function submitReservation(event) {
     event.preventDefault();
 
@@ -199,7 +300,7 @@ function submitReservation(event) {
     ];
     const formattedDate = dateObj.getDate() + " " + months[dateObj.getMonth()] + " " + dateObj.getFullYear();
 
-    // 📋 Format Rincian Menu Pre-order
+    // Format Rincian Menu Pre-order
     let preorderText = "";
     if (cart.length > 0) {
         preorderText = "\n\n📋 *PRE-ORDER MENU:*";
@@ -235,7 +336,9 @@ Mohon konfirmasi ketersediaan meja untuk kami. Terima kasih!`;
     closeModal();
 }
 
-// 5. NAVBAR MOBILE TOGGLE
+// =========================================
+// 8. NAVBAR MOBILE TOGGLE
+// =========================================
 const menuToggle = document.querySelector(".menu-toggle");
 const navLinks = document.querySelector(".nav-links");
 

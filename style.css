@@ -28,7 +28,7 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 80px; /* Offset navbar sticky */
+    scroll-padding-top: 120px; /* Offset navbar + promo bar */
 }
 
 body {
@@ -55,6 +55,68 @@ ul {
 }
 
 /* =========================================
+   1A. TOP PROMO BAR
+   ========================================= */
+.promo-bar {
+    background: linear-gradient(135deg, var(--primary-green), #1b3511);
+    color: white;
+    padding: 8px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1100;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.promo-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.promo-tag {
+    background-color: var(--accent-gold);
+    color: white;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    animation: pulse 1.5s infinite;
+}
+
+.close-promo {
+    font-size: 1.3rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    font-weight: bold;
+    padding: 0 5px;
+}
+
+.close-promo:hover {
+    opacity: 1;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Adjust navbar position if promo active */
+body {
+    padding-top: 105px; /* Spacing for navbar + promo bar */
+}
+
+/* =========================================
    2. NAVBAR
    ========================================= */
 .navbar {
@@ -65,10 +127,10 @@ ul {
     background-color: rgba(255, 255, 255, 0.98);
     position: fixed;
     width: 100%;
-    top: 0;
+    top: 36px; /* Below promo-bar */
     z-index: 1000;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-    transition: 0.3s;
+    transition: top 0.3s ease;
 }
 
 .logo {
@@ -412,7 +474,104 @@ ul {
 }
 
 /* =========================================
-   6. GALLERY SECTION
+   5A. TESTIMONIALS SECTION (SLIDER CAROUSEL)
+   ========================================= */
+.testimonials-section {
+    background-color: white;
+}
+
+.slider-wrapper {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 20px 0 40px;
+}
+
+.testimonial-slider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 250px;
+}
+
+.testimonial-slide {
+    display: none;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    width: 100%;
+}
+
+.testimonial-slide.active {
+    display: block;
+    opacity: 1;
+}
+
+.testimonial-slide .stars {
+    color: var(--accent-gold);
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+}
+
+.testimonial-slide .quote {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--text-dark);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    position: relative;
+    padding: 0 40px;
+}
+
+.testimonial-slide .quote::before {
+    content: '“';
+    font-size: 5rem;
+    color: rgba(45, 74, 34, 0.1);
+    position: absolute;
+    top: -30px;
+    left: 10px;
+    font-family: var(--font-heading);
+}
+
+.author-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-green);
+    margin-bottom: 4px;
+}
+
+.author-tag {
+    font-size: 0.8rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.slider-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background-color: var(--border-color);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dot.active, .dot:hover {
+    background-color: var(--primary-green);
+}
+
+/* =========================================
+   6. GALLERY SECTION & LIGHTBOX
    ========================================= */
 .gallery-section {
     background-color: var(--bg-cream);
@@ -467,11 +626,173 @@ ul {
     opacity: 1;
 }
 
+/* Lightbox Modal */
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 3000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    line-height: 1;
+}
+
+.lightbox-close:hover {
+    color: var(--accent-gold);
+}
+
+.lightbox-content-wrapper {
+    max-width: 80%;
+    max-height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#lightboxImg {
+    max-width: 100%;
+    max-height: 70vh;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    animation: zoomIn 0.3s ease;
+    object-fit: contain;
+}
+
+.lightbox-caption {
+    margin-top: 15px;
+    color: #ccc;
+    font-size: 1rem;
+    text-align: center;
+    font-family: var(--font-body);
+}
+
+.lightbox-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2.5rem;
+    cursor: pointer;
+    padding: 20px;
+    transition: color 0.3s;
+    user-select: none;
+}
+
+.lightbox-btn:hover {
+    color: var(--accent-gold);
+}
+
+.lightbox-btn.prev {
+    left: 20px;
+}
+
+.lightbox-btn.next {
+    right: 20px;
+}
+
+/* =========================================
+   6A. LOCATION SECTION (GOOGLE MAPS EMBED)
+   ========================================= */
+.location-section {
+    background-color: #f3efe6;
+    padding: 5rem 0 0; /* Merging directly to footer */
+}
+
+.location-container {
+    display: flex;
+    width: 100%;
+    min-height: 450px;
+    flex-wrap: wrap;
+}
+
+.location-info {
+    flex: 1;
+    min-width: 320px;
+    background-color: var(--primary-green);
+    color: white;
+    padding: 4rem 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.location-info h3 {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    color: var(--accent-gold);
+    margin-bottom: 2rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 1.5rem;
+}
+
+.info-item i {
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+    margin-top: 5px;
+    width: 20px;
+}
+
+.info-item p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+.btn-directions {
+    margin-top: 1.5rem;
+    background-color: var(--accent-gold);
+    color: white !important;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.3s;
+}
+
+.btn-directions:hover {
+    background-color: #c08b5c;
+    transform: translateY(-2px);
+}
+
+.map-wrapper {
+    flex: 1.5;
+    min-width: 350px;
+    min-height: 400px;
+    background-color: #ddd;
+}
+
 /* =========================================
    7. FOOTER
    ========================================= */
 footer {
-    background-color: var(--primary-green);
+    background-color: #1e3316; /* Darker green */
     color: var(--text-light);
     padding: 5rem 5% 1.5rem;
 }
@@ -512,23 +833,6 @@ footer {
     color: var(--accent-gold);
     width: 20px;
     text-align: center;
-}
-
-/* Link Peta Khusus */
-.map-link {
-    display: block;
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 10px;
-    border-radius: 8px;
-    transition: 0.3s;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.map-link:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: var(--accent-gold);
-    color: var(--accent-gold);
 }
 
 .social-links a {
@@ -997,6 +1301,14 @@ input:focus, select:focus {
         display: block;
     }
 
+    body {
+        padding-top: 125px; /* Extra offset on mobile due to taller components */
+    }
+
+    .navbar {
+        top: 48px; /* Offset for promo bar */
+    }
+
     .nav-links {
         position: absolute;
         top: 70px;
@@ -1052,5 +1364,17 @@ input:focus, select:focus {
     .cart-drawer {
         width: 100%;
         right: -100%;
+    }
+
+    .location-container {
+        flex-direction: column;
+    }
+
+    .location-info {
+        padding: 3rem 20px;
+    }
+
+    .map-wrapper {
+        min-height: 300px;
     }
 }

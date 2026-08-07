@@ -14,6 +14,15 @@
 
 <body>
 
+    <!-- TOP PROMO BAR -->
+    <div id="promoBar" class="promo-bar">
+        <div class="promo-content">
+            <span class="promo-tag">INFO PROMO</span>
+            <p>Diskon 10% untuk Pre-order Menu makanan khusus reservasi online hari ini! 🎉</p>
+        </div>
+        <span class="close-promo" onclick="closePromoBar()">&times;</span>
+    </div>
+
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="logo">Bukit <span>Padangan</span></div>
@@ -21,7 +30,9 @@
             <li><a href="#home">Beranda</a></li>
             <li><a href="#about">Tentang</a></li>
             <li><a href="#menu">Menu</a></li>
+            <li><a href="#testimonials">Ulasan</a></li>
             <li><a href="#gallery">Galeri</a></li>
+            <li><a href="#location">Lokasi</a></li>
             <li><a href="#" class="btn-reservasi" onclick="openModal(event)">Reservasi</a></li>
         </ul>
         <div class="menu-toggle">
@@ -206,36 +217,121 @@
         </div>
     </section>
 
+    <!-- TESTIMONIALS SECTION -->
+    <section id="testimonials" class="section-padding testimonials-section">
+        <div class="container">
+            <h2 class="section-title">Apa Kata Pengunjung</h2>
+            <p class="section-desc">Kesan jujur dari para pelanggan yang telah berkunjung dan menikmati hidangan di Bukit Padangan.</p>
+            
+            <div class="slider-wrapper">
+                <div class="testimonial-slider">
+                    <!-- Slide 1 -->
+                    <div class="testimonial-slide active">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="quote">"Nasi Goreng Rempah dan Kopi Gula Aren di sini bener-bener juara! Udara Gunungwungkal yang dingin berpadu dengan kehangatan kopinya itu perfect combo. View pegunungannya asri banget!"</p>
+                        <h5 class="author-name">Rian Kurniawan</h5>
+                        <span class="author-tag">Pelanggan Setia</span>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="testimonial-slide">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="quote">"Tempat favorit keluarga buat berakhir pekan. Area Gazebonya sangat nyaman dan luas untuk anak-anak bermain. Gurame Terbang Crispy-nya enak gurih, bumbunya meresap sampai ke dalam."</p>
+                        <h5 class="author-name">Siti Aminah</h5>
+                        <span class="author-tag">Family Visitor</span>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="testimonial-slide">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <p class="quote">"Suka sekali sama vibes outdoor cafe-nya di sore hari. Sangat syahdu dan instagramable buat foto-foto. Reservasi meja dan pre-order menu lewat web-nya juga gampang dan cepet respon adminnya."</p>
+                        <h5 class="author-name">Dina Larasati</h5>
+                        <span class="author-tag">Coffee Enthusiast</span>
+                    </div>
+                </div>
+
+                <!-- Slider Controls -->
+                <div class="slider-dots">
+                    <span class="dot active" onclick="currentSlide(0)"></span>
+                    <span class="dot" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- GALLERY SECTION -->
     <section id="gallery" class="section-padding gallery-section">
         <div class="container">
             <h2 class="section-title">Galeri Suasana Bukit</h2>
-            <p class="section-desc">Intip keindahan sudut tempat nongkrong dan keelokan panorama alam di Bukit Padangan.</p>
+            <p class="section-desc">Intip keindahan sudut tempat nongkrong dan keelokan panorama alam di Bukit Padangan. Klik foto untuk memperbesar.</p>
             <div class="gallery-grid">
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openLightbox(0)">
                     <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop" alt="Pemandangan Resto">
                     <div class="gallery-overlay">
                         <span>Pemandangan Bukit Asri</span>
                     </div>
                 </div>
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openLightbox(1)">
                     <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=800&auto=format&fit=crop" alt="Cafe Modern">
                     <div class="gallery-overlay">
                         <span>Sudut Ngopi Modern</span>
                     </div>
                 </div>
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openLightbox(2)">
                     <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop" alt="Area Keluarga">
                     <div class="gallery-overlay">
                         <span>Area Makan Outdoor Keluarga</span>
                     </div>
                 </div>
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openLightbox(3)">
                     <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=800&auto=format&fit=crop" alt="Makanan Malam">
                     <div class="gallery-overlay">
                         <span>Makan Malam Romantis</span>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LOCATION SECTION (GOOGLE MAPS) -->
+    <section id="location" class="location-section">
+        <div class="location-container">
+            <div class="location-info">
+                <h3>Kunjungi Bukit Padangan</h3>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>Jl. Raya Gunungwungkal-Gulangpongge, Kec. Gunungwungkal, Kabupaten Pati, Jawa Tengah 59156</p>
+                </div>
+                <div class="info-item">
+                    <i class="far fa-clock"></i>
+                    <p>Buka Setiap Hari: 11.00 - 22.00 WIB</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <p>0852-9046-2715 / 0823-2353-5747</p>
+                </div>
+                <a href="https://maps.app.goo.gl/Jy3esudVxSzx93m48" target="_blank" class="btn-directions">
+                    <i class="fas fa-directions"></i> Petunjuk Arah Google Maps
+                </a>
+            </div>
+            <div class="map-wrapper">
+                <!-- Google Maps Iframe Embed -->
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15852.793739775567!2d110.9705912!3d-6.6222216!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e71239c017bc305%3A0xe54e604f86d267ef!2sGulandangpongge%2C%20Gunungwungkal%2C%20Pati%20Regency%2C%20Central%20Java!5e0!3m2!1sid!2sid!4v1722880000000!5m2!1sid!2sid" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
         </div>
     </section>
@@ -258,11 +354,10 @@
                 <p><i class="fab fa-whatsapp"></i> 0823-2353-5747 (Admin 2)</p>
             </div>
             <div class="footer-section">
-                <h4>Lokasi Resto</h4>
-                <a href="https://maps.app.goo.gl/Jy3esudVxSzx93m48" target="_blank" class="map-link">
-                    <i class="fas fa-map-marker-alt"></i> Jl. Raya Gunungwungkal-Gulangpongge <br>
-                    (Klik untuk petunjuk arah Google Maps)
-                </a>
+                <h4>Alamat Resto</h4>
+                <p>
+                    <i class="fas fa-map-marker-alt"></i> Jl. Raya Gunungwungkal-Gulangpongge, Kec. Gunungwungkal, Kab. Pati
+                </p>
                 <p style="margin-top: 10px;">Buka Setiap Hari: 11.00 - 22.00 WIB</p>
             </div>
         </div>
@@ -295,13 +390,13 @@
                     <span>Subtotal:</span>
                     <strong id="cartSubtotal">Rp 0</strong>
                 </div>
-                <!-- Action Buttons: (1) Checkout to Reservation (2) Direct Kaching link (future integration ready) -->
+                <!-- Action Buttons: (1) Checkout to Reservation (2) Direct Kaching link -->
                 <button class="btn-checkout" onclick="checkoutCart()">
                     Lanjut ke Form Reservasi
                 </button>
                 
-                <a id="kachingDirectLink" href="#" target="_blank" class="btn-kaching-checkout disabled" onclick="handleKachingCheckout(event)">
-                    <i class="fas fa-bolt"></i> Order via Kachingku (Segera)
+                <a id="kachingDirectLink" href="#" target="_blank" class="btn-kaching-checkout" onclick="handleKachingCheckout(event)">
+                    <i class="fas fa-bolt"></i> Order via Kachingku
                 </a>
             </div>
         </div>
@@ -366,6 +461,17 @@
                 </button>
             </form>
         </div>
+    </div>
+
+    <!-- LIGHTBOX MODAL FOR GALLERY -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <button class="lightbox-btn prev" onclick="changeLightboxImage(-1, event)">&#10094;</button>
+        <div class="lightbox-content-wrapper">
+            <img id="lightboxImg" src="" alt="Zoomed view">
+            <div id="lightboxCaption" class="lightbox-caption"></div>
+        </div>
+        <button class="lightbox-btn next" onclick="changeLightboxImage(1, event)">&#10095;</button>
     </div>
 
     <script src="script.js"></script>
