@@ -82,7 +82,57 @@ function formatPhoneDisplay(num) {
     return num;
 }
 
-window.addEventListener("DOMContentLoaded", loadDynamicContent);
+// Logika Menu Dinamis
+let menuData = [];
+
+async function loadMenuData() {
+    try {
+        const response = await fetch("menu.json");
+        if (!response.ok) return;
+        menuData = await response.json();
+        renderMenuGrid(menuData);
+    } catch (err) {
+        console.error("Gagal meload menu.json:", err);
+    }
+}
+
+function renderMenuGrid(items) {
+    const grid = document.getElementById("menuGrid");
+    if (!grid) return;
+    
+    if (items.length === 0) {
+        grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888; padding: 40px 0;">Menu sedang diperbarui oleh Admin.</p>`;
+        return;
+    }
+
+    grid.innerHTML = items.map(item => {
+        const badgeHtml = item.badge ? `<span class="menu-badge">${item.badge}</span>` : '';
+        const priceFormatted = formatRupiah(item.price);
+        return `
+            <div class="menu-item show" data-category="${item.category}" data-id="${item.id}">
+                <div class="menu-img">
+                    <img src="${item.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop'}" alt="${item.name}">
+                </div>
+                <div class="menu-info">
+                    ${badgeHtml}
+                    <h4>${item.name}</h4>
+                    <p>${item.desc}</p>
+                    <div class="menu-footer">
+                        <span class="menu-price">${priceFormatted}</span>
+                        <button class="btn-add-cart" onclick="addToCart('${item.id}', '${item.name.replace(/'/g, "\\'")}', ${item.price})">
+                            <i class="fas fa-plus"></i> Tambah
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+    loadDynamicContent();
+    loadMenuData();
+});
 
 // Elemen-elemen DOM
 const modal = document.getElementById("reservationModal");
@@ -347,18 +397,16 @@ function filterMenu(category) {
     const buttons = document.querySelectorAll(".tab-btn");
     buttons.forEach(btn => btn.classList.remove("active"));
     
-    // Cari button yang sesuai text/atributnya
-    event.currentTarget.classList.add("active");
+    if (event && event.currentTarget) {
+        event.currentTarget.classList.add("active");
+    }
 
-    const items = document.querySelectorAll(".menu-item");
-    items.forEach(item => {
-        const itemCategory = item.getAttribute("data-category");
-        if (category === "semua" || itemCategory === category) {
-            item.classList.add("show");
-        } else {
-            item.classList.remove("show");
-        }
-    });
+    if (category === "semua") {
+        renderMenuGrid(menuData);
+    } else {
+        const filtered = menuData.filter(item => item.category === category);
+        renderMenuGrid(filtered);
+    }
 }
 
 // =========================================

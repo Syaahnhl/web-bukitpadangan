@@ -19,7 +19,7 @@
         }
 
         .admin-container {
-            max-width: 900px;
+            max-width: 950px;
             margin: 0 auto;
             background: white;
             padding: 40px;
@@ -223,6 +223,49 @@
             color: #887050;
             margin-bottom: 10px;
         }
+
+        .menu-table-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .action-btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-table-action {
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-table-edit {
+            background-color: #e5f1ff;
+            color: #0066cc;
+        }
+
+        .btn-table-edit:hover {
+            background-color: #0066cc;
+            color: white;
+        }
+
+        .btn-table-delete {
+            background-color: #ffe5e5;
+            color: #cc0000;
+        }
+
+        .btn-table-delete:hover {
+            background-color: #cc0000;
+            color: white;
+        }
     </style>
 </head>
 
@@ -277,7 +320,7 @@
             <h3><i class="fab fa-github"></i> Kredensial Deploy Otomatis</h3>
             <p>Masukkan Token Akses Personal (PAT) GitHub Tuan untuk mengizinkan perubahan langsung menulis ke server.</p>
             <div class="form-group">
-                <input type="password" id="gitToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxx" style="background-color: white;">
+                <input type="password" id="gitToken" placeholder="ghp_xx...xxxx" style="background-color: white;">
             </div>
             <button class="btn-submit-res" onclick="saveGitToken()" style="margin-top: 0; padding: 8px 15px; font-size: 0.85rem; width: auto; display: inline-flex;">
                 Simpan Token di Browser
@@ -285,6 +328,7 @@
             <span id="tokenStatus" style="font-size: 0.85rem; font-weight: 600; margin-left: 10px;"></span>
         </div>
 
+        <!-- 1. FORM EDIT KONTEN LANDING PAGE -->
         <form id="adminForm" onsubmit="saveContent(event)">
             <!-- PROMO BAR SECTION -->
             <div class="admin-section">
@@ -375,15 +419,102 @@
                 </div>
             </div>
 
-            <!-- SUBMIT BUTTON -->
+            <!-- SUBMIT BUTTON KONTEN -->
             <button type="submit" class="btn-save-admin" id="btnSaveSubmit">
-                <i class="fas fa-cloud-upload-alt"></i> Simpan & Terapkan Perubahan Web
+                <i class="fas fa-cloud-upload-alt"></i> Simpan & Terapkan Perubahan Teks Landing Page
             </button>
         </form>
+
+        <!-- 2. MODUL CRUD MANAJEMEN MENU -->
+        <div class="admin-section" style="margin-top: 40px; border-top: 3px solid #2d4a22; padding-top: 30px;">
+            <h3>6. Kelola Daftar Menu Resto (CRUD Menu)</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                <p style="font-size: 0.85rem; color: #666; margin-bottom: 0;">Kelola daftar hidangan makanan, minuman, dan cemilan secara langsung.</p>
+                <button type="button" class="btn-reservasi" style="padding: 8px 18px; font-size: 0.85rem; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;" onclick="openMenuModal('add')">
+                    <i class="fas fa-plus"></i> Tambah Menu Baru
+                </button>
+            </div>
+            
+            <!-- List Menu Table -->
+            <div style="overflow-x: auto; border: 1px solid #e5e0d3; border-radius: 12px; background: white;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; min-width: 600px;">
+                    <thead>
+                        <tr style="background-color: #f7f5f0; border-bottom: 1px solid #e5e0d3; color: #2d4a22;">
+                            <th style="padding: 12px; width: 80px;">Foto</th>
+                            <th style="padding: 12px;">Nama Menu</th>
+                            <th style="padding: 12px; width: 120px;">Kategori</th>
+                            <th style="padding: 12px; width: 120px;">Harga</th>
+                            <th style="padding: 12px; width: 100px;">Badge</th>
+                            <th style="padding: 12px; width: 180px; text-align: center;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminMenuTableBody">
+                        <tr>
+                            <td colspan="6" style="padding: 20px; text-align: center; color: #888;">Memuat data menu...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- BUTTON COMMIT MENU -->
+            <button type="button" class="btn-save-admin" id="btnSaveMenuSubmit" style="margin-top: 20px; background-color: #d4a373;" onclick="saveMenuToGithub()">
+                <i class="fas fa-save"></i> Simpan & Terapkan Perubahan Menu ke Web
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL TAMBAH/EDIT MENU (POPUP) -->
+    <div id="menuEditorModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close-btn" onclick="closeMenuModal()">&times;</span>
+            <h3 id="menuModalTitle">Tambah Menu Baru</h3>
+            <p style="margin-bottom: 1.5rem;">Masukkan detail informasi menu di bawah ini</p>
+            
+            <form id="menuEditorForm" onsubmit="handleMenuSubmit(event)">
+                <input type="hidden" id="editMenuIndex">
+                <div class="form-group">
+                    <label for="menuId">ID Menu (Huruf Kecil & Strip, misal: kopi-susu)</label>
+                    <input type="text" id="menuId" required placeholder="contoh: nasi-pecel">
+                </div>
+                <div class="form-group">
+                    <label for="menuName">Nama Menu</label>
+                    <input type="text" id="menuName" required placeholder="contoh: Nasi Pecel Madiun">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="menuCategory">Kategori</label>
+                        <select id="menuCategory" required>
+                            <option value="makanan">Makanan</option>
+                            <option value="minuman">Minuman</option>
+                            <option value="cemilan">Cemilan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="menuPrice">Harga (Rp)</label>
+                        <input type="number" id="menuPrice" required placeholder="contoh: 15000">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="menuBadge">Badge Label (Opsional)</label>
+                    <input type="text" id="menuBadge" placeholder="contoh: Favorit, Spesial, Baru">
+                </div>
+                <div class="form-group">
+                    <label for="menuImg">Tautan Foto URL (Opsional)</label>
+                    <input type="text" id="menuImg" placeholder="https://images.unsplash.com/photo-...">
+                </div>
+                <div class="form-group">
+                    <label for="menuDesc">Deskripsi Menu</label>
+                    <textarea id="menuDesc" rows="3" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e5e0d3; background-color: #FAF9F6; font-family: inherit; font-size: 0.9rem; box-sizing: border-box;"></textarea>
+                </div>
+                <button type="submit" class="btn-submit-res" style="margin-top: 1rem;">
+                    <i class="fas fa-check"></i> Simpan di Daftar Sementara
+                </button>
+            </form>
+        </div>
     </div>
 
     <script>
-        // Logika Input PIN
+        // Logika Input PIN Keamanan
         const CORRECT_PIN = "000000";
         let pinInput = "";
         const dots = document.querySelectorAll(".pin-dot");
@@ -392,7 +523,9 @@
         // GITHUB API DETAILS
         const OWNER = "Syaahnhl";
         const REPO = "web-bukitpadangan";
-        const FILE_PATH = "content.json";
+        
+        // Data internal menu list
+        let adminMenus = [];
 
         // Cek Sesi Login di Awal
         window.onload = function() {
@@ -400,6 +533,7 @@
                 document.getElementById("pinGate").style.display = "none";
                 document.getElementById("adminWorkspace").style.display = "block";
                 loadCurrentContent();
+                loadAdminMenuData();
             }
             
             // Load saved GitHub token if any
@@ -440,6 +574,7 @@
                         document.getElementById("pinGate").style.display = "none";
                         document.getElementById("adminWorkspace").style.display = "block";
                         loadCurrentContent();
+                        loadAdminMenuData();
                     } else {
                         errorMessage.innerText = "PIN Salah! Silakan coba lagi.";
                         pinInput = "";
@@ -467,7 +602,9 @@
             }
         }
 
-        // Ambil data content.json saat ini langsung dari file lokal atau GitHub
+        // =========================================
+        // KONTEN LANDING PAGE SECTION
+        // =========================================
         async function loadCurrentContent() {
             try {
                 const response = await fetch("content.json");
@@ -497,7 +634,6 @@
             document.getElementById("fbLink").value = data.contacts.facebook;
         }
 
-        // Terapkan perubahan dan tulis ke content.json di GitHub via REST API
         async function saveContent(event) {
             event.preventDefault();
             
@@ -511,7 +647,6 @@
             btnSave.disabled = true;
             btnSave.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses Commit ke Github...`;
 
-            // Susun file JSON baru
             const newContent = {
                 promo: {
                     show: document.getElementById("showPromo").checked,
@@ -542,8 +677,7 @@
             const jsonString = JSON.stringify(newContent, null, 2);
 
             try {
-                // 1. Ambil SHA file content.json terbaru di GitHub
-                const getUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`;
+                const getUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/content.json`;
                 const getResponse = await fetch(getUrl, {
                     headers: {
                         "Authorization": `token ${token}`,
@@ -552,13 +686,12 @@
                 });
 
                 if (!getResponse.ok) {
-                    throw new Error("Gagal mengambil metadata file dari GitHub. Pastikan token valid.");
+                    throw new Error("Gagal mengambil metadata file content.json dari GitHub.");
                 }
 
                 const fileData = await getResponse.json();
                 const currentSha = fileData.sha;
 
-                // 2. Kirim update commit ke GitHub
                 const updateResponse = await fetch(getUrl, {
                     method: "PUT",
                     headers: {
@@ -568,13 +701,13 @@
                     },
                     body: JSON.stringify({
                         message: "feat(admin): update website content dynamically from Admin Panel",
-                        content: btoa(unescape(encodeURIComponent(jsonString))), // Encode Base64
+                        content: btoa(unescape(encodeURIComponent(jsonString))),
                         sha: currentSha
                     })
                 });
 
                 if (updateResponse.ok) {
-                    alert("Konten berhasil disimpan! Netlify akan merilis pembaruan web dalam 1-2 menit.");
+                    alert("Konten Teks Landing Page berhasil disimpan! Netlify akan memperbarui web dalam 1-2 menit.");
                     window.location.reload();
                 } else {
                     const errData = await updateResponse.json();
@@ -585,7 +718,202 @@
                 console.error(err);
             } finally {
                 btnSave.disabled = false;
-                btnSave.innerHTML = `<i class="fas fa-cloud-upload-alt"></i> Simpan & Terapkan Perubahan Web`;
+                btnSave.innerHTML = `<i class="fas fa-cloud-upload-alt"></i> Simpan & Terapkan Perubahan Teks Landing Page`;
+            }
+        }
+
+        // =========================================
+        // MANAJEMEN CRUD MENU SECTION
+        // =========================================
+        async function loadAdminMenuData() {
+            try {
+                const response = await fetch("menu.json");
+                if (response.ok) {
+                    adminMenus = await response.json();
+                    renderAdminMenuTable();
+                }
+            } catch (err) {
+                console.error("Gagal meload menu.json:", err);
+            }
+        }
+
+        function formatRupiah(number) {
+            return new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0
+            }).format(number);
+        }
+
+        function renderAdminMenuTable() {
+            const tbody = document.getElementById("adminMenuTableBody");
+            if (!tbody) return;
+
+            if (adminMenus.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #888;">Belum ada menu. Silakan klik Tambah Menu Baru.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = adminMenus.map((item, index) => {
+                const imgUrl = item.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=150&auto=format&fit=crop';
+                const badgeText = item.badge || '-';
+                return `
+                    <tr style="border-bottom: 1px solid #f3efe6;">
+                        <td style="padding: 12px; text-align: center;">
+                            <img class="menu-table-img" src="${imgUrl}" alt="${item.name}">
+                        </td>
+                        <td style="padding: 12px;">
+                            <strong style="color: #2d4a22; font-size: 0.9rem;">${item.name}</strong>
+                            <p style="font-size: 0.75rem; color: #666; margin: 3px 0 0 0; line-height: 1.3;">${item.desc}</p>
+                            <span style="font-size: 0.7rem; background-color: #eee; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 5px;">ID: ${item.id}</span>
+                        </td>
+                        <td style="padding: 12px; text-transform: capitalize;">${item.category}</td>
+                        <td style="padding: 12px; font-weight: 700; color: #2d4a22;">${formatRupiah(item.price)}</td>
+                        <td style="padding: 12px;">
+                            ${item.badge ? `<span style="background-color: #d4a373; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">${item.badge}</span>` : '<span style="color: #bbb;">-</span>'}
+                        </td>
+                        <td style="padding: 12px; text-align: center;">
+                            <div class="action-btn-group">
+                                <button type="button" class="btn-table-action btn-table-edit" onclick="openMenuModal('edit', ${index})">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button type="button" class="btn-table-action btn-table-delete" onclick="deleteMenuItem(${index})">
+                                    <i class="fas fa-trash"></i> Hapus
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        // Modal Form Menu Handlers
+        const menuModal = document.getElementById("menuEditorModal");
+
+        function openMenuModal(mode, index = null) {
+            menuModal.style.display = "flex";
+            const form = document.getElementById("menuEditorForm");
+            form.reset();
+
+            if (mode === 'add') {
+                document.getElementById("menuModalTitle").innerText = "Tambah Menu Baru";
+                document.getElementById("editMenuIndex").value = "";
+                document.getElementById("menuId").disabled = false;
+            } else if (mode === 'edit' && index !== null) {
+                document.getElementById("menuModalTitle").innerText = "Edit Detail Menu";
+                document.getElementById("editMenuIndex").value = index;
+                
+                const item = adminMenus[index];
+                document.getElementById("menuId").value = item.id;
+                document.getElementById("menuId").disabled = true; // Kunci ID menu agar tidak merusak relasi keranjang
+                document.getElementById("menuName").value = item.name;
+                document.getElementById("menuCategory").value = item.category;
+                document.getElementById("menuPrice").value = item.price;
+                document.getElementById("menuBadge").value = item.badge || "";
+                document.getElementById("menuImg").value = item.img || "";
+                document.getElementById("menuDesc").value = item.desc;
+            }
+        }
+
+        function closeMenuModal() {
+            menuModal.style.display = "none";
+        }
+
+        // Simpan data menu ke array local sementara
+        function handleMenuSubmit(event) {
+            event.preventDefault();
+            
+            const index = document.getElementById("editMenuIndex").value;
+            const menuId = document.getElementById("menuId").value.trim().toLowerCase();
+            const name = document.getElementById("menuName").value.trim();
+            const category = document.getElementById("menuCategory").value;
+            const price = parseInt(document.getElementById("menuPrice").value);
+            const badge = document.getElementById("menuBadge").value.trim();
+            const img = document.getElementById("menuImg").value.trim();
+            const desc = document.getElementById("menuDesc").value.trim();
+
+            const menuItem = { id: menuId, name, category, price, badge, img, desc };
+
+            if (index === "") {
+                // Cek duplikasi ID
+                const exists = adminMenus.some(item => item.id === menuId);
+                if (exists) {
+                    alert("ID Menu sudah terpakai! Gunakan ID menu unik lainnya.");
+                    return;
+                }
+                adminMenus.push(menuItem);
+            } else {
+                adminMenus[parseInt(index)] = menuItem;
+            }
+
+            renderAdminMenuTable();
+            closeMenuModal();
+        }
+
+        function deleteMenuItem(index) {
+            if (confirm(`Apakah Tuan yakin ingin menghapus menu "${adminMenus[index].name}" dari daftar?`)) {
+                adminMenus.splice(index, 1);
+                renderAdminMenuTable();
+            }
+        }
+
+        // Tulis (Commit) array adminMenus langsung ke menu.json di GitHub
+        async function saveMenuToGithub() {
+            const token = localStorage.getItem("github_pat_token");
+            if (!token) {
+                alert("Tuan Muda belum memasukkan Token GitHub PAT! Silakan simpan token terlebih dahulu di kotak atas.");
+                return;
+            }
+
+            const btnSaveMenu = document.getElementById("btnSaveMenuSubmit");
+            btnSaveMenu.disabled = true;
+            btnSaveMenu.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses Commit Menu ke Github...`;
+
+            const jsonString = JSON.stringify(adminMenus, null, 2);
+
+            try {
+                const getUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/menu.json`;
+                const getResponse = await fetch(getUrl, {
+                    headers: {
+                        "Authorization": `token ${token}`,
+                        "Accept": "application/vnd.github.v3+json"
+                    }
+                });
+
+                if (!getResponse.ok) {
+                    throw new Error("Gagal mengambil metadata file menu.json dari GitHub.");
+                }
+
+                const fileData = await getResponse.json();
+                const currentSha = fileData.sha;
+
+                const updateResponse = await fetch(getUrl, {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `token ${token}`,
+                        "Content-Type": "application/json",
+                        "Accept": "application/vnd.github.v3+json"
+                    },
+                    body: JSON.stringify({
+                        message: "feat(admin): update menu catalog dynamically from Admin Panel",
+                        content: btoa(unescape(encodeURIComponent(jsonString))),
+                        sha: currentSha
+                    })
+                });
+
+                if (updateResponse.ok) {
+                    alert("Daftar Menu berhasil disimpan! Netlify akan memperbarui katalog menu di web dalam 1-2 menit.");
+                    loadAdminMenuData(); // Reload data local
+                } else {
+                    const errData = await updateResponse.json();
+                    throw new Error(errData.message || "Gagal menyimpan menu.");
+                }
+            } catch (err) {
+                alert(`Gagal Menyimpan Menu: ${err.message}`);
+                console.error(err);
+            } finally {
+                btnSaveMenu.disabled = false;
+                btnSaveMenu.innerHTML = `<i class="fas fa-save"></i> Simpan & Terapkan Perubahan Menu ke Web`;
             }
         }
     </script>

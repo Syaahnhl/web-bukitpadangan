@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ayam-madu",
+    "name": "Ayam Bakar Madu Padangan",
+    "category": "makanan",
+    "price": 28000,
+    "desc": "Ayam bakar bumbu rempah pilihan dilapisi madu murni, disajikan dengan sambal terasi khas.",
+    "img": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop",
+    "badge": "Favorit"
+  },
+  {
+    "id": "nasgor-rempah",
+    "name": "Nasi Goreng Rempah Parahyangan",
+    "category": "makanan",
+    "price": 22000,
+    "desc": "Nasi goreng dengan aroma rempah khas, telur mata sapi, kerupuk, dan irisan ayam gurih.",
+    "img": "https://images.unsplash.com/photo-1608897013039-887f21d8c804?q=80&w=600&auto=format&fit=crop",
+    "badge": ""
+  },
+  {
+    "id": "gurame-crispy",
+    "name": "Gurame Terbang Crispy",
+    "category": "makanan",
+    "price": 45000,
+    "desc": "Gurame segar digoreng garing berbentuk terbang, disajikan bersama lalapan segar dan sambal kecap.",
+    "img": "https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=600&auto=format&fit=crop",
+    "badge": "Spesial"
+  },
+  {
+    "id": "kopi-aren",
+    "name": "Kopi Gula Aren Padangan",
+    "category": "minuman",
+    "price": 18000,
+    "desc": "Espresso premium berpadu susu segar dan gula aren murni pilihan, pas untuk udara sejuk.",
+    "img": "https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=600&auto=format&fit=crop",
+    "badge": "Kopi"
+  },
+  {
+    "id": "es-kelapa-madu",
+    "name": "Es Kelapa Muda Madu Lemon",
+    "category": "minuman",
+    "price": 15000,
+    "desc": "Air kelapa muda segar dicampur madu alami, perasan lemon, dan selasih penyegar dahaga.",
+    "img": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop",
+    "badge": ""
+  },
+  {
+    "id": "mendoan-gunung",
+    "name": "Tempe Mendoan Gunung",
+    "category": "cemilan",
+    "price": 12000,
+    "desc": "Tempe mendoan lebar digoreng setengah matang berbalut tepung bumbu daun bawang, hangat dan gurih.",
+    "img": "https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?q=80&w=600&auto=format&fit=crop",
+    "badge": ""
+  },
+  {
+    "id": "pisang-crispy",
+    "name": "Pisang Goreng Crispy Caramel",
+    "category": "cemilan",
+    "price": 14000,
+    "desc": "Pisang geprek goreng tepung renyah dengan taburan keju cheddar parut dan saus karamel lezat.",
+    "img": "https://images.unsplash.com/photo-1514517604298-cf80e0fb7f1e?q=80&w=600&auto=format&fit=crop",
+    "badge": ""
+  }
+]
