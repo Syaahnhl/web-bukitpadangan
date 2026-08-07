@@ -1,5 +1,88 @@
-// State Keranjang Belanja
+// State Keranjang Belanja & Admin WA
 let cart = [];
+let waAdminNumber = "6285290462715"; // default fallback
+
+// Fungsi Load Konten Dinamis
+async function loadDynamicContent() {
+    try {
+        const response = await fetch("content.json");
+        if (!response.ok) return;
+        const data = await response.json();
+
+        // 1. Promo Bar
+        const promoBar = document.getElementById("promoBar");
+        const promoText = document.getElementById("promoText");
+        const navbar = document.querySelector(".navbar");
+        if (data.promo.show) {
+            if (promoText) promoText.innerText = data.promo.text;
+            if (promoBar) promoBar.style.display = "flex";
+            document.body.style.paddingTop = "105px";
+            if (navbar) navbar.style.top = "36px";
+        } else {
+            if (promoBar) promoBar.style.display = "none";
+            document.body.style.paddingTop = "70px";
+            if (navbar) navbar.style.top = "0";
+        }
+
+        // 2. Hero Section
+        if (data.hero) {
+            if (document.getElementById("heroTitleText")) document.getElementById("heroTitleText").innerText = data.hero.title;
+            if (document.getElementById("heroSubtitleText")) document.getElementById("heroSubtitleText").innerText = data.hero.subtitle;
+            if (document.getElementById("heroDescText")) document.getElementById("heroDescText").innerText = data.hero.desc;
+        }
+
+        // 3. About Section
+        if (data.about) {
+            if (document.getElementById("aboutTitleText")) document.getElementById("aboutTitleText").innerText = data.about.title;
+            if (document.getElementById("aboutDescText")) document.getElementById("aboutDescText").innerText = data.about.desc;
+        }
+
+        // 4. Event Section
+        const eventSection = document.getElementById("event");
+        const navEventLink = document.getElementById("navEventLink");
+        if (data.event && data.event.show) {
+            if (document.getElementById("eventTitleText")) document.getElementById("eventTitleText").innerText = data.event.title;
+            if (document.getElementById("eventDescText")) document.getElementById("eventDescText").innerText = data.event.desc;
+            if (eventSection) eventSection.style.display = "block";
+            if (navEventLink) navEventLink.style.display = "block";
+        } else {
+            if (eventSection) eventSection.style.display = "none";
+            if (navEventLink) navEventLink.style.display = "none";
+        }
+
+        // 5. Contacts & Social Media
+        if (data.contacts) {
+            waAdminNumber = data.contacts.wa_admin1;
+            
+            // Update dropdown values di form
+            const resAdminSelect = document.getElementById("resAdmin");
+            if (resAdminSelect) {
+                resAdminSelect.innerHTML = `
+                    <option value="${data.contacts.wa_admin1}">Admin 1 (Mila/Bukit Padangan)</option>
+                    <option value="${data.contacts.wa_admin2}">Admin 2 (Layanan Alternatif)</option>
+                `;
+            }
+
+            // Update footer
+            if (document.getElementById("waAdmin1Text")) document.getElementById("waAdmin1Text").innerText = formatPhoneDisplay(data.contacts.wa_admin1);
+            if (document.getElementById("waAdmin2Text")) document.getElementById("waAdmin2Text").innerText = formatPhoneDisplay(data.contacts.wa_admin2);
+            if (document.getElementById("igFooterLink")) document.getElementById("igFooterLink").href = data.contacts.instagram;
+            if (document.getElementById("fbFooterLink")) document.getElementById("fbFooterLink").href = data.contacts.facebook;
+        }
+
+    } catch (err) {
+        console.error("Gagal meload konten dinamis:", err);
+    }
+}
+
+function formatPhoneDisplay(num) {
+    if (num.startsWith("62")) {
+        return "0" + num.slice(2);
+    }
+    return num;
+}
+
+window.addEventListener("DOMContentLoaded", loadDynamicContent);
 
 // Elemen-elemen DOM
 const modal = document.getElementById("reservationModal");

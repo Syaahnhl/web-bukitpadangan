@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bukit Padangan - Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* CSS Khusus untuk Admin Workspace */
+        .admin-body {
+            background-color: #f0eae1;
+            padding: 40px 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .admin-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e5e0d3;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f3efe6;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .admin-header h1 {
+            font-family: 'Playfair Display', serif;
+            color: #2d4a22;
+            font-size: 2.2rem;
+        }
+
+        .btn-logout {
+            background-color: #c94c4c;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-logout:hover {
+            background-color: #b23a3a;
+        }
+
+        .admin-section {
+            background: #fcfbfa;
+            border: 1px solid #e8e2d5;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+        }
+
+        .admin-section h3 {
+            font-family: 'Playfair Display', serif;
+            color: #2d4a22;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            border-left: 4px solid #d4a373;
+            padding-left: 10px;
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .form-checkbox input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .btn-save-admin {
+            width: 100%;
+            padding: 16px;
+            background-color: #2d4a22;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 8px 25px rgba(45, 74, 34, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-save-admin:hover {
+            background-color: #d4a373;
+            box-shadow: 0 8px 25px rgba(212, 163, 115, 0.3);
+        }
+
+        /* Modal Login PIN Style */
+        .pin-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 5000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .pin-content {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .pin-content h3 {
+            font-family: 'Playfair Display', serif;
+            color: #2d4a22;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .pin-dots {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .pin-dot {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #2d4a22;
+            border-radius: 50%;
+            transition: background-color 0.15s;
+        }
+
+        .pin-dot.active {
+            background-color: #2d4a22;
+        }
+
+        .pin-keyboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        .pin-btn {
+            background-color: #f7f5f0;
+            border: 1px solid #e5e0d3;
+            border-radius: 50%;
+            width: 65px;
+            height: 65px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c352a;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            margin: 0 auto;
+        }
+
+        .pin-btn:hover {
+            background-color: #2d4a22;
+            color: white;
+            border-color: #2d4a22;
+        }
+
+        .status-badge {
+            background-color: #e5e0d3;
+            color: #555;
+            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .status-badge.active {
+            background-color: #d4f7d4;
+            color: #1b5e20;
+        }
+
+        /* Token setup modal */
+        .token-setup-section {
+            border: 2px dashed #d4a373;
+            background: #fff8f0;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .token-setup-section p {
+            font-size: 0.85rem;
+            color: #887050;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body class="admin-body">
+
+    <!-- LOGIN PIN GATEWAY -->
+    <div id="pinGate" class="pin-modal">
+        <div class="pin-content">
+            <i class="fas fa-lock" style="font-size: 3rem; color: #d4a373; margin-bottom: 15px;"></i>
+            <h3>Keamanan Admin</h3>
+            <p>Masukkan 6-Digit PIN Akses Anda</p>
+            <div id="pinErrorMessage" style="color: #c94c4c; font-size: 0.85rem; height: 20px; font-weight: 600;"></div>
+            
+            <div class="pin-dots">
+                <div class="pin-dot"></div>
+                <div class="pin-dot"></div>
+                <div class="pin-dot"></div>
+                <div class="pin-dot"></div>
+                <div class="pin-dot"></div>
+                <div class="pin-dot"></div>
+            </div>
+
+            <div class="pin-keyboard">
+                <button class="pin-btn" onclick="pressPin(1)">1</button>
+                <button class="pin-btn" onclick="pressPin(2)">2</button>
+                <button class="pin-btn" onclick="pressPin(3)">3</button>
+                <button class="pin-btn" onclick="pressPin(4)">4</button>
+                <button class="pin-btn" onclick="pressPin(5)">5</button>
+                <button class="pin-btn" onclick="pressPin(6)">6</button>
+                <button class="pin-btn" onclick="pressPin(7)">7</button>
+                <button class="pin-btn" onclick="pressPin(8)">8</button>
+                <button class="pin-btn" onclick="pressPin(9)">9</button>
+                <button class="pin-btn" onclick="pressPin('clear')"><i class="fas fa-times"></i></button>
+                <button class="pin-btn" onclick="pressPin(0)">0</button>
+                <button class="pin-btn" onclick="pressPin('backspace')"><i class="fas fa-backspace"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WORKSPACE ADMIN -->
+    <div class="admin-container" id="adminWorkspace" style="display: none;">
+        <div class="admin-header">
+            <div>
+                <span class="status-badge active"><i class="fas fa-check-circle"></i> Terkoneksi</span>
+                <h1>Admin Bukit Padangan</h1>
+            </div>
+            <button class="btn-logout" onclick="logoutAdmin()">Logout</button>
+        </div>
+
+        <!-- GITHUB ACCESS SETUP (Saves to LocalStorage only, never hardcoded) -->
+        <div class="token-setup-section">
+            <h3><i class="fab fa-github"></i> Kredensial Deploy Otomatis</h3>
+            <p>Masukkan Token Akses Personal (PAT) GitHub Tuan untuk mengizinkan perubahan langsung menulis ke server.</p>
+            <div class="form-group">
+                <input type="password" id="gitToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxx" style="background-color: white;">
+            </div>
+            <button class="btn-submit-res" onclick="saveGitToken()" style="margin-top: 0; padding: 8px 15px; font-size: 0.85rem; width: auto; display: inline-flex;">
+                Simpan Token di Browser
+            </button>
+            <span id="tokenStatus" style="font-size: 0.85rem; font-weight: 600; margin-left: 10px;"></span>
+        </div>
+
+        <form id="adminForm" onsubmit="saveContent(event)">
+            <!-- PROMO BAR SECTION -->
+            <div class="admin-section">
+                <h3>1. Banner Promo Berjalan (Top Marquee)</h3>
+                <div class="form-checkbox">
+                    <input type="checkbox" id="showPromo">
+                    <label for="showPromo" style="margin-bottom: 0; font-weight: 500;">Tampilkan Banner Promo di atas website</label>
+                </div>
+                <div class="form-group">
+                    <label for="promoText">Isi Pengumuman / Promo</label>
+                    <input type="text" id="promoText" required placeholder="Contoh: Diskon 10% khusus reservasi hari ini!">
+                </div>
+            </div>
+
+            <!-- HERO LANDING SECTION -->
+            <div class="admin-section">
+                <h3>2. Tampilan Utama (Hero Section)</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="heroSubtitle">Teks Pembuka (Kecil)</label>
+                        <input type="text" id="heroSubtitle" required placeholder="Selamat Datang di">
+                    </div>
+                    <div class="form-group">
+                        <label for="heroTitle">Judul Utama</label>
+                        <input type="text" id="heroTitle" required placeholder="Bukit Padangan">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="heroDesc">Slogan / Deskripsi Pendek</label>
+                    <input type="text" id="heroDesc" required placeholder="Nikmati hidangan lezat dengan suasana asri...">
+                </div>
+            </div>
+
+            <!-- ABOUT US SECTION -->
+            <div class="admin-section">
+                <h3>3. Seksi Profil Resto (About Us)</h3>
+                <div class="form-group">
+                    <label for="aboutTitle">Judul Profil</label>
+                    <input type="text" id="aboutTitle" required placeholder="Suasana Alam & Rasa Otentik">
+                </div>
+                <div class="form-group">
+                    <label for="aboutDesc">Deskripsi Lengkap Tentang Resto</label>
+                    <textarea id="aboutDesc" rows="4" required style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e5e0d3; background-color: #FAF9F6; font-family: inherit; font-size: 0.9rem; line-height: 1.5;"></textarea>
+                </div>
+            </div>
+
+            <!-- LIVE MUSIC & EVENT SECTION -->
+            <div class="admin-section">
+                <h3>4. Pengumuman Acara Khusus (Event Section)</h3>
+                <div class="form-checkbox">
+                    <input type="checkbox" id="showEvent">
+                    <label for="showEvent" style="margin-bottom: 0; font-weight: 500;">Aktifkan Pengumuman Event Khusus</label>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventTitle">Judul Event / Acara</label>
+                        <input type="text" id="eventTitle" placeholder="Contoh: Live Music Weekend">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDesc">Detail Event (Tanggal, Jam, Info)</label>
+                        <input type="text" id="eventDesc" placeholder="Contoh: Setiap Sabtu malam mulai pukul 19.00 WIB.">
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTACTS & MEDSOS -->
+            <div class="admin-section">
+                <h3>5. Informasi Kontak & Medsos</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="waAdmin1">Nomor WA Admin 1 (Hanya Angka, diawali 62)</label>
+                        <input type="text" id="waAdmin1" required placeholder="6285290462715">
+                    </div>
+                    <div class="form-group">
+                        <label for="waAdmin2">Nomor WA Admin 2 (Hanya Angka, diawali 62)</label>
+                        <input type="text" id="waAdmin2" required placeholder="6282323535747">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="igLink">Link Profil Instagram</label>
+                        <input type="text" id="igLink" required placeholder="https://instagram.com/bukitpadangan">
+                    </div>
+                    <div class="form-group">
+                        <label for="fbLink">Link Profil Facebook</label>
+                        <input type="text" id="fbLink" required placeholder="https://facebook.com/bukitpadangan">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBMIT BUTTON -->
+            <button type="submit" class="btn-save-admin" id="btnSaveSubmit">
+                <i class="fas fa-cloud-upload-alt"></i> Simpan & Terapkan Perubahan Web
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Logika Input PIN
+        const CORRECT_PIN = "000000";
+        let pinInput = "";
+        const dots = document.querySelectorAll(".pin-dot");
+        const errorMessage = document.getElementById("pinErrorMessage");
+
+        // GITHUB API DETAILS
+        const OWNER = "Syaahnhl";
+        const REPO = "web-bukitpadangan";
+        const FILE_PATH = "content.json";
+
+        // Cek Sesi Login di Awal
+        window.onload = function() {
+            if (sessionStorage.getItem("admin_auth") === "true") {
+                document.getElementById("pinGate").style.display = "none";
+                document.getElementById("adminWorkspace").style.display = "block";
+                loadCurrentContent();
+            }
+            
+            // Load saved GitHub token if any
+            const savedToken = localStorage.getItem("github_pat_token");
+            if (savedToken) {
+                document.getElementById("gitToken").value = savedToken;
+                document.getElementById("tokenStatus").innerText = "Token tersimpan";
+                document.getElementById("tokenStatus").style.color = "#1b5e20";
+            }
+        }
+
+        function pressPin(val) {
+            errorMessage.innerText = "";
+            if (val === 'clear') {
+                pinInput = "";
+            } else if (val === 'backspace') {
+                pinInput = pinInput.slice(0, -1);
+            } else {
+                if (pinInput.length < 6) {
+                    pinInput += val;
+                }
+            }
+
+            // Update UI Dots
+            dots.forEach((dot, index) => {
+                if (index < pinInput.length) {
+                    dot.classList.add("active");
+                } else {
+                    dot.classList.remove("active");
+                }
+            });
+
+            // Verifikasi PIN jika sudah 6-digit
+            if (pinInput.length === 6) {
+                setTimeout(() => {
+                    if (pinInput === CORRECT_PIN) {
+                        sessionStorage.setItem("admin_auth", "true");
+                        document.getElementById("pinGate").style.display = "none";
+                        document.getElementById("adminWorkspace").style.display = "block";
+                        loadCurrentContent();
+                    } else {
+                        errorMessage.innerText = "PIN Salah! Silakan coba lagi.";
+                        pinInput = "";
+                        dots.forEach(dot => dot.classList.remove("active"));
+                    }
+                }, 200);
+            }
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem("admin_auth");
+            window.location.reload();
+        }
+
+        function saveGitToken() {
+            const token = document.getElementById("gitToken").value.trim();
+            if (token) {
+                localStorage.setItem("github_pat_token", token);
+                document.getElementById("tokenStatus").innerText = "Token berhasil disimpan!";
+                document.getElementById("tokenStatus").style.color = "#1b5e20";
+            } else {
+                localStorage.removeItem("github_pat_token");
+                document.getElementById("tokenStatus").innerText = "Token dihapus.";
+                document.getElementById("tokenStatus").style.color = "#c94c4c";
+            }
+        }
+
+        // Ambil data content.json saat ini langsung dari file lokal atau GitHub
+        async function loadCurrentContent() {
+            try {
+                const response = await fetch("content.json");
+                if (response.ok) {
+                    const data = await response.json();
+                    populateForm(data);
+                }
+            } catch (err) {
+                console.error("Gagal meload file konten lokal:", err);
+            }
+        }
+
+        function populateForm(data) {
+            document.getElementById("showPromo").checked = data.promo.show;
+            document.getElementById("promoText").value = data.promo.text;
+            document.getElementById("heroSubtitle").value = data.hero.subtitle;
+            document.getElementById("heroTitle").value = data.hero.title;
+            document.getElementById("heroDesc").value = data.hero.desc;
+            document.getElementById("aboutTitle").value = data.about.title;
+            document.getElementById("aboutDesc").value = data.about.desc;
+            document.getElementById("showEvent").checked = data.event.show;
+            document.getElementById("eventTitle").value = data.event.title || "";
+            document.getElementById("eventDesc").value = data.event.desc || "";
+            document.getElementById("waAdmin1").value = data.contacts.wa_admin1;
+            document.getElementById("waAdmin2").value = data.contacts.wa_admin2;
+            document.getElementById("igLink").value = data.contacts.instagram;
+            document.getElementById("fbLink").value = data.contacts.facebook;
+        }
+
+        // Terapkan perubahan dan tulis ke content.json di GitHub via REST API
+        async function saveContent(event) {
+            event.preventDefault();
+            
+            const token = localStorage.getItem("github_pat_token");
+            if (!token) {
+                alert("Tuan Muda belum memasukkan Token GitHub PAT! Silakan simpan token terlebih dahulu di kotak atas.");
+                return;
+            }
+
+            const btnSave = document.getElementById("btnSaveSubmit");
+            btnSave.disabled = true;
+            btnSave.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses Commit ke Github...`;
+
+            // Susun file JSON baru
+            const newContent = {
+                promo: {
+                    show: document.getElementById("showPromo").checked,
+                    text: document.getElementById("promoText").value
+                },
+                hero: {
+                    title: document.getElementById("heroTitle").value,
+                    subtitle: document.getElementById("heroSubtitle").value,
+                    desc: document.getElementById("heroDesc").value
+                },
+                about: {
+                    title: document.getElementById("aboutTitle").value,
+                    desc: document.getElementById("aboutDesc").value
+                },
+                event: {
+                    show: document.getElementById("showEvent").checked,
+                    title: document.getElementById("eventTitle").value,
+                    desc: document.getElementById("eventDesc").value
+                },
+                contacts: {
+                    wa_admin1: document.getElementById("waAdmin1").value,
+                    wa_admin2: document.getElementById("waAdmin2").value,
+                    instagram: document.getElementById("igLink").value,
+                    facebook: document.getElementById("fbLink").value
+                }
+            };
+
+            const jsonString = JSON.stringify(newContent, null, 2);
+
+            try {
+                // 1. Ambil SHA file content.json terbaru di GitHub
+                const getUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`;
+                const getResponse = await fetch(getUrl, {
+                    headers: {
+                        "Authorization": `token ${token}`,
+                        "Accept": "application/vnd.github.v3+json"
+                    }
+                });
+
+                if (!getResponse.ok) {
+                    throw new Error("Gagal mengambil metadata file dari GitHub. Pastikan token valid.");
+                }
+
+                const fileData = await getResponse.json();
+                const currentSha = fileData.sha;
+
+                // 2. Kirim update commit ke GitHub
+                const updateResponse = await fetch(getUrl, {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `token ${token}`,
+                        "Content-Type": "application/json",
+                        "Accept": "application/vnd.github.v3+json"
+                    },
+                    body: JSON.stringify({
+                        message: "feat(admin): update website content dynamically from Admin Panel",
+                        content: btoa(unescape(encodeURIComponent(jsonString))), // Encode Base64
+                        sha: currentSha
+                    })
+                });
+
+                if (updateResponse.ok) {
+                    alert("Konten berhasil disimpan! Netlify akan merilis pembaruan web dalam 1-2 menit.");
+                    window.location.reload();
+                } else {
+                    const errData = await updateResponse.json();
+                    throw new Error(errData.message || "Gagal melakukan update ke repositori.");
+                }
+            } catch (err) {
+                alert(`Gagal Menyimpan: ${err.message}`);
+                console.error(err);
+            } finally {
+                btnSave.disabled = false;
+                btnSave.innerHTML = `<i class="fas fa-cloud-upload-alt"></i> Simpan & Terapkan Perubahan Web`;
+            }
+        }
+    </script>
+</body>
+
+</html>

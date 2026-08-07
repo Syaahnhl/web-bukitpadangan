@@ -15,10 +15,10 @@
 <body>
 
     <!-- TOP PROMO BAR -->
-    <div id="promoBar" class="promo-bar">
+    <div id="promoBar" class="promo-bar" style="display: none;">
         <div class="promo-content">
             <span class="promo-tag">INFO PROMO</span>
-            <p>Diskon 10% untuk Pre-order Menu makanan khusus reservasi online hari ini! 🎉</p>
+            <p id="promoText">Diskon 10% untuk Pre-order Menu makanan khusus reservasi online hari ini! 🎉</p>
         </div>
         <span class="close-promo" onclick="closePromoBar()">&times;</span>
     </div>
@@ -30,6 +30,7 @@
             <li><a href="#home">Beranda</a></li>
             <li><a href="#about">Tentang</a></li>
             <li><a href="#menu">Menu</a></li>
+            <li id="navEventLink" style="display: none;"><a href="#event">Event</a></li>
             <li><a href="#testimonials">Ulasan</a></li>
             <li><a href="#gallery">Galeri</a></li>
             <li><a href="#location">Lokasi</a></li>
@@ -43,9 +44,9 @@
     <!-- HERO SECTION -->
     <section id="home" class="hero">
         <div class="hero-content">
-            <h3>Selamat Datang di</h3>
-            <h1>Bukit Padangan</h1>
-            <p>Nikmati hidangan lezat dengan suasana asri pegunungan yang menenangkan dan kopi modern kekinian.</p>
+            <h3 id="heroSubtitleText">Selamat Datang di</h3>
+            <h1 id="heroTitleText">Bukit Padangan</h1>
+            <p id="heroDescText">Nikmati hidangan lezat dengan suasana asri pegunungan yang menenangkan dan kopi modern kekinian.</p>
             <div class="hero-info">
                 <span><i class="far fa-clock"></i> Buka Setiap Hari: 11.00 - 22.00 WIB</span>
             </div>
@@ -56,8 +57,8 @@
     <!-- ABOUT SECTION -->
     <section id="about" class="section-padding">
         <div class="container">
-            <h2 class="section-title">Suasana Alam & Rasa Otentik</h2>
-            <p class="section-desc">
+            <h2 class="section-title" id="aboutTitleText">Suasana Alam & Rasa Otentik</h2>
+            <p class="section-desc" id="aboutDescText">
                 Terletak di jalur sejuk Gunungwungkal, kami menyajikan perpaduan kenyamanan cafe modern dengan kehangatan masakan khas nusantara dan panorama alam hijau.
             </p>
             <div class="features-grid">
@@ -217,6 +218,18 @@
         </div>
     </section>
 
+    <!-- EVENT SECTION -->
+    <section id="event" class="section-padding" style="display: none; background-color: #fcfbfa; border-top: 1px solid #e8e2d5; border-bottom: 1px solid #e8e2d5;">
+        <div class="container">
+            <span class="menu-badge" style="background-color: var(--primary-green); margin-bottom: 15px;">Acara Mendatang</span>
+            <h2 class="section-title" id="eventTitleText">Event Spesial</h2>
+            <p class="section-desc" id="eventDescText">Info event khusus di Bukit Padangan.</p>
+            <div style="margin-top: 20px;">
+                <button class="btn-cta" onclick="openModal(event)">Reservasi Tempat Sekarang</button>
+            </div>
+        </div>
+    </section>
+
     <!-- TESTIMONIALS SECTION -->
     <section id="testimonials" class="section-padding testimonials-section">
         <div class="container">
@@ -343,15 +356,15 @@
                 <h3>Bukit Padangan</h3>
                 <p>Food, Coffee & Drink | Family & Nature Resto</p>
                 <div class="social-links" style="margin-top: 15px;">
-                    <a href="https://instagram.com/bukitpadangan" target="_blank" style="margin-right: 15px; font-size: 1.2rem;"><i class="fab fa-instagram"></i></a>
-                    <a href="https://facebook.com/bukitpadangan" target="_blank" style="font-size: 1.2rem;"><i class="fab fa-facebook"></i></a>
+                    <a id="igFooterLink" href="https://instagram.com/bukitpadangan" target="_blank" style="margin-right: 15px; font-size: 1.2rem;"><i class="fab fa-instagram"></i></a>
+                    <a id="fbFooterLink" href="https://facebook.com/bukitpadangan" target="_blank" style="font-size: 1.2rem;"><i class="fab fa-facebook"></i></a>
                 </div>
             </div>
             <div class="footer-section">
                 <h4>Kontak Layanan</h4>
                 <p>Silakan klik tombol Reservasi untuk langsung memesan meja.</p>
-                <p><i class="fab fa-whatsapp"></i> 0852-9046-2715 (Admin 1)</p>
-                <p><i class="fab fa-whatsapp"></i> 0823-2353-5747 (Admin 2)</p>
+                <p><i class="fab fa-whatsapp"></i> <span id="waAdmin1Text">0852-9046-2715</span> (Admin 1)</p>
+                <p><i class="fab fa-whatsapp"></i> <span id="waAdmin2Text">0823-2353-5747</span> (Admin 2)</p>
             </div>
             <div class="footer-section">
                 <h4>Alamat Resto</h4>

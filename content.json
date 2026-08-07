@@ -1,0 +1,26 @@
+{
+  "promo": {
+    "show": true,
+    "text": "Diskon 10% untuk Pre-order Menu makanan khusus reservasi online hari ini! 🎉"
+  },
+  "hero": {
+    "title": "Bukit Padangan",
+    "subtitle": "Selamat Datang di",
+    "desc": "Nikmati hidangan lezat dengan suasana asri pegunungan yang menenangkan dan kopi modern kekinian."
+  },
+  "about": {
+    "title": "Suasana Alam & Rasa Otentik",
+    "desc": "Terletak di jalur sejuk Gunungwungkal, kami menyajikan perpaduan kenyamanan cafe modern dengan kehangatan masakan khas nusantara dan panorama alam hijau."
+  },
+  "event": {
+    "show": false,
+    "title": "Live Music Weekend",
+    "desc": "Setiap Sabtu malam mulai pukul 19.00 WIB. Mari habiskan malam minggu syahdu bersama kami!"
+  },
+  "contacts": {
+    "wa_admin1": "6285290462715",
+    "wa_admin2": "6282323535747",
+    "instagram": "https://instagram.com/bukitpadangan",
+    "facebook": "https://facebook.com/bukitpadangan"
+  }
+}
