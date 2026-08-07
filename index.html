@@ -7,19 +7,21 @@
     <title>Bukit Padangan - Resto Alam & Modern</title>
     <link rel="stylesheet" href="style.css">
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
 
+    <!-- NAVBAR -->
     <nav class="navbar">
         <div class="logo">Bukit <span>Padangan</span></div>
         <ul class="nav-links">
             <li><a href="#home">Beranda</a></li>
             <li><a href="#about">Tentang</a></li>
             <li><a href="#menu">Menu</a></li>
+            <li><a href="#gallery">Galeri</a></li>
             <li><a href="#" class="btn-reservasi" onclick="openModal(event)">Reservasi</a></li>
         </ul>
         <div class="menu-toggle">
@@ -27,93 +29,299 @@
         </div>
     </nav>
 
+    <!-- HERO SECTION -->
     <section id="home" class="hero">
         <div class="hero-content">
             <h3>Selamat Datang di</h3>
             <h1>Bukit Padangan</h1>
-            <p>Nikmati hidangan lezat dengan suasana asri pegunungan yang menenangkan.</p>
+            <p>Nikmati hidangan lezat dengan suasana asri pegunungan yang menenangkan dan kopi modern kekinian.</p>
             <div class="hero-info">
-                <span><i class="far fa-clock"></i> Buka 11.00 - 22.00</span>
+                <span><i class="far fa-clock"></i> Buka Setiap Hari: 11.00 - 22.00 WIB</span>
             </div>
-            <button class="btn-cta" onclick="openModal(event)">Lakukan Reservasi</button>
+            <button class="btn-cta" onclick="openModal(event)">Lakukan Reservasi Sekarang</button>
         </div>
     </section>
 
+    <!-- ABOUT SECTION -->
     <section id="about" class="section-padding">
         <div class="container">
             <h2 class="section-title">Suasana Alam & Rasa Otentik</h2>
             <p class="section-desc">
-                Terletak di jalur Gunungwungkal, kami menyajikan perpaduan kenyamanan modern dengan kearifan lokal.
+                Terletak di jalur sejuk Gunungwungkal, kami menyajikan perpaduan kenyamanan cafe modern dengan kehangatan masakan khas nusantara dan panorama alam hijau.
             </p>
             <div class="features-grid">
                 <div class="feature-card">
                     <i class="fas fa-mountain"></i>
                     <h4>Pemandangan Asri</h4>
-                    <p>Udara sejuk dan view hijau.</p>
+                    <p>Rasakan udara segar pegunungan dan pemandangan perbukitan hijau yang memanjakan mata.</p>
                 </div>
                 <div class="feature-card">
                     <i class="fas fa-utensils"></i>
                     <h4>Masakan Khas</h4>
-                    <p>Cita rasa nusantara yang kaya.</p>
+                    <p>Hidangan nusantara otentik yang diracik dengan bumbu tradisional pilihan kaya rasa.</p>
                 </div>
                 <div class="feature-card">
                     <i class="fas fa-coffee"></i>
                     <h4>Modern Cafe</h4>
-                    <p>Kopi dan camilan kekinian.</p>
+                    <p>Seduhan kopi espresso modern, camilan kekinian, dan tempat nongkrong yang instagramable.</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- MENU SECTION -->
+    <section id="menu" class="section-padding menu-section">
+        <div class="container">
+            <h2 class="section-title">Menu Unggulan Kami</h2>
+            <p class="section-desc">Pilihan hidangan terbaik untuk menemani momen santai Anda di Bukit Padangan.</p>
+            
+            <!-- Category Tabs -->
+            <div class="menu-tabs">
+                <button class="tab-btn active" onclick="filterMenu('semua')">Semua</button>
+                <button class="tab-btn" onclick="filterMenu('makanan')">Makanan</button>
+                <button class="tab-btn" onclick="filterMenu('minuman')">Minuman</button>
+                <button class="tab-btn" onclick="filterMenu('cemilan')">Cemilan</button>
+            </div>
+
+            <!-- Menu Grid -->
+            <div class="menu-grid">
+                <!-- Makanan -->
+                <div class="menu-item show" data-category="makanan">
+                    <div class="menu-img">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop" alt="Ayam Bakar Bukit Padangan">
+                    </div>
+                    <div class="menu-info">
+                        <span class="menu-badge">Favorit</span>
+                        <h4>Ayam Bakar Madu Padangan</h4>
+                        <p>Ayam bakar bumbu rempah pilihan dilapisi madu murni, disajikan dengan sambal terasi khas.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 28.000</span>
+                            <div class="menu-rating">
+                                <i class="fas fa-star"></i> 4.9
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item show" data-category="makanan">
+                    <div class="menu-img">
+                        <img src="https://images.unsplash.com/photo-1608897013039-887f21d8c804?q=80&w=600&auto=format&fit=crop" alt="Nasi Goreng Bukit">
+                    </div>
+                    <div class="menu-info">
+                        <h4>Nasi Goreng Rempah Parahyangan</h4>
+                        <p>Nasi goreng dengan aroma rempah khas, telur mata sapi, kerupuk, dan irisan ayam gurih.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 22.000</span>
+                            <div class="menu-rating">
+                                <i class="fas fa-star"></i> 4.8
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item show" data-category="makanan">
+                    <div class="menu-img">
+                        <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=600&auto=format&fit=crop" alt="Gurame Terbang">
+                    </div>
+                    <div class="menu-info">
+                        <span class="menu-badge">Spesial</span>
+                        <h4>Gurame Terbang Crispy</h4>
+                        <p>Gurame segar digoreng garing berbentuk terbang, disajikan bersama lalapan segar dan sambal kecap.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 45.000</span>
+                            <div class="menu-rating">
+                                <i class="fas fa-star"></i> 4.9
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Minuman -->
+                <div class="menu-item show" data-category="minuman">
+                    <div class="menu-img">
+                        <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=600&auto=format&fit=crop" alt="Kopi Khas">
+                    </div>
+                    <div class="menu-info">
+                        <span class="menu-badge">Kopi</span>
+                        <h4>Kopi Gula Aren Padangan</h4>
+                        <p>Espresso premium berpadu susu segar dan gula aren murni pilihan, pas untuk udara sejuk.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 18.000</span>
+                            <div class="menu-rating">
+                                <i class="fas fa-star"></i> 4.9
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item show" data-category="minuman">
+                    <div class="menu-img">
+                        <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop" alt="Es Degan Madu">
+                    </div>
+                    <div class="menu-info">
+                        <h4>Es Kelapa Muda Madu Lemon</h4>
+                        <p>Air kelapa muda segar dicampur madu alami, perasan lemon, dan selasih penyegar dahaga.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 15.000</span>
+                            <div class="menu-rating">
+                                <i class="fas fa-star"></i> 4.7
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cemilan -->
+                <div class="menu-item show" data-category="cemilan">
+                    <div class="menu-img">
+                        <img src="https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?q=80&w=600&auto=format&fit=crop" alt="Mendoan Hangat">
+                    </div>
+                    <div class="menu-info">
+                        <h4>Tempe Mendoan Gunung</h4>
+                        <p>Tempe mendoan lebar digoreng setengah matang berbalut tepung bumbu daun bawang, hangat dan gurih.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 12.000</span>
+                            <div class="menu-rating">
+                                <i class="fas fa-star"></i> 4.8
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item show" data-category="cemilan">
+                    <div class="menu-img">
+                        <img src="https://images.unsplash.com/photo-1514517604298-cf80e0fb7f1e?q=80&w=600&auto=format&fit=crop" alt="Pisang Goreng Keju">
+                    </div>
+                    <div class="menu-info">
+                        <h4>Pisang Goreng Crispy Caramel</h4>
+                        <p>Pisang geprek goreng tepung renyah dengan taburan keju cheddar parut dan saus karamel lezat.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 14.000</span>
+                            <div class="menu-rating">
+                                <i class="fas fa-star"></i> 4.8
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
+    <section id="gallery" class="section-padding gallery-section">
+        <div class="container">
+            <h2 class="section-title">Galeri Suasana Bukit</h2>
+            <p class="section-desc">Intip keindahan sudut tempat nongkrong dan keelokan panorama alam di Bukit Padangan.</p>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop" alt="Pemandangan Resto">
+                    <div class="gallery-overlay">
+                        <span>Pemandangan Bukit Asri</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=800&auto=format&fit=crop" alt="Cafe Modern">
+                    <div class="gallery-overlay">
+                        <span>Sudut Ngopi Modern</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop" alt="Area Keluarga">
+                    <div class="gallery-overlay">
+                        <span>Area Makan Outdoor Keluarga</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=800&auto=format&fit=crop" alt="Makanan Malam">
+                    <div class="gallery-overlay">
+                        <span>Makan Malam Romantis</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
     <footer id="contact">
         <div class="footer-content">
             <div class="footer-section">
                 <h3>Bukit Padangan</h3>
-                <p>Food & Drink | Family & Nature</p>
+                <p>Food, Coffee & Drink | Family & Nature Resto</p>
+                <div class="social-links" style="margin-top: 15px;">
+                    <a href="https://instagram.com/bukitpadangan" target="_blank" style="margin-right: 15px; font-size: 1.2rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com/bukitpadangan" target="_blank" style="font-size: 1.2rem;"><i class="fab fa-facebook"></i></a>
+                </div>
             </div>
             <div class="footer-section">
-                <h4>Kontak Admin</h4>
-                <p>Klik tombol reservasi untuk chat langsung.</p>
+                <h4>Kontak Layanan</h4>
+                <p>Silakan klik tombol Reservasi untuk langsung memesan meja.</p>
                 <p><i class="fab fa-whatsapp"></i> 0852-9046-2715 (Admin 1)</p>
                 <p><i class="fab fa-whatsapp"></i> 0823-2353-5747 (Admin 2)</p>
             </div>
             <div class="footer-section">
-                <h4>Lokasi</h4>
+                <h4>Lokasi Resto</h4>
                 <a href="https://maps.app.goo.gl/Jy3esudVxSzx93m48" target="_blank" class="map-link">
                     <i class="fas fa-map-marker-alt"></i> Jl. Raya Gunungwungkal-Gulangpongge <br>
-                    (Klik untuk lihat peta)
+                    (Klik untuk petunjuk arah Google Maps)
                 </a>
                 <p style="margin-top: 10px;">Buka Setiap Hari: 11.00 - 22.00 WIB</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 Bukit Padangan. All Rights Reserved.</p>
+            <p>&copy; 2026 Bukit Padangan Resto. All Rights Reserved.</p>
         </div>
     </footer>
 
+    <!-- RESERVATION MODAL (INTERAKTIF FORM) -->
     <div id="reservationModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h3>Pilih Kontak Reservasi</h3>
-            <p>Silakan pilih admin untuk melanjutkan ke WhatsApp:</p>
+            <h3>Form Reservasi Meja</h3>
+            <p>Lengkapi formulir reservasi Anda di bawah ini:</p>
 
-            <div class="admin-options">
-                <a href="https://wa.me/6285290462715" target="_blank" class="admin-card">
-                    <i class="fab fa-whatsapp"></i>
-                    <div>
-                        <strong>Admin 1</strong>
-                        <span>0852-9046-2715</span>
-                    </div>
-                </a>
+            <form id="reservationForm" onsubmit="submitReservation(event)">
+                <div class="form-group">
+                    <label for="resName">Nama Lengkap</label>
+                    <input type="text" id="resName" required placeholder="Contoh: Syahnahl">
+                </div>
 
-                <a href="https://wa.me/6282323535747" target="_blank" class="admin-card">
-                    <i class="fab fa-whatsapp"></i>
-                    <div>
-                        <strong>Admin 2</strong>
-                        <span>0823-2353-5747</span>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="resDate">Tanggal Kunjungan</label>
+                        <input type="date" id="resDate" required>
                     </div>
-                </a>
-            </div>
+                    <div class="form-group">
+                        <label for="resTime">Jam Kedatangan</label>
+                        <input type="time" id="resTime" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="resGuests">Jumlah Orang</label>
+                        <input type="number" id="resGuests" min="1" max="50" required placeholder="2">
+                    </div>
+                    <div class="form-group">
+                        <label for="resArea">Pilihan Area</label>
+                        <select id="resArea" required>
+                            <option value="Outdoor (Pemandangan Bukit)">Outdoor (Pemandangan Bukit)</option>
+                            <option value="Indoor Cafe Modern">Indoor Cafe Modern</option>
+                            <option value="Semi-Outdoor Gazebo">Semi-Outdoor Gazebo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="resAdmin">Pilih Admin WhatsApp</label>
+                    <select id="resAdmin" required>
+                        <option value="6285290462715">Admin 1 (0852-9046-2715)</option>
+                        <option value="6282323535747">Admin 2 (0823-2353-5747)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-submit-res">
+                    <i class="fab fa-whatsapp"></i> Kirim via WhatsApp
+                </button>
+            </form>
         </div>
     </div>
 
