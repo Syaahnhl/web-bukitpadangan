@@ -13,16 +13,15 @@ async function loadDynamicContent() {
         const promoBar = document.getElementById("promoBar");
         const promoText = document.getElementById("promoText");
         const navbar = document.querySelector(".navbar");
-        if (data.promo.show) {
+        if (navbar) navbar.style.top = "";
+
+        if (data.promo && data.promo.show && data.promo.text && data.promo.text.trim() !== "") {
             if (promoText) promoText.innerText = data.promo.text;
             if (promoBar) promoBar.style.display = "flex";
-            document.body.style.paddingTop = "105px";
-            if (navbar) navbar.style.top = "36px";
         } else {
             if (promoBar) promoBar.style.display = "none";
-            document.body.style.paddingTop = "70px";
-            if (navbar) navbar.style.top = "0";
         }
+        updateHeaderOffset();
 
         // 2. Hero Section
         if (data.hero) {

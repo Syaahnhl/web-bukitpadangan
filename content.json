@@ -1,7 +1,7 @@
 {
   "promo": {
-    "show": true,
-    "text": "Diskon 10% untuk Pre-order Menu makanan khusus reservasi online hari ini! 🎉"
+    "show": false,
+    "text": ""
   },
   "hero": {
     "title": "Bukit Padangan",
