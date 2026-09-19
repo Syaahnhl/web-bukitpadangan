@@ -9,7 +9,7 @@
     "status": "tersedia",
     "description": "Gazebo bambu tradisional dengan pemandangan taman bunga asri dan udara sejuk pegunungan.",
     "facilities": ["Lesehan Tradisional", "Colokan Listrik", "Suasana Privat"],
-    "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=800&auto=format&fit=crop"
+    "image": "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "T02",
@@ -45,7 +45,7 @@
     "status": "tersedia",
     "description": "Gazebo tengah yang rindang dikelilingi pepohonan kopi dan tanaman hijau.",
     "facilities": ["Lesehan Tradisional", "Spot Foto Alami", "Colokan Listrik"],
-    "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=800&auto=format&fit=crop"
+    "image": "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "T05",
@@ -81,7 +81,7 @@
     "status": "tersedia",
     "description": "Gazebo privat kapasitas sedang untuk obrolan santai dan ngopi sore.",
     "facilities": ["Lesehan Nyaman", "Privat", "Colokan Listrik"],
-    "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=800&auto=format&fit=crop"
+    "image": "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "T08",

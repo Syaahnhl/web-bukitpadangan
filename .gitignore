@@ -1,0 +1,6 @@
+# Audit & Verification Scripts
+audit_*.py
+test_*.py
+verify_*.py
+*.png
+__pycache__/

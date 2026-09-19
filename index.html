@@ -14,33 +14,46 @@
 
 <body>
 
-    <!-- TOP PROMO BAR -->
-    <div id="promoBar" class="promo-bar" style="display: none;">
-        <div class="promo-content">
-            <span class="promo-tag">INFO PROMO</span>
-            <p id="promoText">Diskon 10% untuk Pre-order Menu makanan khusus reservasi online hari ini! 🎉</p>
+    <!-- SITE HEADER (PROMO BAR + NAVBAR) -->
+    <header class="site-header" id="siteHeader">
+        <!-- TOP PROMO BAR -->
+        <div id="promoBar" class="promo-bar" style="display: none;">
+            <div class="promo-content">
+                <span class="promo-tag">INFO PROMO</span>
+                <p id="promoText">Diskon 10% untuk Pre-order Menu makanan khusus reservasi online hari ini! 🎉</p>
+            </div>
+            <span class="close-promo" onclick="closePromoBar()">&times;</span>
         </div>
-        <span class="close-promo" onclick="closePromoBar()">&times;</span>
-    </div>
 
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="logo">Bukit <span>Padangan</span></div>
-        <ul class="nav-links">
-            <li><a href="#home">Beranda</a></li>
-            <li><a href="#about">Tentang</a></li>
-            <li><a href="#tables">Denah Meja</a></li>
-            <li><a href="#menu">Menu</a></li>
-            <li id="navEventLink" style="display: none;"><a href="#event">Event</a></li>
-            <li><a href="#testimonials">Ulasan</a></li>
-            <li><a href="#gallery">Galeri</a></li>
-            <li><a href="#location">Lokasi</a></li>
-            <li><a href="#" class="btn-reservasi" onclick="openModal(event)">Reservasi</a></li>
-        </ul>
-        <div class="menu-toggle">
-            <i class="fas fa-bars"></i>
-        </div>
-    </nav>
+        <!-- NAVBAR -->
+        <nav class="navbar" id="mainNavbar">
+            <div class="logo">Bukit <span>Padangan</span></div>
+            <div class="nav-backdrop" id="navBackdrop" onclick="toggleNavMenu()"></div>
+            <ul class="nav-links" id="navLinks">
+                <li class="nav-drawer-header">
+                    <div class="logo">Bukit <span>Padangan</span></div>
+                    <button type="button" class="nav-drawer-close" onclick="toggleNavMenu()">&times;</button>
+                </li>
+                <li><a href="#home" onclick="closeNavMenu()"><i class="fas fa-home"></i> Beranda</a></li>
+                <li><a href="#about" onclick="closeNavMenu()"><i class="fas fa-info-circle"></i> Tentang</a></li>
+                <li><a href="#tables" onclick="closeNavMenu()"><i class="fas fa-th-large"></i> Denah Meja</a></li>
+                <li><a href="#menu" onclick="closeNavMenu()"><i class="fas fa-utensils"></i> Menu</a></li>
+                <li id="navEventLink" style="display: none;"><a href="#event" onclick="closeNavMenu()"><i class="fas fa-calendar-star"></i> Event</a></li>
+                <li><a href="#testimonials" onclick="closeNavMenu()"><i class="fas fa-star"></i> Ulasan</a></li>
+                <li><a href="#gallery" onclick="closeNavMenu()"><i class="fas fa-images"></i> Galeri</a></li>
+                <li><a href="#location" onclick="closeNavMenu()"><i class="fas fa-map-marker-alt"></i> Lokasi</a></li>
+                <li class="nav-desktop-cta"><a href="#" class="btn-reservasi" onclick="openModal(event)">Reservasi</a></li>
+                <li class="nav-drawer-footer">
+                    <a href="#" class="btn-drawer-reservasi" onclick="closeNavMenu(); openModal(event);">
+                        <i class="fas fa-calendar-check"></i> Reservasi Meja Sekarang
+                    </a>
+                </li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle" onclick="toggleNavMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
 
     <!-- HERO SECTION -->
     <section id="home" class="hero">
@@ -307,7 +320,7 @@
     </footer>
 
     <!-- FLOATING CART BUTTON -->
-    <div id="floatingCart" class="floating-cart" onclick="toggleCartDrawer()">
+    <div id="floatingCart" class="floating-cart" style="display: none;" onclick="toggleCartDrawer()">
         <i class="fas fa-shopping-basket"></i>
         <span id="cartCount" class="cart-badge">0</span>
     </div>
@@ -345,6 +358,7 @@
     <!-- RESERVATION MODAL (INTERAKTIF FORM) -->
     <div id="reservationModal" class="modal">
         <div class="modal-content">
+            <div class="modal-sheet-handle"></div>
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <h3>Form Reservasi & Pre-Order</h3>
             <p>Lengkapi formulir reservasi Anda di bawah ini:</p>
@@ -369,12 +383,12 @@
             <form id="reservationForm" onsubmit="submitReservation(event)">
                 <div class="form-group">
                     <label for="resTableSelect">Pilihan Nomor Meja (Opsional)</label>
-                    <div style="display: flex; gap: 8px;">
-                        <select id="resTableSelect" style="flex: 1;" onchange="handleManualTableSelect()">
+                    <div class="table-select-row">
+                        <select id="resTableSelect" onchange="handleManualTableSelect()">
                             <option value="">-- Bebas / Ditentukan Petugas --</option>
                             <!-- Diisi dinamis -->
                         </select>
-                        <button type="button" class="btn-reservasi" style="padding: 0 12px; font-size: 0.8rem; white-space: nowrap; border-radius: 8px;" onclick="closeModal(); document.getElementById('tables').scrollIntoView({behavior: 'smooth'})">
+                        <button type="button" class="btn-pick-denah" onclick="closeModal(); document.getElementById('tables').scrollIntoView({behavior: 'smooth'})">
                             <i class="fas fa-map"></i> Pilih di Denah
                         </button>
                     </div>
@@ -382,7 +396,7 @@
 
                 <div class="form-group">
                     <label for="resName">Nama Lengkap</label>
-                    <input type="text" id="resName" required placeholder="Contoh: Syahnahl">
+                    <input type="text" id="resName" required placeholder="Contoh: Budi Santoso">
                 </div>
 
                 <div class="form-row">
@@ -419,9 +433,11 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn-submit-res">
-                    <i class="fab fa-whatsapp"></i> Kirim Form via WhatsApp
-                </button>
+                <div class="modal-form-footer">
+                    <button type="submit" class="btn-submit-res">
+                        <i class="fab fa-whatsapp"></i> Lanjutkan Reservasi via WhatsApp
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -429,6 +445,7 @@
     <!-- TABLE DETAIL PREVIEW MODAL -->
     <div id="tableModal" class="modal">
         <div class="modal-content table-preview-content">
+            <div class="modal-sheet-handle"></div>
             <span class="close-btn" onclick="closeTableModal()">&times;</span>
             <div class="table-preview-img-wrapper">
                 <img id="tableModalImg" src="" alt="Spot Meja">

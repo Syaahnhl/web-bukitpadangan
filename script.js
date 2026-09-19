@@ -133,6 +133,7 @@ window.addEventListener("DOMContentLoaded", () => {
     loadDynamicContent();
     loadMenuData();
     loadTablesData();
+    updateCartUI();
 });
 
 // Elemen-elemen DOM
@@ -157,17 +158,29 @@ if (kachingDirectLink) {
 }
 
 // =========================================
-// 1. TOP PROMO BAR FUNCTION
+// 1. TOP PROMO BAR & DYNAMIC HEADER OFFSET
 // =========================================
+function updateHeaderOffset() {
+    const siteHeader = document.getElementById("siteHeader");
+    if (siteHeader) {
+        const h = siteHeader.offsetHeight;
+        document.documentElement.style.setProperty("--header-height", `${h}px`);
+        document.body.style.paddingTop = `${h}px`;
+    }
+}
+
+window.addEventListener("resize", updateHeaderOffset);
+window.addEventListener("DOMContentLoaded", updateHeaderOffset);
+window.addEventListener("load", updateHeaderOffset);
+
 function closePromoBar() {
     const promoBar = document.getElementById("promoBar");
-    const navbar = document.querySelector(".navbar");
     if (promoBar) {
         promoBar.style.transform = "translateY(-100%)";
+        promoBar.style.opacity = "0";
         setTimeout(() => {
             promoBar.style.display = "none";
-            document.body.style.paddingTop = "70px"; // Adjust body padding
-            if (navbar) navbar.style.top = "0"; // Move navbar to very top
+            updateHeaderOffset();
         }, 300);
     }
 }
@@ -342,7 +355,15 @@ function updateCartUI() {
 }
 
 function toggleCartDrawer() {
-    cartDrawer.classList.toggle("open");
+    const isOpen = cartDrawer.classList.toggle("open");
+    const floatingCart = document.querySelector(".floating-cart");
+    if (isOpen) {
+        document.body.style.overflow = "hidden";
+        if (floatingCart) floatingCart.style.visibility = "hidden";
+    } else {
+        document.body.style.overflow = "";
+        if (floatingCart && cart.length > 0) floatingCart.style.visibility = "visible";
+    }
 }
 
 // Handler klik order via Kachingku
@@ -358,6 +379,9 @@ function handleKachingCheckout(event) {
 function openModal(event) {
     if (event) event.preventDefault();
     modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
+    const floatingCart = document.querySelector(".floating-cart");
+    if (floatingCart) floatingCart.style.visibility = "hidden";
     
     // Tampilkan Pre-order summary jika ada item
     if (cart.length > 0) {
@@ -376,6 +400,9 @@ function openModal(event) {
 
 function closeModal() {
     modal.style.display = "none";
+    document.body.style.overflow = "";
+    const floatingCart = document.querySelector(".floating-cart");
+    if (floatingCart && cart.length > 0) floatingCart.style.visibility = "visible";
 }
 
 function checkoutCart() {
@@ -513,11 +540,21 @@ function openTableModal(tableId) {
         btnSelect.innerHTML = `<i class="fas fa-ban"></i> Meja Sedang ${table.status.toUpperCase()}`;
     }
 
-    if (tableModal) tableModal.style.display = "block";
+    if (tableModal) {
+        tableModal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+        const floatingCart = document.querySelector(".floating-cart");
+        if (floatingCart) floatingCart.style.visibility = "hidden";
+    }
 }
 
 function closeTableModal() {
-    if (tableModal) tableModal.style.display = "none";
+    if (tableModal) {
+        tableModal.style.display = "none";
+        document.body.style.overflow = "";
+        const floatingCart = document.querySelector(".floating-cart");
+        if (floatingCart && cart.length > 0) floatingCart.style.visibility = "visible";
+    }
     activePreviewTableId = null;
 }
 
@@ -716,20 +753,33 @@ Mohon konfirmasi ketersediaan meja untuk kami. Terima kasih!`;
 }
 
 // =========================================
-// 8. NAVBAR MOBILE TOGGLE
+// 8. NAVBAR MOBILE DRAWER & BACKDROP TOGGLE
 // =========================================
-const menuToggle = document.querySelector(".menu-toggle");
-const navLinks = document.querySelector(".nav-links");
+function toggleNavMenu(forceState) {
+    const navLinks = document.querySelector(".nav-links");
+    const navBackdrop = document.getElementById("navBackdrop");
+    if (!navLinks) return;
 
-if (menuToggle && navLinks) {
-    menuToggle.addEventListener("click", () => {
-        navLinks.classList.toggle("active");
-    });
-
-    // Auto-close menu saat link diklik di mobile
-    document.querySelectorAll(".nav-links a").forEach(link => {
-        link.addEventListener("click", () => {
-            navLinks.classList.remove("active");
-        });
-    });
+    const shouldOpen = (typeof forceState === "boolean") ? forceState : !navLinks.classList.contains("active");
+    if (shouldOpen) {
+        navLinks.classList.add("active");
+        if (navBackdrop) navBackdrop.classList.add("active");
+        document.body.style.overflow = "hidden";
+    } else {
+        navLinks.classList.remove("active");
+        if (navBackdrop) navBackdrop.classList.remove("active");
+        document.body.style.overflow = "";
+    }
 }
+
+const menuToggle = document.querySelector(".menu-toggle");
+if (menuToggle) {
+    menuToggle.addEventListener("click", () => toggleNavMenu());
+}
+
+// Auto-close menu saat link diklik di mobile
+document.querySelectorAll(".nav-links a").forEach(link => {
+    link.addEventListener("click", () => {
+        toggleNavMenu(false);
+    });
+});
