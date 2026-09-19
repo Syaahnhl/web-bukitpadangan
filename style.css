@@ -1295,6 +1295,449 @@ input:focus, select:focus {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* =========================================
+   11. INTERACTIVE FLOOR PLAN / DENAH MEJA
+   ========================================= */
+.tables-section {
+    background-color: #faf8f5;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table-legend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.legend-dot.status-available {
+    background-color: #28a745;
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.4);
+}
+
+.legend-dot.status-occupied {
+    background-color: #ffc107;
+    box-shadow: 0 0 8px rgba(255, 193, 7, 0.4);
+}
+
+.legend-dot.status-reserved {
+    background-color: #dc3545;
+    box-shadow: 0 0 8px rgba(220, 53, 69, 0.4);
+}
+
+/* Zone Filter Tabs */
+.table-zone-tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 2.5rem;
+}
+
+.zone-tab-btn {
+    padding: 10px 22px;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 30px;
+    color: var(--text-dark);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.zone-tab-btn:hover {
+    border-color: var(--primary-green);
+    color: var(--primary-green);
+}
+
+.zone-tab-btn.active {
+    background-color: var(--primary-green);
+    color: white;
+    border-color: var(--primary-green);
+    box-shadow: 0 4px 15px rgba(45, 74, 34, 0.25);
+}
+
+/* Selected Table Banner */
+.selected-table-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, var(--primary-green) 0%, #3e6830 100%);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 16px;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 10px 25px rgba(45, 74, 34, 0.2);
+    animation: fadeIn 0.4s ease;
+}
+
+.selected-banner-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.selected-banner-info i {
+    font-size: 2rem;
+    color: var(--accent-gold);
+}
+
+.selected-banner-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: block;
+}
+
+.selected-banner-zone {
+    font-size: 0.85rem;
+    opacity: 0.85;
+}
+
+/* Tables Grid Layout */
+.tables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+/* Table Card Item */
+.table-card {
+    background: white;
+    border: 1.5px solid var(--border-color);
+    border-radius: 18px;
+    padding: 20px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+}
+
+.table-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    border-color: var(--accent-gold);
+}
+
+.table-card.selected {
+    border: 2px solid var(--primary-green);
+    background-color: #f2f7f0;
+    box-shadow: 0 8px 24px rgba(45, 74, 34, 0.2);
+}
+
+.table-card.selected::after {
+    content: "✓ Terpilih";
+    position: absolute;
+    top: -10px;
+    right: 15px;
+    background-color: var(--primary-green);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.table-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.table-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background-color: #f7f4ee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--primary-green);
+    transition: 0.3s;
+}
+
+.table-card:hover .table-icon-wrap {
+    background-color: var(--primary-green);
+    color: white;
+}
+
+.table-badge-status {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: capitalize;
+}
+
+.table-badge-status.tersedia {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.table-badge-status.terisi {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.table-badge-status.dipesan {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.table-card-mid h4 {
+    font-size: 1.15rem;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.table-card-mid p {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.table-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f0eae1;
+    padding-top: 12px;
+    margin-top: auto;
+}
+
+.table-capacity {
+    font-size: 0.8rem;
+    color: #555;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-detail-table {
+    background: none;
+    border: none;
+    color: var(--primary-green);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: 0.2s;
+}
+
+.btn-detail-table:hover {
+    color: var(--accent-gold);
+}
+
+/* =========================================
+   12. TABLE PREVIEW MODAL
+   ========================================= */
+.table-preview-content {
+    max-width: 500px;
+    padding: 0;
+    border-radius: 22px;
+    overflow: hidden;
+}
+
+.table-preview-img-wrapper {
+    width: 100%;
+    height: 220px;
+    position: relative;
+    background-color: #eee;
+}
+
+.table-preview-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.table-status-pill {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.table-status-pill.tersedia {
+    background-color: #28a745;
+    color: white;
+}
+
+.table-status-pill.terisi {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.table-status-pill.dipesan {
+    background-color: #dc3545;
+    color: white;
+}
+
+.table-preview-body {
+    padding: 24px;
+}
+
+.table-preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.table-preview-header h3 {
+    font-size: 1.4rem;
+    color: var(--primary-green);
+}
+
+.table-zone-label {
+    font-size: 0.85rem;
+    color: var(--accent-gold);
+    font-weight: 600;
+}
+
+.table-capacity-tag {
+    background-color: #f7f4ee;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.table-preview-desc {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.table-facilities-section h5 {
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.table-facilities-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.table-facility-chip {
+    background-color: #f5f1ea;
+    border: 1px solid var(--border-color);
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.78rem;
+    color: #444;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-select-table {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-select-table:hover {
+    background-color: var(--accent-gold);
+}
+
+.btn-select-table.disabled {
+    background-color: #bbb;
+    cursor: not-allowed;
+}
+
+/* Callout in Reservation Form */
+.selected-table-callout {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #edf7eb;
+    border: 1px solid #c2e2be;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 1.5rem;
+}
+
+.selected-table-callout i {
+    font-size: 1.4rem;
+    color: var(--primary-green);
+}
+
+.btn-clear-table {
+    background: none;
+    border: 1px solid #bbb;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    color: #666;
+    transition: 0.2s;
+}
+
+.btn-clear-table:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
 /* Tablet & Mobile Styles */
 @media (max-width: 768px) {
     .menu-toggle {
@@ -1376,5 +1819,42 @@ input:focus, select:focus {
 
     .map-wrapper {
         min-height: 300px;
+    }
+
+    /* Mobile Table Section */
+    .tables-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 12px;
+    }
+
+    .table-card {
+        padding: 14px;
+        min-height: 160px;
+    }
+
+    .table-card-top {
+        margin-bottom: 8px;
+    }
+
+    .table-icon-wrap {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .table-card-mid h4 {
+        font-size: 1rem;
+    }
+
+    .selected-table-banner {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+        padding: 14px;
+    }
+
+    .selected-banner-info {
+        flex-direction: column;
+        gap: 6px;
     }
 }

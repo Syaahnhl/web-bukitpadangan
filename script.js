@@ -132,6 +132,7 @@ function renderMenuGrid(items) {
 window.addEventListener("DOMContentLoaded", () => {
     loadDynamicContent();
     loadMenuData();
+    loadTablesData();
 });
 
 // Elemen-elemen DOM
@@ -382,15 +383,248 @@ function checkoutCart() {
     openModal();
 }
 
+// =========================================
+// 6. LOGIKA DENAH MEJA INTERAKTIF (FLOOR PLAN)
+// =========================================
+let tablesData = [];
+let selectedTable = null;
+let currentTableZone = "semua";
+const tableModal = document.getElementById("tableModal");
+let activePreviewTableId = null;
+
+async function loadTablesData() {
+    try {
+        const response = await fetch("tables.json");
+        if (!response.ok) return;
+        tablesData = await response.json();
+
+        // Populate dropdown resTableSelect di form reservasi
+        populateTableDropdown(tablesData);
+
+        // Render grid denah meja
+        renderTablesGrid(tablesData);
+    } catch (err) {
+        console.error("Gagal meload tables.json:", err);
+    }
+}
+
+function populateTableDropdown(tables) {
+    const select = document.getElementById("resTableSelect");
+    if (!select) return;
+    
+    let html = `<option value="">-- Bebas / Ditentukan Petugas --</option>`;
+    tables.forEach(t => {
+        const statusText = t.status === 'tersedia' ? 'Tersedia' : (t.status === 'terisi' ? 'Terisi' : 'Dipesan');
+        html += `<option value="${t.id}">${t.name} (${t.zoneName}) - ${statusText} [${t.capacity} org]</option>`;
+    });
+    select.innerHTML = html;
+}
+
+function renderTablesGrid(items) {
+    const grid = document.getElementById("tablesGrid");
+    if (!grid) return;
+
+    if (items.length === 0) {
+        grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888; padding: 40px 0;">Tidak ada meja pada zona ini.</p>`;
+        return;
+    }
+
+    grid.innerHTML = items.map(table => {
+        const isSelected = selectedTable && selectedTable.id === table.id;
+        
+        let zoneIcon = "fa-chair";
+        if (table.zone === "gazebo") zoneIcon = "fa-campground";
+        else if (table.zone === "outdoor") zoneIcon = "fa-cloud-sun";
+        else if (table.zone === "vip") zoneIcon = "fa-crown";
+
+        return `
+            <div class="table-card ${isSelected ? 'selected' : ''}" onclick="openTableModal('${table.id}')">
+                <div class="table-card-top">
+                    <div class="table-icon-wrap">
+                        <i class="fas ${zoneIcon}"></i>
+                    </div>
+                    <span class="table-badge-status ${table.status}">${table.status}</span>
+                </div>
+                <div class="table-card-mid">
+                    <h4>${table.name}</h4>
+                    <p>${table.description}</p>
+                </div>
+                <div class="table-card-bottom">
+                    <span class="table-capacity">
+                        <i class="fas fa-users"></i> ${table.capacity} Kursi
+                    </span>
+                    <button type="button" class="btn-detail-table">
+                        Detail <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+function filterTablesZone(zone) {
+    currentTableZone = zone;
+    const buttons = document.querySelectorAll(".zone-tab-btn");
+    buttons.forEach(btn => btn.classList.remove("active"));
+
+    if (event && event.currentTarget) {
+        event.currentTarget.classList.add("active");
+    }
+
+    if (zone === "semua") {
+        renderTablesGrid(tablesData);
+    } else {
+        const filtered = tablesData.filter(t => t.zone === zone);
+        renderTablesGrid(filtered);
+    }
+}
+
+function openTableModal(tableId) {
+    const table = tablesData.find(t => t.id === tableId);
+    if (!table) return;
+
+    activePreviewTableId = tableId;
+
+    document.getElementById("tableModalImg").src = table.image || "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop";
+    document.getElementById("tableModalTitle").innerText = table.name;
+    document.getElementById("tableModalZone").innerText = table.zoneName;
+    document.getElementById("tableModalCapacity").innerText = `${table.capacity} Orang`;
+    document.getElementById("tableModalDesc").innerText = table.description;
+
+    const statusBadge = document.getElementById("tableModalStatusBadge");
+    statusBadge.className = `table-status-pill ${table.status}`;
+    statusBadge.innerText = table.status.toUpperCase();
+
+    const facilitiesContainer = document.getElementById("tableModalFacilities");
+    if (facilitiesContainer) {
+        facilitiesContainer.innerHTML = (table.facilities || []).map(f => `
+            <span class="table-facility-chip"><i class="fas fa-check-circle" style="color: var(--primary-green);"></i> ${f}</span>
+        `).join("");
+    }
+
+    const btnSelect = document.getElementById("btnSelectThisTable");
+    if (table.status === "tersedia") {
+        btnSelect.className = "btn-select-table";
+        btnSelect.disabled = false;
+        btnSelect.innerHTML = `<i class="fas fa-check"></i> Pilih Meja Ini untuk Reservasi`;
+    } else {
+        btnSelect.className = "btn-select-table disabled";
+        btnSelect.disabled = true;
+        btnSelect.innerHTML = `<i class="fas fa-ban"></i> Meja Sedang ${table.status.toUpperCase()}`;
+    }
+
+    if (tableModal) tableModal.style.display = "block";
+}
+
+function closeTableModal() {
+    if (tableModal) tableModal.style.display = "none";
+    activePreviewTableId = null;
+}
+
+function confirmSelectTable() {
+    if (!activePreviewTableId) return;
+    selectThisTable(activePreviewTableId);
+    closeTableModal();
+}
+
+function selectThisTable(tableId) {
+    const table = tablesData.find(t => t.id === tableId);
+    if (!table) return;
+
+    selectedTable = table;
+
+    // Update banner di atas grid denah
+    const banner = document.getElementById("selectedTableBanner");
+    const bannerText = document.getElementById("selectedBannerText");
+    const bannerZone = document.getElementById("selectedBannerZone");
+    if (banner && bannerText && bannerZone) {
+        bannerText.innerText = table.name;
+        bannerZone.innerText = `${table.zoneName} (${table.capacity} Kursi)`;
+        banner.style.display = "flex";
+    }
+
+    // Update callout badge di modal form reservasi
+    const formBadge = document.getElementById("formSelectedTableBadge");
+    const badgeName = document.getElementById("badgeTableName");
+    const badgeZone = document.getElementById("badgeTableZone");
+    if (formBadge && badgeName && badgeZone) {
+        badgeName.innerText = table.name;
+        badgeZone.innerText = `${table.zoneName} (${table.capacity} Kursi)`;
+        formBadge.style.display = "flex";
+    }
+
+    // Set select dropdown
+    const select = document.getElementById("resTableSelect");
+    if (select) {
+        select.value = table.id;
+    }
+
+    // Auto-sinkronkan pilihan area
+    const areaSelect = document.getElementById("resArea");
+    if (areaSelect) {
+        if (table.zone === "gazebo") areaSelect.value = "Semi-Outdoor Gazebo";
+        else if (table.zone === "outdoor") areaSelect.value = "Outdoor (Pemandangan Bukit)";
+        else if (table.zone === "vip") areaSelect.value = "Indoor Cafe Modern";
+    }
+
+    // Render ulang grid denah agar border .selected terpasang
+    if (currentTableZone === "semua") {
+        renderTablesGrid(tablesData);
+    } else {
+        renderTablesGrid(tablesData.filter(t => t.zone === currentTableZone));
+    }
+
+    // Buka modal reservasi
+    openModal();
+}
+
+function clearSelectedTable() {
+    selectedTable = null;
+
+    const banner = document.getElementById("selectedTableBanner");
+    if (banner) banner.style.display = "none";
+
+    const formBadge = document.getElementById("formSelectedTableBadge");
+    if (formBadge) formBadge.style.display = "none";
+
+    const select = document.getElementById("resTableSelect");
+    if (select) select.value = "";
+
+    if (currentTableZone === "semua") {
+        renderTablesGrid(tablesData);
+    } else {
+        renderTablesGrid(tablesData.filter(t => t.zone === currentTableZone));
+    }
+}
+
+function handleManualTableSelect() {
+    const select = document.getElementById("resTableSelect");
+    if (!select) return;
+
+    const val = select.value;
+    if (!val) {
+        clearSelectedTable();
+        return;
+    }
+
+    const table = tablesData.find(t => t.id === val);
+    if (table) {
+        selectThisTable(table.id);
+    }
+}
+
 // Menutup modal jika klik area luar
 window.onclick = function (event) {
     if (event.target == modal) {
         closeModal();
     }
+    if (event.target == tableModal) {
+        closeTableModal();
+    }
 }
 
 // =========================================
-// 6. LOGIKA FILTER CATEGORY TABS
+// 7. LOGIKA FILTER CATEGORY TABS (MENU)
 // =========================================
 function filterMenu(category) {
     // Ganti class active pada tab button
@@ -410,7 +644,7 @@ function filterMenu(category) {
 }
 
 // =========================================
-// 7. SUBMIT RESERVASI (FORM WA AUTO-GENERATE)
+// 8. SUBMIT RESERVASI (FORM WA AUTO-GENERATE)
 // =========================================
 function submitReservation(event) {
     event.preventDefault();
@@ -422,6 +656,18 @@ function submitReservation(event) {
     const guests = document.getElementById("resGuests").value;
     const area = document.getElementById("resArea").value;
     const targetPhone = document.getElementById("resAdmin").value;
+
+    // Nomor meja terpilih atau manual
+    let tableText = "Bebas / Ditentukan Petugas";
+    if (selectedTable) {
+        tableText = `${selectedTable.name} (${selectedTable.zoneName})`;
+    } else {
+        const manualSelect = document.getElementById("resTableSelect");
+        if (manualSelect && manualSelect.value) {
+            const opt = manualSelect.options[manualSelect.selectedIndex];
+            tableText = opt.text;
+        }
+    }
 
     // Format tanggal Indonesia (yyyy-mm-dd -> dd Month yyyy)
     const dateObj = new Date(dateInput);
@@ -449,7 +695,8 @@ function submitReservation(event) {
 📅 *Tanggal:* ${formattedDate}
 ⏰ *Jam Kedatangan:* ${time} WIB
 👥 *Jumlah Tamu:* ${guests} Orang
-📍 *Pilihan Area:* ${area}${preorderText}
+📍 *Pilihan Area:* ${area}
+🪑 *Nomor Meja:* ${tableText}${preorderText}
 
 Mohon konfirmasi ketersediaan meja untuk kami. Terima kasih!`;
 
@@ -460,8 +707,9 @@ Mohon konfirmasi ketersediaan meja untuk kami. Terima kasih!`;
     // Buka WhatsApp di tab baru
     window.open(waUrl, "_blank");
 
-    // Bersihkan form & keranjang belanja
+    // Bersihkan form, pilihan meja & keranjang belanja
     document.getElementById("reservationForm").reset();
+    clearSelectedTable();
     cart = [];
     updateCartUI();
     closeModal();

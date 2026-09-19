@@ -29,6 +29,7 @@
         <ul class="nav-links">
             <li><a href="#home">Beranda</a></li>
             <li><a href="#about">Tentang</a></li>
+            <li><a href="#tables">Denah Meja</a></li>
             <li><a href="#menu">Menu</a></li>
             <li id="navEventLink" style="display: none;"><a href="#event">Event</a></li>
             <li><a href="#testimonials">Ulasan</a></li>
@@ -77,6 +78,48 @@
                     <h4>Modern Cafe</h4>
                     <p>Seduhan kopi espresso modern, camilan kekinian, dan tempat nongkrong yang instagramable.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE FLOOR PLAN / DENAH MEJA SECTION -->
+    <section id="tables" class="section-padding tables-section">
+        <div class="container">
+            <h2 class="section-title">Denah Meja Interaktif</h2>
+            <p class="section-desc">Eksplorasi tata letak restoran kami secara visual. Klik meja untuk melihat fasilitas, foto spot, dan memesannya langsung!</p>
+
+            <!-- Status Legend -->
+            <div class="table-legend">
+                <div class="legend-item"><span class="legend-dot status-available"></span> Tersedia (Siap Dipesan)</div>
+                <div class="legend-item"><span class="legend-dot status-occupied"></span> Terisi (Sedang Digunakan)</div>
+                <div class="legend-item"><span class="legend-dot status-reserved"></span> Dipesan (Reserved)</div>
+            </div>
+
+            <!-- Zone Filter Tabs -->
+            <div class="table-zone-tabs">
+                <button class="zone-tab-btn active" onclick="filterTablesZone('semua')">Semua Area (26 Meja)</button>
+                <button class="zone-tab-btn" onclick="filterTablesZone('gazebo')"><i class="fas fa-campground"></i> Gazebo Lesehan (1-8)</button>
+                <button class="zone-tab-btn" onclick="filterTablesZone('outdoor')"><i class="fas fa-cloud-sun"></i> Outdoor Panorama (9-20)</button>
+                <button class="zone-tab-btn" onclick="filterTablesZone('vip')"><i class="fas fa-crown"></i> VIP & Meeting (21-26)</button>
+            </div>
+
+            <!-- Selected Table Floating Banner -->
+            <div id="selectedTableBanner" class="selected-table-banner" style="display: none;">
+                <div class="selected-banner-info">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <span class="selected-banner-title">Meja Terpilih: <strong id="selectedTableBannerName">-</strong></span>
+                        <span class="selected-banner-zone" id="selectedTableBannerZone">-</span>
+                    </div>
+                </div>
+                <button class="btn-reservasi" onclick="proceedReservationWithTable()" style="padding: 8px 18px; font-size: 0.9rem;">
+                    Lanjut Isi Form Reservasi <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Interactive Tables Grid -->
+            <div id="tablesGrid" class="tables-grid">
+                <!-- Dimuat secara dinamis dari tables.json -->
             </div>
         </div>
     </section>
@@ -313,7 +356,30 @@
                 <div class="summary-total">Total: <strong id="summaryTotal">Rp 0</strong></div>
             </div>
 
+            <!-- Selected table badge in reservation modal -->
+            <div id="formSelectedTableBadge" class="selected-table-callout" style="display: none;">
+                <i class="fas fa-chair"></i>
+                <div style="flex: 1;">
+                    <strong id="badgeTableName">Meja 01</strong>
+                    <p id="badgeTableZone" style="font-size: 0.8rem; color: #555;">Zona Gazebo Lesehan</p>
+                </div>
+                <button type="button" class="btn-clear-table" onclick="clearSelectedTable()">Hapus Meja</button>
+            </div>
+
             <form id="reservationForm" onsubmit="submitReservation(event)">
+                <div class="form-group">
+                    <label for="resTableSelect">Pilihan Nomor Meja (Opsional)</label>
+                    <div style="display: flex; gap: 8px;">
+                        <select id="resTableSelect" style="flex: 1;" onchange="handleManualTableSelect()">
+                            <option value="">-- Bebas / Ditentukan Petugas --</option>
+                            <!-- Diisi dinamis -->
+                        </select>
+                        <button type="button" class="btn-reservasi" style="padding: 0 12px; font-size: 0.8rem; white-space: nowrap; border-radius: 8px;" onclick="closeModal(); document.getElementById('tables').scrollIntoView({behavior: 'smooth'})">
+                            <i class="fas fa-map"></i> Pilih di Denah
+                        </button>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="resName">Nama Lengkap</label>
                     <input type="text" id="resName" required placeholder="Contoh: Syahnahl">
@@ -357,6 +423,40 @@
                     <i class="fab fa-whatsapp"></i> Kirim Form via WhatsApp
                 </button>
             </form>
+        </div>
+    </div>
+
+    <!-- TABLE DETAIL PREVIEW MODAL -->
+    <div id="tableModal" class="modal">
+        <div class="modal-content table-preview-content">
+            <span class="close-btn" onclick="closeTableModal()">&times;</span>
+            <div class="table-preview-img-wrapper">
+                <img id="tableModalImg" src="" alt="Spot Meja">
+                <span id="tableModalStatusBadge" class="table-status-pill">Tersedia</span>
+            </div>
+            <div class="table-preview-body">
+                <div class="table-preview-header">
+                    <div>
+                        <h3 id="tableModalTitle">Meja 01</h3>
+                        <span id="tableModalZone" class="table-zone-label">Zona Gazebo Lesehan</span>
+                    </div>
+                    <div class="table-capacity-tag">
+                        <i class="fas fa-users"></i> <span id="tableModalCapacity">6 Orang</span>
+                    </div>
+                </div>
+                <p id="tableModalDesc" class="table-preview-desc">Gazebo bambu nyaman dengan udara sejuk...</p>
+                <div class="table-facilities-section">
+                    <h5>Fasilitas Spot Ini:</h5>
+                    <div id="tableModalFacilities" class="table-facilities-list">
+                        <!-- Dynamic chips -->
+                    </div>
+                </div>
+                <div class="table-preview-footer">
+                    <button id="btnSelectThisTable" class="btn-select-table" onclick="confirmSelectTable()">
+                        <i class="fas fa-check"></i> Pilih Meja Ini untuk Reservasi
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 

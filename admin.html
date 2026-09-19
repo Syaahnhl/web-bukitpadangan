@@ -461,6 +461,43 @@
                 <i class="fas fa-save"></i> Simpan & Terapkan Perubahan Menu ke Web
             </button>
         </div>
+
+        <!-- SECTION 7: KELOLA STATUS MEJA (DENAH INTERAKTIF) -->
+        <div class="admin-section">
+            <h3>7. Kelola Status Meja Resto (Denah Interaktif)</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                <p style="font-size: 0.85rem; color: #666; margin-bottom: 0;">Perbarui status ketersediaan 26 meja secara real-time (Tersedia / Terisi / Dipesan).</p>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="btn-reservasi" style="padding: 6px 14px; font-size: 0.8rem; border-radius: 8px; background-color: #28a745;" onclick="setAllTablesStatus('tersedia')">
+                        <i class="fas fa-check-double"></i> Set Semua Tersedia
+                    </button>
+                </div>
+            </div>
+            
+            <div style="overflow-x: auto; border: 1px solid #e5e0d3; border-radius: 12px; background: white;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; min-width: 600px;">
+                    <thead>
+                        <tr style="background-color: #f7f5f0; border-bottom: 1px solid #e5e0d3; color: #2d4a22;">
+                            <th style="padding: 12px; width: 60px; text-align: center;">No</th>
+                            <th style="padding: 12px;">Nomor & Nama Meja</th>
+                            <th style="padding: 12px; width: 180px;">Zona Area</th>
+                            <th style="padding: 12px; width: 100px; text-align: center;">Kapasitas</th>
+                            <th style="padding: 12px; width: 180px;">Status Ketersediaan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTablesTableBody">
+                        <tr>
+                            <td colspan="5" style="padding: 20px; text-align: center; color: #888;">Memuat data denah meja...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- BUTTON COMMIT TABLES -->
+            <button type="button" class="btn-save-admin" id="btnSaveTablesSubmit" style="margin-top: 20px; background-color: #2d4a22;" onclick="saveTablesToGithub()">
+                <i class="fas fa-save"></i> Simpan & Terapkan Status Denah Meja ke Web
+            </button>
+        </div>
     </div>
 
     <!-- MODAL TAMBAH/EDIT MENU (POPUP) -->
@@ -534,6 +571,7 @@
                 document.getElementById("adminWorkspace").style.display = "block";
                 loadCurrentContent();
                 loadAdminMenuData();
+                loadAdminTablesData();
             }
             
             // Load saved GitHub token if any
@@ -914,6 +952,138 @@
             } finally {
                 btnSaveMenu.disabled = false;
                 btnSaveMenu.innerHTML = `<i class="fas fa-save"></i> Simpan & Terapkan Perubahan Menu ke Web`;
+            }
+        }
+
+        // ==========================================
+        // 7. LOGIKA KELOLA DENAH MEJA RESTO (ADMIN)
+        // ==========================================
+        let adminTables = [];
+
+        async function loadAdminTablesData() {
+            try {
+                const response = await fetch("tables.json");
+                if (!response.ok) return;
+                adminTables = await response.json();
+                renderAdminTablesTable();
+            } catch (err) {
+                console.error("Gagal memuat tables.json di admin:", err);
+            }
+        }
+
+        function renderAdminTablesTable() {
+            const tbody = document.getElementById("adminTablesTableBody");
+            if (!tbody) return;
+
+            if (adminTables.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="padding: 20px; text-align: center; color: #888;">Belum ada data meja.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = adminTables.map((t, index) => {
+                let badgeColor = "#28a745";
+                if (t.status === "terisi") badgeColor = "#ffc107";
+                if (t.status === "dipesan") badgeColor = "#dc3545";
+
+                return `
+                    <tr style="border-bottom: 1px solid #f0eae1;">
+                        <td style="padding: 12px; text-align: center; font-weight: 600; color: #777;">${index + 1}</td>
+                        <td style="padding: 12px;">
+                            <strong style="color: #2d4a22; font-size: 0.95rem;">${t.name}</strong>
+                            <div style="font-size: 0.78rem; color: #666;">${t.description}</div>
+                        </td>
+                        <td style="padding: 12px; font-weight: 500;">
+                            <span style="display: inline-block; padding: 3px 8px; border-radius: 6px; background-color: #f7f4ee; font-size: 0.8rem;">
+                                ${t.zoneName}
+                            </span>
+                        </td>
+                        <td style="padding: 12px; text-align: center; font-weight: 600;">
+                            👥 ${t.capacity} Kursi
+                        </td>
+                        <td style="padding: 12px;">
+                            <select onchange="updateTableStatus('${t.id}', this.value)" style="width: 100%; padding: 6px 10px; border-radius: 8px; border: 1.5px solid ${badgeColor}; font-weight: 600; font-size: 0.82rem; background-color: white; cursor: pointer;">
+                                <option value="tersedia" ${t.status === 'tersedia' ? 'selected' : ''}>🟢 Tersedia</option>
+                                <option value="terisi" ${t.status === 'terisi' ? 'selected' : ''}>🟡 Terisi (Occupied)</option>
+                                <option value="dipesan" ${t.status === 'dipesan' ? 'selected' : ''}>🔴 Dipesan (Reserved)</option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        function updateTableStatus(tableId, newStatus) {
+            const table = adminTables.find(t => t.id === tableId);
+            if (table) {
+                table.status = newStatus;
+                renderAdminTablesTable();
+            }
+        }
+
+        function setAllTablesStatus(status) {
+            if (confirm(`Apakah Tuan yakin ingin mengubah status SELURUH 26 meja menjadi "${status.toUpperCase()}"?`)) {
+                adminTables.forEach(t => t.status = status);
+                renderAdminTablesTable();
+            }
+        }
+
+        // Tulis (Commit) array adminTables langsung ke tables.json di GitHub
+        async function saveTablesToGithub() {
+            const token = localStorage.getItem("github_pat_token");
+            if (!token) {
+                alert("Tuan Muda belum memasukkan Token GitHub PAT! Silakan simpan token terlebih dahulu di kotak atas.");
+                return;
+            }
+
+            const btnSaveTables = document.getElementById("btnSaveTablesSubmit");
+            btnSaveTables.disabled = true;
+            btnSaveTables.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses Commit Status Meja ke Github...`;
+
+            const jsonString = JSON.stringify(adminTables, null, 2);
+
+            try {
+                const getUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/tables.json`;
+                const getResponse = await fetch(getUrl, {
+                    headers: {
+                        "Authorization": `token ${token}`,
+                        "Accept": "application/vnd.github.v3+json"
+                    }
+                });
+
+                if (!getResponse.ok) {
+                    throw new Error("Gagal mengambil metadata file tables.json dari GitHub.");
+                }
+
+                const fileData = await getResponse.json();
+                const currentSha = fileData.sha;
+
+                const updateResponse = await fetch(getUrl, {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `token ${token}`,
+                        "Content-Type": "application/json",
+                        "Accept": "application/vnd.github.v3+json"
+                    },
+                    body: JSON.stringify({
+                        message: "feat(admin): update restaurant floor plan table availability status",
+                        content: btoa(unescape(encodeURIComponent(jsonString))),
+                        sha: currentSha
+                    })
+                });
+
+                if (updateResponse.ok) {
+                    alert("Status Denah Meja berhasil disimpan! Netlify akan memperbarui ketersediaan meja di web dalam 1-2 menit.");
+                    loadAdminTablesData(); // Reload data local
+                } else {
+                    const errData = await updateResponse.json();
+                    throw new Error(errData.message || "Gagal menyimpan status meja.");
+                }
+            } catch (err) {
+                alert(`Gagal Menyimpan Status Meja: ${err.message}`);
+                console.error(err);
+            } finally {
+                btnSaveTables.disabled = false;
+                btnSaveTables.innerHTML = `<i class="fas fa-save"></i> Simpan & Terapkan Status Denah Meja ke Web`;
             }
         }
     </script>
