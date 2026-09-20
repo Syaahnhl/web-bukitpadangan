@@ -1702,8 +1702,8 @@ function buildIndoorTimur1() {
     roofS.rotation.x = -0.36;
     group.add(roofS);
 
-            // 7. Iconic Masterpiece Vintage Sepeda Onthel (Gazelle / Fongers Style Centerpiece)
-    // Tepat di tengah panggung (center of stage) dengan detail mewah, otentik, & kontras tinggi
+                // 7. Iconic Museum-Grade Vintage Sepeda Onthel (Gazelle Champion / Fongers Style)
+    // Centerpiece panggung dengan detail otentik: jasbeschermers, pompa angin, tas sadel kulit, maskot gazelle
     const bikeGroup = new THREE.Group();
     bikeGroup.position.set(0, 0.40, -3.1);
     bikeGroup.rotation.y = 0.16; // Angled gracefully towards the audience for perfect silhouette
@@ -1711,31 +1711,36 @@ function buildIndoorTimur1() {
     // Materials
     const bikeBlackMat = new THREE.MeshStandardMaterial({
         color: 0x0c0e12,
-        roughness: 0.20,
+        roughness: 0.18,
         metalness: 0.45
     }); // High-gloss Dutch black enamel lacquer
     const bikeChromeMat = new THREE.MeshStandardMaterial({
         color: 0xf1f5f9,
-        roughness: 0.12,
-        metalness: 0.95
+        roughness: 0.10,
+        metalness: 0.96
     }); // High-polish mirror chrome
     const bikeTireMat = new THREE.MeshStandardMaterial({
         color: 0x141518,
-        roughness: 0.90,
+        roughness: 0.92,
         metalness: 0.05
     }); // Deep matte vintage tire rubber
     const bikeLeatherMat = new THREE.MeshStandardMaterial({
-        color: 0x3d1c0b,
-        roughness: 0.45,
+        color: 0x421e0e,
+        roughness: 0.42,
         metalness: 0.08
     }); // Aged Brooks chestnut brown leather
     const goldPinstripeMat = new THREE.MeshStandardMaterial({
-        color: 0xe0a953,
-        roughness: 0.30,
-        metalness: 0.80,
+        color: 0xe5aa52,
+        roughness: 0.28,
+        metalness: 0.85,
         emissive: 0x5a3c10,
-        emissiveIntensity: 0.3
+        emissiveIntensity: 0.35
     }); // Elegant gold pinstripe accent
+    const brassMat = new THREE.MeshStandardMaterial({
+        color: 0xd4af37,
+        roughness: 0.25,
+        metalness: 0.88
+    }); // Polished brass for rivets & bell
 
     // --- A. WHEELS (28" Chrome Rims, Fine Wire Spokes, Deep Rubber Tires) ---
     function createOnthelWheel(xPos) {
@@ -1762,16 +1767,16 @@ function buildIndoorTimur1() {
             wGroup.add(nut);
         });
 
-        // Fine Radial Wire Spokes (12 pairs of spokes)
-        for (let s = 0; s < 12; s++) {
-            const angle = (s * Math.PI) / 6;
+        // Fine Radial Wire Spokes (14 pairs of spokes)
+        for (let s = 0; s < 14; s++) {
+            const angle = (s * Math.PI) / 7;
             const spoke1 = new THREE.Mesh(new THREE.CylinderGeometry(0.0022, 0.0022, 0.77, 4), bikeChromeMat);
             spoke1.rotation.z = angle;
             spoke1.position.z = 0.012;
             wGroup.add(spoke1);
 
             const spoke2 = new THREE.Mesh(new THREE.CylinderGeometry(0.0022, 0.0022, 0.77, 4), bikeChromeMat);
-            spoke2.rotation.z = angle + 0.15;
+            spoke2.rotation.z = angle + 0.12;
             spoke2.position.z = -0.012;
             wGroup.add(spoke2);
         }
@@ -1784,7 +1789,7 @@ function buildIndoorTimur1() {
     const rearWheel = createOnthelWheel(-0.74);
     bikeGroup.add(rearWheel);
 
-    // --- B. VINTAGE C-CHANNEL FENDERS (Spatbor Kaleng Onthel Klasik) ---
+    // --- B. VINTAGE C-CHANNEL FENDERS WITH WHITE TIP & GAZELLE MASCOT ---
     // Front Fender (Lengkung Depan Ber-Volume)
     const frontFender = new THREE.Mesh(
         new THREE.CylinderGeometry(0.435, 0.435, 0.072, 28, 1, true, -Math.PI * 0.18, Math.PI * 0.82),
@@ -1793,6 +1798,18 @@ function buildIndoorTimur1() {
     frontFender.rotation.x = Math.PI / 2;
     frontFender.position.set(0.74, 0.42, 0);
     bikeGroup.add(frontFender);
+
+    // Iconic Gazelle Leaping Mascot on Front Fender Tip (Maskot Kijang Melompat Khas Gazelle)
+    const mascotGroup = new THREE.Group();
+    mascotGroup.position.set(0.96, 0.76, 0);
+    mascotGroup.rotation.z = 0.55;
+    const mascotBody = new THREE.Mesh(new THREE.ConeGeometry(0.018, 0.065, 8), bikeChromeMat);
+    mascotBody.rotation.z = -Math.PI / 2;
+    mascotGroup.add(mascotBody);
+    const mascotHead = new THREE.Mesh(new THREE.SphereGeometry(0.014, 8, 8), bikeChromeMat);
+    mascotHead.position.set(0.038, 0.012, 0);
+    mascotGroup.add(mascotHead);
+    bikeGroup.add(mascotGroup);
 
     // Front Fender Stays (Dual Chrome Wire Stays to Front Axle)
     [-0.045, 0.045].forEach(sz => {
@@ -1828,7 +1845,40 @@ function buildIndoorTimur1() {
     rearWhiteTip.position.set(-0.74, 0.42, 0);
     bikeGroup.add(rearWhiteTip);
 
-    // --- C. CLASSIC HEREN DIAMOND FRAME (Rangka Batangan Onthel Lanang) ---
+    // --- C. ICONIC JASBESCHERMERS (Penutup Kain / Anyaman Jala Roda Belakang) ---
+    // Pelindung jubah/sarung khas sepeda onthel Belanda yang terbentang di atas roda belakang
+    const coatGuardMat = new THREE.MeshStandardMaterial({
+        color: 0x181a20,
+        roughness: 0.85,
+        metalness: 0.1,
+        transparent: true,
+        opacity: 0.92,
+        side: THREE.DoubleSide
+    });
+    [-0.038, 0.038].forEach(sideZ => {
+        // Upper rear quarter woven shield
+        const coatGuard = new THREE.Mesh(
+            new THREE.RingGeometry(0.18, 0.42, 16, 1, Math.PI * 0.48, Math.PI * 0.52),
+            coatGuardMat
+        );
+        coatGuard.position.set(-0.74, 0.42, sideZ);
+        bikeGroup.add(coatGuard);
+
+        // Cord/rib lace patterns across the coat guard
+        for (let cr = 0; cr < 5; cr++) {
+            const cordAngle = Math.PI * 0.55 + cr * 0.18;
+            const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.002, 0.002, 0.24), goldPinstripeMat);
+            cord.position.set(
+                -0.74 + Math.cos(cordAngle) * 0.30,
+                0.42 + Math.sin(cordAngle) * 0.30,
+                sideZ + (sideZ > 0 ? 0.002 : -0.002)
+            );
+            cord.rotation.z = cordAngle + Math.PI / 2;
+            bikeGroup.add(cord);
+        }
+    });
+
+    // --- D. CLASSIC HEREN DIAMOND FRAME (Rangka Batangan Onthel Lanang) ---
     // Head Tube (Pipa Leher Tebal dengan Badge Onthel)
     const headTube = new THREE.Mesh(new THREE.CylinderGeometry(0.024, 0.024, 0.26, 12), bikeBlackMat);
     headTube.position.set(0.58, 0.90, 0);
@@ -1862,6 +1912,21 @@ function buildIndoorTimur1() {
         bikeGroup.add(fStripe);
     });
 
+    // Bottle Dynamo mounted on Right Front Fork (Dinamo Botol Roda Depan)
+    const dynamoGroup = new THREE.Group();
+    dynamoGroup.position.set(0.69, 0.68, 0.065);
+    const dynamoBody = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.024, 0.09, 10), bikeChromeMat);
+    dynamoGroup.add(dynamoBody);
+    const dynamoCap = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.012, 0.024, 10), bikeBlackMat);
+    dynamoCap.position.y = 0.055;
+    dynamoGroup.add(dynamoCap);
+    // Wire from dynamo to headlight
+    const dynamoWire = new THREE.Mesh(new THREE.CylinderGeometry(0.002, 0.002, 0.36), bikeBlackMat);
+    dynamoWire.position.set(-0.06, 0.16, -0.04);
+    dynamoWire.rotation.z = 0.6;
+    dynamoGroup.add(dynamoWire);
+    bikeGroup.add(dynamoGroup);
+
     // Bottom Bracket Shell (Rumah As Tengah Chrome)
     const bb = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.13, 12), bikeChromeMat);
     bb.position.set(-0.10, 0.42, 0);
@@ -1893,6 +1958,23 @@ function buildIndoorTimur1() {
     downTube.rotation.z = -0.92;
     bikeGroup.add(downTube);
 
+    // Vintage Frame Tire Pump (Pompa Angin Tabung Jadul Terpasang di Down Tube)
+    const pumpGroup = new THREE.Group();
+    pumpGroup.position.set(0.21, 0.63, 0.032);
+    pumpGroup.rotation.z = -0.92;
+    const pumpBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.44, 10), bikeChromeMat);
+    pumpGroup.add(pumpBarrel);
+    const pumpHandle = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, 0.05, 10), bikeLeatherMat);
+    pumpHandle.position.y = 0.24;
+    pumpGroup.add(pumpHandle);
+    // Pump mounting clips
+    [-0.20, 0.20].forEach(cy => {
+        const clip = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.012, 0.035), bikeChromeMat);
+        clip.position.y = cy;
+        pumpGroup.add(clip);
+    });
+    bikeGroup.add(pumpGroup);
+
     // Rear Seat Stays (Penopang Sadel ke As Belakang)
     [-0.042, 0.042].forEach(sz => {
         const stay = new THREE.Mesh(new THREE.CylinderGeometry(0.013, 0.011, 0.66, 8), bikeBlackMat);
@@ -1909,7 +1991,7 @@ function buildIndoorTimur1() {
         bikeGroup.add(cStay);
     });
 
-    // --- D. FULL ENCLOSED CHAINCASE (Katengkas Penuh Khas Onthel dengan Garis Emas) ---
+    // --- E. FULL ENCLOSED CHAINCASE (Katengkas Penuh Khas Onthel dengan Garis Emas) ---
     const chaincaseGroup = new THREE.Group();
     chaincaseGroup.position.set(-0.38, 0.42, 0.055);
 
@@ -1952,7 +2034,7 @@ function buildIndoorTimur1() {
 
     bikeGroup.add(chaincaseGroup);
 
-    // --- E. VINTAGE BROOKS-STYLE LEATHER SPRING SADDLE (Sadel Kulit Berper Dobel) ---
+    // --- F. VINTAGE BROOKS SADDLE WITH COPPER RIVETS & LEATHER SADDLE BAG ---
     const saddleGroup = new THREE.Group();
     saddleGroup.position.set(-0.33, 0.98, 0);
 
@@ -1977,6 +2059,14 @@ function buildIndoorTimur1() {
     saddleNose.position.set(0.08, 0.07, 0);
     saddleGroup.add(saddleNose);
 
+    // Authentic Copper Rivets along the back rim of the saddle (Paku Keling Kuningan Brooks)
+    for (let rv = 0; rv < 5; rv++) {
+        const rvAngle = -Math.PI * 0.35 + rv * (Math.PI * 0.7 / 4);
+        const rivet = new THREE.Mesh(new THREE.SphereGeometry(0.007, 6, 6), brassMat);
+        rivet.position.set(-0.16 + Math.cos(rvAngle) * 0.04, 0.085, Math.sin(rvAngle) * 0.12);
+        saddleGroup.add(rivet);
+    }
+
     // Dual Heavy-Duty Chrome Coil Springs (Per Keong Sadel Belakang)
     [-0.055, 0.055].forEach(sz => {
         for (let sp = 0; sp < 3; sp++) {
@@ -1987,9 +2077,20 @@ function buildIndoorTimur1() {
         }
     });
 
+    // Vintage Leather Saddle Tool Bag Hanging Behind Seat (Tas Sadel Kulit Khas Onthel)
+    const toolBag = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.09, 0.16), bikeLeatherMat);
+    toolBag.position.set(-0.24, 0.04, 0);
+    saddleGroup.add(toolBag);
+    // Brass buckles on tool bag
+    [-0.045, 0.045].forEach(bz => {
+        const buckle = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.02, 0.02), brassMat);
+        buckle.position.set(-0.31, 0.04, bz);
+        saddleGroup.add(buckle);
+    });
+
     bikeGroup.add(saddleGroup);
 
-    // --- F. SWEPT-BACK HANDLEBARS, BULLET HEADLIGHT & BRASS BELL ---
+    // --- G. SWEPT-BACK HANDLEBARS, BULLET HEADLIGHT & BRASS DOME BELL ---
     const handleGroup = new THREE.Group();
     handleGroup.position.set(0.55, 1.01, 0);
 
@@ -2021,10 +2122,17 @@ function buildIndoorTimur1() {
         grip.position.set(-0.14, 0.14, bz > 0 ? bz + 0.04 : bz - 0.04);
         grip.rotation.y = bz > 0 ? 0.72 : -0.72;
         handleGroup.add(grip);
+
+        // Rod Brake Levers (Tuas Rem Kawat/Batangan Klasik)
+        const brakeLever = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.14), bikeChromeMat);
+        brakeLever.position.set(-0.08, 0.10, bz > 0 ? bz - 0.02 : bz + 0.02);
+        brakeLever.rotation.x = Math.PI / 2;
+        brakeLever.rotation.z = bz > 0 ? 0.3 : -0.3;
+        handleGroup.add(brakeLever);
     });
 
-    // Vintage Brass / Chrome Dome Bell (Bel Ting-Ting Kring-Kring)
-    const bell = new THREE.Mesh(new THREE.SphereGeometry(0.036, 12, 12, 0, Math.PI * 2, 0, Math.PI / 2), bikeChromeMat);
+    // Vintage Polished Brass Dome Bell (Bel Kring-Kring Kuningan)
+    const bell = new THREE.Mesh(new THREE.SphereGeometry(0.038, 12, 12, 0, Math.PI * 2, 0, Math.PI / 2), brassMat);
     bell.position.set(0.04, 0.18, -0.14);
     handleGroup.add(bell);
 
@@ -2047,7 +2155,7 @@ function buildIndoorTimur1() {
         new THREE.MeshStandardMaterial({
             color: 0xfff6d4,
             emissive: 0xffd15c,
-            emissiveIntensity: 0.9,
+            emissiveIntensity: 0.95,
             roughness: 0.1,
             metalness: 0.1
         })
@@ -2057,14 +2165,14 @@ function buildIndoorTimur1() {
     headlampGroup.add(lampLens);
 
     // Warm Torpedo Point Light Pool on Stage Floor
-    const headlampLight = new THREE.PointLight(0xffbe6b, 2.5, 6.0);
+    const headlampLight = new THREE.PointLight(0xffbe6b, 2.8, 6.0);
     headlampLight.position.set(0.18, 0, 0);
     headlampGroup.add(headlampLight);
 
     handleGroup.add(headlampGroup);
     bikeGroup.add(handleGroup);
 
-    // --- G. REAR TUBULAR LUGGAGE CARRIER (Boncengan / Bagasi Pipa Bulat) ---
+    // --- H. REAR TUBULAR LUGGAGE CARRIER (Boncengan / Bagasi Pipa Bulat) ---
     const rackGroup = new THREE.Group();
     rackGroup.position.set(-0.72, 0.84, 0);
 
@@ -2090,8 +2198,8 @@ function buildIndoorTimur1() {
         new THREE.MeshStandardMaterial({
             color: 0xef4444,
             emissive: 0xdc2626,
-            emissiveIntensity: 0.8,
-            roughner: 0.2
+            emissiveIntensity: 0.85,
+            roughness: 0.2
         })
     );
     rearReflector.rotation.z = Math.PI / 2;
@@ -2100,7 +2208,7 @@ function buildIndoorTimur1() {
 
     bikeGroup.add(rackGroup);
 
-    // --- H. DUAL-LEG KICKSTAND (Standar Dua Kares Kokoh Menyentuh Lantai) ---
+    // --- I. DUAL-LEG KICKSTAND (Standar Dua Kares Kokoh Menyentuh Lantai) ---
     const standGroup = new THREE.Group();
     standGroup.position.set(-0.74, 0.42, 0);
 
@@ -2117,13 +2225,14 @@ function buildIndoorTimur1() {
     });
     bikeGroup.add(standGroup);
 
-    // --- I. DEDICATED CENTERPIECE ACCENT LIGHT ---
+    // --- J. DEDICATED CENTERPIECE ACCENT LIGHT ---
     // Sorotan spotlight lembut dari atas tepat ke Sepeda Onthel agar siluet hitam & aksen emas/krom kontras sempurna
-    const bikeSpotlight = new THREE.PointLight(0xfff3d6, 2.8, 8.0);
+    const bikeSpotlight = new THREE.PointLight(0xfff3d6, 3.0, 8.5);
     bikeSpotlight.position.set(0, 2.8, -2.6);
     group.add(bikeSpotlight);
 
     group.add(bikeGroup);
+
 
 
     // 8. Sound System / Trolley Speaker with LED & "Kotak Apresiasi" (Stage Right)
