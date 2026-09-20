@@ -154,7 +154,7 @@ function init3DFloorPlan() {
     // 3. RENDERER
     renderer3D = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
     renderer3D.setSize(width, height);
-    renderer3D.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer3D.setPixelRatio(Math.min(Math.max(window.devicePixelRatio || 1, 2.0), 3.0));
     renderer3D.shadowMap.enabled = true;
     renderer3D.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer3D.toneMapping = THREE.ACESFilmicToneMapping;
@@ -1702,81 +1702,89 @@ function buildIndoorTimur1() {
     roofS.rotation.x = -0.36;
     group.add(roofS);
 
-                // 7. Iconic Museum-Grade Vintage Sepeda Onthel (Gazelle Champion / Fongers Style)
-    // Centerpiece panggung dengan detail otentik: jasbeschermers, pompa angin, tas sadel kulit, maskot gazelle
+    // 7. Iconic Museum-Grade Ultra-Smooth Vintage Sepeda Onthel (Gazelle Champion / Fongers Style)
+    // Geometri presisi beresolusi tinggi: lingkar lengkung kurva ultra-halus, sadel Brooks berkontur, stang dongkol pipa mulus
     const bikeGroup = new THREE.Group();
     bikeGroup.position.set(0, 0.40, -3.1);
     bikeGroup.rotation.y = 0.16; // Angled gracefully towards the audience for perfect silhouette
 
     // Materials
     const bikeBlackMat = new THREE.MeshStandardMaterial({
-        color: 0x0c0e12,
-        roughness: 0.18,
-        metalness: 0.45
-    }); // High-gloss Dutch black enamel lacquer
+        color: 0x0a0c10,
+        roughness: 0.15,
+        metalness: 0.50,
+        side: THREE.DoubleSide
+    }); // High-gloss Dutch black enamel lacquer with rich reflections
     const bikeChromeMat = new THREE.MeshStandardMaterial({
-        color: 0xf1f5f9,
-        roughness: 0.10,
-        metalness: 0.96
-    }); // High-polish mirror chrome
+        color: 0xf8fafc,
+        roughness: 0.08,
+        metalness: 0.98
+    }); // Mirror-finish vintage chrome
     const bikeTireMat = new THREE.MeshStandardMaterial({
-        color: 0x141518,
-        roughness: 0.92,
-        metalness: 0.05
+        color: 0x16171a,
+        roughness: 0.88,
+        metalness: 0.04
     }); // Deep matte vintage tire rubber
     const bikeLeatherMat = new THREE.MeshStandardMaterial({
-        color: 0x421e0e,
-        roughness: 0.42,
-        metalness: 0.08
+        color: 0x3d1b0d,
+        roughness: 0.38,
+        metalness: 0.10
     }); // Aged Brooks chestnut brown leather
     const goldPinstripeMat = new THREE.MeshStandardMaterial({
         color: 0xe5aa52,
-        roughness: 0.28,
-        metalness: 0.85,
-        emissive: 0x5a3c10,
-        emissiveIntensity: 0.35
+        roughness: 0.22,
+        metalness: 0.88,
+        emissive: 0x4a300a,
+        emissiveIntensity: 0.30
     }); // Elegant gold pinstripe accent
     const brassMat = new THREE.MeshStandardMaterial({
         color: 0xd4af37,
-        roughness: 0.25,
-        metalness: 0.88
+        roughness: 0.20,
+        metalness: 0.92
     }); // Polished brass for rivets & bell
 
-    // --- A. WHEELS (28" Chrome Rims, Fine Wire Spokes, Deep Rubber Tires) ---
+    // --- A. WHEELS (28" Chrome Rims, Fine Wire Spokes, Deep Rubber Tires, Ultra-Smooth 128-Seg) ---
     function createOnthelWheel(xPos) {
         const wGroup = new THREE.Group();
         wGroup.position.set(xPos, 0.42, 0);
 
-        // Polished Chrome Rim
-        const rim = new THREE.Mesh(new THREE.TorusGeometry(0.385, 0.015, 16, 40), bikeChromeMat);
+        // Ultra-Smooth Polished Chrome Rim (128 tubular segments for seamless circle)
+        const rim = new THREE.Mesh(new THREE.TorusGeometry(0.385, 0.015, 32, 192), bikeChromeMat);
         wGroup.add(rim);
 
-        // Vintage Tread Rubber Tire
-        const tire = new THREE.Mesh(new THREE.TorusGeometry(0.402, 0.026, 16, 40), bikeTireMat);
+        // Ultra-Smooth Vintage Tread Rubber Tire (128 tubular segments)
+        const tire = new THREE.Mesh(new THREE.TorusGeometry(0.402, 0.026, 32, 192), bikeTireMat);
         wGroup.add(tire);
 
-        // Center Chrome Hub & Axle Nuts
-        const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.14, 16), bikeChromeMat);
+        // Center Chrome Hub with Flanges & Axle Nuts
+        const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.14, 32), bikeChromeMat);
         hub.rotation.x = Math.PI / 2;
         wGroup.add(hub);
 
+        // Spoke Flange Rings
+        [-0.05, 0.05].forEach(fz => {
+            const flange = new THREE.Mesh(new THREE.TorusGeometry(0.036, 0.004, 12, 32), bikeChromeMat);
+            flange.position.z = fz;
+            wGroup.add(flange);
+        });
+
         [-0.07, 0.07].forEach(nz => {
-            const nut = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.02, 6), bikeChromeMat);
+            const nut = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.02, 16), bikeChromeMat);
             nut.rotation.x = Math.PI / 2;
             nut.position.z = nz;
             wGroup.add(nut);
         });
 
-        // Fine Radial Wire Spokes (14 pairs of spokes)
-        for (let s = 0; s < 14; s++) {
-            const angle = (s * Math.PI) / 7;
-            const spoke1 = new THREE.Mesh(new THREE.CylinderGeometry(0.0022, 0.0022, 0.77, 4), bikeChromeMat);
+        // Fine Round Wire Spokes (28 pairs = 56 spokes total per wheel, 8-seg round wire)
+        for (let s = 0; s < 28; s++) {
+            const angle = (s * Math.PI) / 14;
+            const spoke1 = new THREE.Mesh(new THREE.CylinderGeometry(0.0022, 0.0022, 0.77, 8), bikeChromeMat);
             spoke1.rotation.z = angle;
             spoke1.position.z = 0.012;
             wGroup.add(spoke1);
 
-            const spoke2 = new THREE.Mesh(new THREE.CylinderGeometry(0.0022, 0.0022, 0.77, 4), bikeChromeMat);
-            spoke2.rotation.z = angle + 0.12;
+            const spoke2 = new THREE.Mesh(new THREE.CylinderGeometry(0.0022, 0.0022, 0.77, 8), bikeChromeMat);
+            spoke2.rotation.z = angle + 0.08;
             spoke2.position.z = -0.012;
             wGroup.add(spoke2);
         }
@@ -1789,39 +1797,43 @@ function buildIndoorTimur1() {
     const rearWheel = createOnthelWheel(-0.74);
     bikeGroup.add(rearWheel);
 
-    // --- B. VINTAGE C-CHANNEL FENDERS WITH WHITE TIP & GAZELLE MASCOT ---
-    // Front Fender (Lengkung Depan Ber-Volume)
+    // --- B. VINTAGE C-CHANNEL FENDERS WITH WHITE TIP & GAZELLE MASCOT (128 Radial Segments) ---
+    // Front Fender (Lengkung Depan Ber-Volume Halus Tanpa Facet)
     const frontFender = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.435, 0.435, 0.072, 28, 1, true, -Math.PI * 0.18, Math.PI * 0.82),
+        new THREE.CylinderGeometry(0.435, 0.435, 0.072, 192, 1, true, -Math.PI * 0.18, Math.PI * 0.82),
         bikeBlackMat
     );
     frontFender.rotation.x = Math.PI / 2;
     frontFender.position.set(0.74, 0.42, 0);
     bikeGroup.add(frontFender);
 
-    // Iconic Gazelle Leaping Mascot on Front Fender Tip (Maskot Kijang Melompat Khas Gazelle)
+    // Iconic Gazelle Leaping Mascot on Front Fender Tip
     const mascotGroup = new THREE.Group();
     mascotGroup.position.set(0.96, 0.76, 0);
     mascotGroup.rotation.z = 0.55;
-    const mascotBody = new THREE.Mesh(new THREE.ConeGeometry(0.018, 0.065, 8), bikeChromeMat);
+    const mascotBody = new THREE.Mesh(new THREE.ConeGeometry(0.018, 0.065, 24), bikeChromeMat);
     mascotBody.rotation.z = -Math.PI / 2;
     mascotGroup.add(mascotBody);
-    const mascotHead = new THREE.Mesh(new THREE.SphereGeometry(0.014, 8, 8), bikeChromeMat);
+    const mascotHead = new THREE.Mesh(new THREE.SphereGeometry(0.014, 20, 20), bikeChromeMat);
     mascotHead.position.set(0.038, 0.012, 0);
     mascotGroup.add(mascotHead);
+    const mascotHorns = new THREE.Mesh(new THREE.TorusGeometry(0.012, 0.0025, 8, 20, Math.PI * 0.6), bikeChromeMat);
+    mascotHorns.position.set(0.040, 0.024, 0);
+    mascotHorns.rotation.z = 0.4;
+    mascotGroup.add(mascotHorns);
     bikeGroup.add(mascotGroup);
 
     // Front Fender Stays (Dual Chrome Wire Stays to Front Axle)
     [-0.045, 0.045].forEach(sz => {
-        const stay = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.44), bikeChromeMat);
+        const stay = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.44, 16), bikeChromeMat);
         stay.position.set(0.74, 0.22, sz);
         stay.rotation.z = 0.22;
         bikeGroup.add(stay);
     });
 
-    // Rear Fender (Lengkung Belakang Ber-Volume Panjang)
+    // Rear Fender (Lengkung Belakang Ber-Volume Panjang 128 Segments)
     const rearFender = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.435, 0.435, 0.072, 28, 1, true, -Math.PI * 0.48, Math.PI * 1.02),
+        new THREE.CylinderGeometry(0.435, 0.435, 0.072, 192, 1, true, -Math.PI * 0.48, Math.PI * 1.02),
         bikeBlackMat
     );
     rearFender.rotation.x = Math.PI / 2;
@@ -1830,7 +1842,7 @@ function buildIndoorTimur1() {
 
     // Rear Fender Stays (Dual Chrome Wire Stays to Rear Axle)
     [-0.045, 0.045].forEach(sz => {
-        const stay = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.44), bikeChromeMat);
+        const stay = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.44, 16), bikeChromeMat);
         stay.position.set(-0.74, 0.22, sz);
         stay.rotation.z = -0.22;
         bikeGroup.add(stay);
@@ -1838,36 +1850,35 @@ function buildIndoorTimur1() {
 
     // Rear Fender White Tip Patch (Cat Putih Ujung Spatbor Belakang Khas Onthel Belanda)
     const rearWhiteTip = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.438, 0.438, 0.074, 16, 1, true, -Math.PI * 0.48, Math.PI * 0.28),
-        new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.4 })
+        new THREE.CylinderGeometry(0.438, 0.438, 0.074, 96, 1, true, -Math.PI * 0.48, Math.PI * 0.28),
+        new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.35 })
     );
     rearWhiteTip.rotation.x = Math.PI / 2;
     rearWhiteTip.position.set(-0.74, 0.42, 0);
     bikeGroup.add(rearWhiteTip);
 
-    // --- C. ICONIC JASBESCHERMERS (Penutup Kain / Anyaman Jala Roda Belakang) ---
-    // Pelindung jubah/sarung khas sepeda onthel Belanda yang terbentang di atas roda belakang
+    // --- C. ICONIC JASBESCHERMERS (Penutup Kain / Anyaman Jala Roda Belakang - 96 Segments) ---
     const coatGuardMat = new THREE.MeshStandardMaterial({
-        color: 0x181a20,
+        color: 0x14161a,
         roughness: 0.85,
-        metalness: 0.1,
+        metalness: 0.08,
         transparent: true,
-        opacity: 0.92,
+        opacity: 0.94,
         side: THREE.DoubleSide
     });
     [-0.038, 0.038].forEach(sideZ => {
-        // Upper rear quarter woven shield
+        // Upper rear quarter woven shield (96 theta segments for perfectly round arc)
         const coatGuard = new THREE.Mesh(
-            new THREE.RingGeometry(0.18, 0.42, 16, 1, Math.PI * 0.48, Math.PI * 0.52),
+            new THREE.RingGeometry(0.18, 0.425, 96, 1, Math.PI * 0.48, Math.PI * 0.52),
             coatGuardMat
         );
         coatGuard.position.set(-0.74, 0.42, sideZ);
         bikeGroup.add(coatGuard);
 
-        // Cord/rib lace patterns across the coat guard
-        for (let cr = 0; cr < 5; cr++) {
-            const cordAngle = Math.PI * 0.55 + cr * 0.18;
-            const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.002, 0.002, 0.24), goldPinstripeMat);
+        // Cord/rib lace patterns across the coat guard (8 fine radial laces)
+        for (let cr = 0; cr < 8; cr++) {
+            const cordAngle = Math.PI * 0.50 + cr * 0.072;
+            const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.0022, 0.0022, 0.24, 12), goldPinstripeMat);
             cord.position.set(
                 -0.74 + Math.cos(cordAngle) * 0.30,
                 0.42 + Math.sin(cordAngle) * 0.30,
@@ -1878,15 +1889,15 @@ function buildIndoorTimur1() {
         }
     });
 
-    // --- D. CLASSIC HEREN DIAMOND FRAME (Rangka Batangan Onthel Lanang) ---
+    // --- D. CLASSIC HEREN DIAMOND FRAME (Rangka Batangan Onthel Lanang - 32-Seg Tubes) ---
     // Head Tube (Pipa Leher Tebal dengan Badge Onthel)
-    const headTube = new THREE.Mesh(new THREE.CylinderGeometry(0.024, 0.024, 0.26, 12), bikeBlackMat);
+    const headTube = new THREE.Mesh(new THREE.CylinderGeometry(0.024, 0.024, 0.26, 32), bikeBlackMat);
     headTube.position.set(0.58, 0.90, 0);
     headTube.rotation.z = -0.32;
     bikeGroup.add(headTube);
 
     // Head Badge (Emblem Gazelle / Fongers di Pipa Leher)
-    const headBadge = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.06, 10, 1, true, 0, Math.PI), goldPinstripeMat);
+    const headBadge = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.06, 32, 1, true, 0, Math.PI), goldPinstripeMat);
     headBadge.position.set(0.58, 0.90, 0);
     headBadge.rotation.z = -0.32;
     headBadge.rotation.y = Math.PI / 2;
@@ -1899,13 +1910,13 @@ function buildIndoorTimur1() {
     bikeGroup.add(forkCrown);
 
     [-0.042, 0.042].forEach(fz => {
-        const forkBlade = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.012, 0.54, 10), bikeBlackMat);
+        const forkBlade = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.012, 0.54, 24), bikeBlackMat);
         forkBlade.position.set(0.67, 0.58, fz);
         forkBlade.rotation.z = -0.32;
         bikeGroup.add(forkBlade);
 
         // Gold pinstripe on fork blade
-        const fStripe = new THREE.Mesh(new THREE.CylinderGeometry(0.0155, 0.0125, 0.38, 8, 1, true, 0, Math.PI), goldPinstripeMat);
+        const fStripe = new THREE.Mesh(new THREE.CylinderGeometry(0.0155, 0.0125, 0.38, 24, 1, true, 0, Math.PI), goldPinstripeMat);
         fStripe.position.set(0.67, 0.60, fz);
         fStripe.rotation.z = -0.32;
         fStripe.rotation.y = fz > 0 ? Math.PI / 2 : -Math.PI / 2;
@@ -1915,45 +1926,45 @@ function buildIndoorTimur1() {
     // Bottle Dynamo mounted on Right Front Fork (Dinamo Botol Roda Depan)
     const dynamoGroup = new THREE.Group();
     dynamoGroup.position.set(0.69, 0.68, 0.065);
-    const dynamoBody = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.024, 0.09, 10), bikeChromeMat);
+    const dynamoBody = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.024, 0.09, 24), bikeChromeMat);
     dynamoGroup.add(dynamoBody);
-    const dynamoCap = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.012, 0.024, 10), bikeBlackMat);
+    const dynamoCap = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.012, 0.024, 24), bikeBlackMat);
     dynamoCap.position.y = 0.055;
     dynamoGroup.add(dynamoCap);
     // Wire from dynamo to headlight
-    const dynamoWire = new THREE.Mesh(new THREE.CylinderGeometry(0.002, 0.002, 0.36), bikeBlackMat);
+    const dynamoWire = new THREE.Mesh(new THREE.CylinderGeometry(0.0022, 0.0022, 0.36, 12), bikeBlackMat);
     dynamoWire.position.set(-0.06, 0.16, -0.04);
     dynamoWire.rotation.z = 0.6;
     dynamoGroup.add(dynamoWire);
     bikeGroup.add(dynamoGroup);
 
     // Bottom Bracket Shell (Rumah As Tengah Chrome)
-    const bb = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.13, 12), bikeChromeMat);
+    const bb = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.13, 32), bikeChromeMat);
     bb.position.set(-0.10, 0.42, 0);
     bb.rotation.x = Math.PI / 2;
     bikeGroup.add(bb);
 
-    // Seat Tube (Pipa Tiang Sadel)
-    const seatTube = new THREE.Mesh(new THREE.CylinderGeometry(0.019, 0.019, 0.60, 10), bikeBlackMat);
+    // Seat Tube (Pipa Tiang Sadel - 32-Seg)
+    const seatTube = new THREE.Mesh(new THREE.CylinderGeometry(0.019, 0.019, 0.60, 32), bikeBlackMat);
     seatTube.position.set(-0.21, 0.68, 0);
     seatTube.rotation.z = -0.36;
     bikeGroup.add(seatTube);
 
-    // Top Tube (Palang Batangan Lurus Horisontal Khas Onthel Heren)
-    const topTube = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.88, 10), bikeBlackMat);
+    // Top Tube (Palang Batangan Lurus Horisontal Khas Onthel Heren - 32-Seg)
+    const topTube = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.88, 32), bikeBlackMat);
     topTube.position.set(0.14, 0.92, 0);
     topTube.rotation.z = Math.PI / 2 - 0.03;
     bikeGroup.add(topTube);
 
     // Gold Pinstripe on Top Tube
-    const topStripe = new THREE.Mesh(new THREE.CylinderGeometry(0.0185, 0.0185, 0.72, 8, 1, true, 0, Math.PI), goldPinstripeMat);
+    const topStripe = new THREE.Mesh(new THREE.CylinderGeometry(0.0185, 0.0185, 0.72, 32, 1, true, 0, Math.PI), goldPinstripeMat);
     topStripe.position.set(0.14, 0.92, 0);
     topStripe.rotation.z = Math.PI / 2 - 0.03;
     topStripe.rotation.x = Math.PI / 2;
     bikeGroup.add(topStripe);
 
-    // Down Tube (Pipa Serong Bawah)
-    const downTube = new THREE.Mesh(new THREE.CylinderGeometry(0.020, 0.020, 0.86, 10), bikeBlackMat);
+    // Down Tube (Pipa Serong Bawah - 32-Seg)
+    const downTube = new THREE.Mesh(new THREE.CylinderGeometry(0.020, 0.020, 0.86, 32), bikeBlackMat);
     downTube.position.set(0.24, 0.66, 0);
     downTube.rotation.z = -0.92;
     bikeGroup.add(downTube);
@@ -1962,12 +1973,11 @@ function buildIndoorTimur1() {
     const pumpGroup = new THREE.Group();
     pumpGroup.position.set(0.21, 0.63, 0.032);
     pumpGroup.rotation.z = -0.92;
-    const pumpBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.44, 10), bikeChromeMat);
+    const pumpBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.44, 24), bikeChromeMat);
     pumpGroup.add(pumpBarrel);
-    const pumpHandle = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, 0.05, 10), bikeLeatherMat);
+    const pumpHandle = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, 0.05, 24), bikeLeatherMat);
     pumpHandle.position.y = 0.24;
     pumpGroup.add(pumpHandle);
-    // Pump mounting clips
     [-0.20, 0.20].forEach(cy => {
         const clip = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.012, 0.035), bikeChromeMat);
         clip.position.y = cy;
@@ -1977,7 +1987,7 @@ function buildIndoorTimur1() {
 
     // Rear Seat Stays (Penopang Sadel ke As Belakang)
     [-0.042, 0.042].forEach(sz => {
-        const stay = new THREE.Mesh(new THREE.CylinderGeometry(0.013, 0.011, 0.66, 8), bikeBlackMat);
+        const stay = new THREE.Mesh(new THREE.CylinderGeometry(0.013, 0.011, 0.66, 20), bikeBlackMat);
         stay.position.set(-0.53, 0.67, sz);
         stay.rotation.z = 0.86;
         bikeGroup.add(stay);
@@ -1985,13 +1995,13 @@ function buildIndoorTimur1() {
 
     // Chain Stays (Garpu Bawah Rantai)
     [-0.042, 0.042].forEach(cz => {
-        const cStay = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.012, 0.66, 8), bikeBlackMat);
+        const cStay = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.012, 0.66, 20), bikeBlackMat);
         cStay.position.set(-0.42, 0.42, cz);
         cStay.rotation.z = Math.PI / 2;
         bikeGroup.add(cStay);
     });
 
-    // --- E. FULL ENCLOSED CHAINCASE (Katengkas Penuh Khas Onthel dengan Garis Emas) ---
+    // --- E. FULL ENCLOSED CHAINCASE (Katengkas Penuh Khas Onthel dengan Garis Emas - 64 Seg) ---
     const chaincaseGroup = new THREE.Group();
     chaincaseGroup.position.set(-0.38, 0.42, 0.055);
 
@@ -1999,11 +2009,17 @@ function buildIndoorTimur1() {
     const caseMain = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.20, 0.035), bikeBlackMat);
     chaincaseGroup.add(caseMain);
 
-    // Front Round Bulge for Chainring
-    const caseDisc = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.13, 0.038, 20), bikeBlackMat);
+    // Front Round Bulge for Chainring (64 segments for perfect circle)
+    const caseDisc = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.13, 0.038, 64), bikeBlackMat);
     caseDisc.rotation.x = Math.PI / 2;
     caseDisc.position.set(0.28, 0, 0);
     chaincaseGroup.add(caseDisc);
+
+    // Rear Axle Round Cap
+    const caseRearDisc = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.036, 48), bikeBlackMat);
+    caseRearDisc.rotation.x = Math.PI / 2;
+    caseRearDisc.position.set(-0.34, 0, 0);
+    chaincaseGroup.add(caseRearDisc);
 
     // Elegant Gold Pinstripe Border on Chaincase (Lis Emas Mewah)
     const goldLine1 = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.008, 0.04), goldPinstripeMat);
@@ -2014,12 +2030,12 @@ function buildIndoorTimur1() {
     goldLine2.position.set(0, -0.06, 0.002);
     chaincaseGroup.add(goldLine2);
 
-    const goldRing = new THREE.Mesh(new THREE.TorusGeometry(0.10, 0.005, 8, 24), goldPinstripeMat);
+    const goldRing = new THREE.Mesh(new THREE.TorusGeometry(0.10, 0.005, 16, 64), goldPinstripeMat);
     goldRing.position.set(0.28, 0, 0.02);
     chaincaseGroup.add(goldRing);
 
     // Chrome Crank Arms & Vintage Rubber Block Pedals
-    const crankR = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.19), bikeChromeMat);
+    const crankR = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.19, 20), bikeChromeMat);
     crankR.position.set(0.28, -0.08, 0.045);
     chaincaseGroup.add(crankR);
 
@@ -2034,12 +2050,12 @@ function buildIndoorTimur1() {
 
     bikeGroup.add(chaincaseGroup);
 
-    // --- F. VINTAGE BROOKS SADDLE WITH COPPER RIVETS & LEATHER SADDLE BAG ---
+    // --- F. VINTAGE BROOKS CONTOURED LEATHER SADDLE WITH COPPER RIVETS & TOOL BAG ---
     const saddleGroup = new THREE.Group();
     saddleGroup.position.set(-0.33, 0.98, 0);
 
     // Chrome Seatpost & Clamp Lug
-    const seatPost = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.18), bikeChromeMat);
+    const seatPost = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.18, 24), bikeChromeMat);
     seatPost.position.y = -0.08;
     saddleGroup.add(seatPost);
 
@@ -2047,30 +2063,42 @@ function buildIndoorTimur1() {
     seatClamp.position.y = 0.01;
     saddleGroup.add(seatClamp);
 
-    // Contoured Aged Brown Leather Saddle Top
-    const saddleRear = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.16, 0.045, 16), bikeLeatherMat);
-    saddleRear.scale.set(1.2, 1.0, 0.9);
-    saddleRear.position.set(-0.08, 0.08, 0);
-    saddleGroup.add(saddleRear);
+    // Organically Contoured Aged Brown Leather Saddle Top (Smooth Bezier Spline + Beveled Extrusion)
+    const saddleShape = new THREE.Shape();
+    saddleShape.moveTo(0.19, 0);
+    saddleShape.bezierCurveTo(0.14, 0.032, 0.02, 0.052, -0.06, 0.098);
+    saddleShape.bezierCurveTo(-0.13, 0.140, -0.17, 0.115, -0.19, 0.065);
+    saddleShape.bezierCurveTo(-0.20, 0.025, -0.20, -0.025, -0.19, -0.065);
+    saddleShape.bezierCurveTo(-0.17, -0.115, -0.13, -0.140, -0.06, -0.098);
+    saddleShape.bezierCurveTo(0.02, -0.052, 0.14, -0.032, 0.19, 0);
 
-    const saddleNose = new THREE.Mesh(new THREE.ConeGeometry(0.07, 0.22, 10), bikeLeatherMat);
-    saddleNose.rotation.z = -Math.PI / 2;
-    saddleNose.scale.set(1.0, 1.0, 0.65);
-    saddleNose.position.set(0.08, 0.07, 0);
-    saddleGroup.add(saddleNose);
+    const saddleExtrudeSettings = {
+        steps: 1,
+        depth: 0.038,
+        bevelEnabled: true,
+        bevelThickness: 0.024,
+        bevelSize: 0.018,
+        bevelSegments: 8
+    };
+    const saddleGeo = new THREE.ExtrudeGeometry(saddleShape, saddleExtrudeSettings);
+    saddleGeo.rotateX(-Math.PI / 2);
+    saddleGeo.center();
+    const saddleTop = new THREE.Mesh(saddleGeo, bikeLeatherMat);
+    saddleTop.position.set(-0.04, 0.075, 0);
+    saddleGroup.add(saddleTop);
 
-    // Authentic Copper Rivets along the back rim of the saddle (Paku Keling Kuningan Brooks)
-    for (let rv = 0; rv < 5; rv++) {
-        const rvAngle = -Math.PI * 0.35 + rv * (Math.PI * 0.7 / 4);
-        const rivet = new THREE.Mesh(new THREE.SphereGeometry(0.007, 6, 6), brassMat);
-        rivet.position.set(-0.16 + Math.cos(rvAngle) * 0.04, 0.085, Math.sin(rvAngle) * 0.12);
+    // 7 Solid Brass Rivets along the back curve of the saddle (Paku Keling Kuningan Brooks)
+    for (let rv = 0; rv < 7; rv++) {
+        const rvAngle = -Math.PI * 0.38 + rv * (Math.PI * 0.76 / 6);
+        const rivet = new THREE.Mesh(new THREE.SphereGeometry(0.006, 16, 16), brassMat);
+        rivet.position.set(-0.15 + Math.cos(rvAngle) * 0.035, 0.088, Math.sin(rvAngle) * 0.105);
         saddleGroup.add(rivet);
     }
 
     // Dual Heavy-Duty Chrome Coil Springs (Per Keong Sadel Belakang)
     [-0.055, 0.055].forEach(sz => {
         for (let sp = 0; sp < 3; sp++) {
-            const coil = new THREE.Mesh(new THREE.TorusGeometry(0.026, 0.007, 8, 16), bikeChromeMat);
+            const coil = new THREE.Mesh(new THREE.TorusGeometry(0.026, 0.007, 16, 32), bikeChromeMat);
             coil.rotation.x = Math.PI / 2;
             coil.position.set(-0.14, 0.02 + sp * 0.025, sz);
             saddleGroup.add(coil);
@@ -2090,53 +2118,55 @@ function buildIndoorTimur1() {
 
     bikeGroup.add(saddleGroup);
 
-    // --- G. SWEPT-BACK HANDLEBARS, BULLET HEADLIGHT & BRASS DOME BELL ---
+    // --- G. SWEPT-BACK CONTINUOUS CURVED HANDLEBARS, BULLET HEADLIGHT & BRASS BELL ---
     const handleGroup = new THREE.Group();
     handleGroup.position.set(0.55, 1.01, 0);
 
     // Chrome Quill Stem (Leher Stang Angsa)
-    const stemVert = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.18), bikeChromeMat);
+    const stemVert = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.18, 24), bikeChromeMat);
     stemVert.position.y = 0.04;
     handleGroup.add(stemVert);
 
-    const stemForward = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.10), bikeChromeMat);
+    const stemForward = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.10, 24), bikeChromeMat);
     stemForward.position.set(0.03, 0.12, 0);
     stemForward.rotation.z = Math.PI / 2;
     handleGroup.add(stemForward);
 
-    // Swept-Back Curved Handlebars (Stang Dongkol Klasik Khas Onthel)
-    const barCenter = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.36), bikeChromeMat);
-    barCenter.rotation.x = Math.PI / 2;
-    barCenter.position.set(0.06, 0.14, 0);
-    handleGroup.add(barCenter);
+    // Seamless Continuous Curved Handlebar (Stang Dongkol Klasik - CatmullRom Tube 64-Seg)
+    const barCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-0.16, 0.128, 0.28),   // left grip end
+        new THREE.Vector3(-0.06, 0.142, 0.25),   // sweep forward
+        new THREE.Vector3(0.035, 0.150, 0.14),   // bend towards center
+        new THREE.Vector3(0.065, 0.140, 0.00),   // center stem clamp
+        new THREE.Vector3(0.035, 0.150, -0.14),  // bend towards right
+        new THREE.Vector3(-0.06, 0.142, -0.25),  // sweep back
+        new THREE.Vector3(-0.16, 0.128, -0.28)   // right grip end
+    ]);
+    const barGeo = new THREE.TubeGeometry(barCurve, 64, 0.013, 24, false);
+    const barMesh = new THREE.Mesh(barGeo, bikeChromeMat);
+    handleGroup.add(barMesh);
 
-    [-0.24, 0.24].forEach(bz => {
-        const barSweep = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.24), bikeChromeMat);
-        barSweep.position.set(-0.04, 0.14, bz);
-        barSweep.rotation.y = bz > 0 ? 0.72 : -0.72;
-        barSweep.rotation.z = -0.12;
-        handleGroup.add(barSweep);
-
-        // Vintage Ribbed Rubber Grips
-        const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.019, 0.019, 0.12, 10), bikeTireMat);
-        grip.position.set(-0.14, 0.14, bz > 0 ? bz + 0.04 : bz - 0.04);
-        grip.rotation.y = bz > 0 ? 0.72 : -0.72;
+    // Vintage Ribbed Grips and Rod Brake Levers
+    [-0.265, 0.265].forEach(bz => {
+        const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.019, 0.019, 0.12, 24), bikeTireMat);
+        grip.position.set(-0.12, 0.133, bz);
+        grip.rotation.y = bz > 0 ? 0.35 : -0.35;
         handleGroup.add(grip);
 
         // Rod Brake Levers (Tuas Rem Kawat/Batangan Klasik)
-        const brakeLever = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.14), bikeChromeMat);
-        brakeLever.position.set(-0.08, 0.10, bz > 0 ? bz - 0.02 : bz + 0.02);
+        const brakeLever = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.14, 16), bikeChromeMat);
+        brakeLever.position.set(-0.08, 0.10, bz > 0 ? bz - 0.025 : bz + 0.025);
         brakeLever.rotation.x = Math.PI / 2;
         brakeLever.rotation.z = bz > 0 ? 0.3 : -0.3;
         handleGroup.add(brakeLever);
     });
 
-    // Vintage Polished Brass Dome Bell (Bel Kring-Kring Kuningan)
-    const bell = new THREE.Mesh(new THREE.SphereGeometry(0.038, 12, 12, 0, Math.PI * 2, 0, Math.PI / 2), brassMat);
+    // Vintage Polished Brass Dome Bell (Bel Kring-Kring Kuningan - 32-Seg)
+    const bell = new THREE.Mesh(new THREE.SphereGeometry(0.038, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2), brassMat);
     bell.position.set(0.04, 0.18, -0.14);
     handleGroup.add(bell);
 
-    // Iconic Vintage Bullet / Torpedo Headlight (Lampu Torpedo Bosch / Miller)
+    // Iconic Vintage Bullet / Torpedo Headlight (Lampu Torpedo Bosch / Miller - 48-Seg)
     const headlampGroup = new THREE.Group();
     headlampGroup.position.set(0.18, 0.06, 0);
 
@@ -2144,14 +2174,14 @@ function buildIndoorTimur1() {
     lampBracket.position.set(-0.06, 0, 0);
     headlampGroup.add(lampBracket);
 
-    // Torpedo Chrome Bullet Body
-    const lampBody = new THREE.Mesh(new THREE.ConeGeometry(0.085, 0.19, 18), bikeChromeMat);
+    // Torpedo Chrome Bullet Body (48 radial segments for ultra-smooth bullet shape)
+    const lampBody = new THREE.Mesh(new THREE.ConeGeometry(0.085, 0.19, 48), bikeChromeMat);
     lampBody.rotation.z = -Math.PI / 2;
     headlampGroup.add(lampBody);
 
-    // Convex Ribbed Glass Lens with Warm Golden Glow
+    // Convex Ribbed Glass Lens with Warm Golden Glow (36x36 segments)
     const lampLens = new THREE.Mesh(
-        new THREE.SphereGeometry(0.082, 16, 16, 0, Math.PI * 2, 0, Math.PI / 2),
+        new THREE.SphereGeometry(0.082, 36, 36, 0, Math.PI * 2, 0, Math.PI / 2),
         new THREE.MeshStandardMaterial({
             color: 0xfff6d4,
             emissive: 0xffd15c,
@@ -2172,7 +2202,7 @@ function buildIndoorTimur1() {
     handleGroup.add(headlampGroup);
     bikeGroup.add(handleGroup);
 
-    // --- H. REAR TUBULAR LUGGAGE CARRIER (Boncengan / Bagasi Pipa Bulat) ---
+    // --- H. REAR TUBULAR LUGGAGE CARRIER (Boncengan / Bagasi Pipa Bulat - 20-Seg) ---
     const rackGroup = new THREE.Group();
     rackGroup.position.set(-0.72, 0.84, 0);
 
@@ -2185,16 +2215,16 @@ function buildIndoorTimur1() {
     springClip.position.set(0.05, 0.022, 0);
     rackGroup.add(springClip);
 
-    // Dual Tubular Legs to Rear Axle
+    // Dual Tubular Legs to Rear Axle (20 radial segments)
     [-0.07, 0.07].forEach(rz => {
-        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.48), bikeBlackMat);
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.48, 20), bikeBlackMat);
         leg.position.set(0, -0.23, rz);
         rackGroup.add(leg);
     });
 
-    // Ruby Red Cat's-Eye Reflector (Mata Kucing Merah Belakang)
+    // Ruby Red Cat's-Eye Reflector (Mata Kucing Merah Belakang - 32-Seg)
     const rearReflector = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.025, 0.025, 0.018, 14),
+        new THREE.CylinderGeometry(0.025, 0.025, 0.018, 32),
         new THREE.MeshStandardMaterial({
             color: 0xef4444,
             emissive: 0xdc2626,
@@ -2208,52 +2238,58 @@ function buildIndoorTimur1() {
 
     bikeGroup.add(rackGroup);
 
-    // --- I. DUAL-LEG KICKSTAND (Standar Dua Kares Kokoh Menyentuh Lantai) ---
+    // --- I. DUAL-LEG KICKSTAND (Standar Dua Kares Kokoh Menyentuh Lantai - 20-Seg) ---
     const standGroup = new THREE.Group();
     standGroup.position.set(-0.74, 0.42, 0);
 
     [-0.14, 0.14].forEach(sz => {
-        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.010, 0.009, 0.44), bikeBlackMat);
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.010, 0.009, 0.44, 20), bikeBlackMat);
         leg.position.set(0, -0.21, sz);
         leg.rotation.x = sz > 0 ? 0.38 : -0.38;
         standGroup.add(leg);
-
-        // Ground contact rubber feet
-        const foot = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.02, 0.035), bikeTireMat);
-        foot.position.set(0, -0.42, sz > 0 ? sz + 0.08 : sz - 0.08);
-        standGroup.add(foot);
     });
     bikeGroup.add(standGroup);
 
     // --- J. DEDICATED CENTERPIECE ACCENT LIGHT ---
-    // Sorotan spotlight lembut dari atas tepat ke Sepeda Onthel agar siluet hitam & aksen emas/krom kontras sempurna
-    const bikeSpotlight = new THREE.PointLight(0xfff3d6, 3.0, 8.5);
-    bikeSpotlight.position.set(0, 2.8, -2.6);
-    group.add(bikeSpotlight);
+    // Teater Spotlight panggung hangat terfokus presisi ke Sepeda Onthel agar lekukan krom & enamel hitam berkilau mewah
+    const bikeSpot = new THREE.SpotLight(0xfff5e6, 5.2, 10.0, Math.PI / 4.2, 0.45, 1.2);
+    bikeSpot.position.set(0, 3.4, -1.8);
+    bikeSpot.target.position.set(0, 0.65, -3.1);
+    bikeSpot.castShadow = true;
+    bikeSpot.shadow.mapSize.width = 1024;
+    bikeSpot.shadow.mapSize.height = 1024;
+    bikeSpot.shadow.bias = -0.0003;
+    group.add(bikeSpot);
+    group.add(bikeSpot.target);
+
+    // Warm ambient rim fill to illuminate spoke details
+    const bikeRimFill = new THREE.PointLight(0xffeedb, 1.8, 4.5);
+    bikeRimFill.position.set(0, 0.85, -2.3);
+    group.add(bikeRimFill);
 
     group.add(bikeGroup);
 
 
 
-    // 8. Sound System / Trolley Speaker with LED & "Kotak Apresiasi" (Stage Right)
+    // 8. Stage Monitor Speaker & "Kotak Apresiasi" Akustik (Stage Right)
     const soundGroup = new THREE.Group();
     soundGroup.position.set(2.2, 0.52, -3.4);
 
-    const speakerBox = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.88, 0.46), new THREE.MeshStandardMaterial({ color: 0x1e222a, roughness: 0.6 }));
+    const speakerBox = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.88, 0.46), new THREE.MeshStandardMaterial({ color: 0x181a20, roughness: 0.55 }));
     speakerBox.position.y = 0.44;
     soundGroup.add(speakerBox);
 
-    const cone1 = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.02, 16), new THREE.MeshBasicMaterial({ color: 0x111111 }));
+    const cone1 = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.02, 32), new THREE.MeshBasicMaterial({ color: 0x0f1115 }));
     cone1.position.set(0, 0.62, 0.24);
     cone1.rotation.x = Math.PI / 2;
     soundGroup.add(cone1);
 
-    const ledRing = new THREE.Mesh(new THREE.RingGeometry(0.18, 0.21, 16), new THREE.MeshBasicMaterial({ color: 0x38bdf8 }));
+    const ledRing = new THREE.Mesh(new THREE.RingGeometry(0.18, 0.21, 32), new THREE.MeshBasicMaterial({ color: 0x38bdf8 }));
     ledRing.position.set(0, 0.62, 0.252);
     soundGroup.add(ledRing);
 
-    // "Kotak Apresiasi"
-    const tipBox = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.18, 0.2), new THREE.MeshStandardMaterial({ color: 0xe2d4be, roughness: 0.5 }));
+    // Kotak Apresiasi Kayu Jati Klasik
+    const tipBox = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.18, 0.2), new THREE.MeshStandardMaterial({ color: 0xd4a373, roughness: 0.4 }));
     tipBox.position.set(0, 0.98, 0);
     soundGroup.add(tipBox);
 
@@ -2263,50 +2299,113 @@ function buildIndoorTimur1() {
 
     group.add(soundGroup);
 
-    // 9. Tripod Microphone Stands & Performance Chair (Stage Left)
+    // 9. Stage Performance Setup (Stage Left: Grounded Acoustic Chair & Realistic Vocal Mic Stand)
+    // Vocal Microphone Stand with Grounded Tripod & Swivel Boom Arm (Natural human height 1.25m)
     const tripod1 = new THREE.Group();
-    tripod1.position.set(-1.6, 0.52, -2.9);
-    const pole1 = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 1.35), chromeMat);
-    pole1.position.y = 0.68;
+    tripod1.position.set(-1.6, 0.51, -2.6);
+
+    // 3 Grounded Tripod Base Legs
+    for (let fi = 0; fi < 3; fi++) {
+        const angle = (fi * Math.PI * 2) / 3;
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.36, 16), metalMat);
+        leg.position.set(Math.cos(angle) * 0.15, 0.065, Math.sin(angle) * 0.15);
+        leg.rotation.y = -angle;
+        leg.rotation.z = 0.92;
+        tripod1.add(leg);
+    }
+
+    // Vertical Telescoping Shaft (0.85m above stage floor)
+    const pole1 = new THREE.Mesh(new THREE.CylinderGeometry(0.013, 0.013, 0.85, 20), chromeMat);
+    pole1.position.y = 0.425;
     tripod1.add(pole1);
-    const micBoom = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.55), metalMat);
-    micBoom.position.set(0.12, 1.32, 0);
-    micBoom.rotation.z = -0.45;
-    tripod1.add(micBoom);
+
+    // Swivel Knuckle Joint
+    const swivel = new THREE.Mesh(new THREE.SphereGeometry(0.020, 16, 16), metalMat);
+    swivel.position.set(0, 0.85, 0);
+    tripod1.add(swivel);
+
+    // Boom Arm Group extending toward performer
+    const boomGroup = new THREE.Group();
+    boomGroup.position.set(0, 0.85, 0);
+    boomGroup.rotation.y = 0.40;
+    boomGroup.rotation.z = -0.38;
+
+    const micBoom = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.52, 16), metalMat);
+    micBoom.position.y = 0.26;
+    boomGroup.add(micBoom);
+
+    // Dynamic Microphone Capsule seamlessly attached to boom tip
+    const micCapsule = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.012, 0.08, 16), chromeMat);
+    micCapsule.position.y = 0.53;
+    boomGroup.add(micCapsule);
+
+    // Foam Windscreen (Black)
+    const micFoam = new THREE.Mesh(new THREE.SphereGeometry(0.018, 16, 16), new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.9 }));
+    micFoam.position.y = 0.57;
+    boomGroup.add(micFoam);
+
+    tripod1.add(boomGroup);
     group.add(tripod1);
 
+    // Acoustic Guitar Music Stand (Disimpan di samping kursi pemain, rapi & terpisah dari sepeda)
     const tripod2 = new THREE.Group();
-    tripod2.position.set(-0.9, 0.52, -2.8);
-    const pole2 = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 1.1), chromeMat);
-    pole2.position.y = 0.55;
+    tripod2.position.set(-2.5, 0.51, -2.8);
+
+    for (let fi = 0; fi < 3; fi++) {
+        const angle = (fi * Math.PI * 2) / 3 + 0.5;
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.007, 0.007, 0.32, 16), metalMat);
+        leg.position.set(Math.cos(angle) * 0.13, 0.06, Math.sin(angle) * 0.13);
+        leg.rotation.y = -angle;
+        leg.rotation.z = 0.92;
+        tripod2.add(leg);
+    }
+    const pole2 = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.75, 16), metalMat);
+    pole2.position.y = 0.375;
     tripod2.add(pole2);
-    const plate = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.28, 0.02), metalMat);
-    plate.position.set(0, 1.05, 0);
-    plate.rotation.x = -0.35;
-    tripod2.add(plate);
+
+    const musicDesk = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.26, 0.015), metalMat);
+    musicDesk.position.set(0, 0.76, 0);
+    musicDesk.rotation.x = -0.38;
+    tripod2.add(musicDesk);
+
+    const musicSheet = new THREE.Mesh(new THREE.PlaneGeometry(0.32, 0.22), new THREE.MeshBasicMaterial({ color: 0xfafafa }));
+    musicSheet.position.set(0, 0.76, 0.010);
+    musicSheet.rotation.x = -0.38;
+    tripod2.add(musicSheet);
+
     group.add(tripod2);
 
+    // Performance Chair (Kursi Kayu Jati Akustik: 4 Kaki Flush di Atas Panggung y=0.51)
     const chairGroup = new THREE.Group();
-    chairGroup.position.set(-2.2, 0.52, -3.4);
-    const chairSeat = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.05, 0.44), new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.3 }));
-    chairSeat.position.y = 0.45;
+    chairGroup.position.set(-2.0, 0.51, -3.2);
+
+    const chairLegMat = new THREE.MeshStandardMaterial({ color: 0x3d2314, roughness: 0.6 });
+    [[-0.18, -0.18], [0.18, -0.18], [-0.18, 0.18], [0.18, 0.18]].forEach(([lx, lz]) => {
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.013, 0.44, 16), chairLegMat);
+        leg.position.set(lx, 0.22, lz);
+        chairGroup.add(leg);
+    });
+
+    const chairSeat = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.04, 0.44), new THREE.MeshStandardMaterial({ color: 0xd4a373, roughness: 0.45 }));
+    chairSeat.position.y = 0.44;
     chairGroup.add(chairSeat);
-    const chairBack = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.44, 0.04), new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.3 }));
-    chairBack.position.set(0, 0.74, -0.2);
+
+    const chairBack = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.36, 0.03), chairLegMat);
+    chairBack.position.set(0, 0.66, -0.19);
     chairGroup.add(chairBack);
+
     group.add(chairGroup);
 
-    // Stack of Folding Chairs on Far Stage Right
+    // Tumpukan Kursi Cadangan Lipat di Ujung Kanan Panggung
     const chairStack = new THREE.Group();
-    chairStack.position.set(2.9, 0.52, -3.8);
-    for (let ci = 0; ci < 5; ci++) {
-        const folded = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.85, 0.06), new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.4 }));
-        folded.position.set(0, 0.45, ci * 0.07);
-        folded.rotation.x = -0.12;
+    chairStack.position.set(2.8, 0.51, -3.7);
+    for (let ci = 0; ci < 4; ci++) {
+        const folded = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.82, 0.05), new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.4 }));
+        folded.position.set(0, 0.41, ci * 0.065);
+        folded.rotation.x = -0.15;
         chairStack.add(folded);
     }
     group.add(chairStack);
-
     // 10. Traditional Acoustic Wall Installations (Tampah / Nyiru, Kukusan)
     const tampahMat = new THREE.MeshStandardMaterial({ color: 0xe0b26a, roughness: 0.6 });
     const kukusanMat = new THREE.MeshStandardMaterial({ color: 0xd49b4c, roughness: 0.6 });
@@ -3446,6 +3545,7 @@ function on3DWindowResize() {
     camera3D.aspect = width / height;
     camera3D.updateProjectionMatrix();
     renderer3D.setSize(width, height);
+    renderer3D.setPixelRatio(Math.min(Math.max(window.devicePixelRatio || 1, 2.0), 3.0));
 }
 
 /**
