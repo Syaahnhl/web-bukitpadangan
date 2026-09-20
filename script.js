@@ -25,7 +25,7 @@ async function loadDynamicContent() {
         // 2. Hero Section
         if (data.hero) {
             if (document.getElementById("heroTitleText")) document.getElementById("heroTitleText").innerText = data.hero.title;
-            if (document.getElementById("heroSubtitleText")) document.getElementById("heroSubtitleText").innerText = data.hero.subtitle;
+            if (document.getElementById("heroSubtitleText") && data.hero.subtitle) document.getElementById("heroSubtitleText").innerText = data.hero.subtitle;
             if (document.getElementById("heroDescText")) document.getElementById("heroDescText").innerText = data.hero.desc;
         }
 

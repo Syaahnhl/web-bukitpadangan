@@ -27,9 +27,13 @@ const CAMERA_PRESETS = {
         pos: { x: -16.5, y: 2.1, z: 4.8 },
         target: { x: -10.5, y: 1.6, z: -2.5 }
     },
+    stage: {
+        pos: { x: 10, y: 2.8, z: 6.8 },
+        target: { x: 10, y: 1.5, z: -2.0 }
+    },
     east: {
-        pos: { x: 19, y: 18, z: 18 },
-        target: { x: 19, y: 1.2, z: 1 }
+        pos: { x: 10, y: 2.8, z: 6.8 },
+        target: { x: 10, y: 1.5, z: -2.0 }
     },
     facilities: {
         pos: { x: -3, y: 5.5, z: 0 },
@@ -82,10 +86,10 @@ const TABLE_3D_LAYOUT = {
     "TI-03": { x: 17, z: 4,  zone: "outdoor", rotation: 0, umbrella: false },
 
     // Lingkaran Biru (Kiri): Zona Indoor Timur 1 (IT1-13 s/d IT1-16)
-    "IT1-13": { x: 8,  z: -2, zone: "vip", rotation: 0 },
-    "IT1-14": { x: 12, z: -2, zone: "vip", rotation: 0 },
-    "IT1-15": { x: 8,  z: 4,  zone: "vip", rotation: 0 },
-    "IT1-16": { x: 12, z: 4,  zone: "vip", rotation: 0 },
+    "IT1-13": { x: 8,  z: 0.6, zone: "vip", rotation: 0 },
+    "IT1-14": { x: 12, z: 0.6, zone: "vip", rotation: 0 },
+    "IT1-15": { x: 8,  z: 3.6, zone: "vip", rotation: 0 },
+    "IT1-16": { x: 12, z: 3.6, zone: "vip", rotation: 0 },
 
     // Lingkaran Biru (Kanan): Zona Indoor Timur 2 (IT2-17 s/d IT2-20)
     "IT2-17": { x: 26, z: -2, zone: "vip", rotation: 0 },
@@ -170,6 +174,9 @@ function init3DFloorPlan() {
     controls3D.minDistance = 6;
     controls3D.maxDistance = 160;
     controls3D.target.set(CAMERA_PRESETS.all.target.x, CAMERA_PRESETS.all.target.y, CAMERA_PRESETS.all.target.z);
+    window.camera3D = camera3D;
+    window.controls3D = controls3D;
+    window.scene3D = scene3D;
 
     // 5. LIGHTING
     setup3DLighting();
@@ -1473,52 +1480,401 @@ function buildCashierStation() {
  * Build Indoor Timur 1 (Lingkaran Biru Kiri)
  * Houses tables IT1-13 s/d IT1-16
  */
+/**
+ * Build Indoor Timur 1 (Panggung Pertunjukan Musik / Acoustic Live Stage Hall)
+ * Sesuai foto riil Warung Makan Bukit Padangan (img_ee137fc07575.jpg):
+ * - Panggung utama kayu solid (elevated wooden stage h: 0.22m)
+ * - Dinding latar bilah bambu vertikal (polished bamboo slats / pelupuh)
+ * - Plafon anyaman bambu sasak/kepang dibingkai balok kayu struktural tebal
+ * - 2 Pintu ganda backstage kiri & kanan dengan plang 'KHUSUS KARYAWAN'
+ * - Sepeda onthel antik hitam klasik (roadster bicycle) di sisi kanan panggung
+ * - Unit sound system trolley speaker portabel ber-LED dengan 'Kotak Apresiasi'
+ * - Tripod stand mikrofon & instrumen musik, tumpukan kursi panggung
+ * - Instalasi seni akustik dinding: tampah/nyiru aneka ukuran, kukusan, boboko, caping
+ * - 2 Lampu gantung kap anyaman bambu kerucut tradisional (cahaya hangat 2700K)
+ * - Area penonton lantai batu alam lempeng acak dengan bangku & meja kayu
+ */
+/**
+ * Build Indoor Timur 1 (Panggung Pertunjukan Musik / Acoustic Live Stage Hall)
+ * Sesuai foto riil Warung Makan Bukit Padangan (img_ee137fc07575.jpg):
+ * - Panggung utama kayu solid (elevated wooden stage h: 0.22m)
+ * - Dinding latar bilah bambu vertikal (polished bamboo slats / pelupuh)
+ * - Plafon balok kayu ekspos & rangka kayu tradisional terbuka
+ * - 2 Pintu ganda backstage kiri & kanan dengan plang 'KHUSUS KARYAWAN'
+ * - Sepeda onthel antik hitam klasik (roadster bicycle) di sisi kanan panggung
+ * - Unit sound system trolley speaker portabel ber-LED dengan 'Kotak Apresiasi'
+ * - Tripod stand mikrofon & instrumen musik, tumpukan kursi panggung
+ * - Instalasi seni akustik dinding: tampah/nyiru aneka ukuran, kukusan, boboko, caping
+ * - 2 Lampu gantung kap anyaman bambu kerucut tradisional (cahaya hangat 2700K)
+ * - Area penonton lantai batu alam lempeng acak dengan bangku & meja kayu
+ */
 function buildIndoorTimur1() {
     const group = new THREE.Group();
     group.position.set(10, 0, 1);
 
-    // Timber Floor
-    const floorGeo = new THREE.BoxGeometry(9, 0.25, 10);
-    const floorMat = new THREE.MeshLambertMaterial({ color: 0x855836 });
-    const floor = new THREE.Mesh(floorGeo, floorMat);
+    const teakMat   = new THREE.MeshStandardMaterial({ color: 0x4a2e1b, roughness: 0.6, metalness: 0.05 });
+    const beamMat   = new THREE.MeshStandardMaterial({ color: 0x331c0e, roughness: 0.7, metalness: 0.05 });
+    const stageMat  = new THREE.MeshStandardMaterial({ color: 0x54331a, roughness: 0.5, metalness: 0.1 });
+    const panelMat  = new THREE.MeshStandardMaterial({ color: 0x6e4324, roughness: 0.6, metalness: 0.05 });
+    const tileMat   = new THREE.MeshStandardMaterial({ color: 0x823b26, roughness: 0.8, metalness: 0.0 });
+    const metalMat  = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.4, metalness: 0.7 });
+    const chromeMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.2, metalness: 0.85 });
+
+    // 1. Audience Floor: Irregular Slate Flagstones (Crazy Paving)
+    const floorCanvas = document.createElement("canvas");
+    floorCanvas.width = 512;
+    floorCanvas.height = 512;
+    const fctx = floorCanvas.getContext("2d");
+    fctx.fillStyle = "#1e2430";
+    fctx.fillRect(0, 0, 512, 512);
+
+    const slateColors = ["#3a4352", "#485366", "#2f3642", "#525e73", "#3d4657", "#4a463e", "#5a544b"];
+    for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+            const x = c * 64 + 4 + (((r * 13 + c * 17) % 7) - 3);
+            const y = r * 64 + 4 + (((r * 19 + c * 11) % 7) - 3);
+            fctx.fillStyle = slateColors[(r * 5 + c * 3) % slateColors.length];
+            fctx.beginPath();
+            fctx.roundRect(x, y, 56, 56, 6);
+            fctx.fill();
+            fctx.strokeStyle = "rgba(255, 255, 255, 0.22)";
+            fctx.lineWidth = 2.5;
+            fctx.stroke();
+        }
+    }
+    const floorTex = new THREE.CanvasTexture(floorCanvas);
+    floorTex.wrapS = THREE.RepeatWrapping;
+    floorTex.wrapT = THREE.RepeatWrapping;
+    floorTex.repeat.set(3, 3);
+    floorTex.needsUpdate = true;
+
+    const floorGeo = new THREE.BoxGeometry(9.6, 0.25, 10.4);
+    const floor = new THREE.Mesh(floorGeo, new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.7 }));
     floor.position.y = 0.12;
     floor.receiveShadow = true;
     group.add(floor);
 
-    // Glass walls
-    const glassMat = new THREE.MeshPhysicalMaterial({
-        color: 0xcfe6fc,
-        transparent: true,
-        opacity: 0.35,
-        roughness: 0.1,
-        transmission: 0.75
-    });
-    const frontWall = new THREE.Mesh(new THREE.BoxGeometry(8.8, 3.4, 0.12), glassMat);
-    frontWall.position.set(0, 1.8, 4.9);
-    group.add(frontWall);
+    // 2. Elevated Wooden Performance Stage (Panggung Utama Kayu Solid h: 0.24m)
+    const stageGeo = new THREE.BoxGeometry(7.8, 0.26, 3.2);
+    const stage = new THREE.Mesh(stageGeo, stageMat);
+    stage.position.set(0, 0.38, -3.2);
+    stage.receiveShadow = true;
+    group.add(stage);
 
-    const backWallMat = new THREE.MeshLambertMaterial({ color: 0x2e2318 });
-    const backWall = new THREE.Mesh(new THREE.BoxGeometry(8.8, 3.4, 0.2), backWallMat);
-    backWall.position.set(0, 1.8, -4.9);
+    // Stage Front Skirt Board (Lis Kayu Depan Panggung)
+    const skirtGeo = new THREE.BoxGeometry(7.84, 0.26, 0.08);
+    const skirt = new THREE.Mesh(skirtGeo, new THREE.MeshStandardMaterial({ color: 0x3d2110, roughness: 0.6 }));
+    skirt.position.set(0, 0.38, -1.58);
+    group.add(skirt);
+
+    // 3. Vertical Bamboo Slats Backdrop (Dinding Latar Bilah Bambu Pelupuh)
+    const bambooCanvas = document.createElement("canvas");
+    bambooCanvas.width = 512;
+    bambooCanvas.height = 512;
+    const bctx = bambooCanvas.getContext("2d");
+    bctx.fillStyle = "#c28f44"; // Rich warm golden bamboo
+    bctx.fillRect(0, 0, 512, 512);
+
+    for (let bx = 0; bx < 512; bx += 8) {
+        const tone = ((bx * 7) % 35) - 17;
+        bctx.fillStyle = `rgb(${194 + tone}, ${143 + tone}, ${68 + tone})`;
+        bctx.fillRect(bx, 0, 7, 512);
+
+        bctx.fillStyle = "rgba(45, 25, 10, 0.7)";
+        bctx.fillRect(bx + 6.5, 0, 1.5, 512);
+
+        for (let ny = 60; ny < 512; ny += 95) {
+            bctx.fillStyle = "rgba(80, 48, 20, 0.4)";
+            bctx.fillRect(bx, ny + ((bx * 3) % 7), 7, 3);
+        }
+    }
+    const bambooTex = new THREE.CanvasTexture(bambooCanvas);
+    bambooTex.wrapS = THREE.RepeatWrapping;
+    bambooTex.wrapT = THREE.RepeatWrapping;
+    bambooTex.repeat.set(2, 1);
+    bambooTex.needsUpdate = true;
+
+    const backWallMat = new THREE.MeshStandardMaterial({ map: bambooTex, roughness: 0.55 });
+    const backWall = new THREE.Mesh(new THREE.BoxGeometry(7.8, 3.6, 0.16), backWallMat);
+    backWall.position.set(0, 2.05, -4.75);
+    backWall.receiveShadow = true;
     group.add(backWall);
 
-    // Roof Pergola Slats
-    const colMat = new THREE.MeshLambertMaterial({ color: 0x1f1913 });
-    for (let bx = -4.0; bx <= 4.0; bx += 1.6) {
-        const slat = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.3, 10.2), colMat);
-        slat.position.set(bx, 3.6, 0);
-        group.add(slat);
+    // 4. Symmetrical Backstage Doors ("KHUSUS KARYAWAN")
+    function createKaryawanSign() {
+        const c = document.createElement("canvas");
+        c.width = 256;
+        c.height = 64;
+        const ctx = c.getContext("2d");
+        ctx.fillStyle = "#0c502b";
+        ctx.fillRect(0, 0, 256, 64);
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 6;
+        ctx.strokeRect(4, 4, 248, 56);
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 20px sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("KHUSUS KARYAWAN", 128, 32);
+
+        const tex = new THREE.CanvasTexture(c);
+        tex.needsUpdate = true;
+        const sign = new THREE.Mesh(new THREE.PlaneGeometry(0.95, 0.25), new THREE.MeshBasicMaterial({ map: tex }));
+        return sign;
     }
 
-    // Signboard "INDOOR TIMUR 1"
-    const sign = create3DSignboard("INDOOR TIMUR 1", 4.8, 0.8);
-    sign.position.set(0, 4.0, 5.05);
-    group.add(sign);
+    // Left Doorway (Equipment rack / backstage)
+    const leftDoorFrame = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2.5, 0.2), beamMat);
+    leftDoorFrame.position.set(-4.2, 1.5, -4.72);
+    group.add(leftDoorFrame);
 
-    // Light
-    const light = new THREE.PointLight(0xffbe6b, 1.8, 18);
-    light.position.set(0, 3.2, 0);
-    group.add(light);
+    const leftDoorOpening = new THREE.Mesh(new THREE.BoxGeometry(1.0, 2.3, 0.14), new THREE.MeshStandardMaterial({ color: 0x181e28, roughness: 0.8 }));
+    leftDoorOpening.position.set(-4.2, 1.4, -4.74);
+    group.add(leftDoorOpening);
+
+    const signLeft = createKaryawanSign();
+    signLeft.position.set(-4.2, 2.75, -4.6);
+    group.add(signLeft);
+
+    // Right Doorway (Wood panel door)
+    const rightDoorFrame = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2.5, 0.2), beamMat);
+    rightDoorFrame.position.set(4.2, 1.5, -4.72);
+    group.add(rightDoorFrame);
+
+    const rightDoorPanel = new THREE.Mesh(new THREE.BoxGeometry(1.0, 2.3, 0.1), panelMat);
+    rightDoorPanel.position.set(4.2, 1.4, -4.74);
+    group.add(rightDoorPanel);
+
+    const signRight = createKaryawanSign();
+    signRight.position.set(4.2, 2.75, -4.6);
+    group.add(signRight);
+
+    // 5. Open-Air Rustic Side Walls (Setengah Badan Kayu Jati / Balustrade 1.1m)
+    // Sisi kiri & kanan dibuat terbuka di bagian atas agar pencahayaan alami & pemandangan lereng tetap masuk
+    const westBalustrade = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1.1, 10.2), panelMat);
+    westBalustrade.position.set(-4.75, 0.75, 0);
+    westBalustrade.receiveShadow = true;
+    group.add(westBalustrade);
+
+    const eastBalustrade = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1.1, 10.2), panelMat);
+    eastBalustrade.position.set(4.75, 0.75, 0);
+    eastBalustrade.receiveShadow = true;
+    group.add(eastBalustrade);
+
+    // Structural Timber Posts (Tiang Kayu Penopang)
+    [-4.7, 4.7].forEach(px => {
+        [-4.7, 0, 4.7].forEach(pz => {
+            const post = new THREE.Mesh(new THREE.BoxGeometry(0.3, 3.8, 0.3), teakMat);
+            post.position.set(px, 2.0, pz);
+            group.add(post);
+        });
+    });
+
+    // 6. Perimeter Roof Beams & Cross Ties
+    const bNorth = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.28, 0.26), beamMat);
+    bNorth.position.set(0, 3.75, -4.75);
+    group.add(bNorth);
+
+    const bSouth = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.28, 0.26), beamMat);
+    bSouth.position.set(0, 3.75, 4.75);
+    group.add(bSouth);
+
+    const bWest = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.28, 10.2), beamMat);
+    bWest.position.set(-4.75, 3.75, 0);
+    group.add(bWest);
+
+    const bEast = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.28, 10.2), beamMat);
+    bEast.position.set(4.75, 3.75, 0);
+    group.add(bEast);
+
+    const bCenter = new THREE.Mesh(new THREE.BoxGeometry(9.4, 0.24, 0.24), beamMat);
+    bCenter.position.set(0, 3.75, 0);
+    group.add(bCenter);
+
+    // Traditional Pitched Terracotta Roof
+    const roofN = new THREE.Mesh(new THREE.BoxGeometry(10.2, 0.12, 5.6), tileMat);
+    roofN.position.set(0, 4.55, -2.4);
+    roofN.rotation.x = 0.36;
+    group.add(roofN);
+
+    const roofS = new THREE.Mesh(new THREE.BoxGeometry(10.2, 0.12, 5.6), tileMat);
+    roofS.position.set(0, 4.55, 2.4);
+    roofS.rotation.x = -0.36;
+    group.add(roofS);
+
+    // 7. Iconic Vintage Black Roadster Bicycle (Sepeda Onthel Klasik Kanan Panggung)
+    const bikeGroup = new THREE.Group();
+    bikeGroup.position.set(2.8, 0.52, -3.2);
+    bikeGroup.rotation.y = -0.25;
+
+    const wheelGeo = new THREE.TorusGeometry(0.36, 0.035, 12, 24);
+    const frontWheel = new THREE.Mesh(wheelGeo, metalMat);
+    frontWheel.position.set(0.68, 0.36, 0);
+    bikeGroup.add(frontWheel);
+
+    const rearWheel = new THREE.Mesh(wheelGeo, metalMat);
+    rearWheel.position.set(-0.68, 0.36, 0);
+    bikeGroup.add(rearWheel);
+
+    const downTube = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.82), metalMat);
+    downTube.position.set(0.05, 0.55, 0);
+    downTube.rotation.z = -0.68;
+    bikeGroup.add(downTube);
+
+    const topTube = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.88), metalMat);
+    topTube.position.set(0.0, 0.82, 0);
+    topTube.rotation.z = Math.PI / 2;
+    bikeGroup.add(topTube);
+
+    const seatTube = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.68), metalMat);
+    seatTube.position.set(-0.35, 0.62, 0);
+    seatTube.rotation.z = -0.32;
+    bikeGroup.add(seatTube);
+
+    const saddle = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.06, 0.16), new THREE.MeshStandardMaterial({ color: 0x4a2a12 }));
+    saddle.position.set(-0.42, 0.92, 0);
+    bikeGroup.add(saddle);
+
+    const handleBar = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.54), chromeMat);
+    handleBar.position.set(0.5, 0.96, 0);
+    handleBar.rotation.x = Math.PI / 2;
+    bikeGroup.add(handleBar);
+
+    group.add(bikeGroup);
+
+    // 8. Sound System / Trolley Speaker with LED & "Kotak Apresiasi"
+    const soundGroup = new THREE.Group();
+    soundGroup.position.set(1.55, 0.52, -3.4);
+
+    const speakerBox = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.88, 0.46), new THREE.MeshStandardMaterial({ color: 0x1e222a, roughness: 0.6 }));
+    speakerBox.position.y = 0.44;
+    soundGroup.add(speakerBox);
+
+    const cone1 = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.02, 16), new THREE.MeshBasicMaterial({ color: 0x111111 }));
+    cone1.position.set(0, 0.62, 0.24);
+    cone1.rotation.x = Math.PI / 2;
+    soundGroup.add(cone1);
+
+    const ledRing = new THREE.Mesh(new THREE.RingGeometry(0.18, 0.21, 16), new THREE.MeshBasicMaterial({ color: 0x38bdf8 }));
+    ledRing.position.set(0, 0.62, 0.252);
+    soundGroup.add(ledRing);
+
+    // "Kotak Apresiasi"
+    const tipBox = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.18, 0.2), new THREE.MeshStandardMaterial({ color: 0xe2d4be, roughness: 0.5 }));
+    tipBox.position.set(0, 0.98, 0);
+    soundGroup.add(tipBox);
+
+    const tipSlot = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.02, 0.02), new THREE.MeshBasicMaterial({ color: 0x111111 }));
+    tipSlot.position.set(0, 1.075, 0);
+    soundGroup.add(tipSlot);
+
+    group.add(soundGroup);
+
+    // 9. Tripod Microphone Stands & Performance Chair at Center Stage
+    const tripod1 = new THREE.Group();
+    tripod1.position.set(-0.5, 0.52, -3.0);
+    const pole1 = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 1.35), chromeMat);
+    pole1.position.y = 0.68;
+    tripod1.add(pole1);
+    const micBoom = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.55), metalMat);
+    micBoom.position.set(0.12, 1.32, 0);
+    micBoom.rotation.z = -0.45;
+    tripod1.add(micBoom);
+    group.add(tripod1);
+
+    const tripod2 = new THREE.Group();
+    tripod2.position.set(0.5, 0.52, -3.0);
+    const pole2 = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 1.1), chromeMat);
+    pole2.position.y = 0.55;
+    tripod2.add(pole2);
+    const plate = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.28, 0.02), metalMat);
+    plate.position.set(0, 1.05, 0);
+    plate.rotation.x = -0.35;
+    tripod2.add(plate);
+    group.add(tripod2);
+
+    const chairGroup = new THREE.Group();
+    chairGroup.position.set(-0.2, 0.52, -3.4);
+    const chairSeat = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.05, 0.44), new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.3 }));
+    chairSeat.position.y = 0.45;
+    chairGroup.add(chairSeat);
+    const chairBack = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.44, 0.04), new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.3 }));
+    chairBack.position.set(0, 0.74, -0.2);
+    chairGroup.add(chairBack);
+    group.add(chairGroup);
+
+    // Stack of Folding Chairs on Stage Right
+    const chairStack = new THREE.Group();
+    chairStack.position.set(2.1, 0.52, -3.9);
+    for (let ci = 0; ci < 5; ci++) {
+        const folded = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.85, 0.06), new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.4 }));
+        folded.position.set(0, 0.45, ci * 0.07);
+        folded.rotation.x = -0.12;
+        chairStack.add(folded);
+    }
+    group.add(chairStack);
+
+    // 10. Traditional Acoustic Wall Installations (Tampah / Nyiru, Kukusan)
+    const tampahMat = new THREE.MeshStandardMaterial({ color: 0xe0b26a, roughness: 0.6 });
+    const kukusanMat = new THREE.MeshStandardMaterial({ color: 0xd49b4c, roughness: 0.6 });
+
+    const tampahConfigs = [
+        { x: -2.8, y: 2.7, r: 0.54 },
+        { x: -2.1, y: 2.1, r: 0.40 },
+        { x: -3.2, y: 1.8, r: 0.34 },
+        { x: -1.3, y: 2.9, r: 0.46 },
+        { x: 1.4,  y: 2.8, r: 0.50 },
+        { x: 2.4,  y: 2.4, r: 0.40 },
+        { x: 3.1,  y: 1.9, r: 0.34 }
+    ];
+
+    tampahConfigs.forEach(tc => {
+        const tray = new THREE.Mesh(new THREE.CylinderGeometry(tc.r, tc.r, 0.04, 18), tampahMat);
+        tray.rotation.x = Math.PI / 2;
+        tray.position.set(tc.x, tc.y, -4.65);
+        group.add(tray);
+    });
+
+    [-2.5, 2.0].forEach(kx => {
+        const kukusan = new THREE.Mesh(new THREE.ConeGeometry(0.24, 0.48, 14), kukusanMat);
+        kukusan.rotation.x = -Math.PI / 2;
+        kukusan.position.set(kx, 1.9, -4.63);
+        group.add(kukusan);
+    });
+
+    // 11. Two Hanging Conical Woven Bamboo Lamps (Cahaya Hangat 2700K)
+    [-2.2, 2.2].forEach(lx => {
+        const lamp = new THREE.Group();
+        lamp.position.set(lx, 2.4, -2.6);
+
+        const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.4), new THREE.MeshStandardMaterial({ color: 0x111111 }));
+        cord.position.y = 0.7;
+        lamp.add(cord);
+
+        const shade = new THREE.Mesh(new THREE.ConeGeometry(0.46, 0.38, 16, 1, true), kukusanMat);
+        shade.position.y = 0;
+        lamp.add(shade);
+
+        const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.09, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffe8a3 }));
+        bulb.position.y = -0.06;
+        lamp.add(bulb);
+
+        group.add(lamp);
+    });
+
+    // Dedicated Stage & Hall Illuminations (Warm Amber Ambiance)
+    const stageLight = new THREE.PointLight(0xffbe6b, 3.5, 16);
+    stageLight.position.set(0, 3.2, -2.2);
+    group.add(stageLight);
+
+    const hallLight = new THREE.PointLight(0xffbe6b, 3.0, 18);
+    hallLight.position.set(0, 3.2, 2.2);
+    group.add(hallLight);
+
+    // 12. Front Header Wooden Signboard: "INDOOR TIMUR 1 (LIVE STAGE HALL)"
+    const headerSign = create3DSignboard("INDOOR TIMUR 1 (LIVE STAGE HALL)", 5.6, 0.85);
+    headerSign.position.set(0, 3.88, 5.25);
+    group.add(headerSign);
 
     scene3D.add(group);
 }
