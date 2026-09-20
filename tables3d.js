@@ -151,12 +151,25 @@ function init3DFloorPlan() {
     camera3D = new THREE.PerspectiveCamera(40, width / height, 0.5, 300);
     camera3D.position.set(CAMERA_PRESETS.all.pos.x, CAMERA_PRESETS.all.pos.y, CAMERA_PRESETS.all.pos.z);
 
-    // 3. RENDERER
-    renderer3D = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
+    // Detect Mobile Device
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768);
+
+    // 3. RENDERER (Adaptive Performance: 60 FPS on Mobile HP & Ultra-Crisp on Desktop)
+    renderer3D = new THREE.WebGLRenderer({
+        antialias: !isMobileDevice, // Mobile screens have dense 400+ PPI; disabling MSAA saves massive fillrate & memory bandwidth
+        alpha: false,
+        powerPreference: isMobileDevice ? "default" : "high-performance"
+    });
     renderer3D.setSize(width, height);
-    renderer3D.setPixelRatio(Math.min(Math.max(window.devicePixelRatio || 1, 2.0), 3.0));
+
+    // Mobile capped at 1.25x (lightweight, zero thermal lag), Desktop capped at 1.75x
+    const targetDPR = isMobileDevice
+        ? Math.min(window.devicePixelRatio || 1, 1.25)
+        : Math.min(window.devicePixelRatio || 1, 1.75);
+    renderer3D.setPixelRatio(targetDPR);
+
     renderer3D.shadowMap.enabled = true;
-    renderer3D.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer3D.shadowMap.type = isMobileDevice ? THREE.BasicShadowMap : THREE.PCFSoftShadowMap;
     renderer3D.toneMapping = THREE.ACESFilmicToneMapping;
     renderer3D.toneMappingExposure = 1.15;
 
@@ -177,6 +190,7 @@ function init3DFloorPlan() {
     window.camera3D = camera3D;
     window.controls3D = controls3D;
     window.scene3D = scene3D;
+    window.renderer3D = renderer3D;
 
     // 5. LIGHTING
     setup3DLighting();
@@ -207,11 +221,12 @@ function setup3DLighting() {
     scene3D.add(hemiLight);
 
     // Main Warm Golden Key Light
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768);
     const sunLight = new THREE.DirectionalLight(0xffdfa9, 0.85);
     sunLight.position.set(28, 45, 25);
     sunLight.castShadow = true;
-    sunLight.shadow.mapSize.width = 2048;
-    sunLight.shadow.mapSize.height = 2048;
+    sunLight.shadow.mapSize.width = isMobileDevice ? 1024 : 2048;
+    sunLight.shadow.mapSize.height = isMobileDevice ? 1024 : 2048;
     sunLight.shadow.camera.near = 1;
     sunLight.shadow.camera.far = 120;
     const d = 40;
@@ -1749,11 +1764,11 @@ function buildIndoorTimur1() {
         wGroup.position.set(xPos, 0.42, 0);
 
         // Ultra-Smooth Polished Chrome Rim (128 tubular segments for seamless circle)
-        const rim = new THREE.Mesh(new THREE.TorusGeometry(0.385, 0.015, 32, 192), bikeChromeMat);
+        const rim = new THREE.Mesh(new THREE.TorusGeometry(0.385, 0.015, 16, 64), bikeChromeMat);
         wGroup.add(rim);
 
         // Ultra-Smooth Vintage Tread Rubber Tire (128 tubular segments)
-        const tire = new THREE.Mesh(new THREE.TorusGeometry(0.402, 0.026, 32, 192), bikeTireMat);
+        const tire = new THREE.Mesh(new THREE.TorusGeometry(0.402, 0.026, 16, 64), bikeTireMat);
         wGroup.add(tire);
 
         // Center Chrome Hub with Flanges & Axle Nuts
@@ -1775,19 +1790,22 @@ function buildIndoorTimur1() {
             wGroup.add(nut);
         });
 
-        // Fine Round Wire Spokes (28 pairs = 56 spokes total per wheel, 8-seg round wire)
-        for (let s = 0; s < 28; s++) {
-            const angle = (s * Math.PI) / 14;
-            const spoke1 = new THREE.Mesh(new THREE.CylinderGeometry(0.0022, 0.0022, 0.77, 8), bikeChromeMat);
-            spoke1.rotation.z = angle;
-            spoke1.position.z = 0.012;
-            wGroup.add(spoke1);
-
-            const spoke2 = new THREE.Mesh(new THREE.CylinderGeometry(0.0022, 0.0022, 0.77, 8), bikeChromeMat);
-            spoke2.rotation.z = angle + 0.08;
-            spoke2.position.z = -0.012;
-            wGroup.add(spoke2);
+        // Fine Round Wire Spokes via InstancedMesh (36 spokes per wheel in EXACTLY 1 draw call!)
+        const spokeCount = 36;
+        const spokeGeo = new THREE.CylinderGeometry(0.0022, 0.0022, 0.77, 6);
+        const spokeInst = new THREE.InstancedMesh(spokeGeo, bikeChromeMat, spokeCount);
+        const dummy = new THREE.Object3D();
+        for (let s = 0; s < spokeCount; s++) {
+            const angle = (s * Math.PI * 2) / spokeCount;
+            const side = (s % 2 === 0) ? 0.012 : -0.012;
+            const offset = (s % 2 === 0) ? 0 : 0.08;
+            dummy.position.set(0, 0, side);
+            dummy.rotation.set(0, 0, angle + offset);
+            dummy.updateMatrix();
+            spokeInst.setMatrixAt(s, dummy.matrix);
         }
+        spokeInst.instanceMatrix.needsUpdate = true;
+        wGroup.add(spokeInst);
         return wGroup;
     }
 
@@ -1800,7 +1818,7 @@ function buildIndoorTimur1() {
     // --- B. VINTAGE C-CHANNEL FENDERS WITH WHITE TIP & GAZELLE MASCOT (128 Radial Segments) ---
     // Front Fender (Lengkung Depan Ber-Volume Halus Tanpa Facet)
     const frontFender = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.435, 0.435, 0.072, 192, 1, true, -Math.PI * 0.18, Math.PI * 0.82),
+        new THREE.CylinderGeometry(0.435, 0.435, 0.072, 64, 1, true, -Math.PI * 0.18, Math.PI * 0.82),
         bikeBlackMat
     );
     frontFender.rotation.x = Math.PI / 2;
@@ -1833,7 +1851,7 @@ function buildIndoorTimur1() {
 
     // Rear Fender (Lengkung Belakang Ber-Volume Panjang 128 Segments)
     const rearFender = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.435, 0.435, 0.072, 192, 1, true, -Math.PI * 0.48, Math.PI * 1.02),
+        new THREE.CylinderGeometry(0.435, 0.435, 0.072, 64, 1, true, -Math.PI * 0.48, Math.PI * 1.02),
         bikeBlackMat
     );
     rearFender.rotation.x = Math.PI / 2;
@@ -2255,7 +2273,7 @@ function buildIndoorTimur1() {
     const bikeSpot = new THREE.SpotLight(0xfff5e6, 5.2, 10.0, Math.PI / 4.2, 0.45, 1.2);
     bikeSpot.position.set(0, 3.4, -1.8);
     bikeSpot.target.position.set(0, 0.65, -3.1);
-    bikeSpot.castShadow = true;
+    bikeSpot.castShadow = false;
     bikeSpot.shadow.mapSize.width = 1024;
     bikeSpot.shadow.mapSize.height = 1024;
     bikeSpot.shadow.bias = -0.0003;
@@ -3163,7 +3181,7 @@ function buildVipTable3D(group, table, type = "vip-large") {
     // Localized Warm Amber Point Light (Cahaya Kuning Hangat 2200K Menerangi Meja)
     const tableLight = new THREE.PointLight(0xffa834, 2.4, 6.5);
     tableLight.position.y = -0.15;
-    tableLight.castShadow = true;
+    tableLight.castShadow = false;
     lampGroup.add(tableLight);
 
     group.add(lampGroup);
@@ -3545,14 +3563,36 @@ function on3DWindowResize() {
     camera3D.aspect = width / height;
     camera3D.updateProjectionMatrix();
     renderer3D.setSize(width, height);
-    renderer3D.setPixelRatio(Math.min(Math.max(window.devicePixelRatio || 1, 2.0), 3.0));
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768);
+    const targetDPR = isMobileDevice
+        ? Math.min(window.devicePixelRatio || 1, 1.25)
+        : Math.min(window.devicePixelRatio || 1, 1.75);
+    renderer3D.setPixelRatio(targetDPR);
+}
+
+let isCanvasInView = true;
+
+// Smart Viewport Observer: Pause WebGL render loop when user is browsing other parts of the website
+if (typeof IntersectionObserver !== "undefined") {
+    const canvasObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            isCanvasInView = entry.isIntersecting;
+        });
+    }, { rootMargin: "100px" });
+    const targetContainer = document.getElementById("webglCanvasContainer") || document.getElementById("denah-3d");
+    if (targetContainer) {
+        canvasObserver.observe(targetContainer);
+    }
 }
 
 /**
- * Animation Frame Loop
+ * Animation Frame Loop (Adaptive 60 FPS with Off-Screen Sleep)
  */
 function animate3D(time) {
     animFrameId = requestAnimationFrame(animate3D);
+
+    // Pause WebGL rendering if 3D section is scrolled off-screen (0% GPU drain when reading menus/home)
+    if (!isCanvasInView) return;
 
     if (typeof TWEEN !== "undefined") {
         TWEEN.update();
