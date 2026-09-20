@@ -513,15 +513,19 @@ ul {
 }
 
 .menu-badge {
-    align-self: flex-start;
-    background-color: var(--accent-gold);
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 3px 10px;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: linear-gradient(135deg, #e5b882 0%, #d4a373 100%);
+    color: #0c0e12;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 12px;
     border-radius: 50px;
-    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
     text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 2;
 }
 
 .menu-info h4 {

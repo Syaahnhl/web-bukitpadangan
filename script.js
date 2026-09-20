@@ -111,9 +111,9 @@ function renderMenuGrid(items) {
             <div class="menu-item show" data-category="${item.category}" data-id="${item.id}">
                 <div class="menu-img">
                     <img src="${item.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop'}" alt="${item.name}">
+                    ${badgeHtml}
                 </div>
                 <div class="menu-info">
-                    ${badgeHtml}
                     <h4>${item.name}</h4>
                     <p>${item.desc}</p>
                     <div class="menu-footer">
