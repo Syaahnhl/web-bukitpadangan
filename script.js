@@ -511,7 +511,14 @@ function filterTablesZone(zone) {
 }
 
 function openTableModal(tableId) {
-    const table = tablesData.find(t => t.id === tableId);
+    if (!tableId) return;
+    const cleanId = String(tableId).toLowerCase().trim();
+    const table = tablesData.find(t => 
+        t.id.toLowerCase() === cleanId || 
+        t.id.toLowerCase() === `t${cleanId.replace(/\D/g, '').padStart(2, '0')}` ||
+        `table-${t.number}`.toLowerCase() === cleanId ||
+        `table-${String(t.number).padStart(2, '0')}`.toLowerCase() === cleanId
+    );
     if (!table) return;
 
     activePreviewTableId = tableId;

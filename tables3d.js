@@ -89,8 +89,8 @@ function init3DFloorPlan() {
 
     // 1. SCENE
     scene3D = new THREE.Scene();
-    scene3D.background = new THREE.Color(0xdce7d9); // Soft mountain mist color
-    scene3D.fog = new THREE.FogExp2(0xdce7d9, 0.012);
+    scene3D.background = new THREE.Color(0x0a0c0f); // Luxury Night Obsidian Sky
+    scene3D.fog = new THREE.FogExp2(0x0a0c0f, 0.014);
 
     // 2. CAMERA
     camera3D = new THREE.PerspectiveCamera(40, width / height, 0.5, 300);
@@ -143,13 +143,13 @@ function init3DFloorPlan() {
  * Setup Lighting
  */
 function setup3DLighting() {
-    // Hemisphere light (sky warm light, ground grass bounce)
-    const hemiLight = new THREE.HemisphereLight(0xfff8ee, 0x476235, 0.75);
+    // Hemisphere light (Warm moonlight above, dark earth bounce)
+    const hemiLight = new THREE.HemisphereLight(0xffeedd, 0x111418, 0.65);
     hemiLight.position.set(0, 50, 0);
     scene3D.add(hemiLight);
 
-    // Main Sunlight (Directional with soft shadows)
-    const sunLight = new THREE.DirectionalLight(0xfffaed, 0.95);
+    // Main Warm Golden Key Light
+    const sunLight = new THREE.DirectionalLight(0xffdfa9, 0.85);
     sunLight.position.set(28, 45, 25);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.width = 2048;
@@ -164,19 +164,28 @@ function setup3DLighting() {
     sunLight.shadow.bias = -0.0008;
     scene3D.add(sunLight);
 
-    // Ambient light
-    const ambLight = new THREE.AmbientLight(0xffffff, 0.35);
+    // Warm Gold Ambient fill
+    const ambLight = new THREE.AmbientLight(0xd4a373, 0.35);
     scene3D.add(ambLight);
 
-    // Warm indoor light for VIP Pavilion
-    const vipLight = new THREE.PointLight(0xffdfa4, 1.2, 28);
-    vipLight.position.set(-3, 3.2, -19);
+    // Warm golden indoor light for VIP Pavilion
+    const vipLight = new THREE.PointLight(0xffba55, 2.2, 30);
+    vipLight.position.set(-3, 3.5, -19);
     scene3D.add(vipLight);
 
-    // Warm light for Kasir/Main Building
-    const mainLight = new THREE.PointLight(0xffd59e, 1.0, 20);
-    mainLight.position.set(-22, 3.2, -8);
+    // Warm golden light for Kasir/Main Building
+    const mainLight = new THREE.PointLight(0xffaa44, 2.0, 25);
+    mainLight.position.set(-22, 3.5, -8);
     scene3D.add(mainLight);
+
+    // Outdoor cliff lanterns
+    const deckLight1 = new THREE.PointLight(0xff9933, 1.5, 18);
+    deckLight1.position.set(22, 3.0, -8);
+    scene3D.add(deckLight1);
+
+    const deckLight2 = new THREE.PointLight(0xff9933, 1.5, 18);
+    deckLight2.position.set(22, 3.0, 10);
+    scene3D.add(deckLight2);
 }
 
 /**
@@ -185,7 +194,7 @@ function setup3DLighting() {
 function build3DEnvironment() {
     // A. MAIN TERRAIN (Lush Grass Hill Plateau)
     const groundGeo = new THREE.CylinderGeometry(44, 46, 2, 48);
-    const groundMat = new THREE.MeshLambertMaterial({ color: 0x4f773d });
+    const groundMat = new THREE.MeshLambertMaterial({ color: 0x14181e }); // Dark obsidian basalt
     const ground = new THREE.Mesh(groundGeo, groundMat);
     ground.position.y = -1;
     ground.receiveShadow = true;
@@ -194,7 +203,7 @@ function build3DEnvironment() {
     // B. CENTRAL PLAZA & GARDEN PATHWAYS
     // Main Flagstone Plaza
     const plazaGeo = new THREE.CylinderGeometry(5.5, 5.5, 0.08, 32);
-    const stoneMat = new THREE.MeshLambertMaterial({ color: 0xd9d3c7 });
+    const stoneMat = new THREE.MeshLambertMaterial({ color: 0x222831 }); // Dark flagstone
     const plaza = new THREE.Mesh(plazaGeo, stoneMat);
     plaza.position.set(1, 0.04, 3);
     plaza.receiveShadow = true;
@@ -203,7 +212,7 @@ function build3DEnvironment() {
     // Central Garden Fountain / Flower Centerpiece
     const fountainBase = new THREE.Mesh(
         new THREE.CylinderGeometry(1.8, 2.2, 0.6, 24),
-        new THREE.MeshLambertMaterial({ color: 0x7c7365 })
+        new THREE.MeshLambertMaterial({ color: 0x2b323c })
     );
     fountainBase.position.set(1, 0.3, 3);
     fountainBase.castShadow = true;
@@ -212,7 +221,7 @@ function build3DEnvironment() {
     // Water pool in fountain
     const water = new THREE.Mesh(
         new THREE.CylinderGeometry(1.5, 1.5, 0.1, 24),
-        new THREE.MeshLambertMaterial({ color: 0x4ca1af })
+        new THREE.MeshLambertMaterial({ color: 0x1d3e5e })
     );
     water.position.set(1, 0.58, 3);
     scene3D.add(water);
@@ -618,10 +627,24 @@ function populate3DTables() {
         tableGroup.add(ring);
         tableGroup.userData.glowRing = ring;
 
-        // Floating 3D Table Sprite Badge
-        const badgeY = (layout.zone === "gazebo") ? 3.4 : (layout.umbrella ? 3.2 : 2.2);
+        // Floating 3D Table Sprite Badge with perspective distance compensation
+        let badgeY = 2.4;
+        let badgeScaleX = 3.2;
+        let badgeScaleY = 1.35;
+
+        if (layout.zone === "gazebo") {
+            badgeY = 3.6;
+        } else if (layout.zone === "vip") {
+            badgeY = 4.2; // Above glass pergola roof
+            badgeScaleX = 4.2; // Perspective distance compensation
+            badgeScaleY = 1.7;
+        } else if (layout.umbrella) {
+            badgeY = 3.4;
+        }
+
         const sprite = createTableSpriteBadge(table, statusColor);
         sprite.position.set(0, badgeY, 0);
+        sprite.scale.set(badgeScaleX, badgeScaleY, 1.0);
         tableGroup.add(sprite);
         tableGroup.userData.sprite = sprite;
 
@@ -690,6 +713,16 @@ function buildGazebo3D(group, table) {
         cushion.position.set(cx, 0.42, cz);
         group.add(cushion);
     });
+
+    // 6. Hanging Warm Resort Amber Lantern
+    const lanternMat = new THREE.MeshBasicMaterial({ color: 0xffcc77 });
+    const lantern = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 0.35, 8), lanternMat);
+    lantern.position.y = 2.2;
+    group.add(lantern);
+
+    const warmLight = new THREE.PointLight(0xffb055, 1.3, 8.5);
+    warmLight.position.y = 2.0;
+    group.add(warmLight);
 }
 
 /**
@@ -798,39 +831,39 @@ function buildVipTable3D(group, table, type = "vip-large") {
  */
 function createTableSpriteBadge(table, statusColorHex) {
     const canvas = document.createElement("canvas");
-    canvas.width = 256;
-    canvas.height = 110;
+    canvas.width = 300;
+    canvas.height = 120;
     const ctx = canvas.getContext("2d");
 
-    // Rounded rectangle pill
-    const radius = 24;
-    ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+    // Rounded rectangle pill: Deep Obsidian Charcoal
+    const radius = 26;
+    ctx.fillStyle = "rgba(15, 18, 24, 0.98)";
     ctx.beginPath();
-    ctx.roundRect(6, 6, canvas.width - 12, canvas.height - 12, radius);
+    ctx.roundRect(8, 8, canvas.width - 16, canvas.height - 16, radius);
     ctx.fill();
 
-    // Border with status color
-    ctx.strokeStyle = statusColorHex;
+    // Border with metallic gold or status color
+    ctx.strokeStyle = statusColorHex || "#d4a373";
     ctx.lineWidth = 6;
     ctx.stroke();
 
-    // Status Circle Indicator
-    ctx.fillStyle = statusColorHex;
+    // Outer Glow Ring for Status
+    ctx.fillStyle = statusColorHex || "#10b981";
     ctx.beginPath();
-    ctx.arc(42, canvas.height / 2, 14, 0, Math.PI * 2);
+    ctx.arc(46, canvas.height / 2, 16, 0, Math.PI * 2);
     ctx.fill();
 
-    // Text: Table Name
-    ctx.fillStyle = "#1e293b";
-    ctx.font = "bold 34px sans-serif";
+    // Text: Table Name (Crisp White)
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 38px 'Poppins', sans-serif";
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
-    ctx.fillText(table.name, 72, canvas.height / 2 - 10);
+    ctx.fillText(table.name, 78, canvas.height / 2 - 12);
 
-    // Text: Capacity
-    ctx.fillStyle = "#64748b";
-    ctx.font = "24px sans-serif";
-    ctx.fillText(`${table.capacity} Kursi`, 72, canvas.height / 2 + 22);
+    // Text: Capacity (Warm Vibrant Gold)
+    ctx.fillStyle = "#e5b382";
+    ctx.font = "bold 26px 'Poppins', sans-serif";
+    ctx.fillText(`${table.capacity} Kursi`, 78, canvas.height / 2 + 25);
 
     const texture = new THREE.CanvasTexture(canvas);
     const spriteMat = new THREE.SpriteMaterial({
@@ -840,7 +873,7 @@ function createTableSpriteBadge(table, statusColorHex) {
     });
 
     const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(2.4, 1.05, 1.0);
+    sprite.scale.set(3.4, 1.4, 1.0);
     return sprite;
 }
 
