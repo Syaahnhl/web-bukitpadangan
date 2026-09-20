@@ -1,80 +1,110 @@
 [
   {
-    "id": "S-01",
+    "id": "OD-01",
     "number": 1,
-    "name": "Saung 01 (View Sawah)",
-    "area": "Outdoor",
+    "name": "Outdoor 01 (Dekat Jalan Raya)",
+    "area": "Outdoor Dekat Jalan Raya",
     "zone": "outdoor",
-    "zoneName": "Outdoor / View Sawah & Sungai",
+    "zoneName": "Outdoor Dekat Jalan Raya (Jl. Gunungwungkal)",
     "capacity": 6,
     "status": "tersedia",
-    "description": "Saung gazebo bambu tepi sawah dengan semilir angin sejuk dan suara gemericik air sungai.",
-    "facilities": ["Lesehan Santai", "View Persawahan & Sungai", "Colokan Listrik"],
+    "description": "Area santap outdoor di pelataran terbuka tepi Jl. Gunungwungkal - Jepalo dengan meja payung santai, udara sejuk perbukitan, dan akses sangat mudah.",
+    "facilities": [
+      "Meja Payung Outdoor",
+      "Tepi Jl. Gunungwungkal",
+      "Pemandangan Terbuka",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop"
   },
   {
-    "id": "S-02",
+    "id": "OD-02",
     "number": 2,
-    "name": "Saung 02 (View Sawah)",
-    "area": "Outdoor",
+    "name": "Outdoor 02 (Dekat Jalan Raya)",
+    "area": "Outdoor Dekat Jalan Raya",
     "zone": "outdoor",
-    "zoneName": "Outdoor / View Sawah & Sungai",
+    "zoneName": "Outdoor Dekat Jalan Raya (Jl. Gunungwungkal)",
     "capacity": 6,
     "status": "tersedia",
-    "description": "Saung santai lesehan menghadap langsung ke hamparan terasering sawah hijau yang asri.",
-    "facilities": ["Lesehan Santai", "View Hamparan Sawah", "Colokan Listrik"],
+    "description": "Area santap outdoor di pelataran terbuka tepi Jl. Gunungwungkal - Jepalo dengan meja payung santai, udara sejuk perbukitan, dan akses sangat mudah.",
+    "facilities": [
+      "Meja Payung Outdoor",
+      "Tepi Jl. Gunungwungkal",
+      "Pemandangan Terbuka",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
   },
   {
-    "id": "S-03",
+    "id": "OD-03",
     "number": 3,
-    "name": "Saung 03 (View Sawah)",
-    "area": "Outdoor",
+    "name": "Outdoor 03 (Dekat Jalan Raya)",
+    "area": "Outdoor Dekat Jalan Raya",
     "zone": "outdoor",
-    "zoneName": "Outdoor / View Sawah & Sungai",
+    "zoneName": "Outdoor Dekat Jalan Raya (Jl. Gunungwungkal)",
     "capacity": 6,
     "status": "tersedia",
-    "description": "Spot favorit keluarga kecil untuk bersantap santai di tengah semilir angin pegunungan.",
-    "facilities": ["Lesehan Santai", "Udara Sejuk Alami", "Colokan Listrik"],
+    "description": "Area santap outdoor di pelataran terbuka tepi Jl. Gunungwungkal - Jepalo dengan meja payung santai, udara sejuk perbukitan, dan akses sangat mudah.",
+    "facilities": [
+      "Meja Payung Outdoor",
+      "Tepi Jl. Gunungwungkal",
+      "Pemandangan Terbuka",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop"
   },
   {
-    "id": "S-04",
+    "id": "OD-04",
     "number": 4,
-    "name": "Saung 04 (Keluarga Besar)",
-    "area": "Outdoor",
+    "name": "Outdoor 04 (Dekat Jalan Raya)",
+    "area": "Outdoor Dekat Jalan Raya",
     "zone": "outdoor",
-    "zoneName": "Outdoor / View Sawah & Sungai",
+    "zoneName": "Outdoor Dekat Jalan Raya (Jl. Gunungwungkal)",
     "capacity": 8,
     "status": "tersedia",
-    "description": "Gazebo ukuran luas sangat nyaman untuk kumpul keluarga besar atau arisan santai.",
-    "facilities": ["Kapasitas 6-8 Orang", "Lesehan Nyaman", "Colokan Listrik"],
+    "description": "Area santap outdoor di pelataran terbuka tepi Jl. Gunungwungkal - Jepalo dengan meja payung santai, udara sejuk perbukitan, dan akses sangat mudah.",
+    "facilities": [
+      "Meja Payung Outdoor",
+      "Tepi Jl. Gunungwungkal",
+      "Pemandangan Terbuka",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop"
   },
   {
-    "id": "S-05",
+    "id": "OD-05",
     "number": 5,
-    "name": "Saung 05 (Keluarga Besar)",
-    "area": "Outdoor",
+    "name": "Outdoor 05 (Dekat Jalan Raya)",
+    "area": "Outdoor Dekat Jalan Raya",
     "zone": "outdoor",
-    "zoneName": "Outdoor / View Sawah & Sungai",
+    "zoneName": "Outdoor Dekat Jalan Raya (Jl. Gunungwungkal)",
     "capacity": 8,
     "status": "tersedia",
-    "description": "Saung lesehan lapang dengan sudut pandang lepas ke arah lereng Gunungwungkal.",
-    "facilities": ["Kapasitas 6-8 Orang", "View Pegunungan Sejuk", "Colokan Listrik"],
+    "description": "Area santap outdoor di pelataran terbuka tepi Jl. Gunungwungkal - Jepalo dengan meja payung santai, udara sejuk perbukitan, dan akses sangat mudah.",
+    "facilities": [
+      "Meja Payung Outdoor",
+      "Tepi Jl. Gunungwungkal",
+      "Pemandangan Terbuka",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
   },
   {
-    "id": "S-06",
+    "id": "OD-06",
     "number": 6,
-    "name": "Saung Bancakan 06",
-    "area": "Outdoor",
+    "name": "Outdoor 06 (Dekat Jalan Raya)",
+    "area": "Outdoor Dekat Jalan Raya",
     "zone": "outdoor",
-    "zoneName": "Outdoor / View Sawah & Sungai",
+    "zoneName": "Outdoor Dekat Jalan Raya (Jl. Gunungwungkal)",
     "capacity": 10,
     "status": "tersedia",
-    "description": "Saung utama berkapasitas 10 orang, sangat ideal untuk tradisi makan bancakan bersama dan rombongan reuni.",
-    "facilities": ["Bancakan & Rombongan 10p", "Lesehan Ekstra Luas", "Colokan Listrik"],
+    "description": "Area santap outdoor di pelataran terbuka tepi Jl. Gunungwungkal - Jepalo dengan meja payung santai, udara sejuk perbukitan, dan akses sangat mudah.",
+    "facilities": [
+      "Meja Payung Outdoor",
+      "Tepi Jl. Gunungwungkal",
+      "Pemandangan Terbuka",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -87,7 +117,11 @@
     "capacity": 4,
     "status": "tersedia",
     "description": "Meja santai tepat di pinggir kolam terapi ikan, nikmati sensasi gigitan ikan terapi sambil bersantap.",
-    "facilities": ["Pinggir Kolam Terapi Ikan", "Dekat Area Mewarnai Anak", "Suasana Santai"],
+    "facilities": [
+      "Pinggir Kolam Terapi Ikan",
+      "Dekat Area Mewarnai Anak",
+      "Suasana Santai"
+    ],
     "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -100,7 +134,11 @@
     "capacity": 4,
     "status": "tersedia",
     "description": "Spot relaksasi alami untuk keluarga, anak-anak dapat bermain mewarnai atau menikmati terapi ikan santai.",
-    "facilities": ["Pinggir Kolam Terapi Ikan", "Relaksasi Kaki Alami", "Kids Friendly"],
+    "facilities": [
+      "Pinggir Kolam Terapi Ikan",
+      "Relaksasi Kaki Alami",
+      "Kids Friendly"
+    ],
     "image": "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -113,7 +151,11 @@
     "capacity": 4,
     "status": "tersedia",
     "description": "Meja lesehan di sisi kolam terapi dengan naungan rindang dan akses cepat ke fasilitas bermain anak.",
-    "facilities": ["Pinggir Kolam Terapi Ikan", "Akses Cepat Area Anak", "Colokan Listrik"],
+    "facilities": [
+      "Pinggir Kolam Terapi Ikan",
+      "Akses Cepat Area Anak",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -126,7 +168,11 @@
     "capacity": 6,
     "status": "tersedia",
     "description": "Area indoor utama berukuran 6x6 m, sejuk, terlindung dari cuaca, dekat dengan area kasir dan panggung.",
-    "facilities": ["Indoor Luas 6x6 m", "Dekat Kasir & Panggung", "Keluarga & Grup"],
+    "facilities": [
+      "Indoor Luas 6x6 m",
+      "Dekat Kasir & Panggung",
+      "Keluarga & Grup"
+    ],
     "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -139,7 +185,11 @@
     "capacity": 6,
     "status": "tersedia",
     "description": "Meja makan keluarga di ruang utama indoor dengan kursi empuk dan pencahayaan hangat.",
-    "facilities": ["Indoor Luas 6x6 m", "Kursi Nyaman", "Colokan Listrik"],
+    "facilities": [
+      "Indoor Luas 6x6 m",
+      "Kursi Nyaman",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -152,7 +202,11 @@
     "capacity": 6,
     "status": "tersedia",
     "description": "Meja grup indoor dengan sirkulasi udara bebas, nyaman untuk makan bersama saat malam hari.",
-    "facilities": ["Indoor Luas 6x6 m", "Suasana Tenang", "Colokan Listrik"],
+    "facilities": [
+      "Indoor Luas 6x6 m",
+      "Suasana Tenang",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -165,7 +219,11 @@
     "capacity": 6,
     "status": "tersedia",
     "description": "Meja indoor cocok untuk meeting kerja santai atau rapat komunitas kecil.",
-    "facilities": ["Indoor Luas 6x6 m", "Wi-Fi Kencang", "Colokan Listrik"],
+    "facilities": [
+      "Indoor Luas 6x6 m",
+      "Wi-Fi Kencang",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -178,7 +236,11 @@
     "capacity": 6,
     "status": "tersedia",
     "description": "Meja indoor sudut dengan akses langsung ke mushola dan toilet bersih.",
-    "facilities": ["Indoor Luas 6x6 m", "Akses Mudah Mushola", "Colokan Listrik"],
+    "facilities": [
+      "Indoor Luas 6x6 m",
+      "Akses Mudah Mushola",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -191,7 +253,11 @@
     "capacity": 6,
     "status": "tersedia",
     "description": "Meja indoor strategis dekat bar kopi dan sajian minuman hangat.",
-    "facilities": ["Indoor Luas 6x6 m", "Dekat Bar Minuman", "Colokan Listrik"],
+    "facilities": [
+      "Indoor Luas 6x6 m",
+      "Dekat Bar Minuman",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -204,7 +270,11 @@
     "capacity": 4,
     "status": "tersedia",
     "description": "Meja 4 orang di sayap timur 1, suasana tenang cocok untuk obrolan santai.",
-    "facilities": ["Sayap Timur Tenang", "Kapasitas 4 Orang", "Colokan Listrik"],
+    "facilities": [
+      "Sayap Timur Tenang",
+      "Kapasitas 4 Orang",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -217,7 +287,11 @@
     "capacity": 4,
     "status": "tersedia",
     "description": "Meja makan 4 orang dengan pencahayaan hangat dan sirkulasi angin sejuk lereng bukit.",
-    "facilities": ["Sayap Timur Tenang", "Kapasitas 4 Orang", "Colokan Listrik"],
+    "facilities": [
+      "Sayap Timur Tenang",
+      "Kapasitas 4 Orang",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -230,7 +304,11 @@
     "capacity": 4,
     "status": "tersedia",
     "description": "Meja nyaman 4 orang untuk santap siang atau ngopi santai di sore hari.",
-    "facilities": ["Sayap Timur Tenang", "Kapasitas 4 Orang", "Colokan Listrik"],
+    "facilities": [
+      "Sayap Timur Tenang",
+      "Kapasitas 4 Orang",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -243,7 +321,11 @@
     "capacity": 4,
     "status": "tersedia",
     "description": "Meja sayap timur dengan pandangan ke arah panggung live music.",
-    "facilities": ["Sayap Timur Tenang", "Kapasitas 4 Orang", "Dekat Panggung Live"],
+    "facilities": [
+      "Sayap Timur Tenang",
+      "Kapasitas 4 Orang",
+      "Dekat Panggung Live"
+    ],
     "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -256,7 +338,11 @@
     "capacity": 6,
     "status": "tersedia",
     "description": "Meja berkapasitas 4-6 orang di sayap timur 2 dengan pandangan ke taman samping.",
-    "facilities": ["Sayap Timur 2", "Kapasitas 4-6 Orang", "Colokan Listrik"],
+    "facilities": [
+      "Sayap Timur 2",
+      "Kapasitas 4-6 Orang",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -269,7 +355,11 @@
     "capacity": 6,
     "status": "tersedia",
     "description": "Meja luas 4-6 orang yang pas untuk makan malam santai bersama teman dan keluarga.",
-    "facilities": ["Sayap Timur 2", "Kapasitas 4-6 Orang", "Colokan Listrik"],
+    "facilities": [
+      "Sayap Timur 2",
+      "Kapasitas 4-6 Orang",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -282,7 +372,11 @@
     "capacity": 4,
     "status": "tersedia",
     "description": "Meja intim untuk 4 orang di sudut sayap timur 2 dengan suasana privat yang tenang.",
-    "facilities": ["Sayap Timur 2", "Kapasitas 4 Orang", "Suasana Privat"],
+    "facilities": [
+      "Sayap Timur 2",
+      "Kapasitas 4 Orang",
+      "Suasana Privat"
+    ],
     "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -295,7 +389,11 @@
     "capacity": 4,
     "status": "tersedia",
     "description": "Meja 4 orang dengan sirkulasi udara sejuk terbuka mengarah ke lanskap bukit.",
-    "facilities": ["Sayap Timur 2", "Kapasitas 4 Orang", "Colokan Listrik"],
+    "facilities": [
+      "Sayap Timur 2",
+      "Kapasitas 4 Orang",
+      "Colokan Listrik"
+    ],
     "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
   }
 ]

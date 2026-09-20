@@ -19,9 +19,9 @@ const CAMERA_PRESETS = {
         pos: { x: 0, y: 52, z: 52 },
         target: { x: 0, y: 0, z: 3 }
     },
-    saung: {
-        pos: { x: -9, y: 16, z: 34 },
-        target: { x: -9, y: 1.2, z: 18 }
+    outdoor: {
+        pos: { x: -8, y: 22, z: 54 },
+        target: { x: -8, y: 1.0, z: 24 }
     },
     indoor: {
         pos: { x: -13, y: 18, z: 14 },
@@ -36,13 +36,13 @@ const CAMERA_PRESETS = {
         target: { x: -3, y: 1.0, z: -24 }
     },
     // Aliases for backwards compatibility
-    outdoor: {
-        pos: { x: -9, y: 16, z: 34 },
-        target: { x: -9, y: 1.2, z: 18 }
+    saung: {
+        pos: { x: -8, y: 22, z: 54 },
+        target: { x: -8, y: 1.0, z: 24 }
     },
     gazebo: {
-        pos: { x: -9, y: 16, z: 34 },
-        target: { x: -9, y: 1.2, z: 18 }
+        pos: { x: -8, y: 22, z: 54 },
+        target: { x: -8, y: 1.0, z: 24 }
     },
     vip: {
         pos: { x: -13, y: 18, z: 14 },
@@ -52,13 +52,21 @@ const CAMERA_PRESETS = {
 
 // Table Positions Map in 3D Space (X, Z)
 const TABLE_3D_LAYOUT = {
-    // Lingkaran Hijau: Zona Saung Bambu / Lesehan Tepi Sawah & Sungai (S-01 s/d S-06) - Selatan dekat jalan
-    "S-01": { x: -16, z: 14, zone: "gazebo", rotation: 0 },
-    "S-02": { x: -9,  z: 14, zone: "gazebo", rotation: 0 },
-    "S-03": { x: -2,  z: 14, zone: "gazebo", rotation: 0 },
-    "S-04": { x: -16, z: 22, zone: "gazebo", rotation: 0 },
-    "S-05": { x: -9,  z: 22, zone: "gazebo", rotation: 0 },
-    "S-06": { x: -2,  z: 22, zone: "gazebo", rotation: 0 },
+    // Lingkaran Hijau: Area Outdoor Dekat Jalan Raya (OD-01 s/d OD-06) - Tepi Jl. Gunungwungkal
+    "OD-01": { x: -14, z: 19, zone: "outdoor", rotation: 0, umbrella: true },
+    "OD-02": { x: -8,  z: 19, zone: "outdoor", rotation: 0, umbrella: true },
+    "OD-03": { x: -2,  z: 19, zone: "outdoor", rotation: 0, umbrella: true },
+    "OD-04": { x: -14, z: 25, zone: "outdoor", rotation: 0, umbrella: true },
+    "OD-05": { x: -8,  z: 25, zone: "outdoor", rotation: 0, umbrella: true },
+    "OD-06": { x: -2,  z: 25, zone: "outdoor", rotation: 0, umbrella: true },
+
+    // Backward compatibility aliases
+    "S-01": { x: -14, z: 19, zone: "outdoor", rotation: 0, umbrella: true },
+    "S-02": { x: -8,  z: 20, zone: "outdoor", rotation: 0, umbrella: true },
+    "S-03": { x: -2,  z: 19, zone: "outdoor", rotation: 0, umbrella: true },
+    "S-04": { x: -14, z: 25, zone: "outdoor", rotation: 0, umbrella: true },
+    "S-05": { x: -8,  z: 25, zone: "outdoor", rotation: 0, umbrella: true },
+    "S-06": { x: -2,  z: 25, zone: "outdoor", rotation: 0, umbrella: true },
 
     // Lingkaran Putih: Zona Indoor Utama (IU-07 s/d IU-12) - Barat Daya
     "IU-07": { x: -16, z: -4, zone: "vip", rotation: 0, type: "vip-large" },
@@ -252,6 +260,9 @@ function build3DEnvironment() {
     // 2. Perimeter Ring (Lingkaran Kuning)
     buildPerimeterRing();
 
+    // Lingkaran Hijau: Area Outdoor Dekat Jalan Raya (Jl. Gunungwungkal)
+    buildOutdoorRoadsidePlaza();
+
     // 3. Fasilitas Ibadah & Sanitasi (Lingkaran Merah: Mushola & Toilet/Wudhu)
     buildMushola();
     buildToiletsAndWudhu();
@@ -305,7 +316,7 @@ function buildTerrainAndRoad() {
 
     // Road Signboard
     const roadSign = create3DSignboard("JL. GUNUNGWUNGKAL - JEPALO", 6.8, 0.85);
-    roadSign.position.set(-18, 2.2, 36.5);
+    roadSign.position.set(-18, 2.2, 34);
     scene3D.add(roadSign);
 
     // Main Entrance Gate Marker
@@ -317,6 +328,105 @@ function buildTerrainAndRoad() {
 /**
  * Build Golden Perimeter Ring (Lingkaran Kuning)
  */
+
+/**
+ * Build Area Outdoor Dekat Jalan Raya (Lingkaran Hijau - Jl. Gunungwungkal - Jepalo)
+ */
+function buildOutdoorRoadsidePlaza() {
+    const group = new THREE.Group();
+
+    // 1. Spacious Paved Terrace Platform
+    // Spans X: -19 to 3 (width 22), Z: 15.5 to 28.5 (depth 13)
+    const deckGeo = new THREE.BoxGeometry(22, 0.35, 13);
+    const deckMat = new THREE.MeshLambertMaterial({ color: 0x222834 }); // Slate outdoor paving
+    const deck = new THREE.Mesh(deckGeo, deckMat);
+    deck.position.set(-8, 0.175, 22);
+    deck.receiveShadow = true;
+    group.add(deck);
+
+    // Decorative Gold Stone Border Trim
+    const trimGeo = new THREE.BoxGeometry(22.4, 0.38, 13.4);
+    const trimMat = new THREE.MeshLambertMaterial({ color: 0x3d352a });
+    const trim = new THREE.Mesh(trimGeo, trimMat);
+    trim.position.set(-8, 0.15, 22);
+    group.add(trim);
+
+    // 2. Roadside Access Steps / Ramp (connecting road Z: 29.5 to terrace Z: 28.5)
+    const stepsGeo = new THREE.BoxGeometry(8, 0.18, 1.6);
+    const stepsMat = new THREE.MeshLambertMaterial({ color: 0x2e3544 });
+    const steps = new THREE.Mesh(stepsGeo, stepsMat);
+    steps.position.set(-8, 0.09, 29.2);
+    steps.receiveShadow = true;
+    group.add(steps);
+
+    // 3. Flower Planter Troughs along roadside edge
+    const planterMat = new THREE.MeshLambertMaterial({ color: 0x4a3424 }); // Dark wood planter box
+    const shrubMat = new THREE.MeshLambertMaterial({ color: 0x2d5a27 }); // Lush green shrub
+    const flowerMat = new THREE.MeshLambertMaterial({ color: 0xe5a342 }); // Golden yellow flowers
+
+    const planterPositions = [-17, -13, -3, 1];
+    planterPositions.forEach(px => {
+        const box = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.5, 0.8), planterMat);
+        box.position.set(px, 0.55, 28.2);
+        box.castShadow = true;
+        group.add(box);
+
+        const shrub = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.45, 0.7), shrubMat);
+        shrub.position.set(px, 0.85, 28.2);
+        group.add(shrub);
+
+        // Flower accents
+        for (let fx = -1.1; fx <= 1.1; fx += 0.55) {
+            const fl = new THREE.Mesh(new THREE.SphereGeometry(0.12, 6, 6), flowerMat);
+            fl.position.set(px + fx, 1.12, 28.2);
+            group.add(fl);
+        }
+    });
+
+    // 4. Festoon Bistro Light Poles at 4 corners
+    const poleMat = new THREE.MeshLambertMaterial({ color: 0x1f232b }); // Black iron pole
+    const bulbMat = new THREE.MeshBasicMaterial({ color: 0xffd180 }); // Warm glowing bulb
+    const poleCoords = [
+        [-18.2, 16.2],
+        [2.2,   16.2],
+        [-18.2, 27.8],
+        [2.2,   27.8]
+    ];
+
+    poleCoords.forEach(([px, pz]) => {
+        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.1, 4.0, 8), poleMat);
+        pole.position.set(px, 2.0, pz);
+        pole.castShadow = true;
+        group.add(pole);
+
+        // Lamp head
+        const lantern = new THREE.Mesh(new THREE.ConeGeometry(0.35, 0.25, 4), poleMat);
+        lantern.position.set(px, 4.0, pz);
+        group.add(lantern);
+
+        const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.14, 8, 8), bulbMat);
+        bulb.position.set(px, 3.82, pz);
+        group.add(bulb);
+    });
+
+    // Catenary String Light Glow
+    const festoonLight1 = new THREE.PointLight(0xffbe6b, 2.4, 18);
+    festoonLight1.position.set(-8, 3.8, 19);
+    group.add(festoonLight1);
+
+    const festoonLight2 = new THREE.PointLight(0xffbe6b, 2.4, 18);
+    festoonLight2.position.set(-8, 3.8, 25);
+    group.add(festoonLight2);
+
+    // 5. 3D Roadside Signboard (Facing visitors on Jl. Gunungwungkal)
+    const sign = create3DSignboard("AREA OUTDOOR (TEPI JL. GUNUNGWUNGKAL)", 8.2, 0.95);
+    sign.position.set(-8, 2.2, 28.8);
+    sign.rotation.y = 0; // facing south towards road
+    group.add(sign);
+
+    scene3D.add(group);
+}
+
 function buildPerimeterRing() {
     const ringGeo = new THREE.RingGeometry(46, 46.4, 64);
     const ringMat = new THREE.MeshBasicMaterial({
@@ -1023,12 +1133,13 @@ function populate3DTables() {
         if (!layout) return;
 
         const tableGroup = new THREE.Group();
-        tableGroup.position.set(layout.x, 0, layout.z);
+        const posY = (layout.zone === "outdoor") ? 0.35 : 0;
+        tableGroup.position.set(layout.x, posY, layout.z);
         tableGroup.userData = { table: table };
 
         // Construct 3D Physical Geometry based on Zone
-        if (layout.zone === "gazebo") {
-            buildGazebo3D(tableGroup, table);
+        if (layout.zone === "gazebo" || layout.zone === "outdoor") {
+            buildOutdoorTable3D(tableGroup, table, true);
         } else if (layout.zone === "outdoor") {
             buildOutdoorTable3D(tableGroup, table, layout.umbrella);
         } else if (layout.zone === "vip") {
@@ -1048,7 +1159,7 @@ function populate3DTables() {
         });
         const ring = new THREE.Mesh(ringGeo, ringMat);
         ring.rotation.x = -Math.PI / 2;
-        ring.position.y = (layout.zone === "outdoor") ? 0.5 : 0.05;
+        ring.position.y = 0.05;
         tableGroup.add(ring);
         tableGroup.userData.glowRing = ring;
 
@@ -1057,7 +1168,7 @@ function populate3DTables() {
         let badgeScaleX = 3.2;
         let badgeScaleY = 1.35;
 
-        if (layout.zone === "gazebo") {
+        if (layout.zone === "outdoor" || layout.umbrella) {
             badgeY = 3.6;
         } else if (layout.zone === "vip") {
             badgeY = 4.2; // Above glass pergola roof
@@ -1167,6 +1278,16 @@ function buildOutdoorTable3D(group, table, hasUmbrella = false) {
     tableLeg.position.y = 0.8;
     tableLeg.castShadow = true;
     group.add(tableLeg);
+
+    // Warm table centerpiece lamp
+    const lampMat = new THREE.MeshBasicMaterial({ color: 0xffe29a });
+    const lamp = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.08, 0.18, 8), lampMat);
+    lamp.position.y = 1.38;
+    group.add(lamp);
+
+    const tableGlow = new THREE.PointLight(0xffb86c, 0.7, 3.5);
+    tableGlow.position.y = 1.42;
+    group.add(tableGlow);
 
     // 4 Dining Chairs Around Table
     const chairAngles = [0, Math.PI / 2, Math.PI, Math.PI * 1.5];
