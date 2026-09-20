@@ -39,14 +39,13 @@ async function loadDynamicContent() {
         // 4. Event Section
         const eventSection = document.getElementById("event");
         const navEventLink = document.getElementById("navEventLink");
-        if (data.event && data.event.show) {
-            if (document.getElementById("eventTitleText")) document.getElementById("eventTitleText").innerText = data.event.title;
-            if (document.getElementById("eventDescText")) document.getElementById("eventDescText").innerText = data.event.desc;
-            if (eventSection) eventSection.style.display = "block";
-            if (navEventLink) navEventLink.style.display = "block";
-        } else {
-            if (eventSection) eventSection.style.display = "none";
-            if (navEventLink) navEventLink.style.display = "none";
+        if (data.event) {
+            if (data.event.title && document.getElementById("eventTitleText")) document.getElementById("eventTitleText").innerText = data.event.title;
+            if (data.event.desc && document.getElementById("eventDescText")) document.getElementById("eventDescText").innerText = data.event.desc;
+            if (data.event.show !== false) {
+                if (eventSection) eventSection.style.display = "block";
+                if (navEventLink) navEventLink.style.display = "block";
+            }
         }
 
         // 5. Contacts & Social Media
@@ -133,6 +132,8 @@ window.addEventListener("DOMContentLoaded", () => {
     loadMenuData();
     loadTablesData();
     updateCartUI();
+    initOperatingHoursStatus();
+    initFaqAccordion();
 });
 
 // Elemen-elemen DOM
@@ -794,3 +795,64 @@ document.querySelectorAll(".nav-links a").forEach(link => {
         toggleNavMenu(false);
     });
 });
+
+// =========================================
+// 9. LIVE OPERATING STATUS & FAQ ACCORDION
+// =========================================
+function initOperatingHoursStatus() {
+    const statusPill = document.getElementById("heroLiveStatus");
+    const statusText = document.getElementById("heroLiveStatusText");
+    if (!statusPill || !statusText) return;
+
+    try {
+        // Ambil jam saat ini di zona waktu Indonesia Barat (WIB / Asia/Jakarta)
+        const now = new Date();
+        const formatter = new Intl.DateTimeFormat("en-US", {
+            timeZone: "Asia/Jakarta",
+            hour: "numeric",
+            hour12: false
+        });
+        const currentHour = parseInt(formatter.format(now), 10);
+
+        // Jam operasional resto: 11.00 - 22.00 WIB
+        const isOpen = currentHour >= 11 && currentHour < 22;
+
+        if (isOpen) {
+            statusPill.className = "live-status-pill open";
+            statusText.textContent = "Buka Sekarang • Tutup 22.00 WIB";
+        } else {
+            statusPill.className = "live-status-pill closed";
+            statusText.textContent = "Sedang Tutup • Buka Kembali 11.00 WIB";
+        }
+    } catch (err) {
+        console.warn("Gagal membaca zona waktu lokal:", err);
+    }
+}
+
+function initFaqAccordion() {
+    const faqQuestions = document.querySelectorAll(".faq-question");
+    faqQuestions.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const item = btn.closest(".faq-item");
+            if (!item) return;
+            const answer = item.querySelector(".faq-answer");
+            if (!answer) return;
+
+            const isAlreadyActive = item.classList.contains("active");
+
+            // Tutup semua FAQ lain yang sedang terbuka
+            document.querySelectorAll(".faq-item.active").forEach(otherItem => {
+                otherItem.classList.remove("active");
+                const otherAnswer = otherItem.querySelector(".faq-answer");
+                if (otherAnswer) otherAnswer.style.maxHeight = null;
+            });
+
+            // Toggle item saat ini
+            if (!isAlreadyActive) {
+                item.classList.add("active");
+                answer.style.maxHeight = answer.scrollHeight + "px";
+            }
+        });
+    });
+}
+

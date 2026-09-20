@@ -10,6 +10,51 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- SEO & Social Sharing Meta Tags -->
+    <meta name="description" content="Nikmati hidangan lezat masakan nusantara dan racikan kopi modern berlatar panorama alam pegunungan Gunungwungkal Pati. Denah meja interaktif 3D, menu, dan reservasi online.">
+    <meta name="keywords" content="bukit padangan, resto pati, cafe gunungwungkal, kuliner pati, rumah makan keluarga pati, wisata pati, sunset view cafe">
+    <meta property="og:type" content="restaurant">
+    <meta property="og:url" content="https://bukitpadangan.netlify.app/">
+    <meta property="og:title" content="Bukit Padangan - Resto Alam & Modern Cafe di Gunungwungkal Pati">
+    <meta property="og:description" content="Santap lezat masakan nusantara & kopi modern dengan pemandangan perbukitan asri Gunungwungkal Pati. Cek denah meja 3D dan reservasi online!">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop">
+
+    <!-- Schema.org JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "Bukit Padangan",
+      "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop",
+      "@id": "https://bukitpadangan.netlify.app/",
+      "url": "https://bukitpadangan.netlify.app/",
+      "telephone": "+6285290462715",
+      "priceRange": "Rp 15.000 - Rp 65.000",
+      "servesCuisine": ["Indonesian", "Coffee", "Cafe"],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Jl. Raya Gunungwungkal-Gulangpongge",
+        "addressLocality": "Gunungwungkal",
+        "addressRegion": "Jawa Tengah",
+        "postalCode": "59156",
+        "addressCountry": "ID"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -6.6222216,
+        "longitude": 110.9705912
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "11:00",
+          "closes": "22:00"
+        }
+      ],
+      "hasMenu": "https://bukitpadangan.netlify.app/#menu"
+    }
+    </script>
 </head>
 
 <body>
@@ -36,10 +81,11 @@
                 </li>
                 <li><a href="#home" onclick="closeNavMenu()"><i class="fas fa-home"></i> Beranda</a></li>
                 <li><a href="#about" onclick="closeNavMenu()"><i class="fas fa-info-circle"></i> Tentang</a></li>
+                <li><a href="#amenities" onclick="closeNavMenu()"><i class="fas fa-concierge-bell"></i> Fasilitas</a></li>
                 <li><a href="#tables" onclick="closeNavMenu()"><i class="fas fa-th-large"></i> Denah Meja</a></li>
                 <li><a href="#menu" onclick="closeNavMenu()"><i class="fas fa-utensils"></i> Menu</a></li>
-                <li id="navEventLink" style="display: none;"><a href="#event" onclick="closeNavMenu()"><i class="fas fa-calendar-star"></i> Event</a></li>
-                <li><a href="#testimonials" onclick="closeNavMenu()"><i class="fas fa-star"></i> Ulasan</a></li>
+                <li><a href="#event" onclick="closeNavMenu()"><i class="fas fa-glass-cheers"></i> Paket Acara</a></li>
+                <li><a href="#faq" onclick="closeNavMenu()"><i class="fas fa-question-circle"></i> FAQ</a></li>
                 <li><a href="#gallery" onclick="closeNavMenu()"><i class="fas fa-images"></i> Galeri</a></li>
                 <li><a href="#location" onclick="closeNavMenu()"><i class="fas fa-map-marker-alt"></i> Lokasi</a></li>
                 <li class="nav-desktop-cta"><a href="#" class="btn-reservasi" onclick="openModal(event)">Reservasi</a></li>
@@ -61,8 +107,14 @@
             <h3 id="heroSubtitleText">Selamat Datang di</h3>
             <h1 id="heroTitleText">Bukit Padangan</h1>
             <p id="heroDescText">Nikmati hidangan lezat dengan suasana asri pegunungan yang menenangkan dan kopi modern kekinian.</p>
-            <div class="hero-info">
-                <span><i class="far fa-clock"></i> Buka Setiap Hari: 11.00 - 22.00 WIB</span>
+            <div class="hero-info-wrapper">
+                <div id="heroLiveStatus" class="live-status-pill open">
+                    <span class="pulse-dot"></span>
+                    <span id="heroLiveStatusText">Buka Hari Ini • 11.00 - 22.00 WIB</span>
+                </div>
+                <div class="hero-location-tag">
+                    <i class="fas fa-map-marker-alt"></i> Gunungwungkal, Pati
+                </div>
             </div>
             <button class="btn-cta" onclick="openModal(event)">Lakukan Reservasi Sekarang</button>
         </div>
@@ -90,6 +142,49 @@
                     <i class="fas fa-coffee"></i>
                     <h4>Modern Cafe</h4>
                     <p>Seduhan kopi espresso modern, camilan kekinian, dan tempat nongkrong yang instagramable.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AMENITIES & FACILITIES SECTION -->
+    <section id="amenities" class="section-padding amenities-section">
+        <div class="container">
+            <div class="section-badge-center"><span class="badge-gold">Fasilitas Unggulan</span></div>
+            <h2 class="section-title">Kenyamanan & Fasilitas Resto</h2>
+            <p class="section-desc">
+                Dirancang untuk memberikan pengalaman santap terbaik bagi keluarga, rombongan arisan, maupun pengunjung yang mendambakan udara segar pegunungan.
+            </p>
+            <div class="amenities-grid">
+                <div class="amenity-card">
+                    <div class="amenity-icon"><i class="fas fa-mosque"></i></div>
+                    <h4>Musholla Nyaman</h4>
+                    <p>Tempat ibadah bersih, tenang, dilengkapi sajadah, mukena terawat, dan area wudhu terpisah.</p>
+                </div>
+                <div class="amenity-card">
+                    <div class="amenity-icon"><i class="fas fa-parking"></i></div>
+                    <h4>Area Parkir Luas</h4>
+                    <p>Lahan parkir memadai dan aman tepat di depan resto untuk kendaraan roda empat, motor, dan minibus.</p>
+                </div>
+                <div class="amenity-card">
+                    <div class="amenity-icon"><i class="fas fa-mountain-sun"></i></div>
+                    <h4>Panorama Bukit & Sunset</h4>
+                    <p>Pemandangan lereng hijau Gunung Muria yang asri dan panorama golden hour matahari terbenam.</p>
+                </div>
+                <div class="amenity-card">
+                    <div class="amenity-icon"><i class="fas fa-wifi"></i></div>
+                    <h4>Wi-Fi Cepat & Colokan</h4>
+                    <p>Koneksi internet stabil dan stopkontak di area meja pilihan, cocok untuk santai maupun WFC santai.</p>
+                </div>
+                <div class="amenity-card">
+                    <div class="amenity-icon"><i class="fas fa-couch"></i></div>
+                    <h4>Gazebo Lesehan & VIP</h4>
+                    <p>Pilihan area bersantap santai lesehan tradisional maupun ruang paviliun VIP untuk acara privat.</p>
+                </div>
+                <div class="amenity-card">
+                    <div class="amenity-icon"><i class="fas fa-restroom"></i></div>
+                    <h4>Toilet Bersih & Higienis</h4>
+                    <p>Fasilitas sanitasi kamar mandi terawat dan bersih berkala demi kenyamanan seluruh pengunjung.</p>
                 </div>
             </div>
         </div>
@@ -240,14 +335,84 @@
         </div>
     </section>
 
-    <!-- EVENT SECTION -->
-    <section id="event" class="section-padding" style="display: none; background-color: #111418; border-top: 1px solid rgba(212, 163, 115, 0.2); border-bottom: 1px solid rgba(212, 163, 115, 0.2);">
+    <!-- EVENT & GATHERING PACKAGES SECTION -->
+    <section id="event" class="section-padding event-section">
         <div class="container">
-            <span class="menu-badge" style="background-color: var(--primary-green); margin-bottom: 15px;">Acara Mendatang</span>
-            <h2 class="section-title" id="eventTitleText">Event Spesial</h2>
-            <p class="section-desc" id="eventDescText">Info event khusus di Bukit Padangan.</p>
-            <div style="margin-top: 20px;">
-                <button class="btn-cta" onclick="openModal(event)">Reservasi Tempat Sekarang</button>
+            <div class="section-badge-center"><span class="badge-gold">Paket Acara</span></div>
+            <h2 class="section-title" id="eventTitleText">Paket Acara & Rombongan</h2>
+            <p class="section-desc" id="eventDescText">
+                Rayakan momen istimewa bersama keluarga, rekan kerja, dan komunitas dengan sajian nikmat berlatar panorama alam asri.
+            </p>
+            <div class="packages-grid">
+                <!-- Package 1: Family & Arisan -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <span class="package-cat-tag">Keluarga & Arisan</span>
+                        <h3>Gathering Keluarga</h3>
+                        <div class="package-price">
+                            <span class="price-prefix">Mulai</span>
+                            <span class="price-val">Rp 45.000</span>
+                            <span class="price-unit">/ orang</span>
+                        </div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class="fas fa-check"></i> Minimal pemesanan 10 porsi</li>
+                        <li><i class="fas fa-check"></i> Menu komplit: Nasi, Olahan Ayam/Ikan, Sayur, Sambal</li>
+                        <li><i class="fas fa-check"></i> Es Teh Manis Segar & Air Mineral</li>
+                        <li><i class="fas fa-check"></i> Bebas reservasi area Gazebo Lesehan</li>
+                        <li><i class="fas fa-check"></i> Fleksibel penataan layout meja bersatu</li>
+                    </ul>
+                    <a href="https://wa.me/6285290462715?text=Halo%20Admin%20Bukit%20Padangan%2C%20saya%20tertarik%20dengan%20Paket%20Gathering%20Keluarga%20%2F%20Arisan.%20Boleh%20minta%20info%20pilihan%20menu%20dan%20jadwal%3F" target="_blank" class="btn-package-wa">
+                        <i class="fab fa-whatsapp"></i> Konsultasi Paket
+                    </a>
+                </div>
+
+                <!-- Package 2: Meeting & Community (Featured) -->
+                <div class="package-card featured">
+                    <div class="featured-crown"><i class="fas fa-star"></i> Paling Populer</div>
+                    <div class="package-header">
+                        <span class="package-cat-tag">Rapat & Komunitas</span>
+                        <h3>Rapat & Pertemuan</h3>
+                        <div class="package-price">
+                            <span class="price-prefix">Mulai</span>
+                            <span class="price-val">Rp 65.000</span>
+                            <span class="price-unit">/ orang</span>
+                        </div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class="fas fa-check"></i> Minimal pemesanan 15 orang</li>
+                        <li><i class="fas fa-check"></i> Akses area eksklusif Paviliun VIP beratap</li>
+                        <li><i class="fas fa-check"></i> Fasilitas Sound System & Mic Wireless</li>
+                        <li><i class="fas fa-check"></i> Makan siang / malam prasmanan pilihan</li>
+                        <li><i class="fas fa-check"></i> 1x Coffee Break & Snack Nusantara</li>
+                    </ul>
+                    <a href="https://wa.me/6285290462715?text=Halo%20Admin%20Bukit%20Padangan%2C%20saya%20tertarik%20dengan%20Paket%20Rapat%20%26%20Pertemuan%20Komunitas.%20Boleh%20minta%20info%20pilihan%20menu%20dan%20jadwal%3F" target="_blank" class="btn-package-wa">
+                        <i class="fab fa-whatsapp"></i> Konsultasi Paket
+                    </a>
+                </div>
+
+                <!-- Package 3: Romantic Sunset Dinner -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <span class="package-cat-tag">Spesial Pasangan</span>
+                        <h3>Romantic Sunset Dinner</h3>
+                        <div class="package-price">
+                            <span class="price-prefix">Paket</span>
+                            <span class="price-val">Rp 185.000</span>
+                            <span class="price-unit">/ pasangan</span>
+                        </div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class="fas fa-check"></i> Meja privat posisi terbaik view sunset</li>
+                        <li><i class="fas fa-check"></i> Dekorasi meja romantis bunga & lilin</li>
+                        <li><i class="fas fa-check"></i> 2 Hidangan Utama (Main Course) pilihan</li>
+                        <li><i class="fas fa-check"></i> 2 Minuman Signature / Mocktail dingin</li>
+                        <li><i class="fas fa-check"></i> 1 Porsi Dessert manis penutup</li>
+                    </ul>
+                    <a href="https://wa.me/6285290462715?text=Halo%20Admin%20Bukit%20Padangan%2C%20saya%20ingin%20reservasi%20Romantic%20Sunset%20Dinner%20untuk%202%20orang.%20Bisa%20info%20ketersediaan%20slot%20meja%3F" target="_blank" class="btn-package-wa">
+                        <i class="fab fa-whatsapp"></i> Booking Romantic Dinner
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -296,6 +461,79 @@
                     <span class="dot active" onclick="currentSlide(0)"></span>
                     <span class="dot" onclick="currentSlide(1)"></span>
                     <span class="dot" onclick="currentSlide(2)"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- FAQ (FREQUENTLY ASKED QUESTIONS) SECTION -->
+    <section id="faq" class="section-padding faq-section">
+        <div class="container">
+            <div class="section-badge-center"><span class="badge-gold">Tanya Jawab</span></div>
+            <h2 class="section-title">Pertanyaan yang Sering Diajukan</h2>
+            <p class="section-desc">
+                Informasi praktis seputar kunjungan, fasilitas, tiket masuk, dan pemesanan di Bukit Padangan.
+            </p>
+            <div class="faq-accordion">
+                <div class="faq-item">
+                    <button type="button" class="faq-question">
+                        <span>Apakah harus reservasi terlebih dahulu sebelum datang?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Pengunjung walk-in (langsung datang) selalu dipersilakan kapan saja. Namun, untuk kunjungan saat akhir pekan (weekend), hari libur nasional, atau rombongan di atas 5 orang, kami sangat menyarankan reservasi terlebih dahulu melalui website ini agar meja pilihan Anda terjamin siap dan tidak perlu menunggu lama.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button type="button" class="faq-question">
+                        <span>Apakah ada biaya tiket masuk ke area resto Bukit Padangan?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Tidak ada tiket masuk (Gratis masuk). Anda bebas masuk menikmati pemandangan alam dan cukup membayar makanan serta minuman yang Anda pesan di resto kami.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button type="button" class="faq-question">
+                        <span>Bagaimana kondisi akses jalan menuju lokasi resto?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Akses jalan raya menuju Bukit Padangan di jalur Gunungwungkal-Gulangpongge telah beraspal mulus dan sangat aman dilalui semua jenis kendaraan roda dua maupun kendaraan roda empat (mobil keluarga dan minibus).</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button type="button" class="faq-question">
+                        <span>Kapan waktu terbaik (Golden Hour) untuk berkunjung?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Waktu paling favorit adalah sore hari pukul 16.00 hingga 18.00 WIB untuk menikmati panorama matahari terbenam (sunset) berlatar perbukitan Muria yang sejuk, dilanjutkan suasana malam bertabur cahaya lentera yang hangat.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button type="button" class="faq-question">
+                        <span>Metode pembayaran apa saja yang diterima?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Kami melayani pembayaran tunai (cash), QRIS (mendukung seluruh aplikasi dompet digital seperti GoPay, OVO, DANA, ShopeePay, serta seluruh Mobile Banking), dan transfer bank langsung.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button type="button" class="faq-question">
+                        <span>Apakah bisa membawa kue ulang tahun sendiri dari luar?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Bisa! Anda diperbolehkan membawa kue ulang tahun untuk perayaan bersama keluarga atau sahabat tercinta. Mohon konfirmasi kepada staf kasir atau admin reservasi kami saat kedatangan.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -355,6 +593,24 @@
                 <a href="https://maps.app.goo.gl/Jy3esudVxSzx93m48" target="_blank" class="btn-directions">
                     <i class="fas fa-directions"></i> Petunjuk Arah Google Maps
                 </a>
+                <div class="trust-badges-wrap">
+                    <div class="trust-badge-item">
+                        <i class="fas fa-qrcode"></i>
+                        <span>QRIS All Payment</span>
+                    </div>
+                    <div class="trust-badge-item">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Tunai & Transfer Bank</span>
+                    </div>
+                    <div class="trust-badge-item">
+                        <i class="fas fa-certificate"></i>
+                        <span>100% Menu Halal</span>
+                    </div>
+                    <div class="trust-badge-item">
+                        <i class="fas fa-leaf"></i>
+                        <span>Bahan Segar Setiap Hari</span>
+                    </div>
+                </div>
             </div>
             <div class="map-wrapper">
                 <!-- Google Maps Iframe Embed -->

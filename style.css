@@ -2856,3 +2856,425 @@ input:focus, select:focus {
         padding-bottom: 85px;
     }
 }
+
+
+/* ==========================================================================
+   ENHANCED RESTAURANT PROFILE FEATURES (Black & Gold Theme)
+   ========================================================================== */
+
+/* Section Centered Badge */
+.section-badge-center {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.badge-gold {
+    background: rgba(212, 163, 115, 0.12);
+    border: 1px solid rgba(212, 163, 115, 0.35);
+    color: var(--accent-gold);
+    padding: 5px 16px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Hero Info & Live Status Badge */
+.hero-info-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.live-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(16, 20, 26, 0.85);
+    border: 1px solid rgba(212, 163, 115, 0.3);
+    border-radius: 30px;
+    padding: 7px 18px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #f8fafc;
+    backdrop-filter: blur(8px);
+}
+
+.pulse-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    display: inline-block;
+    background: #22c55e;
+    box-shadow: 0 0 10px #22c55e;
+    animation: pulseGlow 2s infinite;
+}
+
+.live-status-pill.closed .pulse-dot {
+    background: #ef4444;
+    box-shadow: 0 0 10px #ef4444;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.4;
+        transform: scale(1.2);
+    }
+}
+
+.hero-location-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #cbd5e1;
+    font-size: 0.88rem;
+    padding: 7px 16px;
+    background: rgba(16, 20, 26, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 30px;
+}
+
+.hero-location-tag i {
+    color: var(--accent-gold);
+}
+
+/* 1. Amenities Section & Grid */
+.amenities-section {
+    background: #0d1015;
+    border-top: 1px solid rgba(212, 163, 115, 0.12);
+    border-bottom: 1px solid rgba(212, 163, 115, 0.12);
+}
+
+.amenities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 36px;
+}
+
+.amenity-card {
+    background: #14181f;
+    border: 1px solid rgba(212, 163, 115, 0.18);
+    border-radius: 16px;
+    padding: 30px 24px;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.amenity-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(212, 163, 115, 0.45);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+    background: #181d26;
+}
+
+.amenity-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(212, 163, 115, 0.18) 0%, rgba(212, 163, 115, 0.05) 100%);
+    border: 1px solid rgba(212, 163, 115, 0.35);
+    color: var(--accent-gold);
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    transition: transform 0.3s ease;
+}
+
+.amenity-card:hover .amenity-icon {
+    transform: scale(1.08);
+}
+
+.amenity-card h4 {
+    font-family: var(--font-heading);
+    font-size: 1.18rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.amenity-card p {
+    font-size: 0.88rem;
+    color: #94a3b8;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* 2. Event & Gathering Packages Grid */
+.event-section {
+    background: #0a0c0f;
+    border-top: 1px solid rgba(212, 163, 115, 0.15);
+    border-bottom: 1px solid rgba(212, 163, 115, 0.15);
+}
+
+.packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: 28px;
+    margin-top: 40px;
+    align-items: stretch;
+}
+
+.package-card {
+    position: relative;
+    background: #14181f;
+    border: 1px solid rgba(212, 163, 115, 0.2);
+    border-radius: 20px;
+    padding: 38px 28px 30px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.35s ease;
+}
+
+.package-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(212, 163, 115, 0.45);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+.package-card.featured {
+    border-color: var(--accent-gold);
+    background: linear-gradient(180deg, #191e27 0%, #13171e 100%);
+    box-shadow: 0 10px 35px rgba(212, 163, 115, 0.15);
+}
+
+.featured-crown {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #e5b882 0%, #d4a373 100%);
+    color: #0c0e12;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 5px 18px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(212, 163, 115, 0.35);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.package-cat-tag {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.package-header h3 {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    color: #ffffff;
+    margin-bottom: 14px;
+}
+
+.package-price {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(212, 163, 115, 0.15);
+}
+
+.price-prefix {
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+.price-val {
+    font-family: var(--font-heading);
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: var(--accent-gold);
+}
+
+.price-unit {
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+.package-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 28px 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.package-features li {
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.45;
+}
+
+.package-features li i {
+    color: var(--accent-gold);
+    font-size: 0.9rem;
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+.btn-package-wa {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 13px 20px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #e5b882 0%, #d4a373 100%);
+    color: #0c0e12;
+    box-shadow: 0 4px 15px rgba(212, 163, 115, 0.25);
+}
+
+.btn-package-wa:hover {
+    box-shadow: 0 6px 22px rgba(212, 163, 115, 0.45);
+    transform: translateY(-2px);
+    color: #000000;
+}
+
+/* 3. FAQ Accordion Section */
+.faq-section {
+    background: #0d1015;
+    border-top: 1px solid rgba(212, 163, 115, 0.12);
+    border-bottom: 1px solid rgba(212, 163, 115, 0.12);
+}
+
+.faq-accordion {
+    max-width: 840px;
+    margin: 38px auto 0;
+}
+
+.faq-item {
+    background: #14181f;
+    border: 1px solid rgba(212, 163, 115, 0.18);
+    border-radius: 14px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-item.active {
+    border-color: rgba(212, 163, 115, 0.45);
+    background: #161c24;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    cursor: pointer;
+    color: #f8fafc;
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 600;
+    gap: 16px;
+    outline: none;
+}
+
+.faq-question:hover {
+    color: var(--accent-gold);
+}
+
+.faq-question i {
+    color: var(--accent-gold);
+    font-size: 0.95rem;
+    transition: transform 0.35s ease;
+    flex-shrink: 0;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0 24px;
+}
+
+.faq-item.active .faq-answer {
+    padding: 0 24px 20px 24px;
+}
+
+.faq-answer p {
+    color: #94a3b8;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin: 0;
+}
+
+/* 4. Trust & Payment Badges in Location Section */
+.trust-badges-wrap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.trust-badge-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(22, 26, 33, 0.85);
+    border: 1px solid rgba(212, 163, 115, 0.2);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    color: #e2e8f0;
+    font-weight: 600;
+}
+
+.trust-badge-item i {
+    color: var(--accent-gold);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .amenities-grid {
+        grid-template-columns: 1fr;
+    }
+    .packages-grid {
+        grid-template-columns: 1fr;
+    }
+    .trust-badges-wrap {
+        grid-template-columns: 1fr 1fr;
+    }
+}

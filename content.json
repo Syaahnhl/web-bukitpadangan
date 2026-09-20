@@ -13,9 +13,9 @@
     "desc": "Terletak di jalur sejuk Gunungwungkal, kami menyajikan perpaduan kenyamanan cafe modern dengan kehangatan masakan khas nusantara dan panorama alam hijau."
   },
   "event": {
-    "show": false,
-    "title": "Live Music Weekend",
-    "desc": "Setiap Sabtu malam mulai pukul 19.00 WIB. Mari habiskan malam minggu syahdu bersama kami!"
+    "show": true,
+    "title": "Paket Acara & Rombongan",
+    "desc": "Rayakan momen istimewa bersama keluarga, rekan kerja, dan komunitas dengan sajian nikmat berlatar panorama alam asri."
   },
   "contacts": {
     "wa_admin1": "6285290462715",
