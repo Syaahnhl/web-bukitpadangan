@@ -16,85 +16,102 @@ let animFrameId = null;
 // Camera Presets
 const CAMERA_PRESETS = {
     all: {
-        pos: { x: 28, y: 32, z: 38 },
-        target: { x: 2, y: 0, z: 2 }
+        pos: { x: 0, y: 52, z: 52 },
+        target: { x: 0, y: 0, z: 3 }
+    },
+    saung: {
+        pos: { x: -9, y: 16, z: 34 },
+        target: { x: -9, y: 1.2, z: 18 }
+    },
+    indoor: {
+        pos: { x: -13, y: 18, z: 14 },
+        target: { x: -13, y: 1.2, z: -1 }
+    },
+    east: {
+        pos: { x: 19, y: 18, z: 18 },
+        target: { x: 19, y: 1.2, z: 1 }
+    },
+    facilities: {
+        pos: { x: -3, y: 5.5, z: 0 },
+        target: { x: -3, y: 1.0, z: -24 }
+    },
+    // Aliases for backwards compatibility
+    outdoor: {
+        pos: { x: -9, y: 16, z: 34 },
+        target: { x: -9, y: 1.2, z: 18 }
     },
     gazebo: {
-        pos: { x: -12, y: 16, z: 32 },
-        target: { x: -12, y: 1.2, z: 15 }
-    },
-    outdoor: {
-        pos: { x: 20, y: 18, z: 26 },
-        target: { x: 19, y: 1.2, z: 6 }
+        pos: { x: -9, y: 16, z: 34 },
+        target: { x: -9, y: 1.2, z: 18 }
     },
     vip: {
-        pos: { x: -3, y: 14, z: -7 },
-        target: { x: -3, y: 1.2, z: -19 }
+        pos: { x: -13, y: 18, z: 14 },
+        target: { x: -13, y: 1.2, z: -1 }
     }
 };
 
 // Table Positions Map in 3D Space (X, Z)
 const TABLE_3D_LAYOUT = {
-    // Zona Saung Bambu / Lesehan Tepi Sawah & Sungai (S-01 s/d S-06)
-    "S-01": { x: -20, z: 8, zone: "outdoor", rotation: 0 },
-    "S-02": { x: -12, z: 8, zone: "outdoor", rotation: 0 },
-    "S-03": { x: -4,  z: 8, zone: "outdoor", rotation: 0 },
-    "S-04": { x: -20, z: 17, zone: "outdoor", rotation: 0 },
-    "S-05": { x: -12, z: 17, zone: "outdoor", rotation: 0 },
-    "S-06": { x: -4,  z: 17, zone: "outdoor", rotation: 0 },
+    // Lingkaran Hijau: Zona Saung Bambu / Lesehan Tepi Sawah & Sungai (S-01 s/d S-06) - Selatan dekat jalan
+    "S-01": { x: -16, z: 14, zone: "gazebo", rotation: 0 },
+    "S-02": { x: -9,  z: 14, zone: "gazebo", rotation: 0 },
+    "S-03": { x: -2,  z: 14, zone: "gazebo", rotation: 0 },
+    "S-04": { x: -16, z: 22, zone: "gazebo", rotation: 0 },
+    "S-05": { x: -9,  z: 22, zone: "gazebo", rotation: 0 },
+    "S-06": { x: -2,  z: 22, zone: "gazebo", rotation: 0 },
 
-    // Zona Kolam Terapi Ikan & Ramah Anak (TI-01 s/d TI-03)
-    "TI-01": { x: -16, z: 26, zone: "gazebo", rotation: 0 },
-    "TI-02": { x: -8,  z: 26, zone: "gazebo", rotation: 0 },
-    "TI-03": { x: 0,   z: 26, zone: "gazebo", rotation: 0 },
+    // Lingkaran Putih: Zona Indoor Utama (IU-07 s/d IU-12) - Barat Daya
+    "IU-07": { x: -16, z: -4, zone: "vip", rotation: 0, type: "vip-large" },
+    "IU-08": { x: -10, z: -4, zone: "vip", rotation: 0, type: "vip-large" },
+    "IU-09": { x: -16, z: 2,  zone: "vip", rotation: 0, type: "meeting" },
+    "IU-10": { x: -10, z: 2,  zone: "vip", rotation: 0, type: "meeting" },
+    "IU-11": { x: -16, z: -1, zone: "vip", rotation: 0, type: "lounge" },
+    "IU-12": { x: -10, z: -1, zone: "vip", rotation: 0, type: "lounge" },
 
-    // Zona Indoor Utama 6x6 m (IU-07 s/d IU-12)
-    "IU-07": { x: -11, z: -17, zone: "vip", rotation: 0, type: "vip-large" },
-    "IU-08": { x: -5,  z: -17, zone: "vip", rotation: 0, type: "vip-large" },
-    "IU-09": { x: 1,   z: -17, zone: "vip", rotation: 0, type: "meeting" },
-    "IU-10": { x: 7,   z: -17, zone: "vip", rotation: 0, type: "meeting" },
-    "IU-11": { x: -8,  z: -22, zone: "vip", rotation: 0, type: "lounge" },
-    "IU-12": { x: 4,   z: -22, zone: "vip", rotation: 0, type: "lounge" },
+    // Lingkaran Biru (Tengah): Zona Kolam Terapi Ikan (TI-01 s/d TI-03)
+    "TI-01": { x: 17, z: -2, zone: "outdoor", rotation: 0, umbrella: false },
+    "TI-02": { x: 20, z: 1,  zone: "outdoor", rotation: 0, umbrella: false },
+    "TI-03": { x: 17, z: 4,  zone: "outdoor", rotation: 0, umbrella: false },
 
-    // Zona Indoor Timur 1 (IT1-13 s/d IT1-16)
-    "IT1-13": { x: 10, z: -2, zone: "vip", rotation: 0 },
-    "IT1-14": { x: 16, z: -2, zone: "vip", rotation: 0 },
-    "IT1-15": { x: 22, z: -2, zone: "vip", rotation: 0 },
-    "IT1-16": { x: 27, z: -2, zone: "vip", rotation: 0 },
+    // Lingkaran Biru (Kiri): Zona Indoor Timur 1 (IT1-13 s/d IT1-16)
+    "IT1-13": { x: 8,  z: -2, zone: "vip", rotation: 0 },
+    "IT1-14": { x: 12, z: -2, zone: "vip", rotation: 0 },
+    "IT1-15": { x: 8,  z: 4,  zone: "vip", rotation: 0 },
+    "IT1-16": { x: 12, z: 4,  zone: "vip", rotation: 0 },
 
-    // Zona Indoor Timur 2 (IT2-17 s/d IT2-20)
-    "IT2-17": { x: 10, z: 6,  zone: "vip", rotation: 0 },
-    "IT2-18": { x: 16, z: 6,  zone: "vip", rotation: 0 },
-    "IT2-19": { x: 22, z: 6,  zone: "vip", rotation: 0 },
-    "IT2-20": { x: 27, z: 6,  zone: "vip", rotation: 0 },
+    // Lingkaran Biru (Kanan): Zona Indoor Timur 2 (IT2-17 s/d IT2-20)
+    "IT2-17": { x: 26, z: -2, zone: "vip", rotation: 0 },
+    "IT2-18": { x: 30, z: -2, zone: "vip", rotation: 0 },
+    "IT2-19": { x: 26, z: 4,  zone: "vip", rotation: 0 },
+    "IT2-20": { x: 30, z: 4,  zone: "vip", rotation: 0 },
 
     // Backwards Compatibility Fallback (T01-T26)
-    "T01": { x: -20, z: 8, zone: "gazebo", rotation: 0 },
-    "T02": { x: -12, z: 8, zone: "gazebo", rotation: 0 },
-    "T03": { x: -4,  z: 8, zone: "gazebo", rotation: 0 },
-    "T04": { x: -20, z: 17, zone: "gazebo", rotation: 0 },
-    "T05": { x: -12, z: 17, zone: "gazebo", rotation: 0 },
-    "T06": { x: -4,  z: 17, zone: "gazebo", rotation: 0 },
-    "T07": { x: -16, z: 26, zone: "gazebo", rotation: 0 },
-    "T08": { x: -8,  z: 26, zone: "gazebo", rotation: 0 },
-    "T09": { x: 10, z: -2, zone: "outdoor", rotation: 0, umbrella: true },
-    "T10": { x: 16, z: -2, zone: "outdoor", rotation: 0, umbrella: true },
-    "T11": { x: 22, z: -2, zone: "outdoor", rotation: 0, umbrella: true },
-    "T12": { x: 27, z: -2, zone: "outdoor", rotation: 0, umbrella: true },
-    "T13": { x: 10, z: 6,  zone: "outdoor", rotation: 0, umbrella: false },
-    "T14": { x: 16, z: 6,  zone: "outdoor", rotation: 0, umbrella: false },
-    "T15": { x: 22, z: 6,  zone: "outdoor", rotation: 0, umbrella: false },
-    "T16": { x: 27, z: 6,  zone: "outdoor", rotation: 0, umbrella: false },
-    "T17": { x: 10, z: 14, zone: "outdoor", rotation: 0, umbrella: true },
-    "T18": { x: 16, z: 14, zone: "outdoor", rotation: 0, umbrella: true },
-    "T19": { x: 22, z: 14, zone: "outdoor", rotation: 0, umbrella: true },
-    "T20": { x: 27, z: 14, zone: "outdoor", rotation: 0, umbrella: true },
-    "T21": { x: -11, z: -17, zone: "vip", rotation: 0, type: "vip-large" },
-    "T22": { x: -5,  z: -17, zone: "vip", rotation: 0, type: "vip-large" },
-    "T23": { x: 1,   z: -17, zone: "vip", rotation: 0, type: "meeting" },
-    "T24": { x: 7,   z: -17, zone: "vip", rotation: 0, type: "meeting" },
-    "T25": { x: -8,  z: -22, zone: "vip", rotation: 0, type: "lounge" },
-    "T26": { x: 4,   z: -22, zone: "vip", rotation: 0, type: "lounge" }
+    "T01": { x: -16, z: 14, zone: "gazebo", rotation: 0 },
+    "T02": { x: -9,  z: 14, zone: "gazebo", rotation: 0 },
+    "T03": { x: -2,  z: 14, zone: "gazebo", rotation: 0 },
+    "T04": { x: -16, z: 22, zone: "gazebo", rotation: 0 },
+    "T05": { x: -9,  z: 22, zone: "gazebo", rotation: 0 },
+    "T06": { x: -2,  z: 22, zone: "gazebo", rotation: 0 },
+    "T07": { x: 17,  z: -2, zone: "outdoor", rotation: 0 },
+    "T08": { x: 20,  z: 1,  zone: "outdoor", rotation: 0 },
+    "T09": { x: 8,   z: -2, zone: "vip", rotation: 0 },
+    "T10": { x: 12,  z: -2, zone: "vip", rotation: 0 },
+    "T11": { x: 8,   z: 4,  zone: "vip", rotation: 0 },
+    "T12": { x: 12,  z: 4,  zone: "vip", rotation: 0 },
+    "T13": { x: 26,  z: -2, zone: "vip", rotation: 0 },
+    "T14": { x: 30,  z: -2, zone: "vip", rotation: 0 },
+    "T15": { x: 26,  z: 4,  zone: "vip", rotation: 0 },
+    "T16": { x: 30,  z: 4,  zone: "vip", rotation: 0 },
+    "T17": { x: 17,  z: 4,  zone: "outdoor", rotation: 0 },
+    "T18": { x: 20,  z: 4,  zone: "outdoor", rotation: 0 },
+    "T19": { x: -16, z: -4, zone: "vip", rotation: 0 },
+    "T20": { x: -10, z: -4, zone: "vip", rotation: 0 },
+    "T21": { x: -16, z: 2,  zone: "vip", rotation: 0 },
+    "T22": { x: -10, z: 2,  zone: "vip", rotation: 0 },
+    "T23": { x: -16, z: -1, zone: "vip", rotation: 0 },
+    "T24": { x: -10, z: -1, zone: "vip", rotation: 0 },
+    "T25": { x: 8,   z: 1,  zone: "vip", rotation: 0 },
+    "T26": { x: 26,  z: 1,  zone: "vip", rotation: 0 }
 };
 
 /**
@@ -217,60 +234,634 @@ function setup3DLighting() {
 /**
  * Build 3D Scenery: Terrain, Main Building, VIP Pavilion, Outdoor Deck, Trees, Paths
  */
+/**
+ * Build 3D Scenery: Terrain, Buildings, Pathways, and Nature
+ * Ground Truth: Satellite Mapping with color-coded zones:
+ * - Kuning: Perimeter Kawasan Bukit Padangan
+ * - Merah: Mushola (kiri) & 2 Toilet + Keran Wudhu luar (kanan)
+ * - Putih: Indoor Utama
+ * - Hitam: Kasir dekat Indoor Utama
+ * - Biru: Indoor Timur 1 (kiri), Kolam Terapi Ikan (tengah), Indoor Timur 2 (kanan)
+ * - Hijau: Saung Outdoor tepi sawah (selatan)
+ * - Sunset: Arah matahari terbenam dari kiri (barat)
+ */
 function build3DEnvironment() {
-    // A. MAIN TERRAIN (Lush Grass Hill Plateau)
-    const groundGeo = new THREE.CylinderGeometry(44, 46, 2, 48);
-    const groundMat = new THREE.MeshLambertMaterial({ color: 0x14181e }); // Dark obsidian basalt
+    // 1. Terrain & Southern Road (Jl. Gunungwungkal - Jepalo)
+    buildTerrainAndRoad();
+
+    // 2. Perimeter Ring (Lingkaran Kuning)
+    buildPerimeterRing();
+
+    // 3. Fasilitas Ibadah & Sanitasi (Lingkaran Merah: Mushola & Toilet/Wudhu)
+    buildMushola();
+    buildToiletsAndWudhu();
+
+    // 4. Area Utama (Lingkaran Putih & Hitam: Indoor Utama & Kasir)
+    buildIndoorUtama();
+    buildCashierStation();
+
+    // 5. Kompleks Timur (Lingkaran Biru: IT1, Kolam Terapi Ikan, IT2)
+    buildIndoorTimur1();
+    buildFishTherapyPool();
+    buildIndoorTimur2();
+
+    // 6. Penanda Sunset (Barat / Kiri)
+    buildSunsetIndicator();
+
+    // 7. Jalan Setapak & Lanskap Alami
+    buildGardenPathways();
+    buildSurroundingNature();
+}
+
+/**
+ * Build Terrain Plateau & Southern Main Road
+ */
+function buildTerrainAndRoad() {
+    // Main Hill Plateau
+    const groundGeo = new THREE.CylinderGeometry(52, 54, 2.5, 48);
+    const groundMat = new THREE.MeshLambertMaterial({ color: 0x14181e });
     const ground = new THREE.Mesh(groundGeo, groundMat);
-    ground.position.y = -1;
+    ground.position.y = -1.25;
     ground.receiveShadow = true;
     scene3D.add(ground);
 
-    // B. CENTRAL PLAZA & GARDEN PATHWAYS
-    // Main Flagstone Plaza
-    const plazaGeo = new THREE.CylinderGeometry(5.5, 5.5, 0.08, 32);
-    const stoneMat = new THREE.MeshLambertMaterial({ color: 0x222831 }); // Dark flagstone
-    const plaza = new THREE.Mesh(plazaGeo, stoneMat);
-    plaza.position.set(1, 0.04, 3);
-    plaza.receiveShadow = true;
-    scene3D.add(plaza);
+    // Southern Road: Jl. Gunungwungkal - Jepalo
+    const roadGeo = new THREE.BoxGeometry(84, 0.2, 7.5);
+    const roadMat = new THREE.MeshLambertMaterial({ color: 0x1f232b }); // Asphalt dark
+    const road = new THREE.Mesh(roadGeo, roadMat);
+    road.position.set(2, 0.05, 33);
+    road.receiveShadow = true;
+    scene3D.add(road);
 
-    // Central Garden Fountain / Flower Centerpiece
-    const fountainBase = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.8, 2.2, 0.6, 24),
-        new THREE.MeshLambertMaterial({ color: 0x2b323c })
-    );
-    fountainBase.position.set(1, 0.3, 3);
-    fountainBase.castShadow = true;
-    scene3D.add(fountainBase);
+    // Road White Dashed Centerline
+    for (let rx = -38; rx <= 40; rx += 5) {
+        const stripeGeo = new THREE.PlaneGeometry(2.4, 0.25);
+        const stripeMat = new THREE.MeshBasicMaterial({ color: 0xf1f5f9, side: THREE.DoubleSide });
+        const stripe = new THREE.Mesh(stripeGeo, stripeMat);
+        stripe.rotation.x = -Math.PI / 2;
+        stripe.position.set(rx, 0.16, 33);
+        scene3D.add(stripe);
+    }
 
-    // Water pool in fountain
-    const water = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.5, 1.5, 0.1, 24),
-        new THREE.MeshLambertMaterial({ color: 0x1d3e5e })
-    );
-    water.position.set(1, 0.58, 3);
-    scene3D.add(water);
+    // Road Signboard
+    const roadSign = create3DSignboard("JL. GUNUNGWUNGKAL - JEPALO", 6.8, 0.85);
+    roadSign.position.set(-18, 2.2, 36.5);
+    scene3D.add(roadSign);
 
-    // Pathways
-    createPathSegment(-20, 8, -4, 8);  // Gazebo path 1
-    createPathSegment(-20, 17, -4, 17); // Gazebo path 2
-    createPathSegment(-12, 8, -12, 26); // Gazebo cross path
-    createPathSegment(-12, 8, 1, 3);    // Gazebo to Plaza
-    createPathSegment(1, 3, 8, 3);      // Plaza to Deck
-    createPathSegment(1, 3, -3, -14);   // Plaza to VIP
+    // Main Entrance Gate Marker
+    const gateSign = create3DSignboard("GERBANG MASUK RESTO", 5.2, 0.75);
+    gateSign.position.set(-5, 2.4, 29);
+    scene3D.add(gateSign);
+}
 
-    // C. GEDUNG UTAMA (Kasir, Barista & Dapur)
-    buildMainBuilding();
+/**
+ * Build Golden Perimeter Ring (Lingkaran Kuning)
+ */
+function buildPerimeterRing() {
+    const ringGeo = new THREE.RingGeometry(46, 46.4, 64);
+    const ringMat = new THREE.MeshBasicMaterial({
+        color: 0xd4a373,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.45
+    });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.y = 0.04;
+    scene3D.add(ring);
+}
 
-    // D. VIP & MEETING ROOM PAVILION (Glass House)
-    buildVipPavilion();
+/**
+ * Build Mushola (Lingkaran Merah Kiri - Fasilitas Ibadah)
+ */
+function buildMushola() {
+    const group = new THREE.Group();
+    group.position.set(-10, 0, -24);
 
-    // E. OUTDOOR SUNSET CLIFF DECK (Elevated Timber Terrace)
-    buildOutdoorDeck();
+    // Foundation & Porch Veranda
+    const baseGeo = new THREE.BoxGeometry(10.5, 0.4, 10.5);
+    const baseMat = new THREE.MeshLambertMaterial({ color: 0x2d3748 });
+    const base = new THREE.Mesh(baseGeo, baseMat);
+    base.position.y = 0.2;
+    base.receiveShadow = true;
+    group.add(base);
 
-    // F. SURROUNDING NATURE: Trees, Bushes, Cliff Edge Fence
-    buildSurroundingNature();
+    // Veranda Pillars
+    const pillarGeo = new THREE.CylinderGeometry(0.12, 0.12, 3.2, 8);
+    const pillarMat = new THREE.MeshLambertMaterial({ color: 0xd4a373 });
+    [[-4.5, 4.5], [4.5, 4.5], [-4.5, 1.5], [4.5, 1.5]].forEach(([px, pz]) => {
+        const p = new THREE.Mesh(pillarGeo, pillarMat);
+        p.position.set(px, 1.8, pz);
+        group.add(p);
+    });
+
+    // Main Walls (Warm Off-White)
+    const wallGeo = new THREE.BoxGeometry(9.2, 3.6, 7.8);
+    const wallMat = new THREE.MeshLambertMaterial({ color: 0xf8fafc });
+    const walls = new THREE.Mesh(wallGeo, wallMat);
+    walls.position.set(0, 2.0, -0.8);
+    walls.castShadow = true;
+    walls.receiveShadow = true;
+    group.add(walls);
+
+    // Green Pyramid Hip Roof
+    const roofGeo = new THREE.ConeGeometry(7.8, 3.0, 4);
+    const roofMat = new THREE.MeshLambertMaterial({ color: 0x1e3a24 }); // Dark Islamic Green
+    const roof = new THREE.Mesh(roofGeo, roofMat);
+    roof.position.set(0, 5.3, -0.6);
+    roof.rotation.y = Math.PI / 4;
+    roof.castShadow = true;
+    group.add(roof);
+
+    // Gold Crescent Finial on Roof
+    const finialGeo = new THREE.SphereGeometry(0.38, 16, 16);
+    const finialMat = new THREE.MeshBasicMaterial({ color: 0xd4af37 });
+    const finial = new THREE.Mesh(finialGeo, finialMat);
+    finial.position.set(0, 7.0, -0.6);
+    group.add(finial);
+
+    // Entrance Archway & Door
+    const doorGeo = new THREE.BoxGeometry(2.6, 2.8, 0.1);
+    const doorMat = new THREE.MeshLambertMaterial({ color: 0x22381b });
+    const door = new THREE.Mesh(doorGeo, doorMat);
+    door.position.set(0, 1.6, 3.12);
+    group.add(door);
+
+    // Green Prayer Carpet inside
+    const carpetGeo = new THREE.PlaneGeometry(6.5, 5.0);
+    const carpetMat = new THREE.MeshLambertMaterial({ color: 0x155e2d, side: THREE.DoubleSide });
+    const carpet = new THREE.Mesh(carpetGeo, carpetMat);
+    carpet.rotation.x = -Math.PI / 2;
+    carpet.position.set(0, 0.42, -0.8);
+    group.add(carpet);
+
+        // Prominent Signboard "MUSHOLA BUKIT PADANGAN"
+    const sign = create3DSignboard("MUSHOLA BUKIT PADANGAN", 5.6, 1.05);
+    sign.position.set(0, 2.6, 4.4);
+    group.add(sign);
+
+    // Interior Warm Light
+    const light = new THREE.PointLight(0xffe8ba, 2.2, 18);
+    light.position.set(0, 3.0, 0);
+    group.add(light);
+
+    scene3D.add(group);
+}
+
+/**
+ * Build 2 Toilets & External Keran Wudhu (Lingkaran Merah Kanan - Fasilitas Sanitasi)
+ */
+function buildToiletsAndWudhu() {
+    const group = new THREE.Group();
+    group.position.set(4, 0, -24);
+
+    // Foundation
+    const baseGeo = new THREE.BoxGeometry(8.5, 0.4, 8.0);
+    const baseMat = new THREE.MeshLambertMaterial({ color: 0x334155 });
+    const base = new THREE.Mesh(baseGeo, baseMat);
+    base.position.y = 0.2;
+    base.receiveShadow = true;
+    group.add(base);
+
+    // Toilet Building (2 Cubicles)
+    const wallGeo = new THREE.BoxGeometry(7.6, 3.2, 5.0);
+    const wallMat = new THREE.MeshLambertMaterial({ color: 0xe2e8f0 });
+    const walls = new THREE.Mesh(wallGeo, wallMat);
+    walls.position.set(0, 1.8, -1.0);
+    walls.castShadow = true;
+    walls.receiveShadow = true;
+    group.add(walls);
+
+    // Flat Roof with overhang
+    const roofGeo = new THREE.BoxGeometry(8.4, 0.3, 5.8);
+    const roofMat = new THREE.MeshLambertMaterial({ color: 0x1e293b });
+    const roof = new THREE.Mesh(roofGeo, roofMat);
+    roof.position.set(0, 3.5, -1.0);
+    roof.castShadow = true;
+    group.add(roof);
+
+    // 2 Doors: Left (Pria) & Right (Wanita)
+    const doorGeo = new THREE.BoxGeometry(1.6, 2.3, 0.1);
+    const doorMat = new THREE.MeshLambertMaterial({ color: 0x334155 });
+
+    const door1 = new THREE.Mesh(doorGeo, doorMat);
+    door1.position.set(-1.8, 1.35, 1.52);
+    group.add(door1);
+
+    const door2 = new THREE.Mesh(doorGeo, doorMat);
+    door2.position.set(1.8, 1.35, 1.52);
+    group.add(door2);
+
+    // KERAN WUDHU AREA (Di luar toilet, sisi depan)
+    const wudhuBaseGeo = new THREE.BoxGeometry(6.6, 0.25, 2.0);
+    const wudhuBaseMat = new THREE.MeshLambertMaterial({ color: 0x1e293b });
+    const wudhuBase = new THREE.Mesh(wudhuBaseGeo, wudhuBaseMat);
+    wudhuBase.position.set(0, 0.15, 3.2);
+    group.add(wudhuBase);
+
+    // River Stone Water Trough
+    const troughGeo = new THREE.BoxGeometry(5.8, 0.3, 0.6);
+    const troughMat = new THREE.MeshLambertMaterial({ color: 0x0f172a });
+    const trough = new THREE.Mesh(troughGeo, troughMat);
+    trough.position.set(0, 0.3, 2.6);
+    group.add(trough);
+
+    // Water Surface in Trough
+    const waterGeo = new THREE.PlaneGeometry(5.6, 0.5);
+    const waterMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, side: THREE.DoubleSide });
+    const water = new THREE.Mesh(waterGeo, waterMat);
+    water.rotation.x = -Math.PI / 2;
+    water.position.set(0, 0.46, 2.6);
+    group.add(water);
+
+    // 4 Wudhu Water Taps
+    for (let wx = -2.1; wx <= 2.1; wx += 1.4) {
+        const tapPipeGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.75, 8);
+        const tapMat = new THREE.MeshLambertMaterial({ color: 0xc0c0c0 });
+        const tap = new THREE.Mesh(tapPipeGeo, tapMat);
+        tap.position.set(wx, 0.6, 2.3);
+        group.add(tap);
+
+        const spoutGeo = new THREE.CylinderGeometry(0.03, 0.03, 0.25, 8);
+        const spout = new THREE.Mesh(spoutGeo, tapMat);
+        spout.rotation.x = Math.PI / 2;
+        spout.position.set(wx, 0.95, 2.45);
+        group.add(spout);
+    }
+
+        // Prominent Signboard "2 TOILET & KERAN WUDHU"
+    const sign = create3DSignboard("2 TOILET & KERAN WUDHU", 5.6, 1.05);
+    sign.position.set(0, 2.6, 3.2);
+    group.add(sign);
+
+    scene3D.add(group);
+
+    // Northern Courtyard Bright Lighting
+    const courtLight = new THREE.PointLight(0xfff3d6, 3.2, 35);
+    courtLight.position.set(-3, 8, -17);
+    scene3D.add(courtLight);
+}
+
+/**
+ * Build Indoor Utama (Lingkaran Putih - Barat Daya)
+ * Houses tables IU-07 s/d IU-12
+ */
+function buildIndoorUtama() {
+    const group = new THREE.Group();
+    group.position.set(-13, 0, -1);
+
+    // Timber Parquet Floor
+    const floorGeo = new THREE.BoxGeometry(14, 0.3, 12);
+    const floorMat = new THREE.MeshLambertMaterial({ color: 0x855836 });
+    const floor = new THREE.Mesh(floorGeo, floorMat);
+    floor.position.y = 0.15;
+    floor.receiveShadow = true;
+    group.add(floor);
+
+    // Glass Walls (Transparent to view interior tables)
+    const glassMat = new THREE.MeshPhysicalMaterial({
+        color: 0xcfe6fc,
+        transparent: true,
+        opacity: 0.35,
+        roughness: 0.1,
+        transmission: 0.75
+    });
+
+    // Front Glass Wall
+    const frontWall = new THREE.Mesh(new THREE.BoxGeometry(13.8, 3.6, 0.15), glassMat);
+    frontWall.position.set(0, 1.9, 5.9);
+    group.add(frontWall);
+
+    // Back Solid Timber Wall
+    const backWallMat = new THREE.MeshLambertMaterial({ color: 0x2e2318 });
+    const backWall = new THREE.Mesh(new THREE.BoxGeometry(13.8, 3.6, 0.25), backWallMat);
+    backWall.position.set(0, 1.9, -5.9);
+    backWall.castShadow = true;
+    group.add(backWall);
+
+    // Left & Right Glass Walls
+    const leftWall = new THREE.Mesh(new THREE.BoxGeometry(0.15, 3.6, 11.8), glassMat);
+    leftWall.position.set(-6.9, 1.9, 0);
+    group.add(leftWall);
+
+    const rightWall = new THREE.Mesh(new THREE.BoxGeometry(0.15, 3.6, 11.8), glassMat);
+    rightWall.position.set(6.9, 1.9, 0);
+    group.add(rightWall);
+
+    // Structural Pillars
+    const colMat = new THREE.MeshLambertMaterial({ color: 0x1f1913 });
+    const cols = [[-6.8, -5.8], [6.8, -5.8], [-6.8, 5.8], [6.8, 5.8], [0, -5.8], [0, 5.8]];
+    cols.forEach(([cx, cz]) => {
+        const pillar = new THREE.Mesh(new THREE.BoxGeometry(0.4, 3.8, 0.4), colMat);
+        pillar.position.set(cx, 1.9, cz);
+        pillar.castShadow = true;
+        group.add(pillar);
+    });
+
+    // Pergola Slat Roof with Skylight
+    for (let bx = -6.4; bx <= 6.4; bx += 1.6) {
+        const slat = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.35, 12.2), colMat);
+        slat.position.set(bx, 3.85, 0);
+        slat.castShadow = true;
+        group.add(slat);
+    }
+
+    // Signboard "INDOOR UTAMA"
+    const sign = create3DSignboard("INDOOR UTAMA", 5.2, 0.85);
+    sign.position.set(0, 4.3, 6.05);
+    group.add(sign);
+
+    // Warm Interior Illumination
+    const light = new THREE.PointLight(0xffbe6b, 2.2, 24);
+    light.position.set(0, 3.5, 0);
+    group.add(light);
+
+    scene3D.add(group);
+}
+
+/**
+ * Build Kasir Station (Lingkaran Hitam - Dekat Indoor Utama)
+ */
+function buildCashierStation() {
+    const group = new THREE.Group();
+    group.position.set(-5.5, 0, 2);
+
+    // Kasir Wooden Counter Deck
+    const deskGeo = new THREE.BoxGeometry(2.6, 1.2, 1.5);
+    const deskMat = new THREE.MeshLambertMaterial({ color: 0x4a2e17 });
+    const desk = new THREE.Mesh(deskGeo, deskMat);
+    desk.position.y = 0.6;
+    desk.castShadow = true;
+    desk.receiveShadow = true;
+    group.add(desk);
+
+    // POS Terminal Monitor
+    const screenGeo = new THREE.BoxGeometry(0.6, 0.45, 0.08);
+    const screenMat = new THREE.MeshBasicMaterial({ color: 0x0284c7 });
+    const screen = new THREE.Mesh(screenGeo, screenMat);
+    screen.position.set(0, 1.45, 0.1);
+    group.add(screen);
+
+    // Canopy Awning over Cashier
+    const awningGeo = new THREE.BoxGeometry(3.2, 0.15, 2.2);
+    const awningMat = new THREE.MeshLambertMaterial({ color: 0x1f1913 });
+    const awning = new THREE.Mesh(awningGeo, awningMat);
+    awning.position.set(0, 2.7, 0);
+    awning.castShadow = true;
+    group.add(awning);
+
+    // Awning Support Pillars
+    const pMat = new THREE.MeshLambertMaterial({ color: 0x2a1c10 });
+    [[-1.4, -0.9], [1.4, -0.9], [-1.4, 0.9], [1.4, 0.9]].forEach(([px, pz]) => {
+        const p = new THREE.Mesh(new THREE.BoxGeometry(0.12, 2.7, 0.12), pMat);
+        p.position.set(px, 1.35, pz);
+        group.add(p);
+    });
+
+    // Signboard "KASIR"
+    const sign = create3DSignboard("KASIR", 2.4, 0.7);
+    sign.position.set(0, 3.2, 1.05);
+    group.add(sign);
+
+    // Spot Gold Light
+    const spot = new THREE.PointLight(0xffaa33, 2.0, 10);
+    spot.position.set(0, 2.5, 0);
+    group.add(spot);
+
+    scene3D.add(group);
+}
+
+/**
+ * Build Indoor Timur 1 (Lingkaran Biru Kiri)
+ * Houses tables IT1-13 s/d IT1-16
+ */
+function buildIndoorTimur1() {
+    const group = new THREE.Group();
+    group.position.set(10, 0, 1);
+
+    // Timber Floor
+    const floorGeo = new THREE.BoxGeometry(9, 0.25, 10);
+    const floorMat = new THREE.MeshLambertMaterial({ color: 0x855836 });
+    const floor = new THREE.Mesh(floorGeo, floorMat);
+    floor.position.y = 0.12;
+    floor.receiveShadow = true;
+    group.add(floor);
+
+    // Glass walls
+    const glassMat = new THREE.MeshPhysicalMaterial({
+        color: 0xcfe6fc,
+        transparent: true,
+        opacity: 0.35,
+        roughness: 0.1,
+        transmission: 0.75
+    });
+    const frontWall = new THREE.Mesh(new THREE.BoxGeometry(8.8, 3.4, 0.12), glassMat);
+    frontWall.position.set(0, 1.8, 4.9);
+    group.add(frontWall);
+
+    const backWallMat = new THREE.MeshLambertMaterial({ color: 0x2e2318 });
+    const backWall = new THREE.Mesh(new THREE.BoxGeometry(8.8, 3.4, 0.2), backWallMat);
+    backWall.position.set(0, 1.8, -4.9);
+    group.add(backWall);
+
+    // Roof Pergola Slats
+    const colMat = new THREE.MeshLambertMaterial({ color: 0x1f1913 });
+    for (let bx = -4.0; bx <= 4.0; bx += 1.6) {
+        const slat = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.3, 10.2), colMat);
+        slat.position.set(bx, 3.6, 0);
+        group.add(slat);
+    }
+
+    // Signboard "INDOOR TIMUR 1"
+    const sign = create3DSignboard("INDOOR TIMUR 1", 4.8, 0.8);
+    sign.position.set(0, 4.0, 5.05);
+    group.add(sign);
+
+    // Light
+    const light = new THREE.PointLight(0xffbe6b, 1.8, 18);
+    light.position.set(0, 3.2, 0);
+    group.add(light);
+
+    scene3D.add(group);
+}
+
+/**
+ * Build Kolam Terapi Ikan (Lingkaran Biru Tengah)
+ * Houses tables TI-01 s/d TI-03
+ */
+function buildFishTherapyPool() {
+    const group = new THREE.Group();
+    group.position.set(19.5, 0, 1);
+
+    // Stone Pool Basin
+    const basinGeo = new THREE.BoxGeometry(8, 0.5, 10);
+    const basinMat = new THREE.MeshLambertMaterial({ color: 0x334155 });
+    const basin = new THREE.Mesh(basinGeo, basinMat);
+    basin.position.y = 0.25;
+    basin.receiveShadow = true;
+    basin.castShadow = true;
+    group.add(basin);
+
+    // Clear Turquoise Water
+    const waterGeo = new THREE.BoxGeometry(7.4, 0.1, 9.4);
+    const waterMat = new THREE.MeshLambertMaterial({
+        color: 0x0ea5e9,
+        transparent: true,
+        opacity: 0.85
+    });
+    const water = new THREE.Mesh(waterGeo, waterMat);
+    water.position.y = 0.45;
+    group.add(water);
+
+    // Timber Edge Deck around Pool for visitors to sit and dip feet
+    const deckMat = new THREE.MeshLambertMaterial({ color: 0xa16207 });
+    const edgeNorth = new THREE.Mesh(new THREE.BoxGeometry(8.4, 0.2, 0.8), deckMat);
+    edgeNorth.position.set(0, 0.55, -4.8);
+    group.add(edgeNorth);
+
+    const edgeSouth = new THREE.Mesh(new THREE.BoxGeometry(8.4, 0.2, 0.8), deckMat);
+    edgeSouth.position.set(0, 0.55, 4.8);
+    group.add(edgeSouth);
+
+    // Signboard "KOLAM TERAPI IKAN"
+    const sign = create3DSignboard("KOLAM TERAPI IKAN", 5.6, 0.85);
+    sign.position.set(0, 2.8, 5.0);
+    group.add(sign);
+
+    // Animated Fish (Visual markers)
+    const fishGeo = new THREE.ConeGeometry(0.12, 0.4, 6);
+    const fishMat1 = new THREE.MeshBasicMaterial({ color: 0xf97316 }); // Orange Koi
+    const fishMat2 = new THREE.MeshBasicMaterial({ color: 0xffffff }); // White Koi
+
+    [[-2, -2], [1, 0], [-1, 2], [2, 3], [0, -3]].forEach(([fx, fz], idx) => {
+        const fish = new THREE.Mesh(fishGeo, idx % 2 === 0 ? fishMat1 : fishMat2);
+        fish.rotation.x = Math.PI / 2;
+        fish.rotation.z = Math.random() * Math.PI * 2;
+        fish.position.set(fx, 0.48, fz);
+        group.add(fish);
+    });
+
+    scene3D.add(group);
+}
+
+/**
+ * Build Indoor Timur 2 (Lingkaran Biru Kanan)
+ * Houses tables IT2-17 s/d IT2-20
+ */
+function buildIndoorTimur2() {
+    const group = new THREE.Group();
+    group.position.set(29, 0, 1);
+
+    // Timber Floor
+    const floorGeo = new THREE.BoxGeometry(9, 0.25, 10);
+    const floorMat = new THREE.MeshLambertMaterial({ color: 0x855836 });
+    const floor = new THREE.Mesh(floorGeo, floorMat);
+    floor.position.y = 0.12;
+    floor.receiveShadow = true;
+    group.add(floor);
+
+    // Glass walls
+    const glassMat = new THREE.MeshPhysicalMaterial({
+        color: 0xcfe6fc,
+        transparent: true,
+        opacity: 0.35,
+        roughness: 0.1,
+        transmission: 0.75
+    });
+    const frontWall = new THREE.Mesh(new THREE.BoxGeometry(8.8, 3.4, 0.12), glassMat);
+    frontWall.position.set(0, 1.8, 4.9);
+    group.add(frontWall);
+
+    const backWallMat = new THREE.MeshLambertMaterial({ color: 0x2e2318 });
+    const backWall = new THREE.Mesh(new THREE.BoxGeometry(8.8, 3.4, 0.2), backWallMat);
+    backWall.position.set(0, 1.8, -4.9);
+    group.add(backWall);
+
+    // Roof Pergola Slats
+    const colMat = new THREE.MeshLambertMaterial({ color: 0x1f1913 });
+    for (let bx = -4.0; bx <= 4.0; bx += 1.6) {
+        const slat = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.3, 10.2), colMat);
+        slat.position.set(bx, 3.6, 0);
+        group.add(slat);
+    }
+
+    // Signboard "INDOOR TIMUR 2"
+    const sign = create3DSignboard("INDOOR TIMUR 2", 4.8, 0.8);
+    sign.position.set(0, 4.0, 5.05);
+    group.add(sign);
+
+    // Light
+    const light = new THREE.PointLight(0xffbe6b, 1.8, 18);
+    light.position.set(0, 3.2, 0);
+    group.add(light);
+
+    scene3D.add(group);
+}
+
+/**
+ * Build Sunset Indicator (Arah Barat / Kiri)
+ */
+function buildSunsetIndicator() {
+    const group = new THREE.Group();
+    group.position.set(-32, 2.5, 8);
+
+    // Golden Sun Orb
+    const sunGeo = new THREE.SphereGeometry(2.0, 24, 24);
+    const sunMat = new THREE.MeshBasicMaterial({ color: 0xffaa22 });
+    const sun = new THREE.Mesh(sunGeo, sunMat);
+    sun.position.y = 3.5;
+    group.add(sun);
+
+    // Radiating Sun Ring
+    const haloGeo = new THREE.RingGeometry(2.6, 3.4, 32);
+    const haloMat = new THREE.MeshBasicMaterial({
+        color: 0xffd56b,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.6
+    });
+    const halo = new THREE.Mesh(haloGeo, haloMat);
+    halo.position.y = 3.5;
+    halo.rotation.y = Math.PI / 2;
+    group.add(halo);
+
+    // Signboard "ARAH SUNSET (GOLDEN HOUR)"
+    const sign = create3DSignboard("ARAH SUNSET (16.30 - 17.45 WIB)", 7.8, 1.0);
+    sign.position.set(0, 0.8, 0);
+    sign.rotation.y = Math.PI / 2;
+    group.add(sign);
+
+    // Warm Sunset Glow Light
+    const sunLight = new THREE.PointLight(0xff9900, 3.5, 30);
+    sunLight.position.set(0, 3.5, 0);
+    group.add(sunLight);
+
+    scene3D.add(group);
+}
+
+/**
+ * Build Garden Pathways connecting all zones
+ */
+function buildGardenPathways() {
+    // Entrance to Cashier & Indoor Utama
+    createPathSegment(-5, 29, -5.5, 4, 1.8);
+    createPathSegment(-5.5, 4, -13, 4, 1.6);
+
+    // Cashier to Saung Outdoor
+    createPathSegment(-5.5, 4, -9, 14, 1.6);
+    createPathSegment(-16, 14, -2, 14, 1.4);
+    createPathSegment(-16, 22, -2, 22, 1.4);
+    createPathSegment(-9, 14, -9, 22, 1.4);
+
+    // Cashier to East Complex (IT1, Fish Therapy, IT2)
+    createPathSegment(-5.5, 4, 10, 4, 1.6);
+    createPathSegment(10, 4, 19.5, 4, 1.6);
+    createPathSegment(19.5, 4, 29, 4, 1.6);
+
+    // Central pathway to North Facilities (Mushola & Toilet)
+    createPathSegment(-5.5, 4, -5.5, -16, 1.6);
+    createPathSegment(-5.5, -16, -10, -20, 1.6); // to Mushola
+    createPathSegment(-5.5, -16, 4, -20, 1.6);   // to Toilets & Wudhu
 }
 
 /**
@@ -283,238 +874,38 @@ function createPathSegment(x1, z1, x2, z2, width = 1.4) {
     const angle = Math.atan2(dx, dz);
 
     const pathGeo = new THREE.PlaneGeometry(width, len);
-    const pathMat = new THREE.MeshLambertMaterial({ color: 0xd4cebf, side: THREE.DoubleSide });
+    const pathMat = new THREE.MeshLambertMaterial({ color: 0x334155, side: THREE.DoubleSide });
     const path = new THREE.Mesh(pathGeo, pathMat);
     path.rotation.x = -Math.PI / 2;
     path.rotation.z = angle;
-    path.position.set((x1 + x2) / 2, 0.02, (z1 + z2) / 2);
+    path.position.set((x1 + x2) / 2, 0.04, (z1 + z2) / 2);
     path.receiveShadow = true;
     scene3D.add(path);
-}
-
-/**
- * Build Main Building (Kasir & Barista)
- */
-function buildMainBuilding() {
-    const group = new THREE.Group();
-    group.position.set(-22, 0, -8);
-
-    // Building Walls
-    const wallGeo = new THREE.BoxGeometry(12, 4.2, 9);
-    const wallMat = new THREE.MeshLambertMaterial({ color: 0xf5eedb }); // Warm cream stucco
-    const walls = new THREE.Mesh(wallGeo, wallMat);
-    walls.position.y = 2.1;
-    walls.castShadow = true;
-    walls.receiveShadow = true;
-    group.add(walls);
-
-    // Timber corner accents
-    const timberMat = new THREE.MeshLambertMaterial({ color: 0x5c3d24 });
-    const corners = [
-        [-5.9, -4.4], [5.9, -4.4], [-5.9, 4.4], [5.9, 4.4]
-    ];
-    corners.forEach(([cx, cz]) => {
-        const pillar = new THREE.Mesh(new THREE.BoxGeometry(0.5, 4.2, 0.5), timberMat);
-        pillar.position.set(cx, 2.1, cz);
-        pillar.castShadow = true;
-        group.add(pillar);
-    });
-
-    // Dark Pitch Roof
-    const roofGeo = new THREE.ConeGeometry(9.2, 2.8, 4);
-    const roofMat = new THREE.MeshLambertMaterial({ color: 0x2b3826 }); // Forest dark green roof
-    const roof = new THREE.Mesh(roofGeo, roofMat);
-    roof.position.y = 5.2;
-    roof.rotation.y = Math.PI / 4;
-    roof.castShadow = true;
-    group.add(roof);
-
-    // Front Glass Entrance & Signboard
-    const glassMat = new THREE.MeshPhysicalMaterial({
-        color: 0x8ec3eb,
-        transparent: true,
-        opacity: 0.65,
-        roughness: 0.1,
-        transmission: 0.6
-    });
-    const frontGlass = new THREE.Mesh(new THREE.BoxGeometry(5.5, 2.8, 0.2), glassMat);
-    frontGlass.position.set(2, 1.4, 4.55);
-    group.add(frontGlass);
-
-    // Signboard "KASIR & BARISTA"
-    const signGroup = create3DSignboard("KASIR & BARISTA", 4.2, 0.9);
-    signGroup.position.set(2, 3.6, 4.7);
-    group.add(signGroup);
-
-    // Front Patio Awning
-    const awning = new THREE.Mesh(new THREE.BoxGeometry(7, 0.2, 2.5), timberMat);
-    awning.position.set(2, 3.0, 5.6);
-    awning.castShadow = true;
-    group.add(awning);
-
-    scene3D.add(group);
-}
-
-/**
- * Build VIP & Meeting Room Pavilion (Glass House)
- */
-function buildVipPavilion() {
-    const group = new THREE.Group();
-    group.position.set(-3, 0, -19);
-
-    // Parquet Floor
-    const floorGeo = new THREE.BoxGeometry(23, 0.2, 11);
-    const floorMat = new THREE.MeshLambertMaterial({ color: 0x855836 });
-    const floor = new THREE.Mesh(floorGeo, floorMat);
-    floor.position.y = 0.1;
-    floor.receiveShadow = true;
-    group.add(floor);
-
-    // Glass Walls
-    const glassMat = new THREE.MeshPhysicalMaterial({
-        color: 0xbfdcf5,
-        transparent: true,
-        opacity: 0.42,
-        roughness: 0.1,
-        transmission: 0.7,
-        reflectivity: 0.8
-    });
-
-    // Front Long Glass
-    const frontWall = new THREE.Mesh(new THREE.BoxGeometry(22.8, 3.6, 0.15), glassMat);
-    frontWall.position.set(0, 1.9, 5.4);
-    group.add(frontWall);
-
-    // Back Wall
-    const backWallMat = new THREE.MeshLambertMaterial({ color: 0x3d4f3b });
-    const backWall = new THREE.Mesh(new THREE.BoxGeometry(22.8, 3.6, 0.3), backWallMat);
-    backWall.position.set(0, 1.9, -5.4);
-    backWall.castShadow = true;
-    group.add(backWall);
-
-    // Left & Right Glass
-    const sideWallGeo = new THREE.BoxGeometry(0.15, 3.6, 10.8);
-    const leftWall = new THREE.Mesh(sideWallGeo, glassMat);
-    leftWall.position.set(-11.4, 1.9, 0);
-    group.add(leftWall);
-
-    const rightWall = new THREE.Mesh(sideWallGeo, glassMat);
-    rightWall.position.set(11.4, 1.9, 0);
-    group.add(rightWall);
-
-    // Structural Black Columns
-    const colMat = new THREE.MeshLambertMaterial({ color: 0x222222 });
-    for (let x = -11.4; x <= 11.4; x += 5.7) {
-        const colF = new THREE.Mesh(new THREE.BoxGeometry(0.35, 3.6, 0.35), colMat);
-        colF.position.set(x, 1.9, 5.4);
-        colF.castShadow = true;
-        group.add(colF);
-
-        const colB = new THREE.Mesh(new THREE.BoxGeometry(0.35, 3.6, 0.35), colMat);
-        colB.position.set(x, 1.9, -5.4);
-        colB.castShadow = true;
-        group.add(colB);
-    }
-
-    // Architectural Skylight & Pergola Roof (Permits clear top-down view of tables)
-    const roofGlassMat = new THREE.MeshLambertMaterial({
-        color: 0xddeefc,
-        transparent: true,
-        opacity: 0.35
-    });
-    const roofGlass = new THREE.Mesh(new THREE.BoxGeometry(23.8, 0.12, 11.8), roofGlassMat);
-    roofGlass.position.y = 3.8;
-    group.add(roofGlass);
-
-    // Pergola Timber Slats (Spaced every 2.4 units)
-    for (let bx = -11.2; bx <= 11.2; bx += 2.8) {
-        const slat = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.35, 11.8), colMat);
-        slat.position.set(bx, 3.9, 0);
-        slat.castShadow = true;
-        group.add(slat);
-    }
-
-    // Pavilion Signboard "VIP & MEETING ROOM"
-    const vipSign = create3DSignboard("VIP & MEETING ROOM", 5.8, 0.85);
-    vipSign.position.set(0, 4.3, 5.6);
-    group.add(vipSign);
-
-    scene3D.add(group);
-}
-
-/**
- * Build Outdoor Sunset Cliff Deck
- */
-function buildOutdoorDeck() {
-    const group = new THREE.Group();
-    // Deck spans from x: 7 to 30, z: -5 to 19
-    const deckWidth = 24;
-    const deckDepth = 25;
-    group.position.set(18.5, 0, 7);
-
-    // Elevated Timber Deck Planks
-    const deckGeo = new THREE.BoxGeometry(deckWidth, 0.45, deckDepth);
-    const deckMat = new THREE.MeshLambertMaterial({ color: 0xb58957 }); // Warm teak wood
-    const deck = new THREE.Mesh(deckGeo, deckMat);
-    deck.position.y = 0.25;
-    deck.receiveShadow = true;
-    deck.castShadow = true;
-    group.add(deck);
-
-    // Deck Railing along Cliff Edges (East x: +12, South z: +12.5, North z: -12.5)
-    const railMat = new THREE.MeshLambertMaterial({ color: 0x4a3219 });
-
-    // East Cliff Railing (Facing Sunrise/Valley)
-    const eastRail = new THREE.Mesh(new THREE.BoxGeometry(0.18, 1.1, deckDepth), railMat);
-    eastRail.position.set(deckWidth / 2 - 0.1, 1.0, 0);
-    eastRail.castShadow = true;
-    group.add(eastRail);
-
-    // South Railing
-    const southRail = new THREE.Mesh(new THREE.BoxGeometry(deckWidth, 1.1, 0.18), railMat);
-    southRail.position.set(0, 1.0, deckDepth / 2 - 0.1);
-    southRail.castShadow = true;
-    group.add(southRail);
-
-    // North Railing
-    const northRail = new THREE.Mesh(new THREE.BoxGeometry(deckWidth, 1.1, 0.18), railMat);
-    northRail.position.set(0, 1.0, -deckDepth / 2 + 0.1);
-    northRail.castShadow = true;
-    group.add(northRail);
-
-    // Deck Signboard "OUTDOOR SUNSET DECK"
-    const deckSign = create3DSignboard("TERAS OUTDOOR PANORAMA", 6.2, 0.85);
-    deckSign.position.set(-deckWidth / 2 + 3.5, 1.7, -deckDepth / 2 + 0.5);
-    deckSign.rotation.y = Math.PI / 2;
-    group.add(deckSign);
-
-    scene3D.add(group);
 }
 
 /**
  * Build Surrounding Trees, Bushes, and Cliff Details
  */
 function buildSurroundingNature() {
-    // Pine Trees Positions
+    // Pine / Shade Trees around perimeter
     const treePositions = [
-        [-28, -2], [-30, 10], [-26, 22], [-22, 32],
-        [-10, 33], [0, 32], [12, 28], [24, 25],
-        [32, 18], [33, 4], [32, -8], [28, -18],
-        [16, -24], [-18, -22], [-28, -16]
+        [-34, -12], [-32, -22], [-24, -28], [-18, -28],
+        [16, -28], [24, -26], [34, -20], [38, -8],
+        [38, 8], [36, 20], [28, 26], [-28, 24], [-34, 16]
     ];
 
     treePositions.forEach(([tx, tz]) => {
         const tree = createPineTree();
         tree.position.set(tx, 0, tz);
-        const scale = 0.8 + Math.random() * 0.45;
+        const scale = 0.85 + Math.random() * 0.4;
         tree.scale.set(scale, scale, scale);
         scene3D.add(tree);
     });
 
-    // Flowering Bushes around Garden
+    // Flowering Bushes
     const bushPositions = [
-        [-16, 3], [-8, 3], [-16, 12], [-8, 12],
-        [-12, 21], [-4, 21], [6, 2], [6, 10]
+        [-14, 8], [-4, 8], [4, 8], [15, 8],
+        [-18, -12], [-8, -12], [8, -12], [22, -12]
     ];
     bushPositions.forEach(([bx, bz]) => {
         const bush = createFlowerBush();
@@ -584,25 +975,33 @@ function create3DSignboard(text, width = 3, height = 0.8) {
     const group = new THREE.Group();
 
     const canvas = document.createElement("canvas");
-    canvas.width = 512;
-    canvas.height = 128;
+    canvas.width = 1024;
+    canvas.height = 256;
     const ctx = canvas.getContext("2d");
 
-    ctx.fillStyle = "#22381b";
+    // Luxury Dark Green Background
+    ctx.fillStyle = "#142617";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.strokeStyle = "#d4af37";
-    ctx.lineWidth = 8;
-    ctx.strokeRect(6, 6, canvas.width - 12, canvas.height - 12);
+    // Warm Gold Ornate Border
+    ctx.strokeStyle = "#d4a373";
+    ctx.lineWidth = 14;
+    ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
 
-    ctx.fillStyle = "#faf6ed";
-    ctx.font = "bold 44px 'Cinzel', serif, sans-serif";
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+    ctx.lineWidth = 4;
+    ctx.strokeRect(22, 22, canvas.width - 44, canvas.height - 44);
+
+    // Crisp Bright White Text
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 60px 'Cinzel', 'Playfair Display', serif, sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(text, canvas.width / 2, canvas.height / 2);
 
     const texture = new THREE.CanvasTexture(canvas);
-    const mat = new THREE.MeshBasicMaterial({ map: texture });
+    texture.anisotropy = 4;
+    const mat = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
     const board = new THREE.Mesh(new THREE.PlaneGeometry(width, height), mat);
     group.add(board);
 
