@@ -3278,3 +3278,168 @@ input:focus, select:focus {
         grid-template-columns: 1fr 1fr;
     }
 }
+
+/* ==========================================================================
+   5. SIGNATURE MENU SHOWCASE & DP NOTICE CARD (Luxury Black & Gold)
+   ========================================================================== */
+.menu-tag-signature {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    background: rgba(212, 163, 115, 0.12);
+    border: 1px solid rgba(212, 163, 115, 0.28);
+    padding: 5px 12px;
+    border-radius: 50px;
+    letter-spacing: 0.3px;
+}
+
+.menu-notice-banner {
+    margin-top: 40px;
+    background: linear-gradient(135deg, rgba(22, 26, 33, 0.95) 0%, rgba(16, 20, 26, 0.98) 100%);
+    border: 1px solid rgba(212, 163, 115, 0.25);
+    border-radius: 16px;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.menu-notice-banner .notice-icon {
+    width: 52px;
+    height: 52px;
+    background: rgba(212, 163, 115, 0.15);
+    border: 1px solid rgba(212, 163, 115, 0.4);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-gold);
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.menu-notice-banner .notice-body {
+    flex: 1;
+}
+
+.menu-notice-banner .notice-body h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+.menu-notice-banner .notice-body p {
+    font-size: 0.88rem;
+    color: #94a3b8;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.menu-notice-banner .notice-action {
+    flex-shrink: 0;
+}
+
+/* DP & Bank Notice inside Reservation Modal */
+.reservation-dp-notice {
+    background: linear-gradient(135deg, rgba(212, 163, 115, 0.1) 0%, rgba(18, 22, 28, 0.95) 100%);
+    border: 1px solid rgba(212, 163, 115, 0.35);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+}
+
+.dp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #e5b882;
+    font-weight: 700;
+    font-size: 0.88rem;
+    margin-bottom: 6px;
+}
+
+.dp-rule {
+    font-size: 0.82rem;
+    color: #cbd5e1;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.dp-bank-card {
+    background: rgba(10, 12, 15, 0.75);
+    border: 1px dashed rgba(212, 163, 115, 0.35);
+    border-radius: 8px;
+    padding: 10px 14px;
+}
+
+.bank-info-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.bank-title {
+    font-size: 0.76rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.bank-num-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.bank-num {
+    font-family: 'Courier New', monospace;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 1.5px;
+}
+
+.btn-copy-acc {
+    background: rgba(212, 163, 115, 0.15);
+    border: 1px solid var(--accent-gold);
+    color: var(--accent-gold);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-copy-acc:hover {
+    background: var(--accent-gold);
+    color: #0c0e12;
+}
+
+.bank-holder {
+    font-size: 0.82rem;
+    color: #e5b882;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .menu-notice-banner {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+    .menu-notice-banner .notice-action {
+        width: 100%;
+    }
+    .menu-notice-banner .btn {
+        width: 100%;
+    }
+}

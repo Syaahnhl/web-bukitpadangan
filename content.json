@@ -1,26 +1,28 @@
 {
-  "promo": {
-    "show": false,
-    "text": ""
-  },
   "hero": {
-    "title": "Bukit Padangan",
-    "subtitle": "Selamat Datang di",
-    "desc": "Nikmati hidangan lezat dengan suasana asri pegunungan yang menenangkan dan kopi modern kekinian."
+    "title": "Warung Makan Bukit Padangan",
+    "desc": "Restoran keluarga dan tempat santai berkonsep alam terbuka di lereng perbukitan Gunungwungkal, dikelilingi hamparan sawah dan aliran sungai sejuk."
   },
   "about": {
-    "title": "Suasana Alam & Rasa Otentik",
-    "desc": "Terletak di jalur sejuk Gunungwungkal, kami menyajikan perpaduan kenyamanan cafe modern dengan kehangatan masakan khas nusantara dan panorama alam hijau."
+    "desc": "Terletak di jalur sejuk Gunungwungkal–Gulangpongge, Warung Makan Bukit Padangan menyajikan perpaduan kenyamanan tempat makan keluarga dengan kehangatan masakan khas nusantara, saung tepi sawah & sungai, kolam terapi ikan santai, serta area mewarnai ramah anak."
   },
   "event": {
     "show": true,
     "title": "Paket Acara & Rombongan",
-    "desc": "Rayakan momen istimewa bersama keluarga, rekan kerja, dan komunitas dengan sajian nikmat berlatar panorama alam asri."
+    "desc": "Rayakan momen kebersamaan keluarga, reuni, arisan, maupun rapat kantor dengan pilihan paket menu lengkap dan spot terbaik Bukit Padangan."
   },
   "contacts": {
-    "wa_admin1": "6285290462715",
-    "wa_admin2": "6282323535747",
-    "instagram": "https://instagram.com/bukitpadangan",
+    "wa_admin1": "085290462715",
+    "wa_admin2": "082323535747",
+    "instagram": "https://instagram.com/bukitpadangan.id",
+    "tiktok": "https://tiktok.com/@bukitpadangan.id",
     "facebook": "https://facebook.com/bukitpadangan"
+  },
+  "reservation": {
+    "bank_name": "Bank Mandiri",
+    "account_number": "1840011559968",
+    "account_holder": "Mila Elmeida",
+    "cutoff_time": "14.00 WIB",
+    "rule_note": "Reservasi hari-H maksimal pukul 14.00 WIB. Konfirmasi DP via transfer Bank Mandiri 1840011559968 a.n. Mila Elmeida."
   }
 }

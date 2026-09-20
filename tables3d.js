@@ -35,7 +35,40 @@ const CAMERA_PRESETS = {
 
 // Table Positions Map in 3D Space (X, Z)
 const TABLE_3D_LAYOUT = {
-    // Zona Gazebo Lesehan (1-8) - South-West Garden Terrace
+    // Zona Saung Bambu / Lesehan Tepi Sawah & Sungai (S-01 s/d S-06)
+    "S-01": { x: -20, z: 8, zone: "outdoor", rotation: 0 },
+    "S-02": { x: -12, z: 8, zone: "outdoor", rotation: 0 },
+    "S-03": { x: -4,  z: 8, zone: "outdoor", rotation: 0 },
+    "S-04": { x: -20, z: 17, zone: "outdoor", rotation: 0 },
+    "S-05": { x: -12, z: 17, zone: "outdoor", rotation: 0 },
+    "S-06": { x: -4,  z: 17, zone: "outdoor", rotation: 0 },
+
+    // Zona Kolam Terapi Ikan & Ramah Anak (TI-01 s/d TI-03)
+    "TI-01": { x: -16, z: 26, zone: "gazebo", rotation: 0 },
+    "TI-02": { x: -8,  z: 26, zone: "gazebo", rotation: 0 },
+    "TI-03": { x: 0,   z: 26, zone: "gazebo", rotation: 0 },
+
+    // Zona Indoor Utama 6x6 m (IU-07 s/d IU-12)
+    "IU-07": { x: -11, z: -17, zone: "vip", rotation: 0, type: "vip-large" },
+    "IU-08": { x: -5,  z: -17, zone: "vip", rotation: 0, type: "vip-large" },
+    "IU-09": { x: 1,   z: -17, zone: "vip", rotation: 0, type: "meeting" },
+    "IU-10": { x: 7,   z: -17, zone: "vip", rotation: 0, type: "meeting" },
+    "IU-11": { x: -8,  z: -22, zone: "vip", rotation: 0, type: "lounge" },
+    "IU-12": { x: 4,   z: -22, zone: "vip", rotation: 0, type: "lounge" },
+
+    // Zona Indoor Timur 1 (IT1-13 s/d IT1-16)
+    "IT1-13": { x: 10, z: -2, zone: "vip", rotation: 0 },
+    "IT1-14": { x: 16, z: -2, zone: "vip", rotation: 0 },
+    "IT1-15": { x: 22, z: -2, zone: "vip", rotation: 0 },
+    "IT1-16": { x: 27, z: -2, zone: "vip", rotation: 0 },
+
+    // Zona Indoor Timur 2 (IT2-17 s/d IT2-20)
+    "IT2-17": { x: 10, z: 6,  zone: "vip", rotation: 0 },
+    "IT2-18": { x: 16, z: 6,  zone: "vip", rotation: 0 },
+    "IT2-19": { x: 22, z: 6,  zone: "vip", rotation: 0 },
+    "IT2-20": { x: 27, z: 6,  zone: "vip", rotation: 0 },
+
+    // Backwards Compatibility Fallback (T01-T26)
     "T01": { x: -20, z: 8, zone: "gazebo", rotation: 0 },
     "T02": { x: -12, z: 8, zone: "gazebo", rotation: 0 },
     "T03": { x: -4,  z: 8, zone: "gazebo", rotation: 0 },
@@ -44,25 +77,18 @@ const TABLE_3D_LAYOUT = {
     "T06": { x: -4,  z: 17, zone: "gazebo", rotation: 0 },
     "T07": { x: -16, z: 26, zone: "gazebo", rotation: 0 },
     "T08": { x: -8,  z: 26, zone: "gazebo", rotation: 0 },
-
-    // Zona Outdoor Panorama & Sunset Cliff Deck (9-20) - East Elevated Wooden Deck
-    // Row 1 (Cliff Sunset Edge)
     "T09": { x: 10, z: -2, zone: "outdoor", rotation: 0, umbrella: true },
     "T10": { x: 16, z: -2, zone: "outdoor", rotation: 0, umbrella: true },
     "T11": { x: 22, z: -2, zone: "outdoor", rotation: 0, umbrella: true },
     "T12": { x: 27, z: -2, zone: "outdoor", rotation: 0, umbrella: true },
-    // Row 2 (Middle Deck)
     "T13": { x: 10, z: 6,  zone: "outdoor", rotation: 0, umbrella: false },
     "T14": { x: 16, z: 6,  zone: "outdoor", rotation: 0, umbrella: false },
     "T15": { x: 22, z: 6,  zone: "outdoor", rotation: 0, umbrella: false },
     "T16": { x: 27, z: 6,  zone: "outdoor", rotation: 0, umbrella: false },
-    // Row 3 (Front Deck)
     "T17": { x: 10, z: 14, zone: "outdoor", rotation: 0, umbrella: true },
     "T18": { x: 16, z: 14, zone: "outdoor", rotation: 0, umbrella: true },
     "T19": { x: 22, z: 14, zone: "outdoor", rotation: 0, umbrella: true },
     "T20": { x: 27, z: 14, zone: "outdoor", rotation: 0, umbrella: true },
-
-    // Zona VIP & Meeting Room (21-26) - North Glass Pavilion
     "T21": { x: -11, z: -17, zone: "vip", rotation: 0, type: "vip-large" },
     "T22": { x: -5,  z: -17, zone: "vip", rotation: 0, type: "vip-large" },
     "T23": { x: 1,   z: -17, zone: "vip", rotation: 0, type: "meeting" },

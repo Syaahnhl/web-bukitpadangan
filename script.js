@@ -1,5 +1,4 @@
 // State Keranjang Belanja & Admin WA
-let cart = [];
 let waAdminNumber = "6285290462715"; // default fallback
 
 // Fungsi Load Konten Dinamis
@@ -66,6 +65,7 @@ async function loadDynamicContent() {
             if (document.getElementById("waAdmin2Text")) document.getElementById("waAdmin2Text").innerText = formatPhoneDisplay(data.contacts.wa_admin2);
             if (document.getElementById("igFooterLink")) document.getElementById("igFooterLink").href = data.contacts.instagram;
             if (document.getElementById("fbFooterLink")) document.getElementById("fbFooterLink").href = data.contacts.facebook;
+            if (document.getElementById("tiktokFooterLink") && data.contacts.tiktok) document.getElementById("tiktokFooterLink").href = data.contacts.tiktok;
         }
 
     } catch (err) {
@@ -117,9 +117,7 @@ function renderMenuGrid(items) {
                     <p>${item.desc}</p>
                     <div class="menu-footer">
                         <span class="menu-price">${priceFormatted}</span>
-                        <button class="btn-add-cart" onclick="addToCart('${item.id}', '${item.name.replace(/'/g, "\\'")}', ${item.price})">
-                            <i class="fas fa-plus"></i> Tambah
-                        </button>
+                        <span class="menu-tag-signature"><i class="fas fa-star"></i> Pilihan</span>
                     </div>
                 </div>
             </div>
@@ -131,21 +129,12 @@ window.addEventListener("DOMContentLoaded", () => {
     loadDynamicContent();
     loadMenuData();
     loadTablesData();
-    updateCartUI();
     initOperatingHoursStatus();
     initFaqAccordion();
 });
 
 // Elemen-elemen DOM
 const modal = document.getElementById("reservationModal");
-const cartDrawer = document.getElementById("cartDrawer");
-const floatingCart = document.getElementById("floatingCart");
-const cartCount = document.getElementById("cartCount");
-const cartItemsList = document.getElementById("cartItemsList");
-const cartSubtotal = document.getElementById("cartSubtotal");
-const summaryItemsList = document.getElementById("summaryItemsList");
-const formPreorderSummary = document.getElementById("formPreorderSummary");
-const summaryTotal = document.getElementById("summaryTotal");
 const kachingDirectLink = document.getElementById("kachingDirectLink");
 
 // Tautan Resmi Kaching Self-Order (User ID Bukit Padangan = 1)
@@ -265,44 +254,8 @@ function changeLightboxImage(delta, event) {
 }
 
 // =========================================
-// 4. KERANJANG BELANJA (CART SYSTEM)
+// 4. FORMAT RUPIAH HELPER
 // =========================================
-function addToCart(id, name, price) {
-    const existingItem = cart.find(item => item.id === id);
-    if (existingItem) {
-        existingItem.quantity += 1;
-    } else {
-        cart.push({ id, name, price, quantity: 1 });
-    }
-    updateCartUI();
-    
-    // Auto-open drawer untuk memberi feedback ke user
-    if (!cartDrawer.classList.contains("open")) {
-        toggleCartDrawer();
-    }
-}
-
-function removeFromCart(id) {
-    cart = cart.filter(item => item.id !== id);
-    updateCartUI();
-}
-
-function updateQty(id, delta) {
-    const item = cart.find(item => item.id === id);
-    if (item) {
-        item.quantity += delta;
-        if (item.quantity <= 0) {
-            removeFromCart(id);
-        } else {
-            updateCartUI();
-        }
-    }
-}
-
-function calculateTotal() {
-    return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-}
-
 function formatRupiah(number) {
     return new Intl.NumberFormat("id-ID", {
         style: "currency",
@@ -311,103 +264,18 @@ function formatRupiah(number) {
     }).format(number);
 }
 
-function updateCartUI() {
-    // Update Badge Count
-    const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartCount.innerText = totalCount;
-
-    // Tampilkan/Sembunyikan Tombol Floating Cart jika kosong
-    if (totalCount > 0) {
-        floatingCart.style.display = "flex";
-    } else {
-        floatingCart.style.display = "none";
-        if (cartDrawer.classList.contains("open")) {
-            toggleCartDrawer();
-        }
-    }
-
-    // Render items list di drawer
-    if (cart.length === 0) {
-        cartItemsList.innerHTML = `<p class="empty-cart-text">Keranjang masih kosong. Tambahkan hidangan dari menu!</p>`;
-    } else {
-        cartItemsList.innerHTML = cart.map(item => `
-            <div class="cart-item">
-                <div class="cart-item-details">
-                    <h5>${item.name}</h5>
-                    <span>${formatRupiah(item.price * item.quantity)}</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="cart-item-qty">
-                        <button class="qty-btn" onclick="updateQty('${item.id}', -1)"><i class="fas fa-minus"></i></button>
-                        <span class="qty-val">${item.quantity}</span>
-                        <button class="qty-btn" onclick="updateQty('${item.id}', 1)"><i class="fas fa-plus"></i></button>
-                    </div>
-                    <button class="btn-remove-item" onclick="removeFromCart('${item.id}')">
-                        <i class="far fa-trash-alt"></i>
-                    </button>
-                </div>
-            </div>
-        `).join("");
-    }
-
-    // Update Subtotal
-    cartSubtotal.innerText = formatRupiah(calculateTotal());
-}
-
-function toggleCartDrawer() {
-    const isOpen = cartDrawer.classList.toggle("open");
-    const floatingCart = document.querySelector(".floating-cart");
-    if (isOpen) {
-        document.body.style.overflow = "hidden";
-        if (floatingCart) floatingCart.style.visibility = "hidden";
-    } else {
-        document.body.style.overflow = "";
-        if (floatingCart && cart.length > 0) floatingCart.style.visibility = "visible";
-    }
-}
-
-// Handler klik order via Kachingku
-function handleKachingCheckout(event) {
-    if (cart.length > 0) {
-        alert("Mengarahkan Tuan ke Menu Digital Kachingku. Silakan pilih kembali menu Anda di sana untuk pembayaran digital instan!");
-    }
-}
-
 // =========================================
 // 5. MODAL & RESERVASI HANDLERS
 // =========================================
 function openModal(event) {
     if (event) event.preventDefault();
-    modal.style.display = "flex";
+    if (modal) modal.style.display = "flex";
     document.body.style.overflow = "hidden";
-    const floatingCart = document.querySelector(".floating-cart");
-    if (floatingCart) floatingCart.style.visibility = "hidden";
-    
-    // Tampilkan Pre-order summary jika ada item
-    if (cart.length > 0) {
-        formPreorderSummary.style.display = "block";
-        summaryItemsList.innerHTML = cart.map(item => `
-            <div class="summary-item-line">
-                <span>${item.name} x${item.quantity}</span>
-                <span>${formatRupiah(item.price * item.quantity)}</span>
-            </div>
-        `).join("");
-        summaryTotal.innerText = formatRupiah(calculateTotal());
-    } else {
-        formPreorderSummary.style.display = "none";
-    }
 }
 
 function closeModal() {
-    modal.style.display = "none";
+    if (modal) modal.style.display = "none";
     document.body.style.overflow = "";
-    const floatingCart = document.querySelector(".floating-cart");
-    if (floatingCart && cart.length > 0) floatingCart.style.visibility = "visible";
-}
-
-function checkoutCart() {
-    toggleCartDrawer();
-    openModal();
 }
 
 // =========================================
@@ -555,8 +423,7 @@ function openTableModal(tableId) {
     if (tableModal) {
         tableModal.style.display = "flex";
         document.body.style.overflow = "hidden";
-        const floatingCart = document.querySelector(".floating-cart");
-        if (floatingCart) floatingCart.style.visibility = "hidden";
+        
     }
 }
 
@@ -564,8 +431,7 @@ function closeTableModal() {
     if (tableModal) {
         tableModal.style.display = "none";
         document.body.style.overflow = "";
-        const floatingCart = document.querySelector(".floating-cart");
-        if (floatingCart && cart.length > 0) floatingCart.style.visibility = "visible";
+        
     }
     activePreviewTableId = null;
 }
@@ -611,9 +477,12 @@ function selectThisTable(tableId) {
     // Auto-sinkronkan pilihan area
     const areaSelect = document.getElementById("resArea");
     if (areaSelect) {
-        if (table.zone === "gazebo") areaSelect.value = "Semi-Outdoor Gazebo";
-        else if (table.zone === "outdoor") areaSelect.value = "Outdoor (Pemandangan Bukit)";
-        else if (table.zone === "vip") areaSelect.value = "Indoor Cafe Modern";
+        if (table.zone === "outdoor") areaSelect.value = "Outdoor (View Persawahan & Sungai)";
+        else if (table.zone === "gazebo") areaSelect.value = "Area Terapi Ikan & Ramah Anak";
+        else if (table.zone === "vip") {
+            if (table.id.startsWith("IU")) areaSelect.value = "Indoor Utama (6x6 m)";
+            else areaSelect.value = "Indoor Timur (Sayap 1 & 2)";
+        }
     }
 
     // Render ulang grid denah agar border .selected terpasang
@@ -696,20 +565,25 @@ function filterMenu(category) {
 // 8. SUBMIT RESERVASI (FORM WA AUTO-GENERATE)
 // =========================================
 function submitReservation(event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
 
     // Mengambil input data dari form
-    const name = document.getElementById("resName").value;
-    const dateInput = document.getElementById("resDate").value;
-    const time = document.getElementById("resTime").value;
-    const guests = document.getElementById("resGuests").value;
-    const area = document.getElementById("resArea").value;
-    const targetPhone = document.getElementById("resAdmin").value;
+    const name = document.getElementById("resName") ? document.getElementById("resName").value.trim() : "";
+    const dateInput = document.getElementById("resDate") ? document.getElementById("resDate").value : "";
+    const time = document.getElementById("resTime") ? document.getElementById("resTime").value : "";
+    const guests = document.getElementById("resGuests") ? document.getElementById("resGuests").value : "";
+    const area = document.getElementById("resArea") ? document.getElementById("resArea").value : "";
+    const targetPhone = document.getElementById("resAdmin") ? document.getElementById("resAdmin").value : "6285290462715";
+
+    if (!name || !dateInput || !time || !guests) {
+        alert("Mohon lengkapi seluruh formulir reservasi.");
+        return;
+    }
 
     // Nomor meja terpilih atau manual
     let tableText = "Bebas / Ditentukan Petugas";
     if (selectedTable) {
-        tableText = `${selectedTable.name} (${selectedTable.zoneName})`;
+        tableText = `${selectedTable.name} (${selectedTable.zoneName || selectedTable.area || 'Terpilih'})`;
     } else {
         const manualSelect = document.getElementById("resTableSelect");
         if (manualSelect && manualSelect.value) {
@@ -719,35 +593,43 @@ function submitReservation(event) {
     }
 
     // Format tanggal Indonesia (yyyy-mm-dd -> dd Month yyyy)
-    const dateObj = new Date(dateInput);
-    const months = [
-        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-    ];
-    const formattedDate = dateObj.getDate() + " " + months[dateObj.getMonth()] + " " + dateObj.getFullYear();
-
-    // Format Rincian Menu Pre-order
-    let preorderText = "";
-    if (cart.length > 0) {
-        preorderText = "\n\n📋 *PRE-ORDER MENU:*";
-        cart.forEach(item => {
-            preorderText += `\n- ${item.name} (x${item.quantity}) : ${formatRupiah(item.price * item.quantity)}`;
-        });
-        preorderText += `\n*TOTAL PEMESANAN:* ${formatRupiah(calculateTotal())}`;
-        preorderText += `\n_(Catatan: Pembayaran pre-order diselesaikan di kasir resto)_`;
-    }
+    let formattedDate = dateInput;
+    try {
+        const dateObj = new Date(dateInput);
+        const months = [
+            "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+            "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+        ];
+        formattedDate = dateObj.getDate() + " " + months[dateObj.getMonth()] + " " + dateObj.getFullYear();
+    } catch (e) {}
 
     // Menyusun Template Pesan WhatsApp
-    const waText = `Halo Admin Bukit Padangan, saya ingin melakukan Reservasi Meja:
+    let waText = `*HALO BUKIT PADANGAN, SAYA INGIN RESERVASI TEMPAT*
 
-👤 *Nama:* ${name}
-📅 *Tanggal:* ${formattedDate}
-⏰ *Jam Kedatangan:* ${time} WIB
-👥 *Jumlah Tamu:* ${guests} Orang
-📍 *Pilihan Area:* ${area}
-🪑 *Nomor Meja:* ${tableText}${preorderText}
+`;
+    waText += `📋 *Data Reservasi:*
+`;
+    waText += `• Nama Pemesan: ${name}
+`;
+    waText += `• Tanggal Kunjungan: ${formattedDate}
+`;
+    waText += `• Jam Kedatangan: ${time} WIB
+`;
+    waText += `• Jumlah Tamu: ${guests} Orang
+`;
+    waText += `• Area Pilihan: ${area}
+`;
+    waText += `• Pilihan Meja: *${tableText}*
 
-Mohon konfirmasi ketersediaan meja untuk kami. Terima kasih!`;
+`;
+    waText += `💳 *Ketentuan & Konfirmasi DP:*
+`;
+    waText += `• Rekening: Bank Mandiri 1840011559968 (a.n. Mila Elmeida)
+`;
+    waText += `• Batas Konfirmasi Hari-H: Maksimal 14.00 WIB
+
+`;
+    waText += `Mohon info ketersediaan meja dan konfirmasi nominal DP yang perlu ditransfer. Terima kasih!`;
 
     // Encode text untuk URL
     const encodedText = encodeURIComponent(waText);
@@ -756,11 +638,9 @@ Mohon konfirmasi ketersediaan meja untuk kami. Terima kasih!`;
     // Buka WhatsApp di tab baru
     window.open(waUrl, "_blank");
 
-    // Bersihkan form, pilihan meja & keranjang belanja
+    // Bersihkan form & pilihan meja
     document.getElementById("reservationForm").reset();
     clearSelectedTable();
-    cart = [];
-    updateCartUI();
     closeModal();
 }
 
