@@ -131,6 +131,23 @@ window.addEventListener("DOMContentLoaded", () => {
     loadTablesData();
     initOperatingHoursStatus();
     initFaqAccordion();
+    updatePackageCalc();
+
+    // Event listener untuk menutup menuBookModal jika klik di luar area konten
+    const menuBookModal = document.getElementById("menuBookModal");
+    if (menuBookModal) {
+        menuBookModal.addEventListener("click", (e) => {
+            if (e.target === menuBookModal) closeMenuBookModal();
+        });
+    }
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            closeMenuBookModal();
+            closeModal();
+        }
+    });
+    initFaqAccordion();
 });
 
 // Elemen-elemen DOM
@@ -736,3 +753,126 @@ function initFaqAccordion() {
     });
 }
 
+
+
+// ==============================================================================
+// 6 ESSENTIAL RESTAURANT FEATURES INTERACTIVE LOGIC
+// ==============================================================================
+
+// Feature 1: Menu Book Modal (Katalog Lengkap & Cetak)
+function openMenuBookModal() {
+    const modal = document.getElementById("menuBookModal");
+    if (modal) {
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+    }
+}
+
+function closeMenuBookModal() {
+    const modal = document.getElementById("menuBookModal");
+    if (modal) {
+        modal.style.display = "none";
+        document.body.style.overflow = "";
+    }
+}
+
+// Feature 2: Kalkulator Paket Acara & Rombongan
+function updatePackageCalc() {
+    const paxRange = document.getElementById("calcPaxRange");
+    const packageSelect = document.getElementById("calcPackageSelect");
+    const addonMusic = document.getElementById("calcAddonMusic");
+
+    if (!paxRange || !packageSelect) return;
+
+    const pax = parseInt(paxRange.value, 10) || 25;
+    const pkgPrice = parseInt(packageSelect.value, 10) || 45000;
+    const isMusic = addonMusic ? addonMusic.checked : false;
+
+    const foodCost = pax * pkgPrice;
+    const musicCost = isMusic ? 300000 : 0;
+    const discountRate = pax >= 30 ? 0.05 : 0;
+    const discountVal = Math.round(foodCost * discountRate);
+    const grandTotal = foodCost + musicCost - discountVal;
+
+    // Update DOM
+    const paxValBadge = document.getElementById("calcPaxVal");
+    if (paxValBadge) paxValBadge.textContent = `${pax} Orang`;
+
+    const summaryPaxText = document.getElementById("summaryPaxText");
+    if (summaryPaxText) summaryPaxText.textContent = pax;
+
+    const summaryFoodCost = document.getElementById("summaryFoodCost");
+    if (summaryFoodCost) summaryFoodCost.textContent = formatRupiah(foodCost);
+
+    const summaryAddonCost = document.getElementById("summaryAddonCost");
+    if (summaryAddonCost) summaryAddonCost.textContent = formatRupiah(musicCost);
+
+    const summaryDiscountRow = document.getElementById("summaryDiscountRow");
+    const summaryDiscountVal = document.getElementById("summaryDiscountVal");
+    const calcDiscountTag = document.getElementById("calcDiscountTag");
+
+    if (discountVal > 0) {
+        if (summaryDiscountRow) summaryDiscountRow.style.display = "flex";
+        if (summaryDiscountVal) summaryDiscountVal.textContent = `- ${formatRupiah(discountVal)}`;
+        if (calcDiscountTag) {
+            calcDiscountTag.textContent = "Diskon Rombongan 5%";
+            calcDiscountTag.style.color = "#4ade80";
+        }
+    } else {
+        if (summaryDiscountRow) summaryDiscountRow.style.display = "none";
+        if (calcDiscountTag) {
+            calcDiscountTag.textContent = "Normal";
+            calcDiscountTag.style.color = "var(--accent-gold)";
+        }
+    }
+
+    const summaryGrandTotal = document.getElementById("summaryGrandTotal");
+    if (summaryGrandTotal) summaryGrandTotal.textContent = formatRupiah(grandTotal);
+}
+
+function sendPackageCalcToWA() {
+    const paxRange = document.getElementById("calcPaxRange");
+    const packageSelect = document.getElementById("calcPackageSelect");
+    const addonMusic = document.getElementById("calcAddonMusic");
+
+    const pax = paxRange ? paxRange.value : "25";
+    const pkgName = packageSelect ? packageSelect.options[packageSelect.selectedIndex].text : "Paket Acara";
+    const isMusic = addonMusic && addonMusic.checked ? "Ya (+Rp 300.000)" : "Tidak";
+    const grandTotal = document.getElementById("summaryGrandTotal") ? document.getElementById("summaryGrandTotal").textContent : "Rp 0";
+
+    let waText = `Halo Admin Bukit Padangan, saya ingin mengajukan Konsultasi Paket Rombongan:\n\n`;
+    waText += `📋 *Pilihan Paket:* ${pkgName}\n`;
+    waText += `👥 *Estimasi Peserta:* ${pax} Orang\n`;
+    waText += `🎸 *Add-on Live Music Akustik:* ${isMusic}\n`;
+    waText += `💰 *Estimasi Total Biaya:* ${grandTotal}\n\n`;
+    waText += `💳 *Informasi DP:*\n`;
+    waText += `• Rekening: Bank Mandiri 1840011559968 (a.n. Mila Elmeida)\n`;
+    waText += `• Batas Hari-H: Maksimal pukul 14.00 WIB\n\n`;
+    waText += `Mohon konfirmasi ketersediaan tempat dan tanggal acara kami. Terima kasih!`;
+
+    const encoded = encodeURIComponent(waText);
+    window.open(`https://api.whatsapp.com/send?phone=6285290462715&text=${encoded}`, "_blank");
+}
+
+// Feature 3: Filter Ulasan Pengunjung Google
+function filterReviews(type, event) {
+    const pills = document.querySelectorAll(".review-pill");
+    pills.forEach(pill => pill.classList.remove("active"));
+    
+    // Set active pill
+    if (event && event.target) {
+        event.target.classList.add("active");
+    } else if (window.event && window.event.target) {
+        window.event.target.classList.add("active");
+    }
+
+    const cards = document.querySelectorAll(".review-card");
+    cards.forEach(card => {
+        const cardType = card.getAttribute("data-type") || "";
+        if (type === "all" || cardType.includes(type)) {
+            card.style.display = "flex";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}

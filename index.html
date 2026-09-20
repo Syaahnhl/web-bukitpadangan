@@ -111,10 +111,37 @@
                 <div class="hero-location-tag">
                     <i class="fas fa-map-marker-alt"></i> Gunungwungkal, Pati
                 </div>
+                <div class="hero-weather-tag">
+                    <i class="fas fa-cloud-sun text-gold"></i> 26°C Sejuk Alami
+                </div>
+                <div class="hero-sunset-tag">
+                    <i class="fas fa-sun text-gold"></i> Golden Hour 16.30–17.45 WIB
+                </div>
             </div>
             <button class="btn-cta" onclick="openModal(event)">Lakukan Reservasi Sekarang</button>
         </div>
     </section>
+
+
+    <!-- WEATHER & GOLDEN HOUR HIGHLIGHT BANNER -->
+    <div class="weather-sunset-banner">
+        <div class="container weather-sunset-inner">
+            <div class="weather-pill">
+                <div class="weather-icon-box"><i class="fas fa-cloud-sun"></i></div>
+                <div class="weather-info-box">
+                    <div class="weather-title">Cuaca Lereng Gunungwungkal</div>
+                    <div class="weather-desc"><strong>26°C</strong> Sejuk Alami • Semilir Angin Perbukitan</div>
+                </div>
+            </div>
+            <div class="sunset-pill">
+                <div class="sunset-icon-box"><i class="fas fa-sun"></i></div>
+                <div class="sunset-info-box">
+                    <div class="sunset-title"><span class="sunset-badge">Golden Hour Terbaik</span> 16.30 – 17.45 WIB</div>
+                    <div class="sunset-desc">Waktu matahari terbenam paling magis dari Saung 01–06 Tepi Sawah</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- ABOUT SECTION -->
     <section id="about" class="section-padding">
@@ -333,6 +360,7 @@
                 <button class="tab-btn" onclick="filterMenu('makanan')">Makanan</button>
                 <button class="tab-btn" onclick="filterMenu('minuman')">Minuman</button>
                 <button class="tab-btn" onclick="filterMenu('cemilan')">Camilan</button>
+                <button class="tab-btn btn-tab-highlight" onclick="openMenuBookModal()"><i class="fas fa-book-open"></i> Buku Menu Lengkap</button>
             </div>
 
             <!-- Menu Grid -->
@@ -433,53 +461,247 @@
                     </a>
                 </div>
             </div>
+            
+            <!-- KALKULATOR ESTIMASI PAKET ROMBONGAN -->
+            <div class="event-calculator-card">
+                <div class="calc-header">
+                    <div class="calc-title-wrap">
+                        <span class="calc-badge"><i class="fas fa-calculator"></i> Estimator Biaya Acara</span>
+                        <h3>Kalkulator Paket Rombongan & Acara</h3>
+                        <p>Simulasikan estimasi biaya gathering, arisan, reuni, atau rapat komunitas secara real-time:</p>
+                    </div>
+                </div>
+                <div class="calc-body-grid">
+                    <!-- Controls -->
+                    <div class="calc-controls">
+                        <div class="calc-form-group">
+                            <div class="calc-label-row">
+                                <label for="calcPaxRange">Jumlah Peserta / Tamu:</label>
+                                <span id="calcPaxVal" class="pax-badge-val">25 Orang</span>
+                            </div>
+                            <input type="range" id="calcPaxRange" min="15" max="100" step="5" value="25" oninput="updatePackageCalc()">
+                            <div class="calc-range-marks">
+                                <span>15 Pax (Min)</span>
+                                <span>50 Pax</span>
+                                <span>100 Pax</span>
+                            </div>
+                        </div>
+
+                        <div class="calc-form-group">
+                            <label for="calcPackageSelect">Pilihan Menu Paket:</label>
+                            <select id="calcPackageSelect" onchange="updatePackageCalc()">
+                                <option value="45000">Paket Gathering Keluarga & Arisan (Rp 45.000 / pax)</option>
+                                <option value="65000">Paket Rapat & Pertemuan Komunitas (Rp 65.000 / pax)</option>
+                                <option value="85000">Paket Prasmanan Komplit Premium (Rp 85.000 / pax)</option>
+                            </select>
+                        </div>
+
+                        <div class="calc-form-group">
+                            <label>Fasilitas Tambahan:</label>
+                            <div class="calc-checkboxes">
+                                <label class="calc-check-item">
+                                    <input type="checkbox" id="calcAddonMusic" onchange="updatePackageCalc()">
+                                    <span>Live Music Akustik Privat (+Rp 300.000)</span>
+                                </label>
+                                <label class="calc-check-item">
+                                    <input type="checkbox" id="calcAddonSound" checked disabled>
+                                    <span>Sound System & Mic Wireless (Gratis Termasuk)</span>
+                                </label>
+                                <label class="calc-check-item">
+                                    <input type="checkbox" id="calcAddonArea" checked disabled>
+                                    <span>Reservasi Meja & Saung Terpadu (Gratis)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary -->
+                    <div class="calc-summary-box">
+                        <div class="summary-header">
+                            <h4>Rincian Estimasi Biaya</h4>
+                            <span class="summary-tag" id="calcDiscountTag">Normal</span>
+                        </div>
+                        <div class="summary-rows">
+                            <div class="summary-row">
+                                <span>Konsumsi (<span id="summaryPaxText">25</span> pax)</span>
+                                <strong id="summaryFoodCost">Rp 1.125.000</strong>
+                            </div>
+                            <div class="summary-row">
+                                <span>Live Music Akustik</span>
+                                <strong id="summaryAddonCost">Rp 0</strong>
+                            </div>
+                            <div class="summary-row text-discount" id="summaryDiscountRow" style="display: none;">
+                                <span>Potongan Rombongan (≥30 Pax)</span>
+                                <strong id="summaryDiscountVal">-Rp 0</strong>
+                            </div>
+                            <div class="summary-divider"></div>
+                            <div class="summary-row total-row">
+                                <span>Total Estimasi:</span>
+                                <span class="summary-grand-total" id="summaryGrandTotal">Rp 1.125.000</span>
+                            </div>
+                        </div>
+                        <p class="summary-note">*Harga transparan tanpa biaya tersembunyi. DP 30% untuk mengunci jadwal.</p>
+                        <button type="button" class="btn-calc-wa" onclick="sendPackageCalcToWA()">
+                            <i class="fab fa-whatsapp"></i> Ajukan Rincian Ini ke WhatsApp Admin
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JADWAL LIVE MUSIC MINGGUAN -->
+            <div class="event-schedule-wrap">
+                <div class="schedule-header">
+                    <div class="badge-gold"><i class="fas fa-guitar"></i> Hiburan Akhir Pekan</div>
+                    <h3>Jadwal Live Music Akustik Mingguan</h3>
+                    <p>Suasana santap Anda semakin syahdu ditemani lantunan musik akustik di panggung terbuka lereng perbukitan:</p>
+                </div>
+                <div class="schedule-grid">
+                    <div class="schedule-card">
+                        <div class="schedule-day">Jumat Malam</div>
+                        <div class="schedule-time"><i class="far fa-clock"></i> 19.00 – 21.30 WIB</div>
+                        <div class="schedule-genre">Akustik Nostalgia & Pop Indo</div>
+                        <p class="schedule-desc">Alunan tembang kenangan dan lagu pop santai pengiring makan malam bersama keluarga tercinta.</p>
+                        <span class="schedule-stage"><i class="fas fa-map-marker-alt"></i> Panggung Utama Resto</span>
+                    </div>
+                    <div class="schedule-card highlight">
+                        <div class="schedule-badge-gold">Paling Favorit</div>
+                        <div class="schedule-day">Sabtu Sore – Malam</div>
+                        <div class="schedule-time"><i class="far fa-clock"></i> 16.30 – 21.30 WIB</div>
+                        <div class="schedule-genre">Senandung Senja & Top Hits</div>
+                        <p class="schedule-desc">Menikmati matahari terbenam (Golden Hour) hingga malam minggu hangat bersama sahabat.</p>
+                        <span class="schedule-stage"><i class="fas fa-map-marker-alt"></i> Panggung Utama & Tepi Sawah</span>
+                    </div>
+                    <div class="schedule-card">
+                        <div class="schedule-day">Minggu Siang – Sore</div>
+                        <div class="schedule-time"><i class="far fa-clock"></i> 12.00 – 16.00 WIB</div>
+                        <div class="schedule-genre">Family Weekend Melodies</div>
+                        <p class="schedule-desc">Melodi santai ramah keluarga. Pengunjung bebas me-request lagu favorit atau bernyanyi bersama!</p>
+                        <span class="schedule-stage"><i class="fas fa-map-marker-alt"></i> Panggung Utama Resto</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
-    <!-- TESTIMONIALS SECTION -->
-    <section id="testimonials" class="section-padding testimonials-section">
+    <!-- GOOGLE REVIEWS & SOCIAL PROOF SECTION -->
+    <section id="reviews" class="section-padding reviews-section">
         <div class="container">
-            <h2 class="section-title">Apa Kata Pengunjung</h2>
-            <p class="section-desc">Kesan jujur dari para pelanggan yang telah berkunjung dan menikmati hidangan di Bukit Padangan.</p>
-            
-            <div class="slider-wrapper">
-                <div class="testimonial-slider">
-                    <!-- Slide 1 -->
-                    <div class="testimonial-slide active">
-                        <div class="stars">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <div class="reviews-header-wrap">
+                <div class="section-badge-center"><span class="badge-gold">Ulasan Pengunjung</span></div>
+                <h2 class="section-title">Apa Kata Tamu Bukit Padangan</h2>
+                <p class="section-desc">Pengalaman nyata dari para tamu yang telah menikmati suasana alam, saung sawah, dan hidangan autentik lereng Gunungwungkal.</p>
+                
+                <!-- Google Rating Scorecard -->
+                <div class="google-scorecard">
+                    <div class="score-stars-col">
+                        <span class="score-num">4.8</span>
+                        <div class="score-stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
                         </div>
-                        <p class="quote">"Nasi Goreng Rempah dan Kopi Gula Aren di sini bener-bener juara! Udara Gunungwungkal yang dingin berpadu dengan kehangatan kopinya itu perfect combo. View pegunungannya asri banget!"</p>
-                        <h5 class="author-name">Rian Kurniawan</h5>
-                        <span class="author-tag">Pelanggan Setia</span>
+                        <span class="score-total">Berdasarkan 240+ Ulasan Google Maps</span>
                     </div>
-
-                    <!-- Slide 2 -->
-                    <div class="testimonial-slide">
-                        <div class="stars">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                        <p class="quote">"Tempat favorit keluarga buat berakhir pekan. Area Gazebonya sangat nyaman dan luas untuk anak-anak bermain. Gurame Terbang Crispy-nya enak gurih, bumbunya meresap sampai ke dalam."</p>
-                        <h5 class="author-name">Siti Aminah</h5>
-                        <span class="author-tag">Family Visitor</span>
-                    </div>
-
-                    <!-- Slide 3 -->
-                    <div class="testimonial-slide">
-                        <div class="stars">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
-                        </div>
-                        <p class="quote">"Suka sekali sama vibes outdoor cafe-nya di sore hari. Sangat syahdu dan instagramable buat foto-foto. Reservasi meja dan pre-order menu lewat web-nya juga gampang dan cepet respon adminnya."</p>
-                        <h5 class="author-name">Dina Larasati</h5>
-                        <span class="author-tag">Coffee Enthusiast</span>
+                    <div class="score-action-col">
+                        <a href="https://maps.app.goo.gl/Jy3esudVxSzx93m48" target="_blank" class="btn btn-outline-gold btn-sm">
+                            <i class="fab fa-google"></i> Beri Ulasan di Google
+                        </a>
                     </div>
                 </div>
 
-                <!-- Slider Controls -->
-                <div class="slider-dots">
-                    <span class="dot active" onclick="currentSlide(0)"></span>
-                    <span class="dot" onclick="currentSlide(1)"></span>
-                    <span class="dot" onclick="currentSlide(2)"></span>
+                <!-- Review Filter Pills -->
+                <div class="review-filter-pills">
+                    <button class="review-pill active" onclick="filterReviews('all', event)">Semua Ulasan (5)</button>
+                    <button class="review-pill" onclick="filterReviews('rasa', event)">Ayam Bledos & Rasa (2)</button>
+                    <button class="review-pill" onclick="filterReviews('suasana', event)">Suasana & Sunset (2)</button>
+                    <button class="review-pill" onclick="filterReviews('keluarga', event)">Keluarga & Fasilitas (2)</button>
+                </div>
+            </div>
+
+            <!-- Review Cards Grid -->
+            <div class="reviews-grid" id="reviewsGrid">
+                <div class="review-card show" data-type="rasa keluarga">
+                    <div class="review-card-top">
+                        <div class="reviewer-meta">
+                            <div class="reviewer-avatar">HG</div>
+                            <div class="reviewer-info">
+                                <h5>Hendra Gunawan</h5>
+                                <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Local Guide Level 6</span>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="review-text">"Ayam Bledosnya juara banget! Pedas rempahnya mantap meresap, lalapan kembang turinya segar. Suasana saung pinggir sawahnya sejuk bikin betah. Anak-anak seneng banget main di kolam terapi ikan gratisnya."</p>
+                    <span class="review-date"><i class="far fa-calendar-alt"></i> Kunjungan Keluarga • 2 minggu lalu</span>
+                </div>
+
+                <div class="review-card show" data-type="keluarga rasa">
+                    <div class="review-card-top">
+                        <div class="reviewer-meta">
+                            <div class="reviewer-avatar">SN</div>
+                            <div class="reviewer-info">
+                                <h5>Siti Nurhaliza</h5>
+                                <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Rombongan Arisan</span>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="review-text">"Tempat terbaik di Gunungwungkal buat kumpul keluarga besar dan arisan. Kopi santan khas Patinya gurih dan harum. Parkiran luas banget, muat rombongan 2 elf kami tanpa susah putar balik."</p>
+                    <span class="review-date"><i class="far fa-calendar-alt"></i> Rombongan 30 Pax • 1 bulan lalu</span>
+                </div>
+
+                <div class="review-card show" data-type="suasana">
+                    <div class="review-card-top">
+                        <div class="reviewer-meta">
+                            <div class="reviewer-avatar">DP</div>
+                            <div class="reviewer-info">
+                                <h5>Dimas Prasetyo</h5>
+                                <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Pengunjung Luar Kota</span>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="review-text">"Pemandangan matahari terbenam dari Saung nomor 1 luar biasa magis saat golden hour jam 5 sore. Pelayanan ramah, pesanan datang tepat waktu. Cocok banget buat yang mau healing dari hiruk pikuk kota."</p>
+                    <span class="review-date"><i class="far fa-calendar-alt"></i> Bersama Pasangan • 3 minggu lalu</span>
+                </div>
+
+                <div class="review-card show" data-type="rasa keluarga">
+                    <div class="review-card-top">
+                        <div class="reviewer-meta">
+                            <div class="reviewer-avatar">RW</div>
+                            <div class="reviewer-info">
+                                <h5>Ratna Wulandari</h5>
+                                <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Warga Pati Kota</span>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="review-text">"Fasilitas lengkap banget, ada area mewarnai buat si kecil dan kolam terapi ikan. Pesan Ayam Ingkung Utuh komplit buat ulang tahun ibu, bumbunya empuk dan gurih pol. Sangat recommended!"</p>
+                    <span class="review-date"><i class="far fa-calendar-alt"></i> Acara Ultah Keluarga • 1 bulan lalu</span>
+                </div>
+
+                <div class="review-card show" data-type="suasana">
+                    <div class="review-card-top">
+                        <div class="reviewer-meta">
+                            <div class="reviewer-avatar">BS</div>
+                            <div class="reviewer-info">
+                                <h5>Budi Santoso</h5>
+                                <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Komunitas Sepeda</span>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="review-text">"Jalur gowes lewat Gunungwungkal terus mampir sarapan di Bukit Padangan. Udara pagi lereng bukit segar banget, wedang uwuh dan polo pendem bentul rebusnya pas buat memulihkan tenaga."</p>
+                    <span class="review-date"><i class="far fa-calendar-alt"></i> Gowes Akhir Pekan • 2 minggu lalu</span>
                 </div>
             </div>
         </div>
@@ -643,6 +865,45 @@
                     referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
             </div>
+        
+            <!-- TRANSPORT & ROUTE GUIDE -->
+            <div class="transport-guide-wrap">
+                <div class="transport-header">
+                    <div class="badge-gold"><i class="fas fa-route"></i> Petunjuk Navigasi</div>
+                    <h3>Panduan Rute & Akses Kendaraan</h3>
+                    <p>Akses jalan menuju Bukit Padangan beraspal mulus dan ramah bagi segala jenis kendaraan:</p>
+                </div>
+
+                <div class="transport-grid">
+                    <div class="transport-card">
+                        <div class="transport-card-header">
+                            <i class="fas fa-map-signs"></i>
+                            <h4>Dari Arah Pati Kota (±35–45 Menit)</h4>
+                        </div>
+                        <p>Ambil rute Jl. Raya Pati – Tayu ke arah utara. Di pertigaan Wedarijaksa/Trangkil atau sebelum Tayu, arahkan ke barat menuju Gunungwungkal melalui jalur utama beraspal. Lanjutkan ke arah Gulangpongge, resto berada di kiri jalan dengan plang Bukit Padangan yang jelas.</p>
+                        <span class="road-quality"><i class="fas fa-check"></i> Aspal Mulus • Tanjakan Landai</span>
+                    </div>
+
+                    <div class="transport-card">
+                        <div class="transport-card-header">
+                            <i class="fas fa-compass"></i>
+                            <h4>Dari Arah Tayu (±25 Menit)</h4>
+                        </div>
+                        <p>Arahkan kendaraan ke arah barat daya melalui Jl. Tayu – Gunungwungkal. Ikuti jalan utama hingga memasuki kawasan lereng perbukitan dan persawahan hijau Gulangpongge.</p>
+                        <span class="road-quality"><i class="fas fa-check"></i> Jalur Cepat • Pemandangan Perkebunan</span>
+                    </div>
+
+                    <div class="transport-card">
+                        <div class="transport-card-header">
+                            <i class="fas fa-bus-alt"></i>
+                            <h4>Akses Elf, Minibus & Bus Medium (3/4)</h4>
+                        </div>
+                        <p>Jalan kabupaten dapat dilalui berpapasan dengan aman oleh Elf Long dan Bus Medium 3/4. Resto menyediakan halaman parkir luas yang mampu menampung hingga 5 minibus sekaligus, lengkap dengan area putar balik yang lega.</p>
+                        <span class="road-quality text-gold"><i class="fas fa-parking"></i> Parkir Bus/Elf Luas • Gratis Parkir</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -685,6 +946,153 @@
             <p>&copy; 2026 Bukit Padangan Resto. All Rights Reserved.</p>
         </div>
     </footer>
+
+
+    <!-- MENU BOOK MODAL (KATALOG LENGKAP & PDF) -->
+    <div id="menuBookModal" class="modal" style="display: none;">
+        <div class="modal-content menu-book-modal-content">
+            <div class="modal-header-text">
+                <div class="badge-gold"><i class="fas fa-book-open"></i> Katalog Resmi</div>
+                <h3>Buku Menu Lengkap Bukit Padangan</h3>
+                <p>Daftar lengkap sajian khas lereng Gunungwungkal, minuman segar, dan camilan tradisional:</p>
+            </div>
+            
+            <div class="menu-book-body">
+                <!-- Section 1: Olahan Ayam & Bebek -->
+                <div class="menu-book-section">
+                    <h4><i class="fas fa-drumstick-bite"></i> Olahan Ayam & Bebek Khas</h4>
+                    <div class="menu-book-list">
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Ayam Bledos Khas Gunungwungkal</strong> <span>(Potongan ayam kampung berbumbu rempah pedas khas)</span></div>
+                            <div class="book-row-price">Rp 26.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Bebek Bledos Spesial</strong> <span>(Daging bebek empuk gurih berselimut sambal bledos)</span></div>
+                            <div class="book-row-price">Rp 32.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Ayam Ingkung Komplit (Pre-Order)</strong> <span>(1 ekor ayam utuh bumbu areh santan gurih, lalap & sambal)</span></div>
+                            <div class="book-row-price">Rp 175.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Ayam Bakar Madu Perbukitan</strong> <span>(Ayam panggang manis gurih karamel madu alami)</span></div>
+                            <div class="book-row-price">Rp 26.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Ayam Goreng Lengkuas Tradisional</strong> <span>(Taburan serundeng lengkuas renyah harum)</span></div>
+                            <div class="book-row-price">Rp 25.000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Olahan Ikan Segar -->
+                <div class="menu-book-section">
+                    <h4><i class="fas fa-fish"></i> Olahan Ikan Air Tawar Segar</h4>
+                    <div class="menu-book-list">
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Nila Bledos Pedas Gurih</strong> <span>(Ikan nila segar goreng bumbu pedas rempah segar)</span></div>
+                            <div class="book-row-price">Rp 28.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Nila Bakar Rempah Manis</strong> <span>(Nila bakar bumbu kecap rempah wangi arang)</span></div>
+                            <div class="book-row-price">Rp 28.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Gurame Terbang Crispy</strong> <span>(Fillet gurame mekar renyah saus asam manis / pedas)</span></div>
+                            <div class="book-row-price">Rp 45.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Lele Goreng Bumbu Kuning</strong> <span>(Lele gurih garing disajikan dengan sambal terasi)</span></div>
+                            <div class="book-row-price">Rp 18.000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Sayuran & Tradisional -->
+                <div class="menu-book-section">
+                    <h4><i class="fas fa-seedling"></i> Sayur & Olahan Tradisional</h4>
+                    <div class="menu-book-list">
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Pecel Kembang Turi Lereng Bukit</strong> <span>(Sayuran segar kembang turi bumbu kacang medok)</span></div>
+                            <div class="book-row-price">Rp 12.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Cah Kangkung Terasi Pedas</strong> <span>(Tumis kangkung segar petik renyah)</span></div>
+                            <div class="book-row-price">Rp 10.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Sayur Asem Segar Gunung</strong> <span>(Kuah bening asam manis segar penambah selera)</span></div>
+                            <div class="book-row-price">Rp 10.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Nasi Bakul Liwet / Putih</strong> <span>(Porsi bakul untuk 3–4 orang)</span></div>
+                            <div class="book-row-price">Rp 20.000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Minuman Tradisional & Kopi -->
+                <div class="menu-book-section">
+                    <h4><i class="fas fa-mug-hot"></i> Kopi Santan & Minuman Herbal</h4>
+                    <div class="menu-book-list">
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Kopi Santan Khas Pati</strong> <span>(Kopi robusta diseduh santan murni gurih legit)</span></div>
+                            <div class="book-row-price">Rp 8.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Wedang Telang Bukit Padangan</strong> <span>(Bunga telang seduh jeruk nipis & madu alami)</span></div>
+                            <div class="book-row-price">Rp 8.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Wedang Uwuh Rempah Imogiri</strong> <span>(Jahe, secang, kayu manis, cengkeh gula batu)</span></div>
+                            <div class="book-row-price">Rp 8.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Es Kelapa Muda Jeruk</strong> <span>(Air dan kelapa muda murni segar lereng bukit)</span></div>
+                            <div class="book-row-price">Rp 12.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Kopi Tubruk Robusta Gula Aren</strong> <span>(Kopi hitam mantap khas lereng Muria-Pati)</span></div>
+                            <div class="book-row-price">Rp 7.000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Camilan & Polo Pendem -->
+                <div class="menu-book-section">
+                    <h4><i class="fas fa-cookie-bite"></i> Camilan & Polo Pendem Rebus</h4>
+                    <div class="menu-book-list">
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Bentul & Ubi Ungu Kukus</strong> <span>(Umbi bentul pulen khas lereng dengan parutan kelapa)</span></div>
+                            <div class="book-row-price">Rp 12.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Tempe Mendoan Anget (Isi 4)</strong> <span>(Tempe kedelai lebar gurih disajikan dengan sambal kecap)</span></div>
+                            <div class="book-row-price">Rp 12.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Pisang Goreng Wijen Karamel</strong> <span>(Pisang kepok manis garing berbalut biji wijen)</span></div>
+                            <div class="book-row-price">Rp 12.000</div>
+                        </div>
+                        <div class="menu-book-row">
+                            <div class="book-row-title"><strong>Bakwan Sayur Renyah (Isi 4)</strong> <span>(Gorengan renyah anget dengan cabai rawit hijau)</span></div>
+                            <div class="book-row-price">Rp 10.000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-book-footer">
+                <button type="button" class="btn btn-gold btn-sm" onclick="window.print()">
+                    <i class="fas fa-print"></i> Cetak / Unduh PDF
+                </button>
+                <a href="https://wa.me/6285290462715?text=Halo%20Admin%20Bukit%20Padangan%2C%20saya%20minta%20info%20katalog%20PDF%20menu%20lengkap%20dan%20paket%20rombongan" target="_blank" class="btn btn-outline-gold btn-sm">
+                    <i class="fab fa-whatsapp"></i> Minta Brosur via WA
+                </a>
+                <button type="button" class="btn-close-modal" onclick="closeMenuBookModal()">Tutup</button>
+            </div>
+        </div>
+    </div>
 
     <!-- RESERVATION MODAL (INTERAKTIF FORM) -->
     <div id="reservationModal" class="modal">
