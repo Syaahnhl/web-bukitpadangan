@@ -1358,6 +1358,304 @@ input:focus, select:focus {
     border-bottom: 1px solid var(--border-color);
 }
 
+.tables-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1.8rem;
+}
+
+.table-view-mode-toggle {
+    display: inline-flex;
+    background-color: #ede8df;
+    padding: 4px;
+    border-radius: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.view-mode-btn {
+    border: none;
+    background: transparent;
+    padding: 8px 18px;
+    border-radius: 24px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.view-mode-btn:hover {
+    color: var(--primary-green);
+}
+
+.view-mode-btn.active {
+    background-color: var(--primary-green);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(45, 74, 34, 0.3);
+}
+
+/* 3D Floor Plan Wrapper & Canvas */
+.floorplan-3d-wrapper {
+    position: relative;
+    width: 100%;
+    height: 580px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(45, 74, 34, 0.12);
+    border: 2px solid var(--primary-green);
+    background-color: #dce7d9;
+    margin-bottom: 2rem;
+    touch-action: none;
+}
+
+.floorplan-3d-wrapper.fullscreen-mode {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 99999 !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
+.webgl-canvas-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: grab;
+}
+
+.webgl-canvas-container:active {
+    cursor: grabbing;
+}
+
+.canvas-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--primary-green);
+    font-weight: 600;
+}
+
+.canvas-loading .spinner {
+    width: 44px;
+    height: 44px;
+    border: 4px solid rgba(45, 74, 34, 0.2);
+    border-top-color: var(--primary-green);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 3D HUD (Heads-up Display) Overlay */
+.hud-top-bar {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    right: 14px;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.hud-zone-shortcuts,
+.hud-action-tools {
+    pointer-events: auto;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.cam-preset-btn {
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #1e293b;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.cam-preset-btn:hover {
+    background: #ffffff;
+    color: var(--primary-green);
+    transform: translateY(-1px);
+}
+
+.cam-preset-btn.active {
+    background: var(--primary-green);
+    color: #ffffff;
+    border-color: var(--primary-green);
+    box-shadow: 0 4px 14px rgba(45, 74, 34, 0.35);
+}
+
+.hud-tool-btn {
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 7px 12px;
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #1e293b;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.hud-tool-btn:hover {
+    background: #ffffff;
+    color: var(--primary-green);
+    transform: translateY(-1px);
+}
+
+.hud-bottom-bar {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    right: 14px;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.hud-nav-hint {
+    pointer-events: auto;
+    background: rgba(30, 41, 59, 0.88);
+    backdrop-filter: blur(8px);
+    color: #ffffff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.76rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.desktop-hint { display: inline; }
+.mobile-hint { display: none; }
+
+.hud-status-legend {
+    pointer-events: auto;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(8px);
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: #1e293b;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.hud-leg-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.leg-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.leg-indicator.status-available { background-color: #10b981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.6); }
+.leg-indicator.status-occupied { background-color: #ef4444; box-shadow: 0 0 6px rgba(239, 68, 68, 0.6); }
+.leg-indicator.status-reserved { background-color: #f59e0b; box-shadow: 0 0 6px rgba(245, 158, 11, 0.6); }
+
+/* 3D Tooltip Card */
+.table-3d-tooltip {
+    position: absolute;
+    z-index: 25;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    border: 2px solid var(--primary-green);
+    padding: 12px 15px;
+    min-width: 200px;
+    max-width: 240px;
+    pointer-events: none;
+    animation: fadeIn 0.15s ease;
+}
+
+.tooltip-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    gap: 8px;
+}
+
+.tooltip-top-row h4 {
+    margin: 0;
+    font-size: 1.05rem;
+    color: var(--primary-green);
+    font-family: var(--font-heading);
+}
+
+.tooltip-meta-row {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 0.78rem;
+    color: #475569;
+    margin-bottom: 8px;
+}
+
+.tooltip-footer-row {
+    border-top: 1px dashed #e2e8f0;
+    padding-top: 6px;
+    font-size: 0.74rem;
+    color: var(--primary-green);
+    font-weight: 600;
+    text-align: right;
+}
+
+/* Classic Table Legend & Zone Tabs */
 .table-legend {
     display: flex;
     justify-content: center;
@@ -2029,6 +2327,84 @@ input:focus, select:focus {
 
     .feature-card {
         padding: 2rem 1.5rem;
+    }
+
+    /* 3D Floor Plan Mobile Responsive */
+    .tables-section-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .table-view-mode-toggle {
+        width: 100%;
+        display: flex;
+    }
+
+    .view-mode-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 8px 12px;
+        font-size: 0.82rem;
+    }
+
+    .floorplan-3d-wrapper {
+        height: 440px;
+        border-radius: 16px;
+    }
+
+    .hud-top-bar {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .hud-zone-shortcuts {
+        max-width: 100%;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .hud-zone-shortcuts::-webkit-scrollbar {
+        display: none;
+    }
+
+    .cam-preset-btn {
+        font-size: 0.72rem;
+        padding: 5px 10px;
+        gap: 4px;
+    }
+
+    .hud-tool-btn {
+        padding: 5px 9px;
+        font-size: 0.75rem;
+    }
+
+    .hud-bottom-bar {
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .desktop-hint { display: none; }
+    .mobile-hint { display: inline; }
+
+    .hud-nav-hint {
+        font-size: 0.7rem;
+        padding: 5px 10px;
+    }
+
+    .hud-status-legend {
+        font-size: 0.68rem;
+        padding: 4px 10px;
+        gap: 8px;
     }
 
     /* Zone Filter Tabs (Horizontal Scrollable Chips) */

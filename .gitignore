@@ -2,5 +2,6 @@
 audit_*.py
 test_*.py
 verify_*.py
+diag_*.py
 *.png
 __pycache__/

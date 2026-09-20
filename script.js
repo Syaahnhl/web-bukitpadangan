@@ -429,6 +429,11 @@ async function loadTablesData() {
 
         // Render grid denah meja
         renderTablesGrid(tablesData);
+
+        // Inisialisasi Model Denah 3D Interaktif
+        if (typeof init3DFloorPlan === "function") {
+            init3DFloorPlan();
+        }
     } catch (err) {
         console.error("Gagal meload tables.json:", err);
     }
