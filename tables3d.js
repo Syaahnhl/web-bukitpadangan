@@ -24,8 +24,8 @@ const CAMERA_PRESETS = {
         target: { x: -8, y: 1.0, z: 24 }
     },
     indoor: {
-        pos: { x: -13, y: 18, z: 14 },
-        target: { x: -13, y: 1.2, z: -1 }
+        pos: { x: -16.5, y: 2.1, z: 4.8 },
+        target: { x: -10.5, y: 1.6, z: -2.5 }
     },
     east: {
         pos: { x: 19, y: 18, z: 18 },
@@ -45,8 +45,8 @@ const CAMERA_PRESETS = {
         target: { x: -8, y: 1.0, z: 24 }
     },
     vip: {
-        pos: { x: -13, y: 18, z: 14 },
-        target: { x: -13, y: 1.2, z: -1 }
+        pos: { x: -18.2, y: 4.2, z: 6.8 },
+        target: { x: -11.5, y: 1.4, z: -2.2 }
     }
 };
 
@@ -988,75 +988,431 @@ function buildToiletsAndWudhu() {
  * Build Indoor Utama (Lingkaran Putih - Barat Daya)
  * Houses tables IU-07 s/d IU-12
  */
+/**
+ * Build Indoor Utama (Lingkaran Putih - Pendopo Bale Makan Tradisional Terbuka)
+ * Sesuai foto riil Warung Makan Bukit Padangan:
+ * - Atap limasan kayu terekspos (exposed timber truss & rafters) tanpa plafon
+ * - Genteng tanah liat tradisional (terracotta clay tiles)
+ * - Kolom kayu jati kokoh (teak posts) dengan sokong diagonal (knee braces/skur)
+ * - Lantai batu alam lempeng acak (irregular slate flagstone floor)
+ * - Dinding semi-terbuka (half-height wooden balustrade 1.0m, atasnya plong tanpa kaca)
+ * - Lampu gantung anyaman bambu kerucut tradisional dengan cahaya kuning hangat di tiap meja
+ * - Plang penunjuk arah hijau 'MUSHOLA / TOILET ➔' di balok belakang kanan
+ * - TV gantung & kipas angin dinding pada kolom kayu
+ * Houses tables IU-07 s/d IU-12
+ */
+/**
+ * Build Indoor Utama (Pendopo Bale Makan Tradisional Terbuka)
+ * Sesuai foto asli Warung Makan Bukit Padangan:
+ * - Atap limasan kayu terekspos (exposed timber rafters & roof truss)
+ * - Usuk & reng kayu terekspos di bagian bawah atap
+ * - Genteng tanah liat tradisional cokelat kemerahan
+ * - Kolom tiang kayu jati solid dengan sokong diagonal (skur)
+ * - Lantai batu alam lempeng acak (slate flagstone crazy paving)
+ * - Dinding semi-terbuka (half-height wooden balustrade 0.95m, atasnya terbuka total)
+ * - Meja kayu panjang solid + bangku kayu panjang bersandaran punggung & armrest
+ * - Lampu gantung kap bambu kerucut tradisional dengan cahaya kuning hangat (2200K)
+ * - Plang fisik hijau 'MUSHOLA / TOILET ➔' di balok kayu arah fasilitas
+ * - Kipas angin dinding pada tiang & TV gantung
+ */
+/**
+ * Build Indoor Utama (Pendopo Bale Makan Tradisional Terbuka)
+ * Sesuai foto riil Warung Makan Bukit Padangan (img_bcb8e1b7e299.jpg):
+ * - Arsitektur Bale Tradisional Jawa / Limasan terbuka
+ * - Rangka kayu terekspos (exposed timber truss & rafters)
+ * - Usuk & reng kayu terekspos rapat di bagian bawah atap
+ * - Genteng tanah liat tradisional cokelat kemerahan
+ * - Kolom tiang kayu jati solid dengan sokong diagonal (skur)
+ * - Lantai batu alam lempeng acak (slate flagstone crazy paving) bertekstur tegas
+ * - Dinding papan kayu 0.95m setengah badan, atasnya terbuka total tanpa kaca
+ * - Meja kayu panjang solid + bangku kayu panjang bersandaran punggung & armrest
+ * - Lampu gantung kap anyaman bambu kerucut tradisional dengan cahaya kuning hangat
+ * - Plang fisik hijau 'MUSHOLA / TOILET ➔' menggantung di balok kayu koridor
+ * - TV gantung & kipas angin dinding pada kolom tiang kayu
+ */
+/**
+ * Build Indoor Utama (Pendopo Bale Makan Tradisional Terbuka)
+ * Sesuai foto riil Warung Makan Bukit Padangan (img_bcb8e1b7e299.jpg):
+ * - Arsitektur Bale Tradisional Jawa / Limasan terbuka
+ * - Rangka kayu terekspos (exposed timber truss & rafters)
+ * - Usuk & reng kayu terekspos rapat di bagian bawah atap
+ * - Genteng tanah liat tradisional cokelat kemerahan
+ * - Kolom tiang kayu jati solid dengan sokong diagonal (skur)
+ * - Lantai batu alam lempeng acak (slate flagstone crazy paving) bertekstur tegas
+ * - Dinding papan kayu 0.95m setengah badan, atasnya terbuka total tanpa kaca
+ * - Meja kayu panjang solid + bangku kayu panjang bersandaran punggung & armrest
+ * - Lampu gantung kap anyaman bambu kerucut tradisional dengan cahaya kuning hangat
+ * - Plang fisik hijau 'MUSHOLA / TOILET ➔' menggantung di balok kayu koridor
+ * - TV gantung & kipas angin dinding pada kolom tiang kayu
+ */
 function buildIndoorUtama() {
     const group = new THREE.Group();
     group.position.set(-13, 0, -1);
 
-    // Timber Parquet Floor
-    const floorGeo = new THREE.BoxGeometry(14, 0.3, 12);
-    const floorMat = new THREE.MeshLambertMaterial({ color: 0x855836 });
+    const teakMat = new THREE.MeshLambertMaterial({ color: 0x3d2514 }); // Teak Column
+    const beamMat = new THREE.MeshLambertMaterial({ color: 0x271408 }); // Heavy Structural Timber
+    const rafterMat = new THREE.MeshLambertMaterial({ color: 0x321a0a }); // Exposed Timber Rafters
+    const battenMat = new THREE.MeshLambertMaterial({ color: 0x4a2913 }); // Bamboo/Wood Ceiling Battens
+    const tileMat = new THREE.MeshLambertMaterial({ color: 0x6e2f1e }); // Terracotta Clay Tiles
+    const balustradeMat = new THREE.MeshLambertMaterial({ color: 0x442813 }); // Horizontal Wood Planks
+
+    // 1. Irregular Polygonal Slate Flagstone Floor (Lantai Batu Lempeng Acak / Crazy Paving Sesuai Foto Riil)
+    const floorCanvas = document.createElement("canvas");
+    floorCanvas.width = 1024;
+    floorCanvas.height = 1024;
+    const fctx = floorCanvas.getContext("2d");
+
+    // Deep Dark Mortar Base (Nat Semen Gelap Antar Batu Lempeng)
+    fctx.fillStyle = "#101319";
+    fctx.fillRect(0, 0, 1024, 1024);
+
+    // Natural Slate Flagstones (Lempengan Poligonal Beraneka Ragam Sesuai Foto Riil img_bcb8e1b7e299.jpg)
+    const slatePalettes = [
+        "#2b313d", "#363e4c", "#242831", "#414b5c",
+        "#2f3643", "#3a3630", "#48433d", "#1e222a",
+        "#38404e", "#282d38", "#444e5f", "#333946"
+    ];
+
+    // Irregular polygonal Voronoi-like mesh of natural flagstones
+    const gridCols = 8;
+    const gridRows = 8;
+    const cellW = 1024 / gridCols;
+    const cellH = 1024 / gridRows;
+
+    // Generate perturbed points
+    const points = [];
+    for (let r = 0; r <= gridRows; r++) {
+        points[r] = [];
+        for (let c = 0; c <= gridCols; c++) {
+            const jx = (c === 0 || c === gridCols) ? 0 : ((Math.sin(r * 3.7 + c * 5.1) * 0.35) * cellW);
+            const jy = (r === 0 || r === gridRows) ? 0 : ((Math.cos(r * 4.3 + c * 2.9) * 0.35) * cellH);
+            points[r][c] = {
+                x: c * cellW + jx,
+                y: r * cellH + jy
+            };
+        }
+    }
+
+    // Draw irregular polygonal stone slabs
+    for (let r = 0; r < gridRows; r++) {
+        for (let c = 0; c < gridCols; c++) {
+            const pTL = points[r][c];
+            const pTR = points[r][c + 1];
+            const pBR = points[r + 1][c + 1];
+            const pBL = points[r + 1][c];
+
+            const midX = (pTL.x + pTR.x + pBR.x + pBL.x) / 4 + (Math.sin(r * 2.3 + c * 4.1) * 12);
+            const midY = (pTL.y + pTR.y + pBR.y + pBL.y) / 4 + (Math.cos(r * 3.1 + c * 1.9) * 12);
+
+            const subPolys = [
+                [pTL, pTR, { x: midX, y: midY }],
+                [pTR, pBR, { x: midX, y: midY }],
+                [pBR, pBL, { x: midX, y: midY }],
+                [pBL, pTL, { x: midX, y: midY }]
+            ];
+
+            subPolys.forEach((poly, pIdx) => {
+                const colIdx = (r * 11 + c * 7 + pIdx * 5) % slatePalettes.length;
+                fctx.fillStyle = slatePalettes[colIdx];
+
+                fctx.beginPath();
+                const inset = 4.0;
+                const cx = (poly[0].x + poly[1].x + poly[2].x) / 3;
+                const cy = (poly[0].y + poly[1].y + poly[2].y) / 3;
+
+                poly.forEach((pt, i) => {
+                    const dx = cx - pt.x;
+                    const dy = cy - pt.y;
+                    const len = Math.hypot(dx, dy) || 1;
+                    const nx = pt.x + (dx / len) * inset;
+                    const ny = pt.y + (dy / len) * inset;
+                    if (i === 0) fctx.moveTo(nx, ny);
+                    else fctx.lineTo(nx, ny);
+                });
+                fctx.closePath();
+                fctx.fill();
+
+                // Chiseled stone edge highlight (tepi batu alam terasah)
+                fctx.strokeStyle = "rgba(255, 255, 255, 0.16)";
+                fctx.lineWidth = 2.5;
+                fctx.stroke();
+
+                // Dark inner contour shadow
+                fctx.strokeStyle = "rgba(0, 0, 0, 0.55)";
+                fctx.lineWidth = 2.0;
+                fctx.stroke();
+            });
+        }
+    }
+
+    const floorTex = new THREE.CanvasTexture(floorCanvas);
+    floorTex.wrapS = THREE.RepeatWrapping;
+    floorTex.wrapT = THREE.RepeatWrapping;
+    floorTex.repeat.set(3, 3);
+    floorTex.anisotropy = 8;
+    floorTex.needsUpdate = true;
+
+    const floorMat = new THREE.MeshLambertMaterial({
+        map: floorTex
+    });
+
+    const floorGeo = new THREE.BoxGeometry(16.5, 0.28, 14.5);
     const floor = new THREE.Mesh(floorGeo, floorMat);
-    floor.position.y = 0.15;
+    floor.position.y = 0.14;
     floor.receiveShadow = true;
     group.add(floor);
 
-    // Glass Walls (Transparent to view interior tables)
-    const glassMat = new THREE.MeshPhysicalMaterial({
-        color: 0xcfe6fc,
-        transparent: true,
-        opacity: 0.35,
-        roughness: 0.1,
-        transmission: 0.75
+    // Dark Stone Perimeter Curb
+    const curbGeo = new THREE.BoxGeometry(16.9, 0.32, 14.9);
+    const curb = new THREE.Mesh(curbGeo, new THREE.MeshLambertMaterial({ color: 0x14171d }));
+    curb.position.y = 0.12;
+    group.add(curb);
+
+    // 2. Half-Height Wooden Balustrade (Dinding Papan Kayu 0.95m, Atas Terbuka Plong)
+    // West Wall
+    const westBal = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.95, 14.2), balustradeMat);
+    westBal.position.set(-8.1, 0.65, 0);
+    westBal.receiveShadow = true;
+    westBal.castShadow = true;
+    group.add(westBal);
+
+    const westRail = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.08, 14.4), teakMat);
+    westRail.position.set(-8.1, 1.15, 0);
+    group.add(westRail);
+
+    // North Wall (Belakang - Menghadap Alam Sawah)
+    const northBal = new THREE.Mesh(new THREE.BoxGeometry(16.2, 0.95, 0.18), balustradeMat);
+    northBal.position.set(0, 0.65, -7.1);
+    northBal.receiveShadow = true;
+    northBal.castShadow = true;
+    group.add(northBal);
+
+    const northRail = new THREE.Mesh(new THREE.BoxGeometry(16.4, 0.08, 0.28), teakMat);
+    northRail.position.set(0, 1.15, -7.1);
+    group.add(northRail);
+
+    // South Wall (Depan - Bukaan Pintu Masuk 4.5 Meter di Tengah)
+    const southBal1 = new THREE.Mesh(new THREE.BoxGeometry(5.8, 0.95, 0.18), balustradeMat);
+    southBal1.position.set(-5.2, 0.65, 7.1);
+    group.add(southBal1);
+    const southRail1 = new THREE.Mesh(new THREE.BoxGeometry(6.0, 0.08, 0.28), teakMat);
+    southRail1.position.set(-5.2, 1.15, 7.1);
+    group.add(southRail1);
+
+    const southBal2 = new THREE.Mesh(new THREE.BoxGeometry(5.8, 0.95, 0.18), balustradeMat);
+    southBal2.position.set(5.2, 0.65, 7.1);
+    group.add(southBal2);
+    const southRail2 = new THREE.Mesh(new THREE.BoxGeometry(6.0, 0.08, 0.28), teakMat);
+    southRail2.position.set(5.2, 1.15, 7.1);
+    group.add(southRail2);
+
+    // East Wall (Sisi Kanan - Bukaan Menuju Kasir & Lorong Fasilitas)
+    const eastBal1 = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.95, 4.8), balustradeMat);
+    eastBal1.position.set(8.1, 0.65, -4.7);
+    group.add(eastBal1);
+    const eastBal2 = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.95, 4.8), balustradeMat);
+    eastBal2.position.set(8.1, 0.65, 4.7);
+    group.add(eastBal2);
+
+    // 3. Grid Kolom Tiang Kayu Jati Solid & Sokong Diagonal (Knee Braces / Skur)
+    const colCoords = [
+        [-7.8, -6.8], [-2.6, -6.8], [2.6, -6.8], [7.8, -6.8],
+        [-7.8,  0.0], [-2.6,  0.0], [2.6,  0.0], [7.8,  0.0],
+        [-7.8,  6.8], [-2.6,  6.8], [2.6,  6.8], [7.8,  6.8]
+    ];
+
+    const colGeo = new THREE.BoxGeometry(0.32, 3.8, 0.32);
+    const braceGeo = new THREE.BoxGeometry(0.12, 0.75, 0.12);
+
+    colCoords.forEach(([cx, cz]) => {
+        // Vertical column
+        const col = new THREE.Mesh(colGeo, teakMat);
+        col.position.set(cx, 1.9, cz);
+        col.castShadow = true;
+        col.receiveShadow = true;
+        group.add(col);
+
+        // Stone post plinth (Umpak Batu)
+        const umpak = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.22, 0.48), new THREE.MeshLambertMaterial({ color: 0x181c22 }));
+        umpak.position.set(cx, 0.15, cz);
+        group.add(umpak);
+
+        // Diagonal Knee Braces (Skur Penopang Balok)
+        const braceX = new THREE.Mesh(braceGeo, beamMat);
+        braceX.position.set(cx > 0 ? cx - 0.28 : cx + 0.28, 3.4, cz);
+        braceX.rotation.z = cx > 0 ? Math.PI / 4 : -Math.PI / 4;
+        group.add(braceX);
+
+        const braceZ = new THREE.Mesh(braceGeo, beamMat);
+        braceZ.position.set(cx, 3.4, cz > 0 ? cz - 0.28 : cz + 0.28);
+        braceZ.rotation.x = cz > 0 ? -Math.PI / 4 : Math.PI / 4;
+        group.add(braceZ);
     });
 
-    // Front Glass Wall
-    const frontWall = new THREE.Mesh(new THREE.BoxGeometry(13.8, 3.6, 0.15), glassMat);
-    frontWall.position.set(0, 1.9, 5.9);
-    group.add(frontWall);
-
-    // Back Solid Timber Wall
-    const backWallMat = new THREE.MeshLambertMaterial({ color: 0x2e2318 });
-    const backWall = new THREE.Mesh(new THREE.BoxGeometry(13.8, 3.6, 0.25), backWallMat);
-    backWall.position.set(0, 1.9, -5.9);
-    backWall.castShadow = true;
-    group.add(backWall);
-
-    // Left & Right Glass Walls
-    const leftWall = new THREE.Mesh(new THREE.BoxGeometry(0.15, 3.6, 11.8), glassMat);
-    leftWall.position.set(-6.9, 1.9, 0);
-    group.add(leftWall);
-
-    const rightWall = new THREE.Mesh(new THREE.BoxGeometry(0.15, 3.6, 11.8), glassMat);
-    rightWall.position.set(6.9, 1.9, 0);
-    group.add(rightWall);
-
-    // Structural Pillars
-    const colMat = new THREE.MeshLambertMaterial({ color: 0x1f1913 });
-    const cols = [[-6.8, -5.8], [6.8, -5.8], [-6.8, 5.8], [6.8, 5.8], [0, -5.8], [0, 5.8]];
-    cols.forEach(([cx, cz]) => {
-        const pillar = new THREE.Mesh(new THREE.BoxGeometry(0.4, 3.8, 0.4), colMat);
-        pillar.position.set(cx, 1.9, cz);
-        pillar.castShadow = true;
-        group.add(pillar);
+    // 4. Horizontal Structural Tie Beams (Balok Blandar & Pengeret Kayu)
+    [-6.8, 0.0, 6.8].forEach(bz => {
+        const beam = new THREE.Mesh(new THREE.BoxGeometry(16.4, 0.28, 0.24), beamMat);
+        beam.position.set(0, 3.75, bz);
+        beam.castShadow = true;
+        group.add(beam);
     });
 
-    // Pergola Slat Roof with Skylight
-    for (let bx = -6.4; bx <= 6.4; bx += 1.6) {
-        const slat = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.35, 12.2), colMat);
-        slat.position.set(bx, 3.85, 0);
-        slat.castShadow = true;
-        group.add(slat);
+    [-7.8, -2.6, 2.6, 7.8].forEach(bx => {
+        const beam = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.28, 14.2), beamMat);
+        beam.position.set(bx, 3.82, 0);
+        beam.castShadow = true;
+        group.add(beam);
+    });
+
+    // 5. Exposed Timber Roof Truss & Rafters (Rangka Atap Usuk Kayu Terekspos)
+    [-2.6, 2.6].forEach(kx => {
+        const kingPost = new THREE.Mesh(new THREE.BoxGeometry(0.24, 1.8, 0.24), beamMat);
+        kingPost.position.set(kx, 4.65, 0);
+        group.add(kingPost);
+    });
+
+    const ridgeBeam = new THREE.Mesh(new THREE.BoxGeometry(14.0, 0.24, 0.24), beamMat);
+    ridgeBeam.position.set(0, 5.55, 0);
+    group.add(ridgeBeam);
+
+    // Exposed Timber Rafters (Usuk-Usuk Kayu Berjejer Rapat)
+    for (let rx = -7.4; rx <= 7.4; rx += 0.65) {
+        const rafterN = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.14, 8.4), rafterMat);
+        rafterN.position.set(rx, 4.65, -3.5);
+        rafterN.rotation.x = 0.44;
+        group.add(rafterN);
+
+        const rafterS = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.14, 8.4), rafterMat);
+        rafterS.position.set(rx, 4.65, 3.5);
+        rafterS.rotation.x = -0.44;
+        group.add(rafterS);
     }
 
-    // Signboard "INDOOR UTAMA"
-    const sign = create3DSignboard("INDOOR UTAMA", 5.2, 0.85);
-    sign.position.set(0, 4.3, 6.05);
-    group.add(sign);
+    // Exposed Horizontal Ceiling Battens / Purlins (Reng Bambu/Kayu di Bawah Atap)
+    [-5.8, -4.2, -2.6, -1.0, 1.0, 2.6, 4.2, 5.8].forEach(pz => {
+        const purlin = new THREE.Mesh(new THREE.BoxGeometry(15.6, 0.08, 0.08), battenMat);
+        const yPurlin = 5.55 - Math.abs(pz) * 0.26;
+        purlin.position.set(0, yPurlin, pz);
+        group.add(purlin);
+    });
 
-    // Warm Interior Illumination
-    const light = new THREE.PointLight(0xffbe6b, 2.2, 24);
-    light.position.set(0, 3.5, 0);
-    group.add(light);
+    // 6. Terracotta Clay Tile Pitched Roof (Genteng Tanah Liat Limasan Tradisional)
+    const roofN = new THREE.Mesh(new THREE.BoxGeometry(17.4, 0.12, 8.8), tileMat);
+    roofN.position.set(0, 4.75, -3.6);
+    roofN.rotation.x = 0.44;
+    roofN.castShadow = true;
+    roofN.receiveShadow = true;
+    group.add(roofN);
+
+    const roofS = new THREE.Mesh(new THREE.BoxGeometry(17.4, 0.12, 8.8), tileMat);
+    roofS.position.set(0, 4.75, 3.6);
+    roofS.rotation.x = -0.44;
+    roofS.castShadow = true;
+    roofS.receiveShadow = true;
+    group.add(roofS);
+
+    const eastHip = new THREE.Mesh(new THREE.ConeGeometry(5.2, 2.2, 4), tileMat);
+    eastHip.position.set(8.2, 4.65, 0);
+    eastHip.rotation.y = Math.PI / 4;
+    group.add(eastHip);
+
+    const westHip = new THREE.Mesh(new THREE.ConeGeometry(5.2, 2.2, 4), tileMat);
+    westHip.position.set(-8.2, 4.65, 0);
+    westHip.rotation.y = Math.PI / 4;
+    group.add(westHip);
+
+    const ridgeCap = new THREE.Mesh(new THREE.BoxGeometry(15.2, 0.18, 0.42), tileMat);
+    ridgeCap.position.set(0, 5.65, 0);
+    group.add(ridgeCap);
+
+    // 7. Authentic Directional Signboard: "MUSHOLA / TOILET ➔" (Sesuai Persis Foto img_bcb8e1b7e299.jpg)
+    // Menggantung di balok kayu koridor tengah-kanan pada ketinggian pandangan mata (y = 2.2m)
+    const signGroup = new THREE.Group();
+    signGroup.position.set(2.2, 2.2, -2.6);
+    signGroup.rotation.y = -0.32; // Menghadap langsung ke arah pandang tamu di koridor
+
+    const signCanvas = document.createElement("canvas");
+    signCanvas.width = 512;
+    signCanvas.height = 256;
+    const sctx = signCanvas.getContext("2d");
+
+    // Dark Forest Green Sign Board
+    sctx.fillStyle = "#0c502b";
+    sctx.fillRect(0, 0, 512, 256);
+
+    // Double White Border
+    sctx.strokeStyle = "#ffffff";
+    sctx.lineWidth = 14;
+    sctx.strokeRect(10, 10, 492, 236);
+    sctx.lineWidth = 4;
+    sctx.strokeRect(22, 22, 468, 212);
+
+    // Bold Crisp White Directional Text
+    sctx.fillStyle = "#ffffff";
+    sctx.font = "bold 64px Arial, sans-serif";
+    sctx.textAlign = "center";
+    sctx.textBaseline = "middle";
+    sctx.fillText("MUSHOLA", 256, 78);
+    sctx.fillText("TOILET  ➔", 256, 174);
+
+    const signTex = new THREE.CanvasTexture(signCanvas);
+    signTex.needsUpdate = true;
+    const signBoardMat = new THREE.MeshBasicMaterial({ map: signTex, side: THREE.DoubleSide });
+
+    const signBoard = new THREE.Mesh(new THREE.PlaneGeometry(1.75, 0.88), signBoardMat);
+    signGroup.add(signBoard);
+
+    // Backside of the sign
+    const signBack = new THREE.Mesh(new THREE.BoxGeometry(1.78, 0.91, 0.04), new THREE.MeshLambertMaterial({ color: 0x0c502b }));
+    signBack.position.z = -0.025;
+    signGroup.add(signBack);
+
+    // Timber mounting brackets hanging from tie beam above
+    const b1 = new THREE.Mesh(new THREE.BoxGeometry(0.06, 1.4, 0.06), beamMat);
+    b1.position.set(-0.6, 0.85, 0);
+    signGroup.add(b1);
+    const b2 = new THREE.Mesh(new THREE.BoxGeometry(0.06, 1.4, 0.06), beamMat);
+    b2.position.set(0.6, 0.85, 0);
+    signGroup.add(b2);
+
+    group.add(signGroup);
+
+    // 8. Flat Screen TV hanging from central tie beam
+    const tvGroup = new THREE.Group();
+    tvGroup.position.set(0.8, 2.85, -6.5);
+    const tvCase = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.95, 0.08), new THREE.MeshLambertMaterial({ color: 0x111827 }));
+    tvGroup.add(tvCase);
+    const tvScreen = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.85, 0.02), new THREE.MeshBasicMaterial({ color: 0x1e3a8a }));
+    tvScreen.position.z = 0.045;
+    tvGroup.add(tvScreen);
+    group.add(tvGroup);
+
+    // 9. Wall-Mounted Oscillating Fans on Timber Columns
+    const fanMat = new THREE.MeshLambertMaterial({ color: 0x1f2937 });
+    [[-2.6, 2.5, -6.6], [2.6, 2.5, 6.6], [-7.6, 2.5, 0]].forEach(([fx, fy, fz]) => {
+        const fanBase = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.25, 0.15), fanMat);
+        fanBase.position.set(fx, fy, fz);
+        group.add(fanBase);
+
+        const fanCage = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.08, 16), fanMat);
+        fanCage.rotation.x = Math.PI / 2;
+        fanCage.position.set(fx, fy + 0.1, fz + (fz > 0 ? -0.2 : 0.2));
+        group.add(fanCage);
+    });
+
+    // 10. Front Header Wooden Signboard: "INDOOR UTAMA"
+    const headerSign = create3DSignboard("INDOOR UTAMA (BALE MAKAN)", 6.2, 0.9);
+    headerSign.position.set(0, 3.85, 7.25);
+    group.add(headerSign);
+
+    // 11. Warm Ambient Lighting (Kuning Hangat Tradisional 2200K)
+    const hallLight1 = new THREE.PointLight(0xffb248, 2.8, 22);
+    hallLight1.position.set(-3.5, 3.2, -2.0);
+    group.add(hallLight1);
+
+    const hallLight2 = new THREE.PointLight(0xffb248, 2.8, 22);
+    hallLight2.position.set(3.5, 3.2, 2.0);
+    group.add(hallLight2);
 
     scene3D.add(group);
 }
@@ -1711,46 +2067,158 @@ function buildOutdoorTable3D(group, table, hasUmbrella = false) {
  * 3D VIP Table Builder (Meja 21 - 26)
  */
 function buildVipTable3D(group, table, type = "vip-large") {
-    const tableMat = new THREE.MeshLambertMaterial({ color: 0x24180f }); // Polished dark mahogany
-    const chairMat = new THREE.MeshLambertMaterial({ color: 0x8b261b }); // Burgundy upholstered chairs
+    const tableMat = new THREE.MeshLambertMaterial({ color: 0x482d19 }); // Solid Teak Wood Table
+    const benchMat = new THREE.MeshLambertMaterial({ color: 0x5a371e }); // Solid Teak Bench with Backrest
+    const frameMat = new THREE.MeshLambertMaterial({ color: 0x301a0d }); // Bench Base & Legs
+    const cordMat  = new THREE.MeshLambertMaterial({ color: 0x111111 }); // Black Drop Cord
 
-    if (type === "meeting") {
-        // Long Conference Dining Table
-        const top = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.12, 1.5), tableMat);
-        top.position.y = 0.95;
-        top.castShadow = true;
-        group.add(top);
+    // Procedural Woven Bamboo Rattan Texture (Anyaman Bambu Tradisional)
+    const weaveCanvas = document.createElement("canvas");
+    weaveCanvas.width = 256;
+    weaveCanvas.height = 256;
+    const wctx = weaveCanvas.getContext("2d");
+    wctx.fillStyle = "#cf9d63"; // Warm straw base
+    wctx.fillRect(0, 0, 256, 256);
 
-        const leg1 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.85, 1.2), tableMat);
-        leg1.position.set(-1.4, 0.5, 0);
-        group.add(leg1);
+    wctx.lineWidth = 4;
+    for (let i = 0; i <= 256; i += 16) {
+        wctx.strokeStyle = i % 32 === 0 ? "#966530" : "#d9ab75";
+        wctx.beginPath();
+        wctx.moveTo(i, 0);
+        wctx.lineTo(i, 256);
+        wctx.stroke();
 
-        const leg2 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.85, 1.2), tableMat);
-        leg2.position.set(1.4, 0.5, 0);
-        group.add(leg2);
-    } else {
-        // Elegant Round VIP Table
-        const top = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 0.12, 24), tableMat);
-        top.position.y = 0.95;
-        top.castShadow = true;
-        group.add(top);
+        wctx.strokeStyle = i % 32 === 0 ? "#7b4f21" : "#e5bc88";
+        wctx.beginPath();
+        wctx.moveTo(0, i);
+        wctx.lineTo(256, i);
+        wctx.stroke();
+    }
 
-        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.3, 0.85, 16), tableMat);
-        leg.position.y = 0.5;
+    const weaveTex = new THREE.CanvasTexture(weaveCanvas);
+    weaveTex.wrapS = THREE.RepeatWrapping;
+    weaveTex.wrapT = THREE.RepeatWrapping;
+    weaveTex.repeat.set(4, 2);
+    weaveTex.needsUpdate = true;
+
+    const shadeMat = new THREE.MeshLambertMaterial({
+        map: weaveTex,
+        side: THREE.DoubleSide
+    });
+
+    // 1. Long Teak Dining Table (Meja Kayu Panjang Solid)
+    const topGeo = new THREE.BoxGeometry(3.3, 0.12, 1.15);
+    const tableTop = new THREE.Mesh(topGeo, tableMat);
+    tableTop.position.y = 0.76;
+    tableTop.castShadow = true;
+    tableTop.receiveShadow = true;
+    group.add(tableTop);
+
+    // Beveled Table Apron
+    const apron = new THREE.Mesh(new THREE.BoxGeometry(3.1, 0.08, 0.95), frameMat);
+    apron.position.y = 0.68;
+    group.add(apron);
+
+    // Sturdy Square Wooden Legs
+    [[-1.4, -0.42], [1.4, -0.42], [-1.4, 0.42], [1.4, 0.42]].forEach(([lx, lz]) => {
+        const leg = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.72, 0.12), frameMat);
+        leg.position.set(lx, 0.36, lz);
+        leg.castShadow = true;
         group.add(leg);
-    }
+    });
 
-    // Modern Armchairs around table
-    const chairCount = table.capacity || 6;
-    const radius = (type === "meeting") ? 1.6 : 1.7;
-    for (let i = 0; i < chairCount; i++) {
-        const ang = (i / chairCount) * Math.PI * 2;
-        const chair = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.55, 0.5), chairMat);
-        chair.position.set(Math.cos(ang) * radius, 0.45, Math.sin(ang) * radius);
-        chair.rotation.y = -ang - Math.PI / 2;
-        chair.castShadow = true;
-        group.add(chair);
-    }
+    // Stretcher Bars (Palang Bawah Kaki Meja)
+    const st1 = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.06, 0.06), frameMat);
+    st1.position.set(0, 0.18, 0);
+    group.add(st1);
+
+    // Tabletop Condiments (Keranjang Kerupuk & Kotak Tisu)
+    const tissueBox = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.12, 0.16), new THREE.MeshLambertMaterial({ color: 0xeee8d5 }));
+    tissueBox.position.set(-0.35, 0.88, 0);
+    group.add(tissueBox);
+
+    const snackBasket = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.14, 0.18, 12), new THREE.MeshLambertMaterial({ color: 0x9b6b3b }));
+    snackBasket.position.set(0.35, 0.91, 0);
+    group.add(snackBasket);
+
+    // 2. Long Wooden Benches with Backrest (Bangku Kayu Panjang Bersandaran) on North & South Sides
+    [-0.85, 0.85].forEach((bz, bIdx) => {
+        const benchGroup = new THREE.Group();
+        benchGroup.position.set(0, 0, bz);
+
+        // Seat Plank
+        const seat = new THREE.Mesh(new THREE.BoxGeometry(3.1, 0.08, 0.38), benchMat);
+        seat.position.y = 0.46;
+        seat.castShadow = true;
+        benchGroup.add(seat);
+
+        // 4 Bench Legs
+        [[-1.35, -0.12], [1.35, -0.12], [-1.35, 0.12], [1.35, 0.12]].forEach(([blx, blz]) => {
+            const bLeg = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.44, 0.08), frameMat);
+            bLeg.position.set(blx, 0.22, blz);
+            benchGroup.add(bLeg);
+        });
+
+        // Inclined Solid Backrest & Armrests
+        const isSouth = bz > 0;
+        const backZ = isSouth ? 0.17 : -0.17;
+        const tiltX = isSouth ? 0.18 : -0.18;
+
+        const backrest = new THREE.Mesh(new THREE.BoxGeometry(3.1, 0.38, 0.06), benchMat);
+        backrest.position.set(0, 0.72, backZ);
+        backrest.rotation.x = tiltX;
+        backrest.castShadow = true;
+        benchGroup.add(backrest);
+
+        // Vertical Backrest Support Posts
+        [-1.3, -0.45, 0.45, 1.3].forEach(px => {
+            const post = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.48, 0.06), frameMat);
+            post.position.set(px, 0.65, backZ);
+            post.rotation.x = tiltX;
+            benchGroup.add(post);
+        });
+
+        // Wooden Armrests at both ends
+        [-1.48, 1.48].forEach(ax => {
+            const arm = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.06, 0.36), benchMat);
+            arm.position.set(ax, 0.62, 0);
+            benchGroup.add(arm);
+        });
+
+        group.add(benchGroup);
+    });
+
+    // 3. Hanging Woven Bamboo Pendant Lamp (Lampu Gantung Anyaman Bambu Kerucut Tradisional)
+    // Tepat di atas meja makan sesuai foto img_bcb8e1b7e299.jpg
+    const lampGroup = new THREE.Group();
+    lampGroup.position.set(0, 2.35, 0);
+
+    // Drop cord from ceiling truss
+    const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 1.6, 6), cordMat);
+    cord.position.y = 0.8;
+    lampGroup.add(cord);
+
+    // Conical Woven Bamboo Lampshade (Caping Anyaman Bambu Terbalik)
+    const shade = new THREE.Mesh(new THREE.ConeGeometry(0.48, 0.32, 16, 1, true), shadeMat);
+    shade.position.y = 0;
+    shade.castShadow = true;
+    lampGroup.add(shade);
+
+    // Glowing warm amber bulb inside
+    const bulb = new THREE.Mesh(
+        new THREE.SphereGeometry(0.09, 8, 8),
+        new THREE.MeshBasicMaterial({ color: 0xffe29a })
+    );
+    bulb.position.y = -0.06;
+    lampGroup.add(bulb);
+
+    // Localized Warm Amber Point Light (Cahaya Kuning Hangat 2200K Menerangi Meja)
+    const tableLight = new THREE.PointLight(0xffa834, 2.4, 6.5);
+    tableLight.position.y = -0.15;
+    tableLight.castShadow = true;
+    lampGroup.add(tableLight);
+
+    group.add(lampGroup);
 }
 
 /**
@@ -2167,3 +2635,5 @@ function animate3D(time) {
         renderer3D.render(scene3D, camera3D);
     }
 }
+
+window.focus3DZone = focus3DZone;
