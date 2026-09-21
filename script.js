@@ -710,10 +710,148 @@ function showCartToast(msg) {
     }, 2400);
 }
 
+// =========================================
+// WHATSAPP DYNAMIC LOAD BALANCER & ADMIN CONTACTS (SSOT)
+// =========================================
+const ADMIN_CONTACTS = {
+    mila: { name: "Mila Elmeida (Admin 1)", phone: "6285226210408" },
+    bukhori: { name: "M. Bukhori (Admin 2)", phone: "6282329384594" }
+};
+
+function getAssignedAdmin(mode = "auto") {
+    if (mode === "mila") return ADMIN_CONTACTS.mila.phone;
+    if (mode === "bukhori") return ADMIN_CONTACTS.bukhori.phone;
+    const rand = Math.random() < 0.5;
+    return rand ? ADMIN_CONTACTS.mila.phone : ADMIN_CONTACTS.bukhori.phone;
+}
+
+// =========================================
+// FITUR 3: SISTEM KUPON & VOUCHER PROMO PRE-ORDER
+// =========================================
+let activeCartVoucher = null;
+const VOUCHER_CATALOG = {
+    "WEEKDAY10": {
+        code: "WEEKDAY10",
+        type: "percent",
+        value: 10,
+        minOrder: 40000,
+        desc: "Diskon 10% Spesial Pre-Order Hari Kerja"
+    },
+    "PADANGAN10K": {
+        code: "PADANGAN10K",
+        type: "fixed",
+        value: 10000,
+        minOrder: 60000,
+        desc: "Potongan Rp 10.000 Pre-Order Menu"
+    },
+    "GATHERING50K": {
+        code: "GATHERING50K",
+        type: "fixed",
+        value: 50000,
+        minOrder: 250000,
+        desc: "Potongan Rp 50.000 Rombongan & Acara"
+    },
+    "KOPISORE": {
+        code: "KOPISORE",
+        type: "fixed",
+        value: 5000,
+        minOrder: 30000,
+        desc: "Potongan Rp 5.000 Santap Kopi Senja"
+    }
+};
+
+function applyCartVoucher(manualCode) {
+    const input = document.getElementById("cartVoucherInput");
+    const code = (manualCode || (input ? input.value : "")).trim().toUpperCase();
+    const feedback = document.getElementById("cartVoucherFeedback");
+
+    if (!code) {
+        if (feedback) {
+            feedback.style.display = "block";
+            feedback.className = "cart-voucher-feedback error";
+            feedback.innerText = "Masukkan kode voucher terlebih dahulu.";
+        }
+        return;
+    }
+
+    const voucher = VOUCHER_CATALOG[code];
+    if (!voucher) {
+        if (feedback) {
+            feedback.style.display = "block";
+            feedback.className = "cart-voucher-feedback error";
+            feedback.innerText = `Kode voucher "${code}" tidak ditemukan atau tidak aktif.`;
+        }
+        return;
+    }
+
+    const subtotal = cartItems.reduce((sum, it) => sum + (it.price * it.qty), 0);
+    if (subtotal < voucher.minOrder) {
+        if (feedback) {
+            feedback.style.display = "block";
+            feedback.className = "cart-voucher-feedback error";
+            feedback.innerText = `Minimal order untuk kode ${code} adalah ${formatRupiah(voucher.minOrder)}. (Subtotal Anda: ${formatRupiah(subtotal)})`;
+        }
+        return;
+    }
+
+    activeCartVoucher = voucher;
+    if (input) input.value = code;
+    if (feedback) {
+        feedback.style.display = "block";
+        feedback.className = "cart-voucher-feedback success";
+        feedback.innerHTML = `✓ Voucher <strong>${code}</strong> berhasil dipasang! (${voucher.desc})`;
+    }
+
+    updateCartUI();
+    showCartToast(`🎉 Voucher ${code} aktif! Diskon terpasang.`);
+}
+
+function removeCartVoucher() {
+    activeCartVoucher = null;
+    const input = document.getElementById("cartVoucherInput");
+    if (input) input.value = "";
+    const feedback = document.getElementById("cartVoucherFeedback");
+    if (feedback) {
+        feedback.style.display = "none";
+        feedback.innerText = "";
+    }
+    updateCartUI();
+    showCartToast("Kupon promo dibatalkan.");
+}
+
+function setQuickVoucher(code) {
+    const input = document.getElementById("cartVoucherInput");
+    if (input) input.value = code;
+    applyCartVoucher(code);
+}
+
 // Update Seluruh Tampilan UI Terkait Cart
 function updateCartUI() {
     const totalQty = cartItems.reduce((sum, it) => sum + it.qty, 0);
-    const totalPrice = cartItems.reduce((sum, it) => sum + (it.price * it.qty), 0);
+    const subtotal = cartItems.reduce((sum, it) => sum + (it.price * it.qty), 0);
+
+    // Hitung Diskon Kupon
+    let discountAmount = 0;
+    if (activeCartVoucher) {
+        if (subtotal >= activeCartVoucher.minOrder) {
+            if (activeCartVoucher.type === 'percent') {
+                discountAmount = Math.round(subtotal * (activeCartVoucher.value / 100));
+            } else if (activeCartVoucher.type === 'fixed') {
+                discountAmount = activeCartVoucher.value;
+            }
+            discountAmount = Math.min(discountAmount, subtotal);
+        } else {
+            activeCartVoucher = null;
+            const feedback = document.getElementById("cartVoucherFeedback");
+            if (feedback) {
+                feedback.style.display = "block";
+                feedback.className = "cart-voucher-feedback error";
+                feedback.innerText = "Kupon dinonaktifkan: subtotal pesanan di bawah syarat minimum.";
+            }
+        }
+    }
+
+    const finalTotalPrice = Math.max(0, subtotal - discountAmount);
 
     // Update Badges
     const floatingCart = document.getElementById("floatingCart");
@@ -747,9 +885,26 @@ function updateCartUI() {
 
     // Update Totals
     const cartTotalItems = document.getElementById("cartTotalItems");
+    const cartSubtotalPrice = document.getElementById("cartSubtotalPrice");
+    const cartDiscountRow = document.getElementById("cartDiscountRow");
+    const cartDiscountCodeName = document.getElementById("cartDiscountCodeName");
+    const cartDiscountVal = document.getElementById("cartDiscountVal");
     const cartTotalPrice = document.getElementById("cartTotalPrice");
+
     if (cartTotalItems) cartTotalItems.innerText = `${totalQty} Porsi`;
-    if (cartTotalPrice) cartTotalPrice.innerText = formatRupiah(totalPrice);
+    if (cartSubtotalPrice) cartSubtotalPrice.innerText = formatRupiah(subtotal);
+
+    if (cartDiscountRow) {
+        if (discountAmount > 0 && activeCartVoucher) {
+            cartDiscountRow.style.display = "flex";
+            if (cartDiscountCodeName) cartDiscountCodeName.innerText = activeCartVoucher.code;
+            if (cartDiscountVal) cartDiscountVal.innerText = `-${formatRupiah(discountAmount)}`;
+        } else {
+            cartDiscountRow.style.display = "none";
+        }
+    }
+
+    if (cartTotalPrice) cartTotalPrice.innerText = formatRupiah(finalTotalPrice);
 
     // Update Items List inside Drawer
     const listContainer = document.getElementById("cartItemsList");
@@ -944,7 +1099,17 @@ async function submitCartOrder() {
         }
     }
 
-    const totalPrice = cartItems.reduce((sum, it) => sum + (it.price * it.qty), 0);
+    const subtotal = cartItems.reduce((sum, it) => sum + (it.price * it.qty), 0);
+    let discountAmount = 0;
+    if (activeCartVoucher && subtotal >= activeCartVoucher.minOrder) {
+        if (activeCartVoucher.type === 'percent') {
+            discountAmount = Math.round(subtotal * (activeCartVoucher.value / 100));
+        } else if (activeCartVoucher.type === 'fixed') {
+            discountAmount = activeCartVoucher.value;
+        }
+        discountAmount = Math.min(discountAmount, subtotal);
+    }
+    const finalPrice = Math.max(0, subtotal - discountAmount);
 
     // 1. Kirim Payload ke API Kaching Backend (Pusher Event & POS Web-Order Table)
     const kachingPayload = {
@@ -953,6 +1118,10 @@ async function submitCartOrder() {
         order_type: orderType,
         payment_method: payMethod,
         table_number: tableNum,
+        voucher_code: activeCartVoucher ? activeCartVoucher.code : null,
+        discount_amount: discountAmount,
+        subtotal: subtotal,
+        final_total: finalPrice,
         items: cartItems.map(it => ({
             menu_id: it.id,
             qty: it.qty,
@@ -987,16 +1156,21 @@ async function submitCartOrder() {
         waText += `${idx + 1}. *${it.name}* x${it.qty} = ${formatRupiah(it.price * it.qty)}\n`;
         if (it.note) waText += `   ↳ _Catatan: ${it.note}_\n`;
     });
-    waText += `\n💰 *Total Estimasi:* *${formatRupiah(totalPrice)}*\n`;
+    waText += `\n💰 *Subtotal Menu:* ${formatRupiah(subtotal)}\n`;
+    if (activeCartVoucher && discountAmount > 0) {
+        waText += `🎟️ *Voucher Promo:* ${activeCartVoucher.code} (-${formatRupiah(discountAmount)})\n`;
+    }
+    waText += `💵 *Total Pembayaran:* *${formatRupiah(finalPrice)}*\n`;
     waText += `💳 *Metode Pembayaran:* ${payMethod}\n`;
     if (payMethod.includes("Transfer") || payMethod.includes("DP")) {
-        waText += `• Rekening: Bank Mandiri 1840011559968 (a.n. Mila Elmeida)\n`;
+        waText += `• Rekening: Bank Mandiri *1840011559968* (a.n. Mila Elmeida)\n`;
         waText += `• Batas Konfirmasi Hari-H: 14.00 WIB\n`;
     }
     waText += `\nMohon konfirmasi pesanan dan ketersediaan meja kami. Terima kasih!`;
 
+    const adminPhone = getAssignedAdmin("auto");
     const encodedText = encodeURIComponent(waText);
-    const waUrl = `https://api.whatsapp.com/send?phone=6285290462715&text=${encodedText}`;
+    const waUrl = `https://wa.me/${adminPhone}?text=${encodedText}`;
 
     // Feedback sukses
     if (submitBtn) {
@@ -1247,18 +1421,37 @@ function updatePackageCalc() {
     const paxRange = document.getElementById("calcPaxRange");
     const packageSelect = document.getElementById("calcPackageSelect");
     const addonMusic = document.getElementById("calcAddonMusic");
+    const addonDrink = document.getElementById("calcAddonDrink");
+    const addonSnack = document.getElementById("calcAddonSnack");
 
     if (!paxRange || !packageSelect) return;
 
     const pax = parseInt(paxRange.value, 10) || 25;
     const pkgPrice = parseInt(packageSelect.value, 10) || 45000;
     const isMusic = addonMusic ? addonMusic.checked : false;
+    const isDrink = addonDrink ? addonDrink.checked : false;
+    const isSnack = addonSnack ? addonSnack.checked : false;
 
     const foodCost = pax * pkgPrice;
     const musicCost = isMusic ? 300000 : 0;
-    const discountRate = pax >= 30 ? 0.05 : 0;
+    const drinkCost = isDrink ? (pax * 5000) : 0;
+    const snackCost = isSnack ? (pax * 10000) : 0;
+    const totalAddons = musicCost + drinkCost + snackCost;
+
+    // Diskon bertingkat: >=50 pax -> 10%, >=30 pax -> 5%
+    let discountRate = 0;
+    let discountLabel = "Normal";
+    if (pax >= 50) {
+        discountRate = 0.10;
+        discountLabel = "Diskon Akbar 10% (≥50 Pax)";
+    } else if (pax >= 30) {
+        discountRate = 0.05;
+        discountLabel = "Diskon Rombongan 5% (≥30 Pax)";
+    }
+
     const discountVal = Math.round(foodCost * discountRate);
-    const grandTotal = foodCost + musicCost - discountVal;
+    const grandTotal = Math.max(0, foodCost + totalAddons - discountVal);
+    const dpVal = Math.round(grandTotal * 0.20); // DP 20%
 
     // Update DOM
     const paxValBadge = document.getElementById("calcPaxVal");
@@ -1270,18 +1463,26 @@ function updatePackageCalc() {
     const summaryFoodCost = document.getElementById("summaryFoodCost");
     if (summaryFoodCost) summaryFoodCost.textContent = formatRupiah(foodCost);
 
+    const summaryAddonRow = document.getElementById("summaryAddonRow");
     const summaryAddonCost = document.getElementById("summaryAddonCost");
-    if (summaryAddonCost) summaryAddonCost.textContent = formatRupiah(musicCost);
+    if (totalAddons > 0) {
+        if (summaryAddonRow) summaryAddonRow.style.display = "flex";
+        if (summaryAddonCost) summaryAddonCost.textContent = `+ ${formatRupiah(totalAddons)}`;
+    } else {
+        if (summaryAddonRow) summaryAddonRow.style.display = "none";
+    }
 
     const summaryDiscountRow = document.getElementById("summaryDiscountRow");
     const summaryDiscountVal = document.getElementById("summaryDiscountVal");
+    const summaryDiscountLabel = document.getElementById("summaryDiscountLabel");
     const calcDiscountTag = document.getElementById("calcDiscountTag");
 
     if (discountVal > 0) {
         if (summaryDiscountRow) summaryDiscountRow.style.display = "flex";
         if (summaryDiscountVal) summaryDiscountVal.textContent = `- ${formatRupiah(discountVal)}`;
+        if (summaryDiscountLabel) summaryDiscountLabel.textContent = discountLabel;
         if (calcDiscountTag) {
-            calcDiscountTag.textContent = "Diskon Rombongan 5%";
+            calcDiscountTag.textContent = discountLabel;
             calcDiscountTag.style.color = "#4ade80";
         }
     } else {
@@ -1294,30 +1495,53 @@ function updatePackageCalc() {
 
     const summaryGrandTotal = document.getElementById("summaryGrandTotal");
     if (summaryGrandTotal) summaryGrandTotal.textContent = formatRupiah(grandTotal);
+
+    const summaryDpVal = document.getElementById("summaryDpVal");
+    if (summaryDpVal) summaryDpVal.textContent = formatRupiah(dpVal);
 }
 
 function sendPackageCalcToWA() {
+    const eventTypeSelect = document.getElementById("calcEventType");
     const paxRange = document.getElementById("calcPaxRange");
     const packageSelect = document.getElementById("calcPackageSelect");
     const addonMusic = document.getElementById("calcAddonMusic");
+    const addonDrink = document.getElementById("calcAddonDrink");
+    const addonSnack = document.getElementById("calcAddonSnack");
+    const adminSelect = document.getElementById("calcAdminSelect");
 
+    const eventType = eventTypeSelect ? eventTypeSelect.value : "Gathering & Rombongan";
     const pax = paxRange ? paxRange.value : "25";
     const pkgName = packageSelect ? packageSelect.options[packageSelect.selectedIndex].text : "Paket Acara";
-    const isMusic = addonMusic && addonMusic.checked ? "Ya (+Rp 300.000)" : "Tidak";
-    const grandTotal = document.getElementById("summaryGrandTotal") ? document.getElementById("summaryGrandTotal").textContent : "Rp 0";
+    
+    const addons = [];
+    if (addonMusic && addonMusic.checked) addons.push("Live Music Akustik Privat (+Rp 300.000)");
+    if (addonDrink && addonDrink.checked) addons.push(`Welcome Drink Jahe Rempah (${pax} porsi)`);
+    if (addonSnack && addonSnack.checked) addons.push(`Snack Sore & Mendoan (${pax} porsi)`);
+    addons.push("Sound System & Mic Wireless (Termasuk)");
+    addons.push("Penataan Meja Panjang Terpadu (Termasuk)");
 
-    let waText = `Halo Admin Bukit Padangan, saya ingin mengajukan Konsultasi Paket Rombongan:\n\n`;
-    waText += `📋 *Pilihan Paket:* ${pkgName}\n`;
-    waText += `👥 *Estimasi Peserta:* ${pax} Orang\n`;
-    waText += `🎸 *Add-on Live Music Akustik:* ${isMusic}\n`;
-    waText += `💰 *Estimasi Total Biaya:* ${grandTotal}\n\n`;
-    waText += `💳 *Informasi DP:*\n`;
-    waText += `• Rekening: Bank Mandiri 1840011559968 (a.n. Mila Elmeida)\n`;
-    waText += `• Batas Hari-H: Maksimal pukul 14.00 WIB\n\n`;
-    waText += `Mohon konfirmasi ketersediaan tempat dan tanggal acara kami. Terima kasih!`;
+    const grandTotal = document.getElementById("summaryGrandTotal") ? document.getElementById("summaryGrandTotal").textContent : "Rp 0";
+    const dpVal = document.getElementById("summaryDpVal") ? document.getElementById("summaryDpVal").textContent : "Rp 0";
+
+    let waText = `Halo Admin Bukit Padangan, saya ingin konsultasi reservasi acara rombongan:\n\n`;
+    waText += `🎉 *Kategori Acara:* ${eventType}\n`;
+    waText += `👥 *Estimasi Tamu:* ${pax} Orang\n`;
+    waText += `📋 *Paket Konsumsi:* ${pkgName}\n`;
+    waText += `✨ *Fasilitas & Extra:*\n`;
+    addons.forEach(item => {
+        waText += `  • ${item}\n`;
+    });
+    waText += `\n💰 *Total Estimasi Biaya:* ${grandTotal}\n`;
+    waText += `🔒 *Estimasi DP 20% (Kunci Jadwal):* ${dpVal}\n\n`;
+    waText += `💳 *Rekening Pembayaran DP:*\n`;
+    waText += `• Bank Mandiri: *1840011559968* (a.n. Mila Elmeida)\n\n`;
+    waText += `Mohon info ketersediaan slot tanggal & arahan lebih lanjut. Terima kasih!`;
+
+    const chosenAdmin = adminSelect ? adminSelect.value : "auto";
+    const adminPhone = getAssignedAdmin(chosenAdmin);
 
     const encoded = encodeURIComponent(waText);
-    window.open(`https://api.whatsapp.com/send?phone=6285290462715&text=${encoded}`, "_blank");
+    window.open(`https://wa.me/${adminPhone}?text=${encoded}`, "_blank");
 }
 
 // Feature 3: Filter Ulasan Pengunjung Google
@@ -1658,3 +1882,60 @@ function initConfirmDpModal() {
         });
     }
 }
+
+// Fitur 2: Kurasi Spot Foto & Sunset Panoramic Guide
+function locateSpotTable(spotZone, areaName) {
+    const tableSection = document.getElementById("tables");
+    if (tableSection) {
+        tableSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    if (typeof switchTableViewMode === 'function') {
+        switchTableViewMode('grid');
+    }
+
+    let targetZone = 'semua';
+    if (spotZone === 'OD') targetZone = 'outdoor';
+    else if (spotZone === 'IT') targetZone = 'vip';
+    else if (spotZone === 'GZ') targetZone = 'gazebo';
+    else if (spotZone === 'IKAN') targetZone = 'gazebo';
+
+    setTimeout(() => {
+        if (typeof filterTablesZone === 'function') {
+            filterTablesZone(targetZone);
+        }
+
+        const cards = document.querySelectorAll(".table-card");
+        cards.forEach(card => {
+            card.classList.remove("table-card-pulse");
+            const title = card.querySelector(".table-card-title") ? card.querySelector(".table-card-title").innerText : "";
+            if (spotZone === 'OD' && title.includes("Outdoor")) {
+                card.classList.add("table-card-pulse");
+            } else if (spotZone === 'IT' && (title.includes("Panggung") || title.includes("Indoor Timur") || title.includes("VIP"))) {
+                card.classList.add("table-card-pulse");
+            } else if (spotZone === 'GZ' && (title.includes("Gazebo") || title.includes("Lesehan") || title.includes("Utama"))) {
+                card.classList.add("table-card-pulse");
+            } else if (spotZone === 'IKAN' && (title.includes("Gazebo") || title.includes("Lesehan"))) {
+                card.classList.add("table-card-pulse");
+            }
+        });
+    }, 450);
+
+    if (typeof showCartToast === 'function') {
+        showCartToast(`📍 Menampilkan rekomendasi meja terdekat untuk ${areaName}`);
+    }
+}
+
+// Feature 4: Konsultasi Akses & Parkir Bus/Rombongan via WhatsApp
+function consultParkingWA() {
+    const text = `Halo Admin Bukit Padangan, saya ingin menanyakan info akses rute & kesiapan slot parkir untuk armada rombongan kami:\n\n` +
+                 `🚌 *Tipe Kendaraan:* Bus Medium / HiAce / Iringan Mobil\n` +
+                 `📍 *Rencana Hari/Tanggal Kedatangan:* \n` +
+                 `👥 *Estimasi Jumlah Rombongan:* \n\n` +
+                 `Mohon info kesiapan slot parkir dan panduan rute terbaik saat ini. Terima kasih!`;
+    const adminPhone = getAssignedAdmin("auto");
+    const encoded = encodeURIComponent(text);
+    window.open(`https://wa.me/${adminPhone}?text=${encoded}`, "_blank");
+}
+
+

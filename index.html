@@ -82,6 +82,7 @@
                 <li><a href="#menu" onclick="closeNavMenu()"><i class="fas fa-utensils"></i> Menu</a></li>
                 <li><a href="#event" onclick="closeNavMenu()"><i class="fas fa-glass-cheers"></i> Paket Acara</a></li>
                 <li><a href="#faq" onclick="closeNavMenu()"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                <li><a href="#photospots" onclick="closeNavMenu()"><i class="fas fa-camera-retro"></i> Spot Foto</a></li>
                 <li><a href="#gallery" onclick="closeNavMenu()"><i class="fas fa-images"></i> Galeri</a></li>
                 <li><a href="#location" onclick="closeNavMenu()"><i class="fas fa-map-marker-alt"></i> Lokasi</a></li>
                 <li><a href="javascript:void(0)" onclick="openConfirmDpModal(); closeNavMenu();"><i class="fas fa-receipt"></i> Konfirmasi DP</a></li>
@@ -599,6 +600,17 @@
                     <!-- Controls -->
                     <div class="calc-controls">
                         <div class="calc-form-group">
+                            <label for="calcEventType">Jenis Acara:</label>
+                            <select id="calcEventType" onchange="updatePackageCalc()">
+                                <option value="Gathering Keluarga & Arisan">Gathering Keluarga & Arisan</option>
+                                <option value="Rapat Kerja & Gathering Kantor">Rapat Kerja & Gathering Kantor</option>
+                                <option value="Komunitas Gowes / Touring">Komunitas Gowes / Touring</option>
+                                <option value="Reuni Sekolah / Kampus">Reuni Sekolah / Kampus</option>
+                                <option value="Ulang Tahun / Syukuran">Ulang Tahun / Syukuran</option>
+                            </select>
+                        </div>
+
+                        <div class="calc-form-group">
                             <div class="calc-label-row">
                                 <label for="calcPaxRange">Jumlah Peserta / Tamu:</label>
                                 <span id="calcPaxVal" class="pax-badge-val">25 Orang</span>
@@ -614,18 +626,26 @@
                         <div class="calc-form-group">
                             <label for="calcPackageSelect">Pilihan Menu Paket:</label>
                             <select id="calcPackageSelect" onchange="updatePackageCalc()">
-                                <option value="45000">Paket Gathering Keluarga & Arisan (Rp 45.000 / pax)</option>
+                                <option value="45000">Paket Gathering Keluarga (Rp 45.000 / pax)</option>
                                 <option value="65000">Paket Rapat & Pertemuan Komunitas (Rp 65.000 / pax)</option>
                                 <option value="85000">Paket Prasmanan Komplit Premium (Rp 85.000 / pax)</option>
                             </select>
                         </div>
 
                         <div class="calc-form-group">
-                            <label>Fasilitas Tambahan:</label>
+                            <label>Fasilitas & Layanan Tambahan:</label>
                             <div class="calc-checkboxes">
                                 <label class="calc-check-item">
                                     <input type="checkbox" id="calcAddonMusic" onchange="updatePackageCalc()">
                                     <span>Live Music Akustik Privat (+Rp 300.000)</span>
+                                </label>
+                                <label class="calc-check-item">
+                                    <input type="checkbox" id="calcAddonDrink" onchange="updatePackageCalc()">
+                                    <span>Welcome Drink Jahe Rempah Hangat (+Rp 5.000 / pax)</span>
+                                </label>
+                                <label class="calc-check-item">
+                                    <input type="checkbox" id="calcAddonSnack" onchange="updatePackageCalc()">
+                                    <span>Snack Sore & Mendoan Crispy (+Rp 10.000 / pax)</span>
                                 </label>
                                 <label class="calc-check-item">
                                     <input type="checkbox" id="calcAddonSound" checked disabled>
@@ -633,7 +653,7 @@
                                 </label>
                                 <label class="calc-check-item">
                                     <input type="checkbox" id="calcAddonArea" checked disabled>
-                                    <span>Reservasi Meja & Saung Terpadu (Gratis)</span>
+                                    <span>Penataan Meja Panjang Gabungan (Gratis)</span>
                                 </label>
                             </div>
                         </div>
@@ -650,12 +670,12 @@
                                 <span>Konsumsi (<span id="summaryPaxText">25</span> pax)</span>
                                 <strong id="summaryFoodCost">Rp 1.125.000</strong>
                             </div>
-                            <div class="summary-row">
-                                <span>Live Music Akustik</span>
+                            <div class="summary-row" id="summaryAddonRow" style="display: none;">
+                                <span>Fasilitas & Extra</span>
                                 <strong id="summaryAddonCost">Rp 0</strong>
                             </div>
                             <div class="summary-row text-discount" id="summaryDiscountRow" style="display: none;">
-                                <span>Potongan Rombongan (≥30 Pax)</span>
+                                <span id="summaryDiscountLabel">Potongan Rombongan (≥30 Pax)</span>
                                 <strong id="summaryDiscountVal">-Rp 0</strong>
                             </div>
                             <div class="summary-divider"></div>
@@ -663,10 +683,24 @@
                                 <span>Total Estimasi:</span>
                                 <span class="summary-grand-total" id="summaryGrandTotal">Rp 1.125.000</span>
                             </div>
+                            <div class="summary-row dp-highlight-row">
+                                <span><i class="fas fa-lock"></i> Estimasi DP 20% (Kunci Slot):</span>
+                                <strong class="summary-dp-val" id="summaryDpVal">Rp 225.000</strong>
+                            </div>
                         </div>
-                        <p class="summary-note">*Harga transparan tanpa biaya tersembunyi. DP 30% untuk mengunci jadwal.</p>
+
+                        <div class="calc-admin-select-wrap">
+                            <label for="calcAdminSelect"><i class="fab fa-whatsapp"></i> Hubungi Admin:</label>
+                            <select id="calcAdminSelect">
+                                <option value="auto">Auto (Acak Cerdas Admin)</option>
+                                <option value="6285290462715">Admin 1 - Mila Elmeida</option>
+                                <option value="6282323535747">Admin 2 - M. Bukhori</option>
+                            </select>
+                        </div>
+
+                        <p class="summary-note">*Harga transparan tanpa biaya tersembunyi. DP 20% ke Bank Mandiri 1840011559968 a.n. Mila Elmeida.</p>
                         <button type="button" class="btn-calc-wa" onclick="sendPackageCalcToWA()">
-                            <i class="fab fa-whatsapp"></i> Ajukan Rincian Ini ke WhatsApp Admin
+                            <i class="fab fa-whatsapp"></i> Ajukan Rincian Acara via WhatsApp
                         </button>
                     </div>
                 </div>
@@ -922,6 +956,123 @@
         </div>
     </section>
 
+    <!-- SPOT FOTO ESTETIK & SUNSET PANORAMIC GUIDE SECTION -->
+    <section id="photospots" class="section-padding photospots-section">
+        <div class="container">
+            <div class="section-badge-center"><span class="badge-gold"><i class="fas fa-camera-retro"></i> Sudut Estetik & Sunset</span></div>
+            <h2 class="section-title">Kurasi Spot Foto Estetik & Sunset Panoramic</h2>
+            <p class="section-desc">
+                Abadikan momen terbaik Anda berlatar panorama alam lereng Muria, hamparan sawah berundak, dan ornamen vintage ikonik Bukit Padangan.
+            </p>
+
+            <div class="photospots-grid">
+                <!-- Spot 1 -->
+                <div class="photospot-card">
+                    <div class="photospot-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" alt="Sunset Tepi Sawah Bukit Padangan">
+                        <span class="photospot-badge-time"><i class="fas fa-sun"></i> Golden Hour 16:45 – 17:30 WIB</span>
+                    </div>
+                    <div class="photospot-body">
+                        <div class="photospot-header">
+                            <h3>Sunset Panoramic Tepi Sawah</h3>
+                            <span class="photospot-zone">Zona Outdoor Barat</span>
+                        </div>
+                        <p class="photospot-desc">
+                            Posisi terbuka menghadap langsung ke hamparan sawah hijau dan lembah Gunungwungkal. Menikmati semburat jingga senja dengan pencahayaan alami paling lembut tanpa bayangan tajam.
+                        </p>
+                        <div class="photospot-tips">
+                            <i class="fas fa-lightbulb"></i>
+                            <span><strong>Tips Foto:</strong> Mode siluet senja atau wide-angle 0.5x dengan secangkir Kopi Tubruk Muria.</span>
+                        </div>
+                        <div class="photospot-actions">
+                            <button type="button" class="btn-spot-locate" onclick="locateSpotTable('OD', 'Outdoor (View Persawahan & Sungai)')">
+                                <i class="fas fa-map-pin"></i> Lihat Meja Terdekat (OD-01 – OD-04)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spot 2 -->
+                <div class="photospot-card">
+                    <div class="photospot-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop" alt="Panggung Onthel Heritage Bukit Padangan">
+                        <span class="photospot-badge-time"><i class="fas fa-moon"></i> Syahdu 18:00 – 21:00 WIB</span>
+                    </div>
+                    <div class="photospot-body">
+                        <div class="photospot-header">
+                            <h3>Panggung Onthel Heritage</h3>
+                            <span class="photospot-zone">Zona Indoor Timur 1</span>
+                        </div>
+                        <p class="photospot-desc">
+                            Perpaduan sepeda onthel antik Jawa, panggung kayu akustik, dan pendaran lampu gantung edison yang menghadirkan nuansa vintage klasik pedesaan nan hangat.
+                        </p>
+                        <div class="photospot-tips">
+                            <i class="fas fa-lightbulb"></i>
+                            <span><strong>Tips Foto:</strong> Portrait mode f/1.8 dengan pencahayaan hangat lampu gantung vintage di malam hari.</span>
+                        </div>
+                        <div class="photospot-actions">
+                            <button type="button" class="btn-spot-locate" onclick="locateSpotTable('IT', 'Indoor Timur (Sayap 1 & 2)')">
+                                <i class="fas fa-map-pin"></i> Lihat Meja Terdekat (IT-01 – IT-03)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spot 3 -->
+                <div class="photospot-card">
+                    <div class="photospot-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop" alt="Gazebo Tingkat Lereng Muria">
+                        <span class="photospot-badge-time"><i class="fas fa-cloud-sun"></i> Pagi – Sore 11:00 – 17:00 WIB</span>
+                    </div>
+                    <div class="photospot-body">
+                        <div class="photospot-header">
+                            <h3>Balkon Gazebo Lereng Atas</h3>
+                            <span class="photospot-zone">Zona Gazebo Lesehan</span>
+                        </div>
+                        <p class="photospot-desc">
+                            Elevasi paling tinggi dengan sudut pandang 360° menghadap perbukitan Muria dan pepohonan kelapa. Hembusan angin pegunungan memberikan efek sejuk alami.
+                        </p>
+                        <div class="photospot-tips">
+                            <i class="fas fa-lightbulb"></i>
+                            <span><strong>Tips Foto:</strong> Sudut framing simetris atap gazebo bambu alami berlatar langit biru dan perbukitan.</span>
+                        </div>
+                        <div class="photospot-actions">
+                            <button type="button" class="btn-spot-locate" onclick="locateSpotTable('GZ', 'Indoor Utama (6x6 m)')">
+                                <i class="fas fa-map-pin"></i> Lihat Meja Terdekat (GZ-01 – GZ-03)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spot 4 -->
+                <div class="photospot-card">
+                    <div class="photospot-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?q=80&w=800&auto=format&fit=crop" alt="Kolam Ikan Terapi Bukit Padangan">
+                        <span class="photospot-badge-time"><i class="fas fa-water"></i> Ramah Keluarga 11:00 – 17:30 WIB</span>
+                    </div>
+                    <div class="photospot-body">
+                        <div class="photospot-header">
+                            <h3>Kolam Terapi Ikan & Batu Alami</h3>
+                            <span class="photospot-zone">Zona Rekreasi Keluarga</span>
+                        </div>
+                        <p class="photospot-desc">
+                            Air pegunungan yang jernih dengan bebatuan kali dan tanaman hias asri. Tempat favorit pengunjung untuk bersantai sambil merendam kaki di sela-sela santap siang.
+                        </p>
+                        <div class="photospot-tips">
+                            <i class="fas fa-lightbulb"></i>
+                            <span><strong>Tips Foto:</strong> Candid santai kaki mencelup ke air jernih dengan pantulan cahaya matahari alami.</span>
+                        </div>
+                        <div class="photospot-actions">
+                            <button type="button" class="btn-spot-locate" onclick="locateSpotTable('IKAN', 'Area Terapi Ikan & Ramah Anak')">
+                                <i class="fas fa-map-pin"></i> Lihat Meja Terdekat (Area Anak & Ikan)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- GALLERY SECTION -->
     <section id="gallery" class="section-padding gallery-section">
         <div class="container">
@@ -1011,38 +1162,68 @@
             <!-- TRANSPORT & ROUTE GUIDE -->
             <div class="transport-guide-wrap">
                 <div class="transport-header">
-                    <div class="badge-gold"><i class="fas fa-route"></i> Petunjuk Navigasi</div>
-                    <h3>Panduan Rute & Akses Kendaraan</h3>
-                    <p>Akses jalan menuju Bukit Padangan beraspal mulus dan ramah bagi segala jenis kendaraan:</p>
+                    <div class="badge-gold"><i class="fas fa-route"></i> Petunjuk Navigasi & Kendaraan</div>
+                    <h3>Panduan Rute & Akses Kendaraan Lereng</h3>
+                    <p>Jalan kabupaten beraspal mulus 2 lajur, tanjakan landai, dan ramah bagi segala jenis armada transportasi:</p>
+                    
+                    <!-- Route Estimate Pills -->
+                    <div class="route-estimate-pills">
+                        <span class="route-pill"><i class="fas fa-motorcycle"></i> Dari Tayu: <strong>±25 Menit</strong> (14 km)</span>
+                        <span class="route-pill"><i class="fas fa-car"></i> Dari Pati Kota: <strong>±40 Menit</strong> (26 km)</span>
+                        <span class="route-pill"><i class="fas fa-mountain"></i> Dari Kudus (via Dawe): <strong>±55 Menit</strong> (32 km)</span>
+                    </div>
                 </div>
 
-                <div class="transport-grid">
+                <div class="transport-grid transport-grid-4">
+                    <!-- Kendaraan 1: Motor -->
                     <div class="transport-card">
                         <div class="transport-card-header">
-                            <i class="fas fa-map-signs"></i>
-                            <h4>Dari Arah Pati Kota (±35–45 Menit)</h4>
+                            <i class="fas fa-motorcycle"></i>
+                            <h4>Sepeda Motor & Matic</h4>
                         </div>
-                        <p>Ambil rute Jl. Raya Pati – Tayu ke arah utara. Di pertigaan Wedarijaksa/Trangkil atau sebelum Tayu, arahkan ke barat menuju Gunungwungkal melalui jalur utama beraspal. Lanjutkan ke arah Gulangpongge, resto berada di kiri jalan dengan plang Bukit Padangan yang jelas.</p>
-                        <span class="road-quality"><i class="fas fa-check"></i> Aspal Mulus • Tanjakan Landai</span>
+                        <p>Sangat mudah diakses. Tanjakan aspal mulus tanpa kendala. Parkir motor khusus tersedia tepat di samping area resto berkanopi teduh.</p>
+                        <span class="road-quality text-gold"><i class="fas fa-check"></i> Akses 100% Mulus • Parkir Depan</span>
                     </div>
 
+                    <!-- Kendaraan 2: Mobil Pribadi -->
                     <div class="transport-card">
                         <div class="transport-card-header">
-                            <i class="fas fa-compass"></i>
-                            <h4>Dari Arah Tayu (±25 Menit)</h4>
+                            <i class="fas fa-car-side"></i>
+                            <h4>Mobil Pribadi & SUV</h4>
                         </div>
-                        <p>Arahkan kendaraan ke arah barat daya melalui Jl. Tayu – Gunungwungkal. Ikuti jalan utama hingga memasuki kawasan lereng perbukitan dan persawahan hijau Gulangpongge.</p>
-                        <span class="road-quality"><i class="fas fa-check"></i> Jalur Cepat • Pemandangan Perkebunan</span>
+                        <p>Avanza, Innova, Pajero, hingga sedan aman melintas berpapasan. Pelataran parkir mobil utama berkapasitas 30+ mobil dengan juru parkir sigap.</p>
+                        <span class="road-quality text-gold"><i class="fas fa-check"></i> Aspal Lebar • Parkir Gratis</span>
                     </div>
 
+                    <!-- Kendaraan 3: HiAce & Elf Long -->
+                    <div class="transport-card">
+                        <div class="transport-card-header">
+                            <i class="fas fa-shuttle-van"></i>
+                            <h4>HiAce & Elf Long</h4>
+                        </div>
+                        <p>Armada wisata keluarga atau kantor sangat leluasa. Halaman resto memiliki radius putar balik kendaraan yang lebar dan aman.</p>
+                        <span class="road-quality text-gold"><i class="fas fa-check-double"></i> Radius Putar Aman • Slot Muat 5+ Elf</span>
+                    </div>
+
+                    <!-- Kendaraan 4: Bus Medium -->
                     <div class="transport-card">
                         <div class="transport-card-header">
                             <i class="fas fa-bus-alt"></i>
-                            <h4>Akses Elf, Minibus & Bus Medium (3/4)</h4>
+                            <h4>Bus Medium (Maks 35 Seat)</h4>
                         </div>
-                        <p>Jalan kabupaten dapat dilalui berpapasan dengan aman oleh Elf Long dan Bus Medium 3/4. Resto menyediakan halaman parkir luas yang mampu menampung hingga 5 minibus sekaligus, lengkap dengan area putar balik yang lega.</p>
-                        <span class="road-quality text-gold"><i class="fas fa-parking"></i> Parkir Bus/Elf Luas • Gratis Parkir</span>
+                        <p>Bisa diakses dari pertigaan Tayu atau jalur Trangkil. Disarankan konfirmasi slot parkir bus dan jadwal kedatangan kepada admin H-1.</p>
+                        <span class="road-quality text-gold"><i class="fas fa-parking"></i> Parkir Bus Khusus • Konfirmasi Admin</span>
                     </div>
+                </div>
+
+                <!-- Action CTA for Parking & Maps -->
+                <div class="transport-cta-actions">
+                    <a href="https://maps.app.goo.gl/Jy3esudVxSzx93m48" target="_blank" class="btn-transport-map">
+                        <i class="fas fa-directions"></i> Buka Navigasi Google Maps
+                    </a>
+                    <button type="button" class="btn-transport-wa" onclick="consultParkingWA()">
+                        <i class="fab fa-whatsapp"></i> Konfirmasi Parkir Bus / Rombongan
+                    </button>
                 </div>
             </div>
 
@@ -1064,8 +1245,8 @@
             <div class="footer-section">
                 <h4>Kontak Layanan</h4>
                 <p>Silakan klik tombol Reservasi untuk langsung memesan meja.</p>
-                <p><i class="fab fa-whatsapp"></i> <span id="waAdmin1Text">0852-9046-2715</span> (Admin 1)</p>
-                <p><i class="fab fa-whatsapp"></i> <span id="waAdmin2Text">0823-2353-5747</span> (Admin 2)</p>
+                <p><i class="fab fa-whatsapp"></i> <span id="waAdmin1Text">0852-2621-0408</span> (Admin Mila)</p>
+                <p><i class="fab fa-whatsapp"></i> <span id="waAdmin2Text">0823-2938-4594</span> (Admin Bukhori)</p>
             </div>
             <div class="footer-section">
                 <h4>Alamat Resto</h4>
@@ -1091,7 +1272,6 @@
             <p>&copy; 2026 Bukit Padangan Resto. All Rights Reserved.</p>
         </div>
     </footer>
-
 
     <!-- MENU BOOK MODAL (KATALOG LENGKAP & PDF) -->
     <div id="menuBookModal" class="modal" style="display: none;">
@@ -1435,13 +1615,43 @@
 
             <!-- Cart Drawer Footer -->
             <div class="cart-drawer-footer">
-                <div class="cart-total-row">
-                    <span>Total Item:</span>
-                    <strong id="cartTotalItems">0 Porsi</strong>
+                <!-- Promo Voucher Section -->
+                <div class="cart-voucher-box">
+                    <label for="cartVoucherInput" class="cart-voucher-label">
+                        <i class="fas fa-tags"></i> Voucher & Kode Promo
+                    </label>
+                    <div class="cart-voucher-input-group">
+                        <input type="text" id="cartVoucherInput" placeholder="Masukkan kode promo (contoh: WEEKDAY10)" autocomplete="off">
+                        <button type="button" id="btnApplyCartVoucher" class="btn-apply-voucher" onclick="applyCartVoucher()">Gunakan</button>
+                    </div>
+                    <div id="cartVoucherFeedback" class="cart-voucher-feedback" style="display: none;"></div>
+                    <div class="cart-quick-vouchers">
+                        <span class="quick-voucher-tag" onclick="setQuickVoucher('WEEKDAY10')"><i class="fas fa-percentage"></i> WEEKDAY10 (-10%)</span>
+                        <span class="quick-voucher-tag" onclick="setQuickVoucher('PADANGAN10K')"><i class="fas fa-ticket-alt"></i> PADANGAN10K (-10rb)</span>
+                    </div>
                 </div>
-                <div class="cart-total-row">
-                    <span>Total Estimasi:</span>
-                    <strong id="cartTotalPrice" style="color: var(--accent-gold);">Rp 0</strong>
+
+                <!-- Financial Summary -->
+                <div class="cart-summary-breakdown">
+                    <div class="cart-total-row">
+                        <span>Total Item:</span>
+                        <strong id="cartTotalItems">0 Porsi</strong>
+                    </div>
+                    <div class="cart-total-row">
+                        <span>Subtotal Pesanan:</span>
+                        <strong id="cartSubtotalPrice">Rp 0</strong>
+                    </div>
+                    <div id="cartDiscountRow" class="cart-total-row cart-discount-row" style="display: none;">
+                        <span class="discount-label"><i class="fas fa-ticket-alt"></i> Diskon (<span id="cartDiscountCodeName"></span>):</span>
+                        <div class="discount-val-group">
+                            <strong id="cartDiscountVal" class="discount-amount">-Rp 0</strong>
+                            <button type="button" class="btn-cancel-voucher" onclick="removeCartVoucher()" title="Batalkan kupon">&times;</button>
+                        </div>
+                    </div>
+                    <div class="cart-total-row cart-grand-total-row">
+                        <span>Total Bayar:</span>
+                        <strong id="cartTotalPrice" style="color: var(--accent-gold);">Rp 0</strong>
+                    </div>
                 </div>
 
                 <!-- Customer Order Form Details -->
