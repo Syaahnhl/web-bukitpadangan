@@ -105,15 +105,23 @@ function renderMenuGrid(items) {
 
     grid.innerHTML = items.map(item => {
         const badgeHtml = item.badge ? `<span class="menu-badge">${item.badge}</span>` : '';
+        let flavorBadgeHtml = '';
+        if (item.flavor === 'pedas') {
+            flavorBadgeHtml = `<span class="menu-item-flavor-badge badge-flavor-pedas"><i class="fas fa-fire"></i> Pedas</span>`;
+        } else if (item.flavor === 'anak') {
+            flavorBadgeHtml = `<span class="menu-item-flavor-badge badge-flavor-anak"><i class="fas fa-child"></i> Ramah Anak</span>`;
+        } else if (item.flavor === 'khas') {
+            flavorBadgeHtml = `<span class="menu-item-flavor-badge badge-flavor-khas"><i class="fas fa-mountain"></i> Khas</span>`;
+        }
         const priceFormatted = formatRupiah(item.price);
         return `
-            <div class="menu-item show" data-category="${item.category}" data-id="${item.id}">
+            <div class="menu-item show" data-category="${item.category}" data-flavor="${item.flavor || ''}" data-id="${item.id}">
                 <div class="menu-img">
                     <img src="${item.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop'}" alt="${item.name}">
                     ${badgeHtml}
                 </div>
                 <div class="menu-info">
-                    <h4>${item.name}</h4>
+                    <h4>${item.name} ${flavorBadgeHtml}</h4>
                     <p>${item.desc}</p>
                     <div class="menu-footer">
                         <span class="menu-price">${priceFormatted}</span>
@@ -135,6 +143,9 @@ window.addEventListener("DOMContentLoaded", () => {
     initFaqAccordion();
     updatePackageCalc();
     initCart();
+    initWeatherWidget();
+    initLiveMusicSchedule();
+    initConfirmDpModal();
 
     // Event listener untuk menutup menuBookModal jika klik di luar area konten
     const menuBookModal = document.getElementById("menuBookModal");
@@ -574,6 +585,7 @@ window.onclick = function (event) {
 let cartItems = []; // Array of { id, name, price, qty, note, img }
 let currentMenuSearch = "";
 let currentMenuCategory = "semua";
+let currentMenuFlavor = "semua";
 
 // Inisialisasi Cart dari LocalStorage
 function initCart() {
@@ -843,6 +855,15 @@ function clearMenuSearch() {
     applyMenuFilters();
 }
 
+function filterFlavor(flavor) {
+    currentMenuFlavor = flavor || "semua";
+    const buttons = document.querySelectorAll(".menu-flavor-chips .flavor-chip");
+    buttons.forEach(btn => btn.classList.remove("active"));
+    const activeBtn = document.querySelector(`.menu-flavor-chips .flavor-chip[data-flavor="${currentMenuFlavor}"]`);
+    if (activeBtn) activeBtn.classList.add("active");
+    applyMenuFilters();
+}
+
 function filterMenu(category) {
     currentMenuCategory = category || "semua";
     const buttons = document.querySelectorAll(".menu-tabs .tab-btn");
@@ -858,11 +879,15 @@ function applyMenuFilters() {
     if (currentMenuCategory !== "semua") {
         filtered = filtered.filter(item => item.category === currentMenuCategory);
     }
+    if (currentMenuFlavor !== "semua") {
+        filtered = filtered.filter(item => item.flavor === currentMenuFlavor);
+    }
     if (currentMenuSearch) {
         filtered = filtered.filter(item => 
             item.name.toLowerCase().includes(currentMenuSearch) ||
             (item.desc && item.desc.toLowerCase().includes(currentMenuSearch)) ||
-            (item.badge && item.badge.toLowerCase().includes(currentMenuSearch))
+            (item.badge && item.badge.toLowerCase().includes(currentMenuSearch)) ||
+            (item.flavor_name && item.flavor_name.toLowerCase().includes(currentMenuSearch))
         );
     }
     renderMenuGrid(filtered);
@@ -1046,7 +1071,15 @@ function submitReservation(event) {
 `;
     waText += `• Jumlah Tamu: ${guests} Orang\n`;
     waText += `• Area Pilihan: ${area}\n`;
-    waText += `• Pilihan Meja: *${tableText}*\n\n`;
+    waText += `• Pilihan Meja: *${tableText}*\n`;
+
+    // Catatan khusus
+    const notesInput = document.getElementById("resNotes");
+    const userNotes = notesInput ? notesInput.value.trim() : "";
+    if (userNotes) {
+        waText += `• Catatan Khusus: _${userNotes}_\n`;
+    }
+    waText += `\n`;
 
     // Jika ada santapan di keranjang, sertakan dalam pesan reservasi
     if (cartItems && cartItems.length > 0) {
@@ -1308,4 +1341,320 @@ function filterReviews(type, event) {
             card.style.display = "none";
         }
     });
+}
+
+// =========================================
+// 8. REAL-TIME WEATHER WIDGET (LERENG GUNUNGWUNGKAL)
+// =========================================
+let weatherRefreshTimer = null;
+
+async function fetchOpenMeteoWeather(isManual = false) {
+    const iconWrap = document.getElementById("weatherIconWrap");
+    const tempEl = document.getElementById("weatherTemp");
+    const condEl = document.getElementById("weatherCondition");
+    const windEl = document.getElementById("weatherWind");
+    const humEl = document.getElementById("weatherHumidity");
+    const refreshIcon = document.getElementById("weatherRefreshIcon");
+
+    if (refreshIcon && isManual) {
+        refreshIcon.classList.add("fa-spin");
+    }
+
+    try {
+        // Latitude / Longitude Bukit Padangan lereng Gunungwungkal, Pati
+        const lat = -6.6433;
+        const lon = 110.9856;
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Asia%2FJakarta`;
+        
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 6000);
+        const res = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+
+        if (!res.ok) throw new Error("Gagal mengambil respon Open-Meteo");
+        const data = await res.json();
+        const curr = data.current;
+
+        if (curr) {
+            const temp = Math.round(curr.temperature_2m * 10) / 10;
+            const wind = Math.round(curr.wind_speed_10m * 10) / 10;
+            const hum = curr.relative_humidity_2m;
+            const code = curr.weather_code;
+
+            if (tempEl) tempEl.textContent = `${temp}°C`;
+            if (windEl) windEl.textContent = `${wind} km/h`;
+            if (humEl) humEl.textContent = `${hum}%`;
+
+            // Weather code mapping (WMO standard)
+            let condText = "Cerah Sejuk";
+            let iconClass = "fas fa-sun";
+
+            if (code === 0) {
+                condText = "Langit Cerah Sejuk";
+                iconClass = "fas fa-sun";
+            } else if (code >= 1 && code <= 3) {
+                condText = "Cerah Berawan";
+                iconClass = "fas fa-cloud-sun";
+            } else if (code === 45 || code === 48) {
+                condText = "Berkabut Sejuk";
+                iconClass = "fas fa-smog";
+            } else if (code >= 51 && code <= 55) {
+                condText = "Gerimis Sejuk";
+                iconClass = "fas fa-cloud-rain";
+            } else if (code >= 61 && code <= 67) {
+                condText = "Hujan Lereng";
+                iconClass = "fas fa-cloud-showers-heavy";
+            } else if (code >= 80 && code <= 82) {
+                condText = "Hujan Ringan";
+                iconClass = "fas fa-cloud-sun-rain";
+            } else if (code >= 95) {
+                condText = "Hujan Berpetir";
+                iconClass = "fas fa-bolt";
+            }
+
+            if (condEl) condEl.textContent = condText;
+            if (iconWrap) iconWrap.innerHTML = `<i class="${iconClass}"></i>`;
+        }
+    } catch (err) {
+        console.warn("Menggunakan baseline cuaca lereng Gunungwungkal:", err.message);
+        // Fallback anggun (iklim mikro sejuk lereng perbukitan)
+        if (tempEl) tempEl.textContent = "24.5°C";
+        if (condEl) condEl.textContent = "Sejuk Berawan";
+        if (windEl) windEl.textContent = "6.0 km/h";
+        if (humEl) humEl.textContent = "82%";
+        if (iconWrap) iconWrap.innerHTML = `<i class="fas fa-cloud-sun"></i>`;
+    } finally {
+        if (refreshIcon) {
+            setTimeout(() => refreshIcon.classList.remove("fa-spin"), 600);
+        }
+    }
+}
+
+function refreshWeatherWidget(isManual = true) {
+    fetchOpenMeteoWeather(isManual);
+}
+
+function initWeatherWidget() {
+    fetchOpenMeteoWeather(false);
+    // Refresh otomatis setiap 15 menit
+    if (weatherRefreshTimer) clearInterval(weatherRefreshTimer);
+    weatherRefreshTimer = setInterval(() => {
+        fetchOpenMeteoWeather(false);
+    }, 15 * 60 * 1000);
+}
+
+// =========================================
+// 9. JADWAL LIVE MUSIC AKUSTIK & PANGGUNG
+// =========================================
+function initLiveMusicSchedule() {
+    const today = new Date().getDay(); // 0 = Minggu, 5 = Jumat, 6 = Sabtu
+    const liveTagFri = document.getElementById("liveBadgeFri");
+    const liveTagSat = document.getElementById("liveBadgeSat");
+    const liveTagSun = document.getElementById("liveBadgeSun");
+    const cardFri = document.getElementById("scheduleFri");
+    const cardSat = document.getElementById("scheduleSat");
+    const cardSun = document.getElementById("scheduleSun");
+
+    if (today === 5) {
+        if (liveTagFri) liveTagFri.style.display = "inline-flex";
+        if (cardFri) cardFri.classList.add("highlight");
+    } else if (today === 6) {
+        if (liveTagSat) liveTagSat.style.display = "inline-flex";
+        if (cardSat) cardSat.classList.add("highlight");
+    } else if (today === 0) {
+        if (liveTagSun) liveTagSun.style.display = "inline-flex";
+        if (cardSun) cardSun.classList.add("highlight");
+    }
+}
+
+function bookTableNearStage(dayName) {
+    // 1. Fokus denah 3D jika aktif
+    if (typeof focus3DZone === "function") {
+        focus3DZone("east");
+    }
+    // 2. Pilih meja panggung jika ada di dataset
+    if (Array.isArray(tablesData) && tablesData.length > 0) {
+        const stageTable = tablesData.find(t => t.id.includes("IT1") || t.zone === "east");
+        if (stageTable) {
+            selectThisTable(stageTable.id);
+        }
+    }
+    // 3. Buka modal reservasi dengan catatan panggung
+    openModal();
+    const areaSelect = document.getElementById("resArea");
+    if (areaSelect) {
+        areaSelect.value = "Indoor Timur (Sayap 1 & 2)";
+    }
+    const notesInput = document.getElementById("resNotes");
+    if (notesInput) {
+        notesInput.value = `Reservasi Meja Dekat Panggung Live Music (${dayName} Sore/Malam)`;
+    }
+}
+
+// =========================================
+// 10. MODAL & ALUR KONFIRMASI BUKTI TRANSFER DP
+// =========================================
+let attachedReceiptFile = null;
+
+function openConfirmDpModal() {
+    closeModal();
+    closeCartDrawer();
+    const modal = document.getElementById("confirmDpModal");
+    if (!modal) return;
+
+    modal.style.display = "flex";
+    modal.scrollTop = 0;
+    const content = modal.querySelector(".modal-content");
+    if (content) content.scrollTop = 0;
+    document.body.style.overflow = "hidden";
+
+    // Prefill info meja jika sudah dipilih
+    const dpTableInfo = document.getElementById("dpTableInfo");
+    if (dpTableInfo) {
+        if (selectedTable) {
+            dpTableInfo.value = `${selectedTable.name} (${selectedTable.zoneName} • ${selectedTable.capacity} Kursi)`;
+        } else {
+            dpTableInfo.value = "Belum memilih meja (akan diaturkan admin)";
+        }
+    }
+
+    // Prefill nama dan tanggal jika sudah diisi di form reservasi
+    const resName = document.getElementById("resName");
+    const dpName = document.getElementById("dpSenderName");
+    if (resName && dpName && resName.value.trim() && !dpName.value.trim()) {
+        dpName.value = resName.value.trim();
+    }
+
+    const resPhone = document.getElementById("resPhone");
+    const dpPhone = document.getElementById("dpSenderPhone");
+    if (resPhone && dpPhone && resPhone.value.trim() && !dpPhone.value.trim()) {
+        dpPhone.value = resPhone.value.trim();
+    }
+
+    const resDate = document.getElementById("resDate");
+    const resTime = document.getElementById("resTime");
+    const dpDate = document.getElementById("dpArrivalDate");
+    if (resDate && dpDate && resDate.value) {
+        const timeVal = resTime && resTime.value ? ` Jam ${resTime.value} WIB` : "";
+        dpDate.value = `${resDate.value}${timeVal}`;
+    }
+}
+
+function closeConfirmDpModal() {
+    const modal = document.getElementById("confirmDpModal");
+    if (modal) modal.style.display = "none";
+    document.body.style.overflow = "";
+}
+
+function copyMandiriAccount() {
+    const accNumber = "1840011559968";
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(accNumber).then(() => {
+            showToast("✓ Nomor rekening Mandiri 1840011559968 berhasil disalin!");
+        }).catch(() => {
+            prompt("Salin nomor rekening Mandiri di bawah ini:", accNumber);
+        });
+    } else {
+        prompt("Salin nomor rekening Mandiri di bawah ini:", accNumber);
+    }
+}
+
+function selectDpNominal(amount) {
+    const chips = document.querySelectorAll(".dp-chips-group .dp-chip");
+    chips.forEach(c => c.classList.remove("active"));
+    const amountInput = document.getElementById("dpAmountInput");
+
+    if (amount === "custom") {
+        if (event && event.currentTarget) event.currentTarget.classList.add("active");
+        if (amountInput) {
+            amountInput.focus();
+            amountInput.select();
+        }
+    } else {
+        if (event && event.currentTarget) event.currentTarget.classList.add("active");
+        if (amountInput) amountInput.value = amount;
+    }
+}
+
+function handleReceiptFileSelect(input) {
+    if (!input || !input.files || input.files.length === 0) return;
+    const file = input.files[0];
+    attachedReceiptFile = file;
+
+    const previewContainer = document.getElementById("dropZonePreview");
+    const promptContainer = document.getElementById("dropZonePrompt");
+    const previewImg = document.getElementById("receiptPreviewImg");
+    const fileNameEl = document.getElementById("receiptFileName");
+
+    if (fileNameEl) fileNameEl.textContent = file.name;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        if (previewImg) previewImg.src = e.target.result;
+        if (promptContainer) promptContainer.style.display = "none";
+        if (previewContainer) previewContainer.style.display = "flex";
+    };
+    reader.readAsDataURL(file);
+}
+
+function removeReceiptFile(event) {
+    if (event) event.stopPropagation();
+    attachedReceiptFile = null;
+    const fileInput = document.getElementById("dpReceiptFileInput");
+    if (fileInput) fileInput.value = "";
+
+    const previewContainer = document.getElementById("dropZonePreview");
+    const promptContainer = document.getElementById("dropZonePrompt");
+    if (previewContainer) previewContainer.style.display = "none";
+    if (promptContainer) promptContainer.style.display = "block";
+}
+
+function handleConfirmDpSubmit(event) {
+    if (event) event.preventDefault();
+
+    const senderName = document.getElementById("dpSenderName") ? document.getElementById("dpSenderName").value.trim() : "";
+    const senderPhone = document.getElementById("dpSenderPhone") ? document.getElementById("dpSenderPhone").value.trim() : "";
+    const arrivalDate = document.getElementById("dpArrivalDate") ? document.getElementById("dpArrivalDate").value.trim() : "";
+    const tableInfo = document.getElementById("dpTableInfo") ? document.getElementById("dpTableInfo").value.trim() : "Bebas";
+    const amountVal = document.getElementById("dpAmountInput") ? document.getElementById("dpAmountInput").value.trim() : "100000";
+    const notes = document.getElementById("dpNotes") ? document.getElementById("dpNotes").value.trim() : "";
+
+    if (!senderName || !senderPhone || !arrivalDate) {
+        alert("Mohon lengkapi nama pengirim, nomor WhatsApp, dan tanggal kedatangan.");
+        return;
+    }
+
+    const amountFormatted = formatRupiah(parseInt(amountVal, 10) || 100000);
+    const receiptStatus = attachedReceiptFile ? `Foto terlampir (${attachedReceiptFile.name})` : "Foto struk siap dikirim langsung via chat ini";
+
+    let waText = `*KONFIRMASI BUKTI TRANSFER DP RESERVASI*\n`;
+    waText += `*BUKIT PADANGAN RESTO*\n`;
+    waText += `────────────────────────\n`;
+    waText += `👤 *Nama Pengirim:* ${senderName}\n`;
+    waText += `📱 *No. WhatsApp:* ${senderPhone}\n`;
+    waText += `📅 *Rencana Kedatangan:* ${arrivalDate}\n`;
+    waText += `🪑 *Meja / Area:* ${tableInfo}\n`;
+    waText += `💰 *Nominal Transfer DP:* ${amountFormatted}\n`;
+    waText += `🏦 *Rekening Tujuan:* Bank Mandiri (1840011559968 a.n. Mila Elmeida)\n`;
+    if (notes) {
+        waText += `📝 *Catatan Tambahan:* ${notes}\n`;
+    }
+    waText += `📎 *Status Struk:* ${receiptStatus}\n`;
+    waText += `────────────────────────\n`;
+    waText += `Halo Admin, mohon diverifikasi mutasinya agar meja kami terkunci. Terima kasih!`;
+
+    const encoded = encodeURIComponent(waText);
+    window.open(`https://api.whatsapp.com/send?phone=6285290462715&text=${encoded}`, "_blank");
+
+    closeConfirmDpModal();
+    showToast("✓ Menghubungkan ke WhatsApp Admin untuk konfirmasi DP...");
+}
+
+function initConfirmDpModal() {
+    const modal = document.getElementById("confirmDpModal");
+    if (modal) {
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) closeConfirmDpModal();
+        });
+    }
 }

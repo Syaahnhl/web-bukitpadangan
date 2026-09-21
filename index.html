@@ -84,11 +84,15 @@
                 <li><a href="#faq" onclick="closeNavMenu()"><i class="fas fa-question-circle"></i> FAQ</a></li>
                 <li><a href="#gallery" onclick="closeNavMenu()"><i class="fas fa-images"></i> Galeri</a></li>
                 <li><a href="#location" onclick="closeNavMenu()"><i class="fas fa-map-marker-alt"></i> Lokasi</a></li>
+                <li><a href="javascript:void(0)" onclick="openConfirmDpModal(); closeNavMenu();"><i class="fas fa-receipt"></i> Konfirmasi DP</a></li>
                 <li class="nav-desktop-cta"><a href="#" class="btn-reservasi" onclick="openModal(event)">Reservasi</a></li>
                 <li class="nav-drawer-footer">
                     <a href="#" class="btn-drawer-reservasi" onclick="closeNavMenu(); openModal(event);">
                         <i class="fas fa-calendar-check"></i> Reservasi Meja Sekarang
                     </a>
+                    <button type="button" class="btn-drawer-confirm-dp" onclick="closeNavMenu(); openConfirmDpModal();">
+                        <i class="fas fa-receipt"></i> Konfirmasi Bukti DP
+                    </button>
                 </li>
             </ul>
             <div class="menu-toggle" id="menuToggle" onclick="toggleNavMenu()">
@@ -240,6 +244,43 @@
                         <i class="fas fa-th-large"></i> Daftar Kartu Meja
                     </button>
                 </div>
+            </div>
+
+            <!-- REAL-TIME WEATHER WIDGET LERENG GUNUNGWUNGKAL -->
+            <div id="weatherWidget" class="weather-widget-card">
+                <div class="weather-widget-main">
+                    <div class="weather-icon-wrap" id="weatherIconWrap">
+                        <i class="fas fa-cloud-sun weather-icon-sun"></i>
+                    </div>
+                    <div class="weather-info-primary">
+                        <div class="weather-location-pill">
+                            <span class="pulse-green"></span>
+                            <span class="weather-loc-text"><i class="fas fa-mountain"></i> Lereng Gunungwungkal, Pati • <span id="weatherElev">245 mdpl</span></span>
+                        </div>
+                        <div class="weather-temp-row">
+                            <span class="weather-temp" id="weatherTemp">24.5°C</span>
+                            <span class="weather-condition" id="weatherCondition">Sejuk & Segar</span>
+                        </div>
+                        <p class="weather-micro-desc" id="weatherMicroDesc">Udara perbukitan sejuk alami, sangat nyaman untuk santap outdoor & gazebo sawah.</p>
+                    </div>
+                </div>
+                <div class="weather-widget-meta">
+                    <div class="weather-stat-item">
+                        <span class="stat-label"><i class="fas fa-wind"></i> Angin Lereng</span>
+                        <strong class="stat-value" id="weatherWind">5.5 km/h</strong>
+                    </div>
+                    <div class="weather-stat-item">
+                        <span class="stat-label"><i class="fas fa-tint"></i> Kelembapan</span>
+                        <strong class="stat-value" id="weatherHumidity">88%</strong>
+                    </div>
+                    <div class="weather-stat-item weather-stat-highlight">
+                        <span class="stat-label"><i class="fas fa-sun"></i> Golden Hour Sunset</span>
+                        <strong class="stat-value">16:30 - 17:45 WIB</strong>
+                    </div>
+                </div>
+                <button type="button" class="btn-refresh-weather" onclick="refreshWeatherWidget(true)" title="Perbarui Data Cuaca Live">
+                    <i class="fas fa-sync-alt" id="weatherRefreshIcon"></i>
+                </button>
             </div>
 
             <!-- 3D INTERACTIVE CANVAS WRAPPER -->
@@ -435,6 +476,14 @@
                     <button class="tab-btn" onclick="filterMenu('cemilan')">Camilan</button>
                     <button class="tab-btn btn-tab-highlight" onclick="openMenuBookModal()"><i class="fas fa-book-open"></i> Buku Menu Lengkap</button>
                 </div>
+                <!-- Filter Chips Cita Rasa (Pedas Bledos vs Ramah Anak vs Khas) -->
+                <div class="menu-flavor-chips">
+                    <span class="flavor-chip-label"><i class="fas fa-pepper-hot"></i> Cita Rasa:</span>
+                    <button type="button" class="flavor-chip active" data-flavor="semua" onclick="filterFlavor('semua')">Semua Rasa</button>
+                    <button type="button" class="flavor-chip chip-pedas" data-flavor="pedas" onclick="filterFlavor('pedas')"><i class="fas fa-fire"></i> Pedas Bledos</button>
+                    <button type="button" class="flavor-chip chip-anak" data-flavor="anak" onclick="filterFlavor('anak')"><i class="fas fa-child"></i> Ramah Anak & Manis</button>
+                    <button type="button" class="flavor-chip chip-khas" data-flavor="khas" onclick="filterFlavor('khas')"><i class="fas fa-mountain"></i> Khas Gunungwungkal</button>
+                </div>
             </div>
 
             <!-- Menu Grid -->
@@ -624,34 +673,52 @@
             </div>
 
             <!-- JADWAL LIVE MUSIC MINGGUAN -->
-            <div class="event-schedule-wrap">
+            <div class="event-schedule-wrap" id="liveMusicSchedule">
                 <div class="schedule-header">
-                    <div class="badge-gold"><i class="fas fa-guitar"></i> Hiburan Akhir Pekan</div>
+                    <div class="badge-gold"><i class="fas fa-guitar"></i> Hiburan Panggung Akustik</div>
                     <h3>Jadwal Live Music Akustik Mingguan</h3>
-                    <p>Suasana santap Anda semakin syahdu ditemani lantunan musik akustik di panggung terbuka lereng perbukitan:</p>
+                    <p>Suasana santap Anda semakin syahdu ditemani alunan live acoustic di Panggung Onthel Heritage (Area Indoor Timur 1):</p>
                 </div>
                 <div class="schedule-grid">
-                    <div class="schedule-card">
-                        <div class="schedule-day">Jumat Malam</div>
+                    <div class="schedule-card" id="scheduleFri">
+                        <div class="schedule-day-row">
+                            <span class="schedule-day">Jumat Malam</span>
+                            <span class="schedule-live-badge" id="liveBadgeFri" style="display: none;"><span class="pulse-red"></span> LIVE MALAM INI</span>
+                        </div>
                         <div class="schedule-time"><i class="far fa-clock"></i> 19.00 – 21.30 WIB</div>
                         <div class="schedule-genre">Akustik Nostalgia & Pop Indo</div>
-                        <p class="schedule-desc">Alunan tembang kenangan dan lagu pop santai pengiring makan malam bersama keluarga tercinta.</p>
-                        <span class="schedule-stage"><i class="fas fa-map-marker-alt"></i> Panggung Utama Resto</span>
+                        <p class="schedule-desc">Alunan tembang kenangan dan lagu pop santai pengiring makan malam syahdu bersama keluarga tercinta.</p>
+                        <span class="schedule-stage"><i class="fas fa-map-marker-alt"></i> Panggung Onthel Heritage (Indoor Timur 1)</span>
+                        <button type="button" class="btn-stage-book" onclick="bookTableNearStage('Jumat')">
+                            <i class="fas fa-chair"></i> Pesan Meja Dekat Panggung
+                        </button>
                     </div>
-                    <div class="schedule-card highlight">
+                    <div class="schedule-card highlight" id="scheduleSat">
                         <div class="schedule-badge-gold">Paling Favorit</div>
-                        <div class="schedule-day">Sabtu Sore – Malam</div>
+                        <div class="schedule-day-row">
+                            <span class="schedule-day">Sabtu Sore – Malam</span>
+                            <span class="schedule-live-badge" id="liveBadgeSat" style="display: none;"><span class="pulse-red"></span> LIVE HARI INI</span>
+                        </div>
                         <div class="schedule-time"><i class="far fa-clock"></i> 16.30 – 21.30 WIB</div>
-                        <div class="schedule-genre">Senandung Senja & Top Hits</div>
-                        <p class="schedule-desc">Menikmati matahari terbenam (Golden Hour) hingga malam minggu hangat bersama sahabat.</p>
-                        <span class="schedule-stage"><i class="fas fa-map-marker-alt"></i> Panggung Utama & Tepi Sawah</span>
+                        <div class="schedule-genre">Senandung Senja & Top Hits Weekend</div>
+                        <p class="schedule-desc">Menikmati matahari terbenam (Golden Hour) hingga malam minggu hangat bersama sahabat dan pasangan.</p>
+                        <span class="schedule-stage"><i class="fas fa-map-marker-alt"></i> Panggung Onthel Heritage (Indoor Timur 1)</span>
+                        <button type="button" class="btn-stage-book btn-stage-book-gold" onclick="bookTableNearStage('Sabtu')">
+                            <i class="fas fa-chair"></i> Pesan Meja Dekat Panggung
+                        </button>
                     </div>
-                    <div class="schedule-card">
-                        <div class="schedule-day">Minggu Siang – Sore</div>
+                    <div class="schedule-card" id="scheduleSun">
+                        <div class="schedule-day-row">
+                            <span class="schedule-day">Minggu Siang – Sore</span>
+                            <span class="schedule-live-badge" id="liveBadgeSun" style="display: none;"><span class="pulse-red"></span> LIVE HARI INI</span>
+                        </div>
                         <div class="schedule-time"><i class="far fa-clock"></i> 12.00 – 16.00 WIB</div>
-                        <div class="schedule-genre">Family Weekend Melodies</div>
+                        <div class="schedule-genre">Family Weekend Melodies & Request Lagu</div>
                         <p class="schedule-desc">Melodi santai ramah keluarga. Pengunjung bebas me-request lagu favorit atau bernyanyi bersama!</p>
-                        <span class="schedule-stage"><i class="fas fa-map-marker-alt"></i> Panggung Utama Resto</span>
+                        <span class="schedule-stage"><i class="fas fa-map-marker-alt"></i> Panggung Onthel Heritage (Indoor Timur 1)</span>
+                        <button type="button" class="btn-stage-book" onclick="bookTableNearStage('Minggu')">
+                            <i class="fas fa-chair"></i> Pesan Meja Dekat Panggung
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1010,11 +1077,14 @@
             <div class="footer-section">
                 <h4>Rekening Resmi DP</h4>
                 <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 8px;">Batas reservasi hari-H maks. pukul 14.00 WIB:</p>
-                <div style="background: rgba(22, 26, 33, 0.9); border: 1px solid rgba(212, 163, 115, 0.35); border-radius: 8px; padding: 10px 12px;">
+                <div style="background: rgba(22, 26, 33, 0.9); border: 1px solid rgba(212, 163, 115, 0.35); border-radius: 8px; padding: 10px 12px; margin-bottom: 10px;">
                     <span style="font-size: 0.75rem; color: #cbd5e1; display: block;">Bank Mandiri:</span>
                     <strong style="font-family: 'Courier New', monospace; font-size: 1.05rem; color: #ffffff; letter-spacing: 1px; display: block; margin: 2px 0;">1840011559968</strong>
                     <span style="font-size: 0.8rem; color: var(--accent-gold); display: block;">a.n. Mila Elmeida</span>
                 </div>
+                <button type="button" class="btn-footer-confirm-dp" onclick="openConfirmDpModal()">
+                    <i class="fas fa-receipt"></i> Konfirmasi Bukti Transfer DP
+                </button>
             </div>
         </div>
         <div class="footer-bottom">
@@ -1193,6 +1263,11 @@
                         <span class="bank-holder">Bank Mandiri a.n. Mila Elmeida</span>
                     </div>
                 </div>
+                <div style="margin-top: 10px; text-align: center;">
+                    <button type="button" class="btn-confirm-dp-shortcut" onclick="openConfirmDpModal()">
+                        <i class="fas fa-file-invoice-dollar"></i> Sudah Transfer DP? Upload Bukti di Sini
+                    </button>
+                </div>
             </div>
 
             <!-- Selected table badge in reservation modal -->
@@ -1257,6 +1332,11 @@
                         <option value="6285290462715">Admin 1 (0852-9046-2715)</option>
                         <option value="6282323535747">Admin 2 (0823-2353-5747)</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="resNotes">Catatan Khusus (Opsional)</label>
+                    <textarea id="resNotes" rows="2" placeholder="Contoh: Meja dekat panggung live music / bawa anak kecil"></textarea>
                 </div>
 
                 <div class="modal-form-footer">
@@ -1387,6 +1467,9 @@
                 <a id="kachingOrderDirectBtn" href="https://kaching.id/order/toko/1/public" target="_blank" class="btn-kaching-checkout">
                     <i class="fas fa-mobile-alt"></i> Buka Web Order Kaching POS
                 </a>
+                <button type="button" class="btn-cart-confirm-dp" onclick="closeCartDrawer(); openConfirmDpModal();">
+                    <i class="fas fa-receipt"></i> Sudah Bayar DP? Konfirmasi Bukti Transfer
+                </button>
             </div>
         </div>
     </div>
@@ -1408,10 +1491,114 @@
             </div>
             <span>Pesanan</span>
         </button>
+        <button type="button" class="quick-bar-item" onclick="openConfirmDpModal()">
+            <i class="fas fa-receipt"></i>
+            <span>Bukti DP</span>
+        </button>
         <a href="https://wa.me/6285290462715?text=Halo%20Admin%20Bukit%20Padangan,%20saya%20ingin%20tanya%20reservasi" target="_blank" class="quick-bar-item">
             <i class="fab fa-whatsapp"></i>
             <span>Tanya WA</span>
         </a>
+    </div>
+
+    <!-- CONFIRM DP TRANSFER MODAL -->
+    <div id="confirmDpModal" class="modal" style="display: none;">
+        <div class="modal-content confirm-dp-modal-content">
+            <div class="modal-sheet-handle"></div>
+            <span class="close-btn" onclick="closeConfirmDpModal()">&times;</span>
+            <div class="modal-header-text">
+                <div class="badge-gold"><i class="fas fa-receipt"></i> Konfirmasi Pembayaran DP</div>
+                <h3>Konfirmasi Bukti Transfer Mandiri</h3>
+                <p>Kirimkan bukti transfer Down Payment (DP) Anda agar admin segera memvalidasi dan mengunci slot reservasi meja Anda:</p>
+            </div>
+
+            <!-- Rekening DP Card Luxury -->
+            <div class="dp-bank-card-luxury">
+                <div class="bank-luxury-header">
+                    <span class="bank-tag"><i class="fas fa-university"></i> Rekening Resmi Tujuan DP</span>
+                    <span class="bank-secure-badge"><i class="fas fa-shield-alt"></i> Terverifikasi</span>
+                </div>
+                <div class="bank-luxury-body">
+                    <div class="bank-luxury-logo">MANDIRI</div>
+                    <div class="bank-luxury-info">
+                        <span class="bank-acc-label">Nomor Rekening Mandiri:</span>
+                        <div class="bank-num-copy-row">
+                            <strong class="bank-acc-number">1840011559968</strong>
+                            <button type="button" class="btn-copy-gold" onclick="copyMandiriAccount()" title="Salin Nomor Rekening">
+                                <i class="fas fa-copy"></i> Salin
+                            </button>
+                        </div>
+                        <span class="bank-acc-name">a.n. <strong>Mila Elmeida</strong> (Bank Mandiri)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Konfirmasi -->
+            <form id="confirmDpForm" onsubmit="handleConfirmDpSubmit(event)">
+                <div class="form-group">
+                    <label for="dpSenderName">Nama Pengirim / Pemesan <span class="required">*</span></label>
+                    <input type="text" id="dpSenderName" required placeholder="Contoh: Budi Santoso (sesuai rekening)">
+                </div>
+
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="dpSenderPhone">Nomor WhatsApp <span class="required">*</span></label>
+                        <input type="tel" id="dpSenderPhone" required placeholder="08123456789">
+                    </div>
+                    <div class="form-group">
+                        <label for="dpArrivalDate">Tanggal & Jam Kedatangan <span class="required">*</span></label>
+                        <input type="text" id="dpArrivalDate" required placeholder="Contoh: Sabtu, 26 Sept 2026 - 17:00 WIB">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dpTableInfo">Pilihan Meja / Area Reservasi</label>
+                    <input type="text" id="dpTableInfo" placeholder="Belum ada meja dipilih (opsional)" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Nominal Transfer DP <span class="required">*</span></label>
+                    <div class="dp-chips-group">
+                        <button type="button" class="dp-chip" onclick="selectDpNominal(50000)">Rp 50.000</button>
+                        <button type="button" class="dp-chip active" onclick="selectDpNominal(100000)">Rp 100.000</button>
+                        <button type="button" class="dp-chip" onclick="selectDpNominal(200000)">Rp 200.000</button>
+                        <button type="button" class="dp-chip" onclick="selectDpNominal('custom')">Nominal Lain</button>
+                    </div>
+                    <input type="number" id="dpAmountInput" value="100000" min="10000" step="5000" required placeholder="Masukkan nominal DP (contoh: 100000)">
+                </div>
+
+                <!-- Upload Struk File Zone -->
+                <div class="form-group">
+                    <label>Lampirkan Foto Struk / Bukti Transfer (Opsional)</label>
+                    <div class="file-drop-zone" id="dpFileDropZone" onclick="document.getElementById('dpReceiptFileInput').click()">
+                        <input type="file" id="dpReceiptFileInput" accept="image/*" style="display: none;" onchange="handleReceiptFileSelect(this)">
+                        <div id="dropZonePrompt" class="drop-zone-prompt">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p><strong>Klik untuk pilih foto struk</strong> atau tarik file ke sini</p>
+                            <span class="file-hint">Format JPG, PNG, WebP (Maks. 5MB)</span>
+                        </div>
+                        <div id="dropZonePreview" class="drop-zone-preview" style="display: none;">
+                            <img id="receiptPreviewImg" src="" alt="Preview Struk">
+                            <div class="receipt-preview-info">
+                                <span id="receiptFileName">struk-transfer.jpg</span>
+                                <button type="button" class="btn-remove-receipt" onclick="removeReceiptFile(event)"><i class="fas fa-trash"></i> Hapus</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dpNotes">Catatan Tambahan (Opsional)</label>
+                    <textarea id="dpNotes" rows="2" placeholder="Contoh: Sudah pesan menu via keranjang / meja outdoor tepi sawah"></textarea>
+                </div>
+
+                <div class="confirm-dp-footer">
+                    <button type="submit" class="btn-submit-dp">
+                        <i class="fab fa-whatsapp"></i> Kirim Konfirmasi ke WhatsApp Admin
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Toast Notification for Add-to-Cart -->

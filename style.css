@@ -1671,6 +1671,8 @@ footer {
     align-items: center;
     justify-content: center;
     backdrop-filter: blur(8px);
+    overflow-y: auto;
+    padding: 20px 0;
 }
 
 .modal-content {
@@ -4870,5 +4872,680 @@ input:focus, select:focus {
 .spatial-item-info span {
     font-size: 0.78rem;
     color: #94a3b8;
+}
+
+/* =========================================
+   REAL-TIME WEATHER WIDGET (LERENG GUNUNGWUNGKAL)
+   ========================================= */
+.weather-widget-card {
+    background: linear-gradient(135deg, #13171f 0%, #0d1015 100%);
+    border: 1px solid rgba(212, 163, 115, 0.25);
+    border-radius: 16px;
+    padding: 16px 22px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    position: relative;
+    overflow: hidden;
+}
+
+.weather-widget-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, #d4a373, #38bdf8);
+}
+
+.weather-widget-main {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+}
+
+.weather-icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(212, 163, 115, 0.12);
+    border: 1px solid rgba(212, 163, 115, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: var(--accent-gold);
+    flex-shrink: 0;
+}
+
+.weather-info-primary {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.weather-location-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: #94a3b8;
+}
+
+.pulse-green {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 8px #22c55e;
+    display: inline-block;
+}
+
+.weather-temp-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.weather-temp {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #ffffff;
+    font-family: var(--font-heading);
+    line-height: 1.1;
+}
+
+.weather-condition {
+    font-size: 0.88rem;
+    color: var(--accent-gold);
+    font-weight: 700;
+    background: rgba(212, 163, 115, 0.12);
+    padding: 2px 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(212, 163, 115, 0.25);
+}
+
+.weather-micro-desc {
+    font-size: 0.8rem;
+    color: #cbd5e1;
+    margin: 0;
+}
+
+.weather-widget-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.weather-stat-item {
+    background: rgba(22, 28, 38, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 6px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 85px;
+}
+
+.weather-stat-item .stat-label {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.weather-stat-item .stat-value {
+    font-size: 0.88rem;
+    color: #f8fafc;
+    font-weight: 700;
+}
+
+.weather-stat-highlight {
+    background: rgba(212, 163, 115, 0.1);
+    border-color: rgba(212, 163, 115, 0.35);
+    min-width: 140px;
+}
+
+.weather-stat-highlight .stat-value {
+    color: var(--accent-gold);
+}
+
+.btn-refresh-weather {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 163, 115, 0.3);
+    color: var(--accent-gold);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+}
+
+.btn-refresh-weather:hover {
+    background: var(--accent-gold);
+    color: #0c0e12;
+    transform: rotate(45deg);
+}
+
+/* =========================================
+   MENU FLAVOR CHIPS & BADGES
+   ========================================= */
+.menu-flavor-chips {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(212, 163, 115, 0.2);
+    width: 100%;
+}
+
+.flavor-chip-label {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.flavor-chip {
+    background: rgba(22, 27, 36, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.82rem;
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body);
+}
+
+.flavor-chip:hover {
+    border-color: var(--accent-gold);
+    color: #ffffff;
+    background: rgba(30, 36, 48, 0.95);
+}
+
+.flavor-chip.active {
+    background: rgba(212, 163, 115, 0.18);
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    font-weight: 700;
+    box-shadow: 0 0 10px rgba(212, 163, 115, 0.2);
+}
+
+.flavor-chip.chip-pedas.active {
+    border-color: #ef4444;
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.16);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.25);
+}
+
+.flavor-chip.chip-anak.active {
+    border-color: #38bdf8;
+    color: #7dd3fc;
+    background: rgba(56, 189, 248, 0.16);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+}
+
+.flavor-chip.chip-khas.active {
+    border-color: #d4a373;
+    color: #f8fafc;
+    background: rgba(212, 163, 115, 0.22);
+    box-shadow: 0 0 10px rgba(212, 163, 115, 0.25);
+}
+
+.menu-item-flavor-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+    margin-left: 6px;
+}
+
+.badge-flavor-pedas {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.badge-flavor-anak {
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.badge-flavor-khas {
+    background: rgba(212, 163, 115, 0.15);
+    color: var(--accent-gold);
+    border: 1px solid rgba(212, 163, 115, 0.3);
+}
+
+/* =========================================
+   LIVE MUSIC ENHANCEMENTS
+   ========================================= */
+.schedule-day-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.schedule-live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    padding: 3px 8px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+}
+
+.pulse-red {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ef4444;
+    box-shadow: 0 0 8px #ef4444;
+    display: inline-block;
+}
+
+.btn-stage-book {
+    margin-top: 14px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 163, 115, 0.35);
+    color: var(--accent-gold);
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    font-family: var(--font-body);
+}
+
+.btn-stage-book:hover {
+    background: var(--accent-gold);
+    color: #0a0c0f;
+    box-shadow: 0 4px 15px rgba(212, 163, 115, 0.4);
+}
+
+.btn-stage-book-gold {
+    background: linear-gradient(135deg, rgba(212, 163, 115, 0.22) 0%, rgba(197, 146, 90, 0.3) 100%);
+    border-color: var(--accent-gold);
+}
+
+/* =========================================
+   CONFIRM DP MODAL & LUXURY BANK CARD
+   ========================================= */
+.confirm-dp-modal-content {
+    max-width: 540px;
+    background: #12151b;
+    border: 1px solid rgba(212, 163, 115, 0.35);
+    border-radius: 18px;
+    padding: 28px 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
+    max-height: 92vh;
+    overflow-y: auto;
+    position: relative;
+    margin: auto;
+}
+
+.form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+@media (max-width: 640px) {
+    .form-row-2 {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+
+.dp-bank-card-luxury {
+    background: linear-gradient(135deg, #181d26 0%, #11141a 100%);
+    border: 1px solid rgba(212, 163, 115, 0.35);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.bank-luxury-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.bank-tag {
+    font-size: 0.78rem;
+    color: var(--accent-gold);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.bank-secure-badge {
+    font-size: 0.72rem;
+    color: #4ade80;
+    background: rgba(74, 222, 128, 0.12);
+    padding: 2px 8px;
+    border-radius: 10px;
+    border: 1px solid rgba(74, 222, 128, 0.25);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.bank-luxury-body {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.bank-luxury-logo {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    color: #ffffff;
+    font-weight: 900;
+    font-size: 0.92rem;
+    padding: 8px 12px;
+    border-radius: 8px;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    flex-shrink: 0;
+}
+
+.bank-luxury-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.bank-acc-label {
+    font-size: 0.74rem;
+    color: #94a3b8;
+    display: block;
+}
+
+.bank-num-copy-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 4px 0;
+}
+
+.bank-acc-number {
+    font-family: 'Courier New', monospace;
+    font-size: 1.18rem;
+    color: #ffffff;
+    letter-spacing: 1px;
+    word-break: break-all;
+}
+
+.btn-copy-gold {
+    background: rgba(212, 163, 115, 0.15);
+    border: 1px solid rgba(212, 163, 115, 0.4);
+    color: var(--accent-gold);
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.btn-copy-gold:hover {
+    background: var(--accent-gold);
+    color: #0a0c0f;
+}
+
+.bank-acc-name {
+    font-size: 0.82rem;
+    color: #cbd5e1;
+    display: block;
+}
+
+.dp-chips-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.dp-chip {
+    background: rgba(24, 29, 38, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dp-chip:hover {
+    border-color: var(--accent-gold);
+    color: #ffffff;
+}
+
+.dp-chip.active {
+    background: rgba(212, 163, 115, 0.18);
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    font-weight: 700;
+}
+
+.file-drop-zone {
+    border: 2px dashed rgba(212, 163, 115, 0.35);
+    background: rgba(18, 22, 29, 0.6);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.file-drop-zone:hover {
+    border-color: var(--accent-gold);
+    background: rgba(212, 163, 115, 0.05);
+}
+
+.drop-zone-prompt i {
+    font-size: 1.8rem;
+    color: var(--accent-gold);
+    margin-bottom: 6px;
+}
+
+.drop-zone-prompt p {
+    font-size: 0.85rem;
+    color: #e2e8f0;
+    margin: 0 0 3px 0;
+}
+
+.file-hint {
+    font-size: 0.74rem;
+    color: #94a3b8;
+}
+
+.drop-zone-preview {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(24, 30, 40, 0.95);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(212, 163, 115, 0.3);
+}
+
+#receiptPreviewImg {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.receipt-preview-info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#receiptFileName {
+    font-size: 0.82rem;
+    color: #f8fafc;
+    word-break: break-all;
+}
+
+.btn-remove-receipt {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    color: #ef4444;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-submit-dp {
+    width: 100%;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: #ffffff;
+    border: none;
+    padding: 13px 20px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
+    transition: all 0.3s ease;
+    font-family: var(--font-body);
+}
+
+.confirm-dp-footer {
+    margin-top: 1.25rem;
+    padding-top: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.btn-submit-dp:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+}
+
+.btn-drawer-confirm-dp,
+.btn-footer-confirm-dp,
+.btn-confirm-dp-shortcut,
+.btn-cart-confirm-dp {
+    background: rgba(212, 163, 115, 0.15);
+    border: 1px solid rgba(212, 163, 115, 0.35);
+    color: var(--accent-gold);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    font-family: var(--font-body);
+    width: 100%;
+}
+
+.btn-drawer-confirm-dp:hover,
+.btn-footer-confirm-dp:hover,
+.btn-confirm-dp-shortcut:hover,
+.btn-cart-confirm-dp:hover {
+    background: var(--accent-gold);
+    color: #0c0e12;
+}
+
+@media (max-width: 768px) {
+    .weather-widget-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px 16px;
+    }
+    .weather-widget-meta {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .weather-stat-item {
+        flex: 1;
+        min-width: 0;
+    }
+    .weather-stat-highlight {
+        flex-basis: 100%;
+    }
+    .btn-refresh-weather {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+    }
+    .confirm-dp-modal-content {
+        padding: 1.25rem 1rem 3.5rem 1rem;
+        max-height: 90vh;
+        max-height: 90dvh;
+    }
+    .dp-chips-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    .dp-chip {
+        text-align: center;
+        padding: 8px 10px;
+    }
 }
 
