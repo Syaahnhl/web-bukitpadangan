@@ -421,13 +421,20 @@
             <h2 class="section-title">Menu Signature & Pilihan Otentik</h2>
             <p class="section-desc">Cita rasa khas lereng Gunungwungkal, Pati. Diracik dari bahan segar lokal dengan resep rempah otentik warisan Bukit Padangan.</p>
             
-            <!-- Category Tabs -->
-            <div class="menu-tabs">
-                <button class="tab-btn active" onclick="filterMenu('semua')">Semua</button>
-                <button class="tab-btn" onclick="filterMenu('makanan')">Makanan</button>
-                <button class="tab-btn" onclick="filterMenu('minuman')">Minuman</button>
-                <button class="tab-btn" onclick="filterMenu('cemilan')">Camilan</button>
-                <button class="tab-btn btn-tab-highlight" onclick="openMenuBookModal()"><i class="fas fa-book-open"></i> Buku Menu Lengkap</button>
+            <!-- Category Tabs & Search Bar -->
+            <div class="menu-filter-container">
+                <div class="menu-search-wrapper">
+                    <i class="fas fa-search menu-search-icon"></i>
+                    <input type="text" id="menuSearchInput" class="menu-search-input" placeholder="Cari menu lezat (ayam, bebek, wader, kopi, es...)" oninput="searchMenu(this.value)">
+                    <button type="button" id="clearMenuSearch" class="btn-clear-search" onclick="clearMenuSearch()" style="display: none;" title="Hapus pencarian">&times;</button>
+                </div>
+                <div class="menu-tabs">
+                    <button class="tab-btn active" onclick="filterMenu('semua')">Semua</button>
+                    <button class="tab-btn" onclick="filterMenu('makanan')">Makanan</button>
+                    <button class="tab-btn" onclick="filterMenu('minuman')">Minuman</button>
+                    <button class="tab-btn" onclick="filterMenu('cemilan')">Camilan</button>
+                    <button class="tab-btn btn-tab-highlight" onclick="openMenuBookModal()"><i class="fas fa-book-open"></i> Buku Menu Lengkap</button>
+                </div>
             </div>
 
             <!-- Menu Grid -->
@@ -435,15 +442,16 @@
                 <!-- Menu akan dimuat secara dinamis via JavaScript dari menu.json -->
             </div>
 
-            <!-- Signature Menu Note Box -->
+            <!-- Pre-Order & Kaching POS Live Sync Banner -->
             <div class="menu-notice-banner">
-                <div class="notice-icon"><i class="fas fa-utensils"></i></div>
+                <div class="notice-icon"><i class="fas fa-shopping-bag"></i></div>
                 <div class="notice-body">
-                    <h4>Pemesanan Menu Makanan & Minuman</h4>
-                    <p>Pemesanan menu dilayani langsung saat Anda tiba di kasir resto, atau dapat dikonfirmasikan bersama admin via WhatsApp saat reservasi meja.</p>
+                    <h4>Pre-Order Menu & Terhubung Langsung ke Kasir Tablet</h4>
+                    <p>Pilih menu favorit Anda dan klik tombol <strong>+ Pesan</strong>. Pesanan akan otomatis tersambung dengan sistem kasir tablet & antrean KDS dapur kami, atau buka Web Order Kaching POS.</p>
                 </div>
-                <div class="notice-action">
-                    <a href="#tables" class="btn btn-gold btn-sm"><i class="fas fa-chair"></i> Pilih Meja di Denah 3D</a>
+                <div class="notice-action" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button type="button" class="btn btn-gold btn-sm" onclick="openCartDrawer()"><i class="fas fa-shopping-bag"></i> Lihat Pesanan (<span id="bannerCartCount">0</span>)</button>
+                    <a id="bannerKachingLink" href="https://kaching.id/order/toko/1/public" target="_blank" class="btn btn-outline btn-sm"><i class="fas fa-external-link-alt"></i> Web Order Kaching</a>
                 </div>
             </div>
         </div>
@@ -1304,6 +1312,112 @@
             <div id="lightboxCaption" class="lightbox-caption"></div>
         </div>
         <button class="lightbox-btn next" onclick="changeLightboxImage(1, event)">&#10095;</button>
+    </div>
+
+    <!-- =========================================
+         FLOATING CART BUTTON, SLIDE-OVER DRAWER, MOBILE QUICK BAR & TOAST
+         ========================================= -->
+    <!-- Floating Cart Button (Desktop & Tablet) -->
+    <div id="floatingCart" class="floating-cart" onclick="openCartDrawer()" title="Lihat Keranjang Pesanan" style="display: none;">
+        <i class="fas fa-shopping-bag"></i>
+        <span id="cartCountBadge" class="cart-badge">0</span>
+    </div>
+
+    <!-- Backdrop Overlay for Cart Drawer -->
+    <div id="cartBackdrop" class="cart-backdrop" onclick="closeCartDrawer()"></div>
+
+    <!-- Slide-over Cart Drawer -->
+    <div id="cartDrawer" class="cart-drawer">
+        <div class="cart-drawer-content">
+            <div class="cart-drawer-header">
+                <div>
+                    <h3><i class="fas fa-receipt"></i> Keranjang Pesanan</h3>
+                    <span class="cart-drawer-subtitle">Warung Makan Bukit Padangan</span>
+                </div>
+                <span class="close-drawer" onclick="closeCartDrawer()">&times;</span>
+            </div>
+
+            <!-- Table Status Pill inside Cart -->
+            <div id="cartTableInfo" class="cart-table-pill">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-chair"></i>
+                    <span id="cartTableText">Belum pilih meja</span>
+                </div>
+                <button type="button" class="btn-cart-pick-table" onclick="closeCartDrawer(); document.getElementById('tables').scrollIntoView({behavior: 'smooth'})">
+                    Pilih Meja
+                </button>
+            </div>
+
+            <!-- List of Items in Cart -->
+            <div id="cartItemsList" class="cart-items-list">
+                <!-- Dynamically injected via script.js -->
+            </div>
+
+            <!-- Cart Drawer Footer -->
+            <div class="cart-drawer-footer">
+                <div class="cart-total-row">
+                    <span>Total Item:</span>
+                    <strong id="cartTotalItems">0 Porsi</strong>
+                </div>
+                <div class="cart-total-row">
+                    <span>Total Estimasi:</span>
+                    <strong id="cartTotalPrice" style="color: var(--accent-gold);">Rp 0</strong>
+                </div>
+
+                <!-- Customer Order Form Details -->
+                <div class="cart-customer-form">
+                    <input type="text" id="cartCustName" placeholder="Nama Pemesan (contoh: Budi Santoso)" autocomplete="name">
+                    <input type="tel" id="cartCustPhone" placeholder="Nomor WhatsApp (contoh: 08123456789)" autocomplete="tel">
+                    <div class="cart-form-row">
+                        <select id="cartOrderType">
+                            <option value="dine_in">Makan di Tempat (Dine In)</option>
+                            <option value="take_away">Bawa Pulang (Take Away)</option>
+                        </select>
+                        <select id="cartPayMethod">
+                            <option value="Kasir">Bayar di Kasir (Saat Tiba)</option>
+                            <option value="Transfer DP Mandiri">Transfer DP Mandiri</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <button type="button" id="btnSubmitCartOrder" class="btn-checkout" onclick="submitCartOrder()">
+                    <i class="fas fa-paper-plane"></i> Kirim Pesanan ke Kasir & Dapur
+                </button>
+                <a id="kachingOrderDirectBtn" href="https://kaching.id/order/toko/1/public" target="_blank" class="btn-kaching-checkout">
+                    <i class="fas fa-mobile-alt"></i> Buka Web Order Kaching POS
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Sticky Quick-Action Bar -->
+    <div id="mobileQuickBar" class="mobile-quick-bar">
+        <button type="button" class="quick-bar-item" onclick="document.getElementById('tables').scrollIntoView({behavior: 'smooth'})">
+            <i class="fas fa-map-marked-alt"></i>
+            <span>Pilih Meja</span>
+        </button>
+        <button type="button" class="quick-bar-item" onclick="document.getElementById('menu').scrollIntoView({behavior: 'smooth'})">
+            <i class="fas fa-utensils"></i>
+            <span>Menu</span>
+        </button>
+        <button type="button" class="quick-bar-item quick-cart-btn" onclick="openCartDrawer()">
+            <div class="quick-cart-icon-wrap">
+                <i class="fas fa-shopping-bag"></i>
+                <span id="mobileCartBadge" class="mobile-cart-badge">0</span>
+            </div>
+            <span>Pesanan</span>
+        </button>
+        <a href="https://wa.me/6285290462715?text=Halo%20Admin%20Bukit%20Padangan,%20saya%20ingin%20tanya%20reservasi" target="_blank" class="quick-bar-item">
+            <i class="fab fa-whatsapp"></i>
+            <span>Tanya WA</span>
+        </a>
+    </div>
+
+    <!-- Toast Notification for Add-to-Cart -->
+    <div id="cartToast" class="cart-toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="cartToastMsg">Item berhasil ditambahkan ke keranjang</span>
     </div>
 
     <!-- Three.js & 3D Interactive Floor Plan Libraries -->
