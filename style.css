@@ -5816,6 +5816,56 @@ input:focus, select:focus {
     color: #0c0e12;
 }
 
+/* Footer & Drawer Admin Links */
+.footer-admin-gate {
+    margin-top: 14px;
+}
+
+.footer-admin-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: #64748b;
+    text-decoration: none;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(22, 26, 33, 0.6);
+    transition: all 0.25s ease;
+}
+
+.footer-admin-link:hover {
+    color: var(--accent-gold);
+    border-color: rgba(212, 163, 115, 0.4);
+    background: rgba(212, 163, 115, 0.1);
+    transform: translateY(-1px);
+}
+
+.btn-drawer-admin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    border: 1px dashed rgba(212, 163, 115, 0.35);
+    background: rgba(22, 26, 33, 0.5);
+    transition: all 0.25s ease;
+    width: 100%;
+}
+
+.btn-drawer-admin:hover {
+    color: var(--accent-gold);
+    border-color: var(--accent-gold);
+    background: rgba(212, 163, 115, 0.12);
+}
+
 @media (max-width: 768px) {
     .weather-widget-card {
         flex-direction: column;
