@@ -167,9 +167,11 @@ ul {
 }
 
 /* Hide mobile drawer items on desktop */
-.nav-drawer-header,
-.nav-drawer-footer {
-    display: none !important;
+@media (min-width: 769px) {
+    .nav-drawer-header,
+    .nav-drawer-footer {
+        display: none !important;
+    }
 }
 
 .nav-links {
@@ -2842,11 +2844,20 @@ input:focus, select:focus {
         color: var(--accent-gold);
         background: #161a20;
         border: 1px solid rgba(212, 163, 115, 0.25);
-        transition: background 0.2s;
+        transition: all 0.2s ease;
+        position: relative;
+        z-index: 1005;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .menu-toggle i {
+        pointer-events: none;
     }
 
     .menu-toggle:active {
-        background: #e6dfd3;
+        background: rgba(212, 163, 115, 0.2);
+        transform: scale(0.96);
     }
 
     .nav-links {

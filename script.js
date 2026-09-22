@@ -1309,7 +1309,9 @@ function toggleNavMenu(forceState) {
     const navBackdrop = document.getElementById("navBackdrop");
     if (!navLinks) return;
 
-    const shouldOpen = (typeof forceState === "boolean") ? forceState : !navLinks.classList.contains("active");
+    const isCurrentlyActive = navLinks.classList.contains("active");
+    const shouldOpen = (typeof forceState === "boolean") ? forceState : !isCurrentlyActive;
+
     if (shouldOpen) {
         navLinks.classList.add("active");
         if (navBackdrop) navBackdrop.classList.add("active");
@@ -1321,15 +1323,30 @@ function toggleNavMenu(forceState) {
     }
 }
 
-const menuToggle = document.querySelector(".menu-toggle");
+function closeNavMenu() {
+    toggleNavMenu(false);
+}
+
+// Expose to global window
+window.toggleNavMenu = toggleNavMenu;
+window.closeNavMenu = closeNavMenu;
+
+// Inisialisasi event listener menu toggle (single authority, cegah double trigger)
+const menuToggle = document.getElementById("menuToggle");
 if (menuToggle) {
-    menuToggle.addEventListener("click", () => toggleNavMenu());
+    menuToggle.onclick = function(e) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        toggleNavMenu();
+    };
 }
 
 // Auto-close menu saat link diklik di mobile
 document.querySelectorAll(".nav-links a").forEach(link => {
     link.addEventListener("click", () => {
-        toggleNavMenu(false);
+        closeNavMenu();
     });
 });
 
