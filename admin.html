@@ -507,9 +507,15 @@
         }
 
         .form-textarea {
-            resize: vertical;
-            min-height: 90px;
+            resize: none;
+            min-height: 85px;
             line-height: 1.5;
+        }
+
+        @media (min-width: 640px) {
+            .form-textarea {
+                resize: vertical;
+            }
         }
 
         /* Modern Toggle Switch */
@@ -1138,10 +1144,19 @@
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-xl);
             width: 100%;
-            max-width: 440px;
-            padding: 30px 24px;
+            max-width: 460px;
+            max-height: 90vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 24px 20px;
             box-shadow: var(--shadow-float);
             position: relative;
+        }
+
+        @media (min-width: 640px) {
+            .modal-box {
+                padding: 30px 24px;
+            }
         }
 
         .modal-header {
@@ -1161,14 +1176,74 @@
             background: transparent;
             border: none;
             color: var(--text-muted);
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             cursor: pointer;
-            padding: 4px;
+            padding: 4px 8px;
             line-height: 1;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
         }
 
         .btn-modal-close:hover {
             color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Modern Flex Modal Layout (Sticky Header & Sticky Footer) */
+        .modal-flex-box {
+            display: flex;
+            flex-direction: column;
+            max-height: 86vh;
+            padding: 0 !important;
+            overflow: hidden !important;
+        }
+
+        .modal-flex-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-surface-elevated);
+        }
+
+        .modal-flex-form {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        .modal-flex-body {
+            padding: 18px 20px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+
+        .modal-flex-footer {
+            padding: 14px 20px;
+            border-top: 1px solid var(--border-subtle);
+            background: var(--bg-surface-elevated);
+            flex-shrink: 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        @media (min-width: 640px) {
+            .modal-flex-header {
+                padding: 20px 24px;
+            }
+            .modal-flex-body {
+                padding: 24px;
+            }
+            .modal-flex-footer {
+                padding: 16px 24px;
+            }
         }
 
         /* PIN Keyboard */
@@ -1248,31 +1323,33 @@
             color: #1a1209;
         }
 
-        /* Toast Notifications */
+        /* Toast Notifications (Positioned Top Center) */
         .toast-notification {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
-            left: 24px;
-            max-width: 400px;
+            top: 20px;
+            right: 20px;
+            left: 20px;
+            max-width: 420px;
             margin: 0 auto;
-            background: var(--bg-surface-elevated);
+            background: rgba(18, 21, 26, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--border-highlight);
             color: #fff;
-            padding: 14px 18px;
+            padding: 12px 18px;
             border-radius: var(--radius-md);
             font-size: 0.85rem;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: var(--shadow-float);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             z-index: 10000;
-            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes slideUp {
-            from { transform: translateY(40px); opacity: 0; }
+        @keyframes slideDown {
+            from { transform: translateY(-40px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
 
@@ -1678,14 +1755,24 @@
                         Personal Access Token (PAT) disimpan secara aman di penyimpanan peramban lokal (LocalStorage) tablet/ponsel Tuan. Token ini memberikan izin langsung ke GitHub API untuk mempublikasikan revisi teks, katalog menu, dan ketersediaan meja tanpa perlu membuka laptop.
                     </p>
 
-                    <div class="token-input-wrapper">
-                        <input type="password" class="form-input" id="gitToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" style="font-family: monospace; font-size: 0.95rem;">
-                        <button type="button" class="btn-secondary btn-success" style="white-space: nowrap; padding: 12px 20px;" onclick="saveGitToken()">
+                    <div class="token-input-wrapper" style="position: relative; display: flex; align-items: center; margin-bottom: 12px;">
+                        <input type="password" class="form-input" id="gitToken" placeholder="«redacted:ghp_…»" style="font-family: monospace; font-size: 0.92rem; padding-right: 44px; width: 100%;">
+                        <button type="button" id="btnToggleTokenVisibility" onclick="toggleTokenVisibility()" style="position: absolute; right: 10px; background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 6px; font-size: 1rem;" title="Lihat / Sembunyikan Token">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;">
+                        <button type="button" class="btn-secondary btn-success" style="flex: 1; min-width: 140px; padding: 11px 16px; white-space: nowrap;" onclick="saveGitToken()">
                             <i class="fas fa-key"></i> Simpan Token
+                        </button>
+                        <button type="button" class="btn-secondary" id="btnTestGitToken" style="flex: 1; min-width: 140px; padding: 11px 16px; white-space: nowrap;" onclick="testGitConnection()">
+                            <i class="fas fa-plug"></i> Tes Koneksi GitHub
                         </button>
                     </div>
                     
-                    <div id="tokenStatusText" style="margin-top: 12px; font-size: 0.85rem; font-weight: 600;"></div>
+                    <div id="tokenStatusText" style="font-size: 0.85rem; font-weight: 600; margin-bottom: 8px;"></div>
+                    <div id="gitTestFeedback" style="display: none; padding: 12px 14px; border-radius: var(--radius-sm); font-size: 0.85rem; line-height: 1.5; margin-bottom: 14px;"></div>
 
                     <ul class="token-guide-list">
                         <li><i class="fas fa-check-circle"></i> Token hanya disimpan di browser perangkat Anda, tidak di-share ke umum.</li>
@@ -1702,60 +1789,62 @@
          MODAL 2: FORM TAMBAH / EDIT MENU (CLEAN POPUP)
          ======================================================== -->
     <div id="menuModalOverlay" class="modal-overlay" style="display: none;">
-        <div class="modal-box" style="max-width: 520px;">
-            <div class="modal-header">
+        <div class="modal-box modal-flex-box" style="max-width: 520px; width: 100%;">
+            <div class="modal-flex-header">
                 <h3 class="modal-title" id="menuModalHeaderTitle">Tambah Menu Baru</h3>
                 <button type="button" class="btn-modal-close" onclick="closeMenuModal()">&times;</button>
             </div>
 
-            <form id="menuEditorForm" onsubmit="handleMenuSubmit(event)">
+            <form id="menuEditorForm" class="modal-flex-form" onsubmit="handleMenuSubmit(event)">
                 <input type="hidden" id="editMenuIndex">
 
-                <div class="form-group" style="margin-bottom: 14px;">
-                    <label class="form-label" for="menuId">ID Unik Menu (Huruf kecil & strip)</label>
-                    <input type="text" class="form-input" id="menuId" required placeholder="contoh: kopi-susu-muria">
-                    <span class="form-hint">Digunakan oleh sistem keranjang, tidak boleh kembar.</span>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 14px;">
-                    <label class="form-label" for="menuName">Nama Menu</label>
-                    <input type="text" class="form-input" id="menuName" required placeholder="contoh: Kopi Susu Muria Gula Aren">
-                </div>
-
-                <div class="form-grid form-grid-2" style="margin-bottom: 14px;">
-                    <div class="form-group">
-                        <label class="form-label" for="menuCategory">Kategori</label>
-                        <select class="form-select" id="menuCategory" required>
-                            <option value="makanan">Makanan</option>
-                            <option value="minuman">Minuman</option>
-                            <option value="cemilan">Cemilan</option>
-                        </select>
+                <div class="modal-flex-body">
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label class="form-label" for="menuId">ID Unik Menu (Huruf kecil & strip)</label>
+                        <input type="text" class="form-input" id="menuId" required placeholder="contoh: kopi-susu-muria">
+                        <span class="form-hint">Digunakan oleh sistem keranjang, tidak boleh kembar.</span>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label" for="menuPrice">Harga (Rp)</label>
-                        <input type="number" class="form-input" id="menuPrice" required placeholder="15000">
+
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label class="form-label" for="menuName">Nama Menu</label>
+                        <input type="text" class="form-input" id="menuName" required placeholder="contoh: Kopi Susu Muria Gula Aren">
+                    </div>
+
+                    <div class="form-grid form-grid-2" style="margin-bottom: 14px;">
+                        <div class="form-group">
+                            <label class="form-label" for="menuCategory">Kategori</label>
+                            <select class="form-select" id="menuCategory" required>
+                                <option value="makanan">Makanan</option>
+                                <option value="minuman">Minuman</option>
+                                <option value="cemilan">Cemilan</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="menuPrice">Harga (Rp)</label>
+                            <input type="number" class="form-input" id="menuPrice" required placeholder="15000">
+                        </div>
+                    </div>
+
+                    <div class="form-grid form-grid-2" style="margin-bottom: 14px;">
+                        <div class="form-group">
+                            <label class="form-label" for="menuBadge">Badge Label (Opsional)</label>
+                            <input type="text" class="form-input" id="menuBadge" placeholder="Favorit / Spesial / Baru">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="menuImg">URL Foto (Opsional)</label>
+                            <input type="text" class="form-input" id="menuImg" placeholder="https://images.unsplash.com/...">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 4px;">
+                        <label class="form-label" for="menuDesc">Deskripsi Bahan & Rasa</label>
+                        <textarea class="form-textarea" id="menuDesc" rows="3" required placeholder="Racikan kopi robusta lereng Gunung Muria berpadu susu murni segar..."></textarea>
                     </div>
                 </div>
 
-                <div class="form-grid form-grid-2" style="margin-bottom: 14px;">
-                    <div class="form-group">
-                        <label class="form-label" for="menuBadge">Badge Label (Opsional)</label>
-                        <input type="text" class="form-input" id="menuBadge" placeholder="Favorit / Spesial / Baru">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="menuImg">URL Foto (Opsional)</label>
-                        <input type="text" class="form-input" id="menuImg" placeholder="https://images.unsplash.com/...">
-                    </div>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label class="form-label" for="menuDesc">Deskripsi Bahan & Rasa</label>
-                    <textarea class="form-textarea" id="menuDesc" rows="3" required placeholder="Racikan kopi robusta lereng Gunung Muria berpadu susu murni segar..."></textarea>
-                </div>
-
-                <div style="display: flex; gap: 10px;">
-                    <button type="button" class="btn-secondary" style="flex: 1;" onclick="closeMenuModal()">Batal</button>
-                    <button type="submit" class="btn-primary" style="flex: 2;">
+                <div class="modal-flex-footer">
+                    <button type="button" class="btn-secondary" style="flex: 1; padding: 12px 16px;" onclick="closeMenuModal()">Batal</button>
+                    <button type="submit" class="btn-primary" style="flex: 2; padding: 12px 16px;">
                         <i class="fas fa-check"></i> Simpan ke Daftar
                     </button>
                 </div>
@@ -1887,17 +1976,32 @@
             }, 3500);
         }
 
-        // 3. PENGATURAN TOKEN PAT
+        // 3. PENGATURAN TOKEN PAT & TES KONEKSI GITHUB
+        function toggleTokenVisibility() {
+            const input = document.getElementById("gitToken");
+            const btn = document.getElementById("btnToggleTokenVisibility");
+            if (!input || !btn) return;
+            if (input.type === "password") {
+                input.type = "text";
+                btn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                input.type = "password";
+                btn.innerHTML = '<i class="fas fa-eye"></i>';
+            }
+        }
+
         function saveGitToken() {
             const token = document.getElementById("gitToken").value.trim();
             if (token) {
                 localStorage.setItem("github_pat_token", token);
-                updateTokenStatusText("Token GitHub berhasil disimpan!", true);
+                updateTokenStatusText("✓ Token GitHub tersimpan di peramban.", true);
                 showToast("Token GitHub tersimpan dengan aman di browser.");
             } else {
                 localStorage.removeItem("github_pat_token");
                 updateTokenStatusText("Token telah dihapus dari browser.", false);
                 showToast("Token dihapus.", false);
+                const feedback = document.getElementById("gitTestFeedback");
+                if (feedback) feedback.style.display = "none";
             }
         }
 
@@ -1906,6 +2010,101 @@
             if (el) {
                 el.innerText = msg;
                 el.style.color = isSuccess ? "#34d399" : "#f87171";
+            }
+        }
+
+        async function testGitConnection() {
+            const inputVal = document.getElementById("gitToken") ? document.getElementById("gitToken").value.trim() : "";
+            const token = inputVal || localStorage.getItem("github_pat_token");
+            const feedback = document.getElementById("gitTestFeedback");
+            const testBtn = document.getElementById("btnTestGitToken");
+
+            if (!token) {
+                showToast("Masukkan token GitHub PAT terlebih dahulu!", false);
+                if (feedback) {
+                    feedback.style.display = "block";
+                    feedback.style.background = "rgba(239, 68, 68, 0.12)";
+                    feedback.style.border = "1px solid rgba(239, 68, 68, 0.25)";
+                    feedback.style.color = "#fca5a5";
+                    feedback.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Token kosong. Masukkan GitHub PAT Anda terlebih dahulu di kotak input.';
+                }
+                return;
+            }
+
+            if (testBtn) {
+                testBtn.disabled = true;
+                testBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menguji...';
+            }
+
+            try {
+                const repoResp = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`, {
+                    headers: {
+                        "Authorization": `token ${token}`,
+                        "Accept": "application/vnd.github.v3+json"
+                    }
+                });
+
+                if (repoResp.status === 200) {
+                    const repoData = await repoResp.json();
+                    const canPush = repoData.permissions ? repoData.permissions.push : false;
+
+                    let loginUser = "";
+                    try {
+                        const userResp = await fetch("https://api.github.com/user", {
+                            headers: { "Authorization": `token ${token}`, "Accept": "application/vnd.github.v3+json" }
+                        });
+                        if (userResp.ok) {
+                            const userData = await userResp.json();
+                            loginUser = userData.login;
+                        }
+                    } catch (e) {}
+
+                    if (feedback) {
+                        feedback.style.display = "block";
+                        feedback.style.background = "rgba(16, 185, 129, 0.12)";
+                        feedback.style.border = "1px solid rgba(16, 185, 129, 0.3)";
+                        feedback.style.color = "#6ee7b7";
+                        feedback.innerHTML = `<i class="fas fa-check-circle" style="color:#10b981;"></i> <strong>Koneksi GitHub Terverifikasi!</strong><br>` +
+                            `• Akun: <code>@${loginUser || REPO_OWNER}</code><br>` +
+                            `• Target Repo: <code>${REPO_OWNER}/${REPO_NAME}</code><br>` +
+                            `• Izin Tulis (Push): ${canPush ? '<span style="color:#10b981; font-weight:700;">AKTIF (Siap Simpan & Deploy)</span>' : '<span style="color:#f59e0b; font-weight:700;">HANYA BACA (Butuh scope repo)</span>'}`;
+                    }
+                    showToast("Koneksi GitHub terverifikasi aktif!");
+                } else if (repoResp.status === 401) {
+                    if (feedback) {
+                        feedback.style.display = "block";
+                        feedback.style.background = "rgba(239, 68, 68, 0.12)";
+                        feedback.style.border = "1px solid rgba(239, 68, 68, 0.25)";
+                        feedback.style.color = "#fca5a5";
+                        feedback.innerHTML = '<i class="fas fa-times-circle" style="color:#ef4444;"></i> <strong>Autentikasi Gagal (401)</strong>: Token tidak valid atau sudah kadaluarsa (Bad credentials).';
+                    }
+                    showToast("Token GitHub tidak valid (401)!", false);
+                } else if (repoResp.status === 404) {
+                    if (feedback) {
+                        feedback.style.display = "block";
+                        feedback.style.background = "rgba(245, 158, 11, 0.12)";
+                        feedback.style.border = "1px solid rgba(245, 158, 11, 0.25)";
+                        feedback.style.color = "#fde68a";
+                        feedback.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#f59e0b;"></i> <strong>Repository Tidak Ditemukan (404)</strong>: Pastikan token memiliki centang scope <code>repo</code> untuk mengakses <code>${REPO_OWNER}/${REPO_NAME}</code>.`;
+                    }
+                    showToast("Repository tidak ditemukan atau token kurang izin scope repo!", false);
+                } else {
+                    throw new Error(`HTTP ${repoResp.status}`);
+                }
+            } catch (err) {
+                if (feedback) {
+                    feedback.style.display = "block";
+                    feedback.style.background = "rgba(239, 68, 68, 0.12)";
+                    feedback.style.border = "1px solid rgba(239, 68, 68, 0.25)";
+                    feedback.style.color = "#fca5a5";
+                    feedback.innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#ef4444;"></i> Gagal menguji koneksi: ${err.message}`;
+                }
+                showToast("Gagal menguji koneksi: " + err.message, false);
+            } finally {
+                if (testBtn) {
+                    testBtn.disabled = false;
+                    testBtn.innerHTML = '<i class="fas fa-plug"></i> Tes Koneksi GitHub';
+                }
             }
         }
 
