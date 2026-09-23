@@ -4089,9 +4089,13 @@ input:focus, select:focus {
     background: linear-gradient(90deg, #0d1015 0%, #151921 50%, #0d1015 100%);
     border-top: 1px solid rgba(212, 163, 115, 0.2);
     border-bottom: 1px solid rgba(212, 163, 115, 0.2);
-    padding: 18px 0;
+    padding: 16px 0;
     position: relative;
     z-index: 5;
+}
+
+.weather-sunset-banner .weather-widget-card {
+    margin-bottom: 0;
 }
 
 .weather-sunset-inner {
@@ -5882,17 +5886,31 @@ input:focus, select:focus {
         flex-direction: column;
         align-items: flex-start;
         padding: 14px 16px;
+        gap: 12px;
     }
     .weather-widget-meta {
         width: 100%;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
     }
     .weather-stat-item {
-        flex: 1;
+        padding: 6px 10px;
         min-width: 0;
     }
     .weather-stat-highlight {
-        flex-basis: 100%;
+        grid-column: span 2;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+    }
+    .weather-stat-highlight .stat-label {
+        font-size: 0.75rem;
+    }
+    .weather-stat-highlight .stat-value {
+        font-size: 0.88rem;
     }
     .btn-refresh-weather {
         position: absolute;

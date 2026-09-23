@@ -125,22 +125,43 @@
     </section>
 
 
-    <!-- WEATHER & GOLDEN HOUR HIGHLIGHT BANNER -->
+    <!-- WEATHER & GOLDEN HOUR LIVE WIDGET (LERENG GUNUNGWUNGKAL) -->
     <div class="weather-sunset-banner">
-        <div class="container weather-sunset-inner">
-            <div class="weather-pill">
-                <div class="weather-icon-box"><i class="fas fa-cloud-sun"></i></div>
-                <div class="weather-info-box">
-                    <div class="weather-title">Cuaca Lereng Gunungwungkal</div>
-                    <div class="weather-desc"><strong>26°C</strong> Sejuk Alami • Semilir Angin Perbukitan</div>
+        <div class="container">
+            <div id="weatherWidget" class="weather-widget-card" style="margin-bottom: 0;">
+                <div class="weather-widget-main">
+                    <div class="weather-icon-wrap" id="weatherIconWrap">
+                        <i class="fas fa-cloud-sun weather-icon-sun"></i>
+                    </div>
+                    <div class="weather-info-primary">
+                        <div class="weather-location-pill">
+                            <span class="pulse-green"></span>
+                            <span class="weather-loc-text"><i class="fas fa-mountain"></i> Lereng Gunungwungkal, Pati • <span id="weatherElev">245 mdpl</span></span>
+                        </div>
+                        <div class="weather-temp-row">
+                            <span class="weather-temp" id="weatherTemp">24.5°C</span>
+                            <span class="weather-condition" id="weatherCondition">Sejuk & Segar</span>
+                        </div>
+                        <p class="weather-micro-desc" id="weatherMicroDesc">Udara perbukitan sejuk alami, sangat nyaman untuk santap santai di area outdoor maupun indoor.</p>
+                    </div>
                 </div>
-            </div>
-            <div class="sunset-pill">
-                <div class="sunset-icon-box"><i class="fas fa-sun"></i></div>
-                <div class="sunset-info-box">
-                    <div class="sunset-title"><span class="sunset-badge">Golden Hour Terbaik</span> 16.30 – 17.45 WIB</div>
-                    <div class="sunset-desc">Waktu matahari terbenam paling syahdu berlatar pemandangan perbukitan Gunungwungkal</div>
+                <div class="weather-widget-meta">
+                    <div class="weather-stat-item">
+                        <span class="stat-label"><i class="fas fa-wind"></i> Angin Lereng</span>
+                        <strong class="stat-value" id="weatherWind">5.5 km/h</strong>
+                    </div>
+                    <div class="weather-stat-item">
+                        <span class="stat-label"><i class="fas fa-tint"></i> Kelembapan</span>
+                        <strong class="stat-value" id="weatherHumidity">88%</strong>
+                    </div>
+                    <div class="weather-stat-item weather-stat-highlight">
+                        <span class="stat-label"><i class="fas fa-sun"></i> Golden Hour Sunset</span>
+                        <strong class="stat-value">16:30 - 17:45 WIB</strong>
+                    </div>
                 </div>
+                <button type="button" class="btn-refresh-weather" onclick="refreshWeatherWidget(true)" title="Perbarui Data Cuaca Live">
+                    <i class="fas fa-sync-alt" id="weatherRefreshIcon"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -242,43 +263,6 @@
                         <i class="fas fa-th-large"></i> Daftar Kartu Meja
                     </button>
                 </div>
-            </div>
-
-            <!-- REAL-TIME WEATHER WIDGET LERENG GUNUNGWUNGKAL -->
-            <div id="weatherWidget" class="weather-widget-card">
-                <div class="weather-widget-main">
-                    <div class="weather-icon-wrap" id="weatherIconWrap">
-                        <i class="fas fa-cloud-sun weather-icon-sun"></i>
-                    </div>
-                    <div class="weather-info-primary">
-                        <div class="weather-location-pill">
-                            <span class="pulse-green"></span>
-                            <span class="weather-loc-text"><i class="fas fa-mountain"></i> Lereng Gunungwungkal, Pati • <span id="weatherElev">245 mdpl</span></span>
-                        </div>
-                        <div class="weather-temp-row">
-                            <span class="weather-temp" id="weatherTemp">24.5°C</span>
-                            <span class="weather-condition" id="weatherCondition">Sejuk & Segar</span>
-                        </div>
-                        <p class="weather-micro-desc" id="weatherMicroDesc">Udara perbukitan sejuk alami, sangat nyaman untuk santap santai di area outdoor maupun indoor.</p>
-                    </div>
-                </div>
-                <div class="weather-widget-meta">
-                    <div class="weather-stat-item">
-                        <span class="stat-label"><i class="fas fa-wind"></i> Angin Lereng</span>
-                        <strong class="stat-value" id="weatherWind">5.5 km/h</strong>
-                    </div>
-                    <div class="weather-stat-item">
-                        <span class="stat-label"><i class="fas fa-tint"></i> Kelembapan</span>
-                        <strong class="stat-value" id="weatherHumidity">88%</strong>
-                    </div>
-                    <div class="weather-stat-item weather-stat-highlight">
-                        <span class="stat-label"><i class="fas fa-sun"></i> Golden Hour Sunset</span>
-                        <strong class="stat-value">16:30 - 17:45 WIB</strong>
-                    </div>
-                </div>
-                <button type="button" class="btn-refresh-weather" onclick="refreshWeatherWidget(true)" title="Perbarui Data Cuaca Live">
-                    <i class="fas fa-sync-alt" id="weatherRefreshIcon"></i>
-                </button>
             </div>
 
             <!-- 3D INTERACTIVE CANVAS WRAPPER -->
