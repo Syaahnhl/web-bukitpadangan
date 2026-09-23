@@ -99,81 +99,106 @@
         }
 
         /* ========================================================
-           HEADER SECTION
+           UNIFIED SLIM STICKY TOPBAR (MOBILE & DESKTOP)
            ======================================================== */
-        .admin-header {
+        .admin-topbar-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(15, 20, 28, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+            margin: -16px -16px 16px -16px;
+            padding: 8px 12px 6px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        @media (min-width: 860px) {
+            .admin-topbar-wrapper {
+                margin: -24px -24px 24px -24px;
+                padding: 0 24px;
+                height: 60px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+            }
+        }
+
+        .topbar-header-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 20px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-subtle);
-            position: sticky;
-            top: 12px;
-            z-index: 99;
+            width: 100%;
         }
 
-        .header-brand {
+        @media (min-width: 860px) {
+            .topbar-header-row {
+                width: auto;
+                display: contents;
+            }
+        }
+
+        .topbar-brand {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
         }
 
         .brand-logo-icon {
-            width: 44px;
-            height: 44px;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
             background: linear-gradient(135deg, #2d4a22, #1b2f15);
             border: 1px solid var(--border-highlight);
-            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--gold-primary);
-            font-size: 1.25rem;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            font-size: 0.95rem;
+            flex-shrink: 0;
         }
 
-        .brand-info h1 {
-            font-family: var(--font-serif);
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: -0.01em;
-            line-height: 1.2;
-        }
-
-        .brand-badges {
+        .brand-title-wrap {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-top: 4px;
-            flex-wrap: wrap;
+            white-space: nowrap;
         }
 
-        .badge-live {
+        .brand-title {
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.1;
+            margin: 0;
+            white-space: nowrap;
+        }
+
+        .status-dot-pulse {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            padding: 3px 8px;
-            border-radius: 20px;
-            background: rgba(16, 185, 129, 0.15);
-            color: #34d399;
+            gap: 5px;
+            padding: 2px 7px;
+            border-radius: 9999px;
+            background: rgba(16, 185, 129, 0.12);
             border: 1px solid rgba(16, 185, 129, 0.25);
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: #34d399;
         }
 
-        .pulse-dot {
+        .pulse-circle {
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            background-color: #34d399;
-            box-shadow: 0 0 8px #34d399;
+            background: #34d399;
+            box-shadow: 0 0 6px #34d399;
             animation: pulse 2s infinite;
         }
 
@@ -183,28 +208,37 @@
             100% { transform: scale(0.95); opacity: 0.8; }
         }
 
-        .badge-portal {
-            font-size: 0.72rem;
+        .brand-subtitle {
+            font-size: 0.68rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 600;
+            letter-spacing: 0.04em;
+            display: block;
+            margin-top: 2px;
         }
 
-        .header-actions {
+        @media (max-width: 859px) {
+            .brand-subtitle {
+                display: none;
+            }
+        }
+
+        .topbar-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            flex-shrink: 0;
         }
 
-        .btn-header-action {
+        .btn-topbar-action {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 7px;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 0.82rem;
+            gap: 6px;
+            height: 32px;
+            padding: 0 10px;
+            border-radius: 8px;
+            font-size: 0.78rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -212,99 +246,121 @@
             background: rgba(255, 255, 255, 0.04);
             color: var(--text-secondary);
             text-decoration: none;
+            font-family: var(--font-main);
         }
 
-        .btn-header-action:hover {
+        .btn-topbar-action:hover {
             background: rgba(255, 255, 255, 0.08);
             color: #fff;
             border-color: rgba(255, 255, 255, 0.2);
         }
 
-        .btn-header-logout {
+        .btn-topbar-logout {
             background: rgba(239, 68, 68, 0.12);
             color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.25);
+            border-color: rgba(239, 68, 68, 0.25);
         }
 
-        .btn-header-logout:hover {
+        .btn-topbar-logout:hover {
             background: rgba(239, 68, 68, 0.22);
-            color: #ffffff;
+            color: #fff;
             border-color: rgba(239, 68, 68, 0.4);
         }
 
-        /* ========================================================
-           NAVIGATION TABS (MODERN SEGMENTED CONTROL)
-           ======================================================== */
-        .tabs-nav-wrapper {
-            margin-bottom: 22px;
-            position: relative;
+        @media (max-width: 859px) {
+            .btn-topbar-action {
+                width: 32px;
+                height: 32px;
+                padding: 0;
+                border-radius: 8px;
+            }
+            .btn-action-label {
+                display: none;
+            }
         }
 
-        .tabs-nav {
+        /* NAV TABS */
+        .admin-tabs-nav {
             display: flex;
-            gap: 8px;
-            background: var(--bg-surface);
-            padding: 6px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-subtle);
+            align-items: center;
+            gap: 6px;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
 
-        .tabs-nav::-webkit-scrollbar {
+        .admin-tabs-nav::-webkit-scrollbar {
             display: none;
         }
 
+        @media (min-width: 860px) {
+            .admin-tabs-nav {
+                order: 2;
+                background: var(--bg-surface);
+                padding: 4px;
+                border-radius: var(--radius-sm);
+                border: 1px solid var(--border-subtle);
+            }
+            .topbar-brand {
+                order: 1;
+            }
+            .topbar-actions {
+                order: 3;
+            }
+        }
+
         .tab-btn {
-            flex: 1;
-            min-width: max-content;
+            flex-shrink: 0;
+            white-space: nowrap;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px 16px;
-            border-radius: var(--radius-sm);
-            border: none;
-            background: transparent;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, 0.04);
             color: var(--text-secondary);
             font-family: var(--font-main);
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            white-space: nowrap;
+        }
+
+        @media (min-width: 860px) {
+            .tab-btn {
+                background: transparent;
+                padding: 6px 14px;
+                font-size: 0.82rem;
+            }
         }
 
         .tab-btn:hover {
-            color: var(--text-main);
-            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .tab-btn.active {
-            background: linear-gradient(135deg, rgba(212, 163, 115, 0.18), rgba(212, 163, 115, 0.06));
-            color: var(--gold-light);
-            border: 1px solid var(--border-highlight);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+            background: #d4a373 !important;
+            color: #111418 !important;
+            font-weight: 700 !important;
+            border-color: #f3c292 !important;
+            box-shadow: 0 2px 8px rgba(212, 163, 115, 0.35) !important;
         }
 
-        .tab-btn i {
-            font-size: 0.95rem;
-        }
-
-        /* Badge for counts inside tabs */
         .tab-badge {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-main);
-            font-size: 0.7rem;
+            background: rgba(0, 0, 0, 0.25);
+            color: inherit;
+            font-size: 0.68rem;
             font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 12px;
+            padding: 1px 5px;
+            border-radius: 9999px;
         }
 
         .tab-btn.active .tab-badge {
-            background: var(--gold-primary);
-            color: #1a1209;
+            background: #111418;
+            color: #d4a373;
         }
 
         /* Tab Content Panel */
@@ -1281,50 +1337,52 @@
          ======================================================== -->
     <div class="app-container" id="adminAppWorkspace" style="display: none;">
         
-        <!-- HEADER -->
-        <header class="admin-header">
-            <div class="header-brand">
-                <div class="brand-logo-icon">
-                    <i class="fas fa-mountain-sun"></i>
-                </div>
-                <div class="brand-info">
-                    <h1>Bukit Padangan</h1>
-                    <div class="brand-badges">
-                        <span class="badge-live">
-                            <span class="pulse-dot"></span> Terkoneksi Server
-                        </span>
-                        <span class="badge-portal">Portal Pengelola</span>
+        <!-- UNIFIED SLIM STICKY TOPBAR -->
+        <header class="admin-topbar-wrapper">
+            <div class="topbar-header-row">
+                <div class="topbar-brand">
+                    <div class="brand-logo-icon">
+                        <i class="fas fa-mountain-sun"></i>
+                    </div>
+                    <div class="brand-info">
+                        <div class="brand-title-wrap">
+                            <h1 class="brand-title">Bukit Padangan</h1>
+                            <span class="status-dot-pulse" title="Terkoneksi Server">
+                                <span class="pulse-circle"></span> Live
+                            </span>
+                        </div>
+                        <span class="brand-subtitle">Portal Pengelola</span>
                     </div>
                 </div>
-            </div>
-            
-            <div class="header-actions">
-                <a href="index.html" target="_blank" class="btn-header-action" title="Lihat Website Publik">
-                    <i class="fas fa-external-link-alt"></i> <span style="display: none; @media(min-width:640px){display:inline;}">Web Publik</span>
-                </a>
-                <button type="button" class="btn-header-action btn-header-logout" onclick="adminLogout()" title="Keluar dari Admin">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </div>
-        </header>
 
-        <!-- SEGMENTED TABS NAVIGASI -->
-        <div class="tabs-nav-wrapper">
-            <nav class="tabs-nav">
+                <div class="topbar-actions">
+                    <a href="index.html" target="_blank" class="btn-topbar-action" title="Lihat Website Publik">
+                        <i class="fas fa-arrow-up-right-from-square"></i>
+                        <span class="btn-action-label">Web Publik</span>
+                    </a>
+                    <button type="button" class="btn-topbar-action btn-topbar-logout" onclick="adminLogout()" title="Keluar dari Admin">
+                        <i class="fas fa-right-from-bracket"></i>
+                        <span class="btn-action-label">Logout</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- TABS NAVIGASI -->
+            <nav class="admin-tabs-nav">
                 <button type="button" class="tab-btn active" id="tabBtnContent" onclick="switchTab('tab-content')">
-                    <i class="fas fa-file-pen"></i> Konten & Promo
+                    <i class="fas fa-file-pen"></i> Konten
                 </button>
                 <button type="button" class="tab-btn" id="tabBtnMenu" onclick="switchTab('tab-menu')">
-                    <i class="fas fa-utensils"></i> Katalog Menu <span class="tab-badge" id="menuCountBadge">0</span>
+                    <i class="fas fa-utensils"></i> Menu <span class="tab-badge" id="menuCountBadge">0</span>
                 </button>
                 <button type="button" class="tab-btn" id="tabBtnTables" onclick="switchTab('tab-tables')">
-                    <i class="fas fa-chair"></i> Status Meja <span class="tab-badge" id="tablesCountBadge">26</span>
+                    <i class="fas fa-chair"></i> Meja <span class="tab-badge" id="tablesCountBadge">23</span>
                 </button>
                 <button type="button" class="tab-btn" id="tabBtnSettings" onclick="switchTab('tab-settings')">
-                    <i class="fab fa-github"></i> Kredensial PAT
+                    <i class="fab fa-github"></i> PAT
                 </button>
             </nav>
-        </div>
+        </header>
 
         <!-- ========================================================
              TAB 1: KONTEN LANDING PAGE & PROMO
