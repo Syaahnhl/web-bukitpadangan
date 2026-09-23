@@ -3257,8 +3257,8 @@ function getDefaultTablesFallback() {
     const fallback = [];
     for (let i = 1; i <= 26; i++) {
         const id = `T${i < 10 ? '0' + i : i}`;
-        let zone = "gazebo";
-        let zoneName = "Zona Gazebo Lesehan";
+        let zone = "terapi";
+        let zoneName = "Area Terapi Ikan";
         let cap = 6;
         if (i >= 9 && i <= 20) {
             zone = "outdoor";

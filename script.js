@@ -366,9 +366,9 @@ function renderTablesGrid(items) {
         const isSelected = selectedTable && selectedTable.id === table.id;
         
         let zoneIcon = "fa-chair";
-        if (table.zone === "gazebo") zoneIcon = "fa-campground";
+        if (table.zone === "gazebo" || table.zone === "terapi") zoneIcon = "fa-fish";
         else if (table.zone === "outdoor") zoneIcon = "fa-cloud-sun";
-        else if (table.zone === "vip") zoneIcon = "fa-crown";
+        else if (table.zone === "vip") zoneIcon = "fa-store-alt";
 
         return `
             <div class="table-card ${isSelected ? 'selected' : ''}" onclick="openTableModal('${table.id}')">
@@ -1914,7 +1914,7 @@ function locateSpotTable(spotZone, areaName) {
     let targetZone = 'semua';
     if (spotZone === 'OD') targetZone = 'outdoor';
     else if (spotZone === 'IT') targetZone = 'vip';
-    else if (spotZone === 'GZ') targetZone = 'gazebo';
+    else if (spotZone === 'IU') targetZone = 'vip';
     else if (spotZone === 'IKAN') targetZone = 'gazebo';
 
     setTimeout(() => {
@@ -1926,13 +1926,13 @@ function locateSpotTable(spotZone, areaName) {
         cards.forEach(card => {
             card.classList.remove("table-card-pulse");
             const title = card.querySelector(".table-card-title") ? card.querySelector(".table-card-title").innerText : "";
-            if (spotZone === 'OD' && title.includes("Outdoor")) {
+            if (spotZone === 'OD' && (title.includes("Outdoor") || title.includes("OD-"))) {
                 card.classList.add("table-card-pulse");
-            } else if (spotZone === 'IT' && (title.includes("Panggung") || title.includes("Indoor Timur") || title.includes("VIP"))) {
+            } else if (spotZone === 'IT' && (title.includes("Panggung") || title.includes("Indoor Timur") || title.includes("IT"))) {
                 card.classList.add("table-card-pulse");
-            } else if (spotZone === 'GZ' && (title.includes("Gazebo") || title.includes("Lesehan") || title.includes("Utama"))) {
+            } else if (spotZone === 'IU' && (title.includes("Indoor Utama") || title.includes("IU-"))) {
                 card.classList.add("table-card-pulse");
-            } else if (spotZone === 'IKAN' && (title.includes("Gazebo") || title.includes("Lesehan"))) {
+            } else if (spotZone === 'IKAN' && (title.includes("Terapi") || title.includes("Ikan") || title.includes("TI-"))) {
                 card.classList.add("table-card-pulse");
             }
         });
