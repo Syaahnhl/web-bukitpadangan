@@ -3,865 +3,2070 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bukit Padangan - Admin Panel</title>
-    <link rel="stylesheet" href="style.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Portal Admin - Bukit Padangan</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
-        /* CSS Khusus untuk Admin Workspace */
-        .admin-body {
-            background-color: #f0eae1;
-            padding: 40px 20px;
-            font-family: 'Poppins', sans-serif;
+        :root {
+            --bg-base: #0b0f15;
+            --bg-surface: #121822;
+            --bg-surface-elevated: #18202d;
+            --bg-card: rgba(22, 30, 44, 0.75);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(212, 163, 115, 0.35);
+            
+            --gold-primary: #d4a373;
+            --gold-hover: #c5925a;
+            --gold-light: #faeade;
+            --gold-glow: rgba(212, 163, 115, 0.2);
+
+            --forest-green: #2d4a22;
+            --forest-light: #3d632f;
+            --forest-glow: rgba(45, 74, 34, 0.3);
+
+            --status-green: #10b981;
+            --status-yellow: #f59e0b;
+            --status-red: #ef4444;
+            --status-blue: #3b82f6;
+
+            --text-main: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --text-gold: #e2b88b;
+
+            --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 26px;
+            
+            --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --shadow-float: 0 12px 35px rgba(0, 0, 0, 0.45);
         }
 
-        .admin-container {
-            max-width: 950px;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            min-height: 100vh;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Subtle background glow effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 163, 115, 0.08) 0%, rgba(11, 15, 21, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Container */
+        .app-container {
+            max-width: 1080px;
             margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: 24px;
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
-            border: 1px solid #e5e0d3;
+            padding: 16px;
+            position: relative;
+            z-index: 1;
         }
 
+        @media (min-width: 768px) {
+            .app-container {
+                padding: 30px 24px;
+            }
+        }
+
+        /* ========================================================
+           HEADER SECTION
+           ======================================================== */
         .admin-header {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #f3efe6;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-
-        .admin-header h1 {
-            font-family: 'Playfair Display', serif;
-            color: #2d4a22;
-            font-size: 2.2rem;
-        }
-
-        .btn-logout {
-            background-color: #c94c4c;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn-logout:hover {
-            background-color: #b23a3a;
-        }
-
-        .admin-section {
-            background: #fcfbfa;
-            border: 1px solid #e8e2d5;
-            padding: 25px;
-            border-radius: 16px;
-            margin-bottom: 25px;
-        }
-
-        .admin-section h3 {
-            font-family: 'Playfair Display', serif;
-            color: #2d4a22;
-            font-size: 1.3rem;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             margin-bottom: 20px;
-            border-left: 4px solid #d4a373;
-            padding-left: 10px;
+            box-shadow: var(--shadow-subtle);
+            position: sticky;
+            top: 12px;
+            z-index: 99;
         }
 
-        .form-checkbox {
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #2d4a22, #1b2f15);
+            border: 1px solid var(--border-highlight);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-primary);
+            font-size: 1.25rem;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        .brand-info h1 {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+        }
+
+        .brand-badges {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+
+        .badge-live {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 20px;
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+
+        .pulse-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #34d399;
+            box-shadow: 0 0 8px #34d399;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .badge-portal {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .header-actions {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 15px;
         }
 
-        .form-checkbox input {
-            width: 20px;
-            height: 20px;
+        .btn-header-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-subtle);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            text-decoration: none;
         }
 
-        .btn-save-admin {
-            width: 100%;
-            padding: 16px;
-            background-color: #2d4a22;
-            color: white;
+        .btn-header-action:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-header-logout {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        .btn-header-logout:hover {
+            background: rgba(239, 68, 68, 0.22);
+            color: #ffffff;
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        /* ========================================================
+           NAVIGATION TABS (MODERN SEGMENTED CONTROL)
+           ======================================================== */
+        .tabs-nav-wrapper {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .tabs-nav {
+            display: flex;
+            gap: 8px;
+            background: var(--bg-surface);
+            padding: 6px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .tabs-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: max-content;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
             border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 8px 25px rgba(45, 74, 34, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .btn-save-admin:hover {
-            background-color: #d4a373;
-            box-shadow: 0 8px 25px rgba(212, 163, 115, 0.3);
-        }
-
-        /* Modal Login PIN Style */
-        .pin-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.85);
-            z-index: 5000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .pin-content {
-            background: white;
-            padding: 40px;
-            border-radius: 24px;
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
-
-        .pin-content h3 {
-            font-family: 'Playfair Display', serif;
-            color: #2d4a22;
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-
-        .pin-dots {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 25px 0;
-        }
-
-        .pin-dot {
-            width: 18px;
-            height: 18px;
-            border: 2px solid #2d4a22;
-            border-radius: 50%;
-            transition: background-color 0.15s;
-        }
-
-        .pin-dot.active {
-            background-color: #2d4a22;
-        }
-
-        .pin-keyboard {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            max-width: 280px;
-            margin: 0 auto;
-        }
-
-        .pin-btn {
-            background-color: #f7f5f0;
-            border: 1px solid #e5e0d3;
-            border-radius: 50%;
-            width: 65px;
-            height: 65px;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #2c352a;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-            margin: 0 auto;
-        }
-
-        .pin-btn:hover {
-            background-color: #2d4a22;
-            color: white;
-            border-color: #2d4a22;
-        }
-
-        .status-badge {
-            background-color: #e5e0d3;
-            color: #555;
-            font-size: 0.8rem;
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-weight: 600;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-
-        .status-badge.active {
-            background-color: #d4f7d4;
-            color: #1b5e20;
-        }
-
-        /* Token setup modal */
-        .token-setup-section {
-            border: 2px dashed #d4a373;
-            background: #fff8f0;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-        }
-
-        .token-setup-section p {
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: var(--font-main);
             font-size: 0.85rem;
-            color: #887050;
-            margin-bottom: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            white-space: nowrap;
         }
 
-        .menu-table-img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 6px;
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.04);
         }
 
-        .action-btn-group {
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(212, 163, 115, 0.18), rgba(212, 163, 115, 0.06));
+            color: var(--gold-light);
+            border: 1px solid var(--border-highlight);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        .tab-btn i {
+            font-size: 0.95rem;
+        }
+
+        /* Badge for counts inside tabs */
+        .tab-badge {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 12px;
+        }
+
+        .tab-btn.active .tab-badge {
+            background: var(--gold-primary);
+            color: #1a1209;
+        }
+
+        /* Tab Content Panel */
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.25s ease-out;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========================================================
+           CARD & SECTION STYLES
+           ======================================================== */
+        .admin-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-subtle);
+            transition: border-color 0.2s;
+        }
+
+        @media (min-width: 768px) {
+            .admin-card {
+                padding: 28px;
+                margin-bottom: 24px;
+            }
+        }
+
+        .card-header {
             display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-subtle);
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .card-title-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(212, 163, 115, 0.1);
+            border: 1px solid rgba(212, 163, 115, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
             justify-content: center;
+            color: var(--gold-primary);
+            font-size: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+        }
+
+        .card-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Form Inputs */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        @media (min-width: 640px) {
+            .form-grid-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .form-grid-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-hint {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            background: var(--bg-surface-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 11px 14px;
+            color: #ffffff;
+            font-family: var(--font-main);
+            font-size: 0.88rem;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 0 3px var(--gold-glow);
+            background: #1b2432;
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 90px;
+            line-height: 1.5;
+        }
+
+        /* Modern Toggle Switch */
+        .toggle-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            background: var(--bg-surface-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            margin-bottom: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .toggle-label-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toggle-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .toggle-desc {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #334155;
+            transition: 0.25s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.25s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--gold-primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 13px 22px;
+            background: linear-gradient(135deg, #d4a373 0%, #b88654 100%);
+            color: #120e09;
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(212, 163, 115, 0.25);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 22px rgba(212, 163, 115, 0.35);
+            background: linear-gradient(135deg, #dfaf7e 0%, #c4915d 100%);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            filter: grayscale(0.5);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--bg-surface-elevated);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-success {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            background: rgba(16, 185, 129, 0.25);
+            color: #fff;
+        }
+
+        /* ========================================================
+           TAB 2: MENU CATALOG (RESPONSIVE CARDS & ADAPTIVE TABLE)
+           ======================================================== */
+        .catalog-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-box-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-box-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 14px 10px 38px;
+            background: var(--bg-surface-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--gold-primary);
+        }
+
+        .category-filter-chips {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 4px 2px 10px 2px;
+            width: 100%;
+        }
+
+        .category-filter-chips::-webkit-scrollbar {
+            display: none;
+        }
+
+        @media (min-width: 640px) {
+            .category-filter-chips {
+                width: auto;
+            }
+        }
+
+        .chip-btn {
+            padding: 7px 15px;
+            border-radius: 9999px;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-surface-elevated);
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-main);
+        }
+
+        .chip-btn:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .chip-btn.active {
+            background: #d4a373 !important;
+            color: #111418 !important;
+            font-weight: 700 !important;
+            border-color: #f3c292 !important;
+            box-shadow: 0 2px 10px rgba(212, 163, 115, 0.4) !important;
+        }
+
+        /* Menu Grid for Mobile & Desktop */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 640px) {
+            .menu-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+        }
+
+        @media (min-width: 960px) {
+            .menu-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .menu-item-card {
+            background: var(--bg-surface-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            position: relative;
+            transition: all 0.2s;
+            min-width: 0;
+        }
+
+        .menu-item-card:hover {
+            border-color: rgba(212, 163, 115, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        }
+
+        .menu-card-main {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            min-width: 0;
+        }
+
+        .menu-thumb {
+            width: 68px;
+            height: 68px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 1px solid var(--border-subtle);
+            background: #0b0f15;
+        }
+
+        .menu-info-col {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .menu-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            min-width: 0;
+            margin-bottom: 4px;
+        }
+
+        .menu-name {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .menu-badge-pill {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 6px;
+            background: rgba(212, 163, 115, 0.2);
+            color: var(--gold-light);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .menu-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.35;
+            margin: 0;
+        }
+
+        .menu-bottom-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .menu-price {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--gold-light);
+        }
+
+        .menu-card-actions {
+            display: flex;
+            align-items: center;
             gap: 8px;
         }
 
-        .btn-table-action {
-            border: none;
+        .btn-card-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.76rem;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.15s;
+            border: 1px solid var(--border-subtle);
+            font-family: var(--font-main);
         }
 
-        .btn-table-edit {
-            background-color: #e5f1ff;
-            color: #0066cc;
+        .btn-card-action.edit {
+            background: rgba(212, 163, 115, 0.12);
+            color: var(--gold-light);
+            border-color: rgba(212, 163, 115, 0.25);
         }
 
-        .btn-table-edit:hover {
-            background-color: #0066cc;
-            color: white;
+        .btn-card-action.edit:hover {
+            background: rgba(212, 163, 115, 0.25);
+            color: #fff;
         }
 
-        .btn-table-delete {
-            background-color: #ffe5e5;
-            color: #cc0000;
+        .btn-card-action.delete {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+            border-color: rgba(239, 68, 68, 0.25);
         }
 
-        .btn-table-delete:hover {
-            background-color: #cc0000;
-            color: white;
+        .btn-card-action.delete:hover {
+            background: rgba(239, 68, 68, 0.25);
+            color: #fff;
+        }
+
+        /* ========================================================
+           TAB 3: TABLE AVAILABILITY (STATUS CARDS & QUICK FILTERS)
+           ======================================================== */
+        .stats-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-surface-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            text-align: center;
+        }
+
+        .stat-card.green { border-color: rgba(16, 185, 129, 0.3); }
+        .stat-card.yellow { border-color: rgba(245, 158, 11, 0.3); }
+        .stat-card.red { border-color: rgba(239, 68, 68, 0.3); }
+
+        .stat-number {
+            font-size: 1.35rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .stat-card.green .stat-number { color: #34d399; }
+        .stat-card.yellow .stat-number { color: #fbbf24; }
+        .stat-card.red .stat-number { color: #f87171; }
+
+        .stat-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-top: 2px;
+        }
+
+        .tables-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 600px) {
+            .tables-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .tables-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .table-card {
+            background: var(--bg-surface-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .table-card:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .table-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .table-id-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--gold-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table-zone-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .table-card-status-select {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            font-weight: 600;
+            font-family: var(--font-main);
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .status-tersedia {
+            background: rgba(16, 185, 129, 0.12);
+            color: #34d399;
+            border: 1.5px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .status-terisi {
+            background: rgba(245, 158, 11, 0.12);
+            color: #fbbf24;
+            border: 1.5px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .status-dipesan {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+            border: 1.5px solid rgba(239, 68, 68, 0.4);
+        }
+
+        /* ========================================================
+           TAB 4: GITHUB TOKEN & SETTINGS
+           ======================================================== */
+        .token-hero-box {
+            background: linear-gradient(135deg, rgba(212, 163, 115, 0.12) 0%, rgba(18, 24, 34, 0.9) 100%);
+            border: 1px solid var(--border-highlight);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .token-hero-box h3 {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            color: var(--gold-light);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .token-hero-box p {
+            font-size: 0.84rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .token-input-wrapper {
+            position: relative;
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+        }
+
+        @media (min-width: 640px) {
+            .token-input-wrapper {
+                flex-direction: row;
+            }
+        }
+
+        .token-guide-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .token-guide-list li {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .token-guide-list li i {
+            color: var(--gold-primary);
+            margin-top: 3px;
+        }
+
+        /* ========================================================
+           MODALS (POPUP PIN & MENU EDITOR)
+           ======================================================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(5, 8, 12, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .modal-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 440px;
+            padding: 30px 24px;
+            box-shadow: var(--shadow-float);
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            color: #ffffff;
+        }
+
+        .btn-modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+        }
+
+        .btn-modal-close:hover {
+            color: #fff;
+        }
+
+        /* PIN Keyboard */
+        .pin-gate-box {
+            text-align: center;
+        }
+
+        .pin-icon-wrap {
+            width: 64px;
+            height: 64px;
+            background: rgba(212, 163, 115, 0.12);
+            border: 1px solid rgba(212, 163, 115, 0.25);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: var(--gold-primary);
+            font-size: 1.5rem;
+        }
+
+        .pin-dots-row {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin: 22px 0 26px;
+        }
+
+        .pin-dot-item {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            transition: all 0.2s;
+        }
+
+        .pin-dot-item.filled {
+            background: var(--gold-primary);
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 10px rgba(212, 163, 115, 0.5);
+            transform: scale(1.1);
+        }
+
+        .pin-keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            max-width: 270px;
+            margin: 0 auto;
+        }
+
+        .key-btn {
+            height: 60px;
+            border-radius: 50%;
+            border: 1px solid var(--border-subtle);
+            background: rgba(255, 255, 255, 0.04);
+            color: #ffffff;
+            font-family: var(--font-main);
+            font-size: 1.35rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .key-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: scale(1.04);
+        }
+
+        .key-btn:active {
+            transform: scale(0.96);
+            background: var(--gold-primary);
+            color: #1a1209;
+        }
+
+        /* Toast Notifications */
+        .toast-notification {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            left: 24px;
+            max-width: 400px;
+            margin: 0 auto;
+            background: var(--bg-surface-elevated);
+            border: 1px solid var(--border-highlight);
+            color: #fff;
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow-float);
+            z-index: 10000;
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Empty state */
+        .empty-state {
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 2.2rem;
+            color: rgba(255, 255, 255, 0.15);
+            margin-bottom: 12px;
         }
     </style>
 </head>
 
-<body class="admin-body">
+<body>
 
-    <!-- LOGIN PIN GATEWAY -->
-    <div id="pinGate" class="pin-modal">
-        <div class="pin-content">
-            <i class="fas fa-lock" style="font-size: 3rem; color: #d4a373; margin-bottom: 15px;"></i>
-            <h3>Keamanan Admin</h3>
-            <p>Masukkan 6-Digit PIN Akses Anda</p>
-            <div id="pinErrorMessage" style="color: #c94c4c; font-size: 0.85rem; height: 20px; font-weight: 600;"></div>
+    <!-- ========================================================
+         MODAL 1: SECURITY PIN ACCESS (DEFAULT 000000)
+         ======================================================== -->
+    <div id="pinGateOverlay" class="modal-overlay">
+        <div class="modal-box pin-gate-box">
+            <div class="pin-icon-wrap">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h2 style="font-family: var(--font-serif); font-size: 1.35rem; color: #ffffff; margin-bottom: 4px;">Otorisasi Admin</h2>
+            <p style="font-size: 0.82rem; color: var(--text-muted);">Masukkan 6-digit PIN keamanan Bukit Padangan</p>
             
-            <div class="pin-dots">
-                <div class="pin-dot"></div>
-                <div class="pin-dot"></div>
-                <div class="pin-dot"></div>
-                <div class="pin-dot"></div>
-                <div class="pin-dot"></div>
-                <div class="pin-dot"></div>
+            <div id="pinAlertText" style="color: #f87171; font-size: 0.78rem; font-weight: 600; height: 18px; margin-top: 8px;"></div>
+            
+            <div class="pin-dots-row">
+                <div class="pin-dot-item"></div>
+                <div class="pin-dot-item"></div>
+                <div class="pin-dot-item"></div>
+                <div class="pin-dot-item"></div>
+                <div class="pin-dot-item"></div>
+                <div class="pin-dot-item"></div>
             </div>
 
-            <div class="pin-keyboard">
-                <button class="pin-btn" onclick="pressPin(1)">1</button>
-                <button class="pin-btn" onclick="pressPin(2)">2</button>
-                <button class="pin-btn" onclick="pressPin(3)">3</button>
-                <button class="pin-btn" onclick="pressPin(4)">4</button>
-                <button class="pin-btn" onclick="pressPin(5)">5</button>
-                <button class="pin-btn" onclick="pressPin(6)">6</button>
-                <button class="pin-btn" onclick="pressPin(7)">7</button>
-                <button class="pin-btn" onclick="pressPin(8)">8</button>
-                <button class="pin-btn" onclick="pressPin(9)">9</button>
-                <button class="pin-btn" onclick="pressPin('clear')"><i class="fas fa-times"></i></button>
-                <button class="pin-btn" onclick="pressPin(0)">0</button>
-                <button class="pin-btn" onclick="pressPin('backspace')"><i class="fas fa-backspace"></i></button>
+            <div class="pin-keypad">
+                <button type="button" class="key-btn" onclick="pressPinKey(1)">1</button>
+                <button type="button" class="key-btn" onclick="pressPinKey(2)">2</button>
+                <button type="button" class="key-btn" onclick="pressPinKey(3)">3</button>
+                <button type="button" class="key-btn" onclick="pressPinKey(4)">4</button>
+                <button type="button" class="key-btn" onclick="pressPinKey(5)">5</button>
+                <button type="button" class="key-btn" onclick="pressPinKey(6)">6</button>
+                <button type="button" class="key-btn" onclick="pressPinKey(7)">7</button>
+                <button type="button" class="key-btn" onclick="pressPinKey(8)">8</button>
+                <button type="button" class="key-btn" onclick="pressPinKey(9)">9</button>
+                <button type="button" class="key-btn" onclick="pressPinKey('clear')" style="font-size: 0.95rem; color: var(--text-muted);"><i class="fas fa-redo"></i></button>
+                <button type="button" class="key-btn" onclick="pressPinKey(0)">0</button>
+                <button type="button" class="key-btn" onclick="pressPinKey('backspace')" style="font-size: 0.95rem; color: var(--text-muted);"><i class="fas fa-backspace"></i></button>
             </div>
         </div>
     </div>
 
-    <!-- WORKSPACE ADMIN -->
-    <div class="admin-container" id="adminWorkspace" style="display: none;">
-        <div class="admin-header">
-            <div>
-                <span class="status-badge active"><i class="fas fa-check-circle"></i> Terkoneksi</span>
-                <h1>Admin Bukit Padangan</h1>
-            </div>
-            <button class="btn-logout" onclick="logoutAdmin()">Logout</button>
-        </div>
-
-        <!-- GITHUB ACCESS SETUP (Saves to LocalStorage only, never hardcoded) -->
-        <div class="token-setup-section">
-            <h3><i class="fab fa-github"></i> Kredensial Deploy Otomatis</h3>
-            <p>Masukkan Token Akses Personal (PAT) GitHub Tuan untuk mengizinkan perubahan langsung menulis ke server.</p>
-            <div class="form-group">
-                <input type="password" id="gitToken" placeholder="ghp_xx...xxxx" style="background-color: white;">
-            </div>
-            <button class="btn-submit-res" onclick="saveGitToken()" style="margin-top: 0; padding: 8px 15px; font-size: 0.85rem; width: auto; display: inline-flex;">
-                Simpan Token di Browser
-            </button>
-            <span id="tokenStatus" style="font-size: 0.85rem; font-weight: 600; margin-left: 10px;"></span>
-        </div>
-
-        <!-- 1. FORM EDIT KONTEN LANDING PAGE -->
-        <form id="adminForm" onsubmit="saveContent(event)">
-            <!-- PROMO BAR SECTION -->
-            <div class="admin-section">
-                <h3>1. Banner Promo Berjalan (Top Marquee)</h3>
-                <div class="form-checkbox">
-                    <input type="checkbox" id="showPromo">
-                    <label for="showPromo" style="margin-bottom: 0; font-weight: 500;">Tampilkan Banner Promo di atas website</label>
+    <!-- ========================================================
+         MAIN APP CONTAINER (SHOWN AFTER AUTH)
+         ======================================================== -->
+    <div class="app-container" id="adminAppWorkspace" style="display: none;">
+        
+        <!-- HEADER -->
+        <header class="admin-header">
+            <div class="header-brand">
+                <div class="brand-logo-icon">
+                    <i class="fas fa-mountain-sun"></i>
                 </div>
-                <div class="form-group">
-                    <label for="promoText">Isi Pengumuman / Promo (Opsional)</label>
-                    <input type="text" id="promoText" placeholder="Contoh: Diskon 10% khusus reservasi hari ini!">
-                </div>
-            </div>
-
-            <!-- HERO LANDING SECTION -->
-            <div class="admin-section">
-                <h3>2. Tampilan Utama (Hero Section)</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="heroSubtitle">Teks Pembuka (Kecil)</label>
-                        <input type="text" id="heroSubtitle" required placeholder="Selamat Datang di">
-                    </div>
-                    <div class="form-group">
-                        <label for="heroTitle">Judul Utama</label>
-                        <input type="text" id="heroTitle" required placeholder="Bukit Padangan">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="heroDesc">Slogan / Deskripsi Pendek</label>
-                    <input type="text" id="heroDesc" required placeholder="Nikmati hidangan lezat dengan suasana asri...">
-                </div>
-            </div>
-
-            <!-- ABOUT US SECTION -->
-            <div class="admin-section">
-                <h3>3. Seksi Profil Resto (About Us)</h3>
-                <div class="form-group">
-                    <label for="aboutTitle">Judul Profil</label>
-                    <input type="text" id="aboutTitle" required placeholder="Suasana Alam & Rasa Otentik">
-                </div>
-                <div class="form-group">
-                    <label for="aboutDesc">Deskripsi Lengkap Tentang Resto</label>
-                    <textarea id="aboutDesc" rows="4" required style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e5e0d3; background-color: #FAF9F6; font-family: inherit; font-size: 0.9rem; line-height: 1.5;"></textarea>
-                </div>
-            </div>
-
-            <!-- LIVE MUSIC & EVENT SECTION -->
-            <div class="admin-section">
-                <h3>4. Pengumuman Acara Khusus (Event Section)</h3>
-                <div class="form-checkbox">
-                    <input type="checkbox" id="showEvent">
-                    <label for="showEvent" style="margin-bottom: 0; font-weight: 500;">Aktifkan Pengumuman Event Khusus</label>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="eventTitle">Judul Event / Acara</label>
-                        <input type="text" id="eventTitle" placeholder="Contoh: Live Music Weekend">
-                    </div>
-                    <div class="form-group">
-                        <label for="eventDesc">Detail Event (Tanggal, Jam, Info)</label>
-                        <input type="text" id="eventDesc" placeholder="Contoh: Setiap Sabtu malam mulai pukul 19.00 WIB.">
+                <div class="brand-info">
+                    <h1>Bukit Padangan</h1>
+                    <div class="brand-badges">
+                        <span class="badge-live">
+                            <span class="pulse-dot"></span> Terkoneksi Server
+                        </span>
+                        <span class="badge-portal">Portal Pengelola</span>
                     </div>
                 </div>
             </div>
-
-            <!-- CONTACTS & MEDSOS -->
-            <div class="admin-section">
-                <h3>5. Informasi Kontak & Medsos</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="waAdmin1">Nomor WA Admin 1 (Hanya Angka, diawali 62)</label>
-                        <input type="text" id="waAdmin1" required placeholder="6285290462715">
-                    </div>
-                    <div class="form-group">
-                        <label for="waAdmin2">Nomor WA Admin 2 (Hanya Angka, diawali 62)</label>
-                        <input type="text" id="waAdmin2" required placeholder="6282323535747">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="igLink">Link Profil Instagram</label>
-                        <input type="text" id="igLink" required placeholder="https://instagram.com/bukitpadangan">
-                    </div>
-                    <div class="form-group">
-                        <label for="fbLink">Link Profil Facebook</label>
-                        <input type="text" id="fbLink" required placeholder="https://facebook.com/bukitpadangan">
-                    </div>
-                </div>
-            </div>
-
-            <!-- SUBMIT BUTTON KONTEN -->
-            <button type="submit" class="btn-save-admin" id="btnSaveSubmit">
-                <i class="fas fa-cloud-upload-alt"></i> Simpan & Terapkan Perubahan Teks Landing Page
-            </button>
-        </form>
-
-        <!-- 2. MODUL CRUD MANAJEMEN MENU -->
-        <div class="admin-section" style="margin-top: 40px; border-top: 3px solid #2d4a22; padding-top: 30px;">
-            <h3>6. Kelola Daftar Menu Resto (CRUD Menu)</h3>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
-                <p style="font-size: 0.85rem; color: #666; margin-bottom: 0;">Kelola daftar hidangan makanan, minuman, dan cemilan secara langsung.</p>
-                <button type="button" class="btn-reservasi" style="padding: 8px 18px; font-size: 0.85rem; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;" onclick="openMenuModal('add')">
-                    <i class="fas fa-plus"></i> Tambah Menu Baru
+            
+            <div class="header-actions">
+                <a href="index.html" target="_blank" class="btn-header-action" title="Lihat Website Publik">
+                    <i class="fas fa-external-link-alt"></i> <span style="display: none; @media(min-width:640px){display:inline;}">Web Publik</span>
+                </a>
+                <button type="button" class="btn-header-action btn-header-logout" onclick="adminLogout()" title="Keluar dari Admin">
+                    <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
             </div>
-            
-            <!-- List Menu Table -->
-            <div style="overflow-x: auto; border: 1px solid #e5e0d3; border-radius: 12px; background: white;">
-                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; min-width: 600px;">
-                    <thead>
-                        <tr style="background-color: #f7f5f0; border-bottom: 1px solid #e5e0d3; color: #2d4a22;">
-                            <th style="padding: 12px; width: 80px;">Foto</th>
-                            <th style="padding: 12px;">Nama Menu</th>
-                            <th style="padding: 12px; width: 120px;">Kategori</th>
-                            <th style="padding: 12px; width: 120px;">Harga</th>
-                            <th style="padding: 12px; width: 100px;">Badge</th>
-                            <th style="padding: 12px; width: 180px; text-align: center;">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="adminMenuTableBody">
-                        <tr>
-                            <td colspan="6" style="padding: 20px; text-align: center; color: #888;">Memuat data menu...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        </header>
 
-            <!-- BUTTON COMMIT MENU -->
-            <button type="button" class="btn-save-admin" id="btnSaveMenuSubmit" style="margin-top: 20px; background-color: #d4a373;" onclick="saveMenuToGithub()">
-                <i class="fas fa-save"></i> Simpan & Terapkan Perubahan Menu ke Web
-            </button>
+        <!-- SEGMENTED TABS NAVIGASI -->
+        <div class="tabs-nav-wrapper">
+            <nav class="tabs-nav">
+                <button type="button" class="tab-btn active" id="tabBtnContent" onclick="switchTab('tab-content')">
+                    <i class="fas fa-file-pen"></i> Konten & Promo
+                </button>
+                <button type="button" class="tab-btn" id="tabBtnMenu" onclick="switchTab('tab-menu')">
+                    <i class="fas fa-utensils"></i> Katalog Menu <span class="tab-badge" id="menuCountBadge">0</span>
+                </button>
+                <button type="button" class="tab-btn" id="tabBtnTables" onclick="switchTab('tab-tables')">
+                    <i class="fas fa-chair"></i> Status Meja <span class="tab-badge" id="tablesCountBadge">26</span>
+                </button>
+                <button type="button" class="tab-btn" id="tabBtnSettings" onclick="switchTab('tab-settings')">
+                    <i class="fab fa-github"></i> Kredensial PAT
+                </button>
+            </nav>
         </div>
 
-        <!-- SECTION 7: KELOLA STATUS MEJA (DENAH INTERAKTIF) -->
-        <div class="admin-section">
-            <h3>7. Kelola Status Meja Resto (Denah Interaktif)</h3>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
-                <p style="font-size: 0.85rem; color: #666; margin-bottom: 0;">Perbarui status ketersediaan 26 meja secara real-time (Tersedia / Terisi / Dipesan).</p>
-                <div style="display: flex; gap: 8px;">
-                    <button type="button" class="btn-reservasi" style="padding: 6px 14px; font-size: 0.8rem; border-radius: 8px; background-color: #28a745;" onclick="setAllTablesStatus('tersedia')">
-                        <i class="fas fa-check-double"></i> Set Semua Tersedia
+        <!-- ========================================================
+             TAB 1: KONTEN LANDING PAGE & PROMO
+             ======================================================== -->
+        <div id="tab-content" class="tab-panel active">
+            <form id="contentEditorForm" onsubmit="handleSaveContent(event)">
+                
+                <!-- 1. BANNER PROMO -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <div class="card-icon"><i class="fas fa-bullhorn"></i></div>
+                            <div>
+                                <h3 class="card-title">Banner Promo & Pengumuman</h3>
+                                <p class="card-subtitle">Muncul di strip bagian paling atas halaman website.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="toggle-card" onclick="toggleCheckbox('showPromo')">
+                        <div class="toggle-label-wrap">
+                            <span class="toggle-title">Tampilkan Banner Promo Teratas</span>
+                            <span class="toggle-desc">Aktifkan untuk memberikan info promo atau penawaran spesial</span>
+                        </div>
+                        <label class="switch" onclick="event.stopPropagation()">
+                            <input type="checkbox" id="showPromo">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="promoText"><i class="fas fa-pen-fancy"></i> Teks Pengumuman Promo</label>
+                        <input type="text" class="form-input" id="promoText" placeholder="Contoh: Nikmati Seduhan Kopi Muria & Diskon Reservasi Rombongan!">
+                        <span class="form-hint">Dapat dikosongkan jika banner dinonaktifkan.</span>
+                    </div>
+                </div>
+
+                <!-- 2. HERO LANDING -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <div class="card-icon"><i class="fas fa-heading"></i></div>
+                            <div>
+                                <h3 class="card-title">Tampilan Utama (Hero Section)</h3>
+                                <p class="card-subtitle">Judul dan sambutan pembuka yang pertama kali dilihat pengunjung.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-grid form-grid-2" style="margin-bottom: 16px;">
+                        <div class="form-group">
+                            <label class="form-label" for="heroSubtitle">Sub-judul Pembuka</label>
+                            <input type="text" class="form-input" id="heroSubtitle" required placeholder="Selamat Datang di">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="heroTitle">Nama Tempat / Brand</label>
+                            <input type="text" class="form-input" id="heroTitle" required placeholder="Bukit Padangan">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="heroDesc">Slogan Singkat Autentik Tradisional</label>
+                        <textarea class="form-textarea" id="heroDesc" rows="3" required placeholder="Nikmati hidangan lezat dengan suasana asri perbukitan yang menenangkan dan cita rasa autentik tradisional nusantara."></textarea>
+                    </div>
+                </div>
+
+                <!-- 3. ABOUT RESTO -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <div class="card-icon"><i class="fas fa-store"></i></div>
+                            <div>
+                                <h3 class="card-title">Profil & Konsep Resto (Tentang Kami)</h3>
+                                <p class="card-subtitle">Penjelasan nilai keasrian alam dan masakan tradisional pedesaan.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label class="form-label" for="aboutTitle">Judul Seksi Profil</label>
+                        <input type="text" class="form-input" id="aboutTitle" required placeholder="Suasana Alam & Rasa Otentik">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="aboutDesc">Deskripsi Narasi Resto</label>
+                        <textarea class="form-textarea" id="aboutDesc" rows="4" required placeholder="Terletak di jalur sejuk Gunungwungkal, Bukit Padangan menghadirkan pengalaman kuliner tradisional nusantara..."></textarea>
+                    </div>
+                </div>
+
+                <!-- 4. ACARA KHUSUS / EVENT -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <div class="card-icon"><i class="fas fa-calendar-star"></i></div>
+                            <div>
+                                <h3 class="card-title">Agenda Acara & Live Performance</h3>
+                                <p class="card-subtitle">Pengumuman pertunjukan musik akhir pekan atau acara musiman.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="toggle-card" onclick="toggleCheckbox('showEvent')">
+                        <div class="toggle-label-wrap">
+                            <span class="toggle-title">Aktifkan Seksi Acara Khusus</span>
+                            <span class="toggle-desc">Tampilkan kartu info event di halaman utama website</span>
+                        </div>
+                        <label class="switch" onclick="event.stopPropagation()">
+                            <input type="checkbox" id="showEvent">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="eventTitle">Judul Acara</label>
+                            <input type="text" class="form-input" id="eventTitle" placeholder="Contoh: Akustik Akhir Pekan Lereng Gunung">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="eventDesc">Detail Waktu & Keterangan</label>
+                            <input type="text" class="form-input" id="eventDesc" placeholder="Contoh: Setiap Sabtu malam mulai pukul 19.00 WIB">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. KONTAK & SOSMED -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <div class="card-icon"><i class="fas fa-address-book"></i></div>
+                            <div>
+                                <h3 class="card-title">Layanan Pelanggan & Media Sosial</h3>
+                                <p class="card-subtitle">Nomor WhatsApp tujuan reservasi dan akun media sosial resmi.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-grid form-grid-2" style="margin-bottom: 16px;">
+                        <div class="form-group">
+                            <label class="form-label" for="waAdmin1"><i class="fab fa-whatsapp" style="color: #25d366;"></i> WhatsApp Admin 1 (Mila)</label>
+                            <input type="text" class="form-input" id="waAdmin1" required placeholder="6285226210408">
+                            <span class="form-hint">Gunakan kode negara 62 tanpa spasi atau strip.</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="waAdmin2"><i class="fab fa-whatsapp" style="color: #25d366;"></i> WhatsApp Admin 2 (Bukhori)</label>
+                            <input type="text" class="form-input" id="waAdmin2" required placeholder="6282329384594">
+                            <span class="form-hint">Nomor cadangan untuk penerimaan reservasi.</span>
+                        </div>
+                    </div>
+
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="igLink"><i class="fab fa-instagram" style="color: #e1306c;"></i> Tautan Instagram</label>
+                            <input type="text" class="form-input" id="igLink" required placeholder="https://instagram.com/bukitpadangan.id">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="fbLink"><i class="fab fa-facebook" style="color: #1877f2;"></i> Tautan Facebook</label>
+                            <input type="text" class="form-input" id="fbLink" required placeholder="https://facebook.com/bukitpadangan">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBMIT BUTTON -->
+                <div style="margin-top: 10px; margin-bottom: 40px;">
+                    <button type="submit" class="btn-primary" id="btnSaveContentSubmit">
+                        <i class="fas fa-cloud-arrow-up"></i> Simpan & Perbarui Teks Website
                     </button>
                 </div>
-            </div>
-            
-            <div style="overflow-x: auto; border: 1px solid #e5e0d3; border-radius: 12px; background: white;">
-                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; min-width: 600px;">
-                    <thead>
-                        <tr style="background-color: #f7f5f0; border-bottom: 1px solid #e5e0d3; color: #2d4a22;">
-                            <th style="padding: 12px; width: 60px; text-align: center;">No</th>
-                            <th style="padding: 12px;">Nomor & Nama Meja</th>
-                            <th style="padding: 12px; width: 180px;">Zona Area</th>
-                            <th style="padding: 12px; width: 100px; text-align: center;">Kapasitas</th>
-                            <th style="padding: 12px; width: 180px;">Status Ketersediaan</th>
-                        </tr>
-                    </thead>
-                    <tbody id="adminTablesTableBody">
-                        <tr>
-                            <td colspan="5" style="padding: 20px; text-align: center; color: #888;">Memuat data denah meja...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- BUTTON COMMIT TABLES -->
-            <button type="button" class="btn-save-admin" id="btnSaveTablesSubmit" style="margin-top: 20px; background-color: #2d4a22;" onclick="saveTablesToGithub()">
-                <i class="fas fa-save"></i> Simpan & Terapkan Status Denah Meja ke Web
-            </button>
+            </form>
         </div>
+
+        <!-- ========================================================
+             TAB 2: KATALOG MENU (MODERN CARDS & MODAL CRUD)
+             ======================================================== -->
+        <div id="tab-menu" class="tab-panel">
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon"><i class="fas fa-bowl-food"></i></div>
+                        <div>
+                            <h3 class="card-title">Manajemen Menu & Harga</h3>
+                            <p class="card-subtitle">Perbarui daftar makanan, minuman tradisional, dan cemilan.</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary btn-success" onclick="openMenuModal('add')">
+                        <i class="fas fa-plus-circle"></i> Tambah Menu Baru
+                    </button>
+                </div>
+
+                <!-- TOOLBAR PENCARIAN & FILTER -->
+                <div class="catalog-toolbar">
+                    <div class="search-box-wrap">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="search-input" id="menuSearchInput" placeholder="Cari menu atau harga..." oninput="handleMenuSearch()">
+                    </div>
+                    <div class="category-filter-chips">
+                        <button type="button" class="chip-btn active" onclick="filterMenuCategory('all', this)">Semua</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('makanan', this)">Makanan</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('minuman', this)">Minuman</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('cemilan', this)">Cemilan</button>
+                    </div>
+                </div>
+
+                <!-- GRID DAFTAR MENU -->
+                <div class="menu-grid" id="menuCardsContainer">
+                    <div class="empty-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Memuat katalog menu...</p>
+                    </div>
+                </div>
+
+                <!-- SUBMIT BUTTON COMMIT MENU -->
+                <button type="button" class="btn-primary" id="btnSaveMenuSubmit" onclick="saveMenuToGithub()">
+                    <i class="fas fa-floppy-disk"></i> Terapkan Perubahan Menu ke Server Live
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================================
+             TAB 3: STATUS DENAH MEJA (26 MEJA)
+             ======================================================== -->
+        <div id="tab-tables" class="tab-panel">
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon"><i class="fas fa-map-location-dot"></i></div>
+                        <div>
+                            <h3 class="card-title">Status Ketersediaan <span id="totalTablesCount">23</span> Meja</h3>
+                            <p class="card-subtitle">Sinkronisasi status real-time untuk visualisasi denah interaktif 3D.</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" class="btn-secondary btn-success" onclick="setBulkTableStatus('tersedia')">
+                            <i class="fas fa-check-double"></i> Semua Tersedia
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STATS COUNTER -->
+                <div class="stats-summary-grid">
+                    <div class="stat-card green">
+                        <div class="stat-number" id="countTersedia">0</div>
+                        <div class="stat-label">🟢 Tersedia</div>
+                    </div>
+                    <div class="stat-card yellow">
+                        <div class="stat-number" id="countTerisi">0</div>
+                        <div class="stat-label">🟡 Terisi</div>
+                    </div>
+                    <div class="stat-card red">
+                        <div class="stat-number" id="countDipesan">0</div>
+                        <div class="stat-label">🔴 Dipesan</div>
+                    </div>
+                </div>
+
+                                <!-- ZONE FILTER CHIPS -->
+                <div class="category-filter-chips" style="margin-bottom: 16px; margin-top: 14px;">
+                    <button type="button" class="chip-btn active" id="chipZoneAll" onclick="filterTablesZone('all', this)">
+                        Semua (<span id="countZoneAll">23</span>)
+                    </button>
+                    <button type="button" class="chip-btn" id="chipZoneOutdoor" onclick="filterTablesZone('outdoor', this)">
+                        Pelataran Terbuka (<span id="countZoneOutdoor">6</span>)
+                    </button>
+                    <button type="button" class="chip-btn" id="chipZoneTerapi" onclick="filterTablesZone('terapi', this)">
+                        Terapi Ikan (<span id="countZoneTerapi">3</span>)
+                    </button>
+                    <button type="button" class="chip-btn" id="chipZoneVip" onclick="filterTablesZone('vip', this)">
+                        Tradisional Timur (<span id="countZoneVip">14</span>)
+                    </button>
+                </div>
+
+                <!-- GRID LIST MEJA -->
+                <div class="tables-grid" id="tablesCardContainer">
+                    <div class="empty-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Memuat status denah meja...</p>
+                    </div>
+                </div>
+
+                <!-- SUBMIT BUTTON COMMIT MEJA -->
+                <button type="button" class="btn-primary" id="btnSaveTablesSubmit" onclick="saveTablesToGithub()">
+                    <i class="fas fa-floppy-disk"></i> Terapkan Status Denah Meja ke Server Live
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================================
+             TAB 4: KREDENSIAL PAT & PENGATURAN
+             ======================================================== -->
+        <div id="tab-settings" class="tab-panel">
+            <div class="admin-card">
+                <div class="token-hero-box">
+                    <h3><i class="fab fa-github"></i> Kredensial Sinkronisasi GitHub PAT</h3>
+                    <p>
+                        Personal Access Token (PAT) disimpan secara aman di penyimpanan peramban lokal (LocalStorage) tablet/ponsel Tuan. Token ini memberikan izin langsung ke GitHub API untuk mempublikasikan revisi teks, katalog menu, dan ketersediaan meja tanpa perlu membuka laptop.
+                    </p>
+
+                    <div class="token-input-wrapper">
+                        <input type="password" class="form-input" id="gitToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" style="font-family: monospace; font-size: 0.95rem;">
+                        <button type="button" class="btn-secondary btn-success" style="white-space: nowrap; padding: 12px 20px;" onclick="saveGitToken()">
+                            <i class="fas fa-key"></i> Simpan Token
+                        </button>
+                    </div>
+                    
+                    <div id="tokenStatusText" style="margin-top: 12px; font-size: 0.85rem; font-weight: 600;"></div>
+
+                    <ul class="token-guide-list">
+                        <li><i class="fas fa-check-circle"></i> Token hanya disimpan di browser perangkat Anda, tidak di-share ke umum.</li>
+                        <li><i class="fas fa-check-circle"></i> Membutuhkan permission repository: <code>repo:content (write)</code>.</li>
+                        <li><i class="fas fa-check-circle"></i> Setiap perubahan yang disimpan akan langsung memicu deployment otomatis Netlify dalam kurun waktu 1-2 menit.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- MODAL TAMBAH/EDIT MENU (POPUP) -->
-    <div id="menuEditorModal" class="modal" style="display: none;">
-        <div class="modal-content" style="max-width: 500px;">
-            <span class="close-btn" onclick="closeMenuModal()">&times;</span>
-            <h3 id="menuModalTitle">Tambah Menu Baru</h3>
-            <p style="margin-bottom: 1.5rem;">Masukkan detail informasi menu di bawah ini</p>
-            
+    <!-- ========================================================
+         MODAL 2: FORM TAMBAH / EDIT MENU (CLEAN POPUP)
+         ======================================================== -->
+    <div id="menuModalOverlay" class="modal-overlay" style="display: none;">
+        <div class="modal-box" style="max-width: 520px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="menuModalHeaderTitle">Tambah Menu Baru</h3>
+                <button type="button" class="btn-modal-close" onclick="closeMenuModal()">&times;</button>
+            </div>
+
             <form id="menuEditorForm" onsubmit="handleMenuSubmit(event)">
                 <input type="hidden" id="editMenuIndex">
-                <div class="form-group">
-                    <label for="menuId">ID Menu (Huruf Kecil & Strip, misal: kopi-susu)</label>
-                    <input type="text" id="menuId" required placeholder="contoh: nasi-pecel">
+
+                <div class="form-group" style="margin-bottom: 14px;">
+                    <label class="form-label" for="menuId">ID Unik Menu (Huruf kecil & strip)</label>
+                    <input type="text" class="form-input" id="menuId" required placeholder="contoh: kopi-susu-muria">
+                    <span class="form-hint">Digunakan oleh sistem keranjang, tidak boleh kembar.</span>
                 </div>
-                <div class="form-group">
-                    <label for="menuName">Nama Menu</label>
-                    <input type="text" id="menuName" required placeholder="contoh: Nasi Pecel Madiun">
+
+                <div class="form-group" style="margin-bottom: 14px;">
+                    <label class="form-label" for="menuName">Nama Menu</label>
+                    <input type="text" class="form-input" id="menuName" required placeholder="contoh: Kopi Susu Muria Gula Aren">
                 </div>
-                <div class="form-row">
+
+                <div class="form-grid form-grid-2" style="margin-bottom: 14px;">
                     <div class="form-group">
-                        <label for="menuCategory">Kategori</label>
-                        <select id="menuCategory" required>
+                        <label class="form-label" for="menuCategory">Kategori</label>
+                        <select class="form-select" id="menuCategory" required>
                             <option value="makanan">Makanan</option>
                             <option value="minuman">Minuman</option>
                             <option value="cemilan">Cemilan</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="menuPrice">Harga (Rp)</label>
-                        <input type="number" id="menuPrice" required placeholder="contoh: 15000">
+                        <label class="form-label" for="menuPrice">Harga (Rp)</label>
+                        <input type="number" class="form-input" id="menuPrice" required placeholder="15000">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="menuBadge">Badge Label (Opsional)</label>
-                    <input type="text" id="menuBadge" placeholder="contoh: Favorit, Spesial, Baru">
+
+                <div class="form-grid form-grid-2" style="margin-bottom: 14px;">
+                    <div class="form-group">
+                        <label class="form-label" for="menuBadge">Badge Label (Opsional)</label>
+                        <input type="text" class="form-input" id="menuBadge" placeholder="Favorit / Spesial / Baru">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="menuImg">URL Foto (Opsional)</label>
+                        <input type="text" class="form-input" id="menuImg" placeholder="https://images.unsplash.com/...">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="menuImg">Tautan Foto URL (Opsional)</label>
-                    <input type="text" id="menuImg" placeholder="https://images.unsplash.com/photo-...">
+
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label class="form-label" for="menuDesc">Deskripsi Bahan & Rasa</label>
+                    <textarea class="form-textarea" id="menuDesc" rows="3" required placeholder="Racikan kopi robusta lereng Gunung Muria berpadu susu murni segar..."></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="menuDesc">Deskripsi Menu</label>
-                    <textarea id="menuDesc" rows="3" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e5e0d3; background-color: #FAF9F6; font-family: inherit; font-size: 0.9rem; box-sizing: border-box;"></textarea>
+
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn-secondary" style="flex: 1;" onclick="closeMenuModal()">Batal</button>
+                    <button type="submit" class="btn-primary" style="flex: 2;">
+                        <i class="fas fa-check"></i> Simpan ke Daftar
+                    </button>
                 </div>
-                <button type="submit" class="btn-submit-res" style="margin-top: 1rem;">
-                    <i class="fas fa-check"></i> Simpan di Daftar Sementara
-                </button>
             </form>
         </div>
     </div>
 
+    <!-- TOAST CONTAINER -->
+    <div id="toastNotification" class="toast-notification" style="display: none;">
+        <i class="fas fa-info-circle" id="toastIcon"></i>
+        <span id="toastMessage">Pemberitahuan</span>
+    </div>
+
+    <!-- ========================================================
+         JAVASCRIPT LOGIC & GITHUB API SINKRONISASI
+         ======================================================== -->
     <script>
-        // Logika Input PIN Keamanan
         const CORRECT_PIN = "000000";
-        let pinInput = "";
-        const dots = document.querySelectorAll(".pin-dot");
-        const errorMessage = document.getElementById("pinErrorMessage");
+        let enteredPin = "";
+        const dots = document.querySelectorAll(".pin-dot-item");
+        const pinAlert = document.getElementById("pinAlertText");
 
-        // GITHUB API DETAILS
-        const OWNER = "Syaahnhl";
-        const REPO = "web-bukitpadangan";
-        
-        // Data internal menu list
+        const REPO_OWNER = "Syaahnhl";
+        const REPO_NAME = "web-bukitpadangan";
+
+        let localContentData = null;
         let adminMenus = [];
+        let filteredMenus = [];
+        let currentMenuCategoryFilter = "all";
+        let adminTables = [];
 
-        // Cek Sesi Login di Awal
-        window.onload = function() {
-            if (sessionStorage.getItem("admin_auth") === "true") {
-                document.getElementById("pinGate").style.display = "none";
-                document.getElementById("adminWorkspace").style.display = "block";
-                loadCurrentContent();
-                loadAdminMenuData();
-                loadAdminTablesData();
+        // 1. OTORISASI & INISIALISASI
+        window.addEventListener("DOMContentLoaded", () => {
+            if (sessionStorage.getItem("bp_admin_auth") === "true") {
+                unlockWorkspace();
             }
-            
-            // Load saved GitHub token if any
+
+            // Restore GitHub PAT jika sudah tersimpan
             const savedToken = localStorage.getItem("github_pat_token");
             if (savedToken) {
-                document.getElementById("gitToken").value = savedToken;
-                document.getElementById("tokenStatus").innerText = "Token tersimpan";
-                document.getElementById("tokenStatus").style.color = "#1b5e20";
+                const tokenInput = document.getElementById("gitToken");
+                if (tokenInput) tokenInput.value = savedToken;
+                updateTokenStatusText("Token GitHub aktif tersimpan di peramban.", true);
             }
-        }
+        });
 
-        function pressPin(val) {
-            errorMessage.innerText = "";
+        function pressPinKey(val) {
+            pinAlert.innerText = "";
             if (val === 'clear') {
-                pinInput = "";
+                enteredPin = "";
             } else if (val === 'backspace') {
-                pinInput = pinInput.slice(0, -1);
+                enteredPin = enteredPin.slice(0, -1);
             } else {
-                if (pinInput.length < 6) {
-                    pinInput += val;
+                if (enteredPin.length < 6) {
+                    enteredPin += val;
                 }
             }
 
-            // Update UI Dots
-            dots.forEach((dot, index) => {
-                if (index < pinInput.length) {
-                    dot.classList.add("active");
+            // Update Dot visual
+            dots.forEach((dot, idx) => {
+                if (idx < enteredPin.length) {
+                    dot.classList.add("filled");
                 } else {
-                    dot.classList.remove("active");
+                    dot.classList.remove("filled");
                 }
             });
 
-            // Verifikasi PIN jika sudah 6-digit
-            if (pinInput.length === 6) {
+            // Evaluasi saat mencapai 6 digit
+            if (enteredPin.length === 6) {
                 setTimeout(() => {
-                    if (pinInput === CORRECT_PIN) {
-                        sessionStorage.setItem("admin_auth", "true");
-                        document.getElementById("pinGate").style.display = "none";
-                        document.getElementById("adminWorkspace").style.display = "block";
-                        loadCurrentContent();
-                        loadAdminMenuData();
+                    if (enteredPin === CORRECT_PIN) {
+                        sessionStorage.setItem("bp_admin_auth", "true");
+                        unlockWorkspace();
                     } else {
-                        errorMessage.innerText = "PIN Salah! Silakan coba lagi.";
-                        pinInput = "";
-                        dots.forEach(dot => dot.classList.remove("active"));
+                        pinAlert.innerText = "PIN Salah! Silakan coba lagi.";
+                        enteredPin = "";
+                        dots.forEach(d => d.classList.remove("filled"));
                     }
                 }, 200);
             }
         }
 
-        function logoutAdmin() {
-            sessionStorage.removeItem("admin_auth");
+        function unlockWorkspace() {
+            document.getElementById("pinGateOverlay").style.display = "none";
+            document.getElementById("adminAppWorkspace").style.display = "block";
+            loadLandingContent();
+            loadMenuCatalog();
+            loadTablesData();
+        }
+
+        function adminLogout() {
+            sessionStorage.removeItem("bp_admin_auth");
             window.location.reload();
         }
 
+        // 2. NAVIGASI TABS
+        function switchTab(tabId) {
+            document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+
+            const targetPanel = document.getElementById(tabId);
+            if (targetPanel) targetPanel.classList.add("active");
+
+            if (tabId === 'tab-content') document.getElementById("tabBtnContent").classList.add("active");
+            if (tabId === 'tab-menu') document.getElementById("tabBtnMenu").classList.add("active");
+            if (tabId === 'tab-tables') document.getElementById("tabBtnTables").classList.add("active");
+            if (tabId === 'tab-settings') document.getElementById("tabBtnSettings").classList.add("active");
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleCheckbox(id) {
+            const cb = document.getElementById(id);
+            if (cb) cb.checked = !cb.checked;
+        }
+
+        function showToast(msg, isSuccess = true) {
+            const toast = document.getElementById("toastNotification");
+            const icon = document.getElementById("toastIcon");
+            const text = document.getElementById("toastMessage");
+
+            text.innerText = msg;
+            icon.className = isSuccess ? "fas fa-check-circle" : "fas fa-exclamation-triangle";
+            icon.style.color = isSuccess ? "#34d399" : "#f87171";
+            toast.style.display = "flex";
+
+            setTimeout(() => {
+                toast.style.display = "none";
+            }, 3500);
+        }
+
+        // 3. PENGATURAN TOKEN PAT
         function saveGitToken() {
             const token = document.getElementById("gitToken").value.trim();
             if (token) {
                 localStorage.setItem("github_pat_token", token);
-                document.getElementById("tokenStatus").innerText = "Token berhasil disimpan!";
-                document.getElementById("tokenStatus").style.color = "#1b5e20";
+                updateTokenStatusText("Token GitHub berhasil disimpan!", true);
+                showToast("Token GitHub tersimpan dengan aman di browser.");
             } else {
                 localStorage.removeItem("github_pat_token");
-                document.getElementById("tokenStatus").innerText = "Token dihapus.";
-                document.getElementById("tokenStatus").style.color = "#c94c4c";
+                updateTokenStatusText("Token telah dihapus dari browser.", false);
+                showToast("Token dihapus.", false);
             }
         }
 
-        // =========================================
-        // KONTEN LANDING PAGE SECTION
-        // =========================================
-        async function loadCurrentContent() {
+        function updateTokenStatusText(msg, isSuccess) {
+            const el = document.getElementById("tokenStatusText");
+            if (el) {
+                el.innerText = msg;
+                el.style.color = isSuccess ? "#34d399" : "#f87171";
+            }
+        }
+
+        // ========================================================
+        // TAB 1: KONTEN LANDING PAGE
+        // ========================================================
+        async function loadLandingContent() {
             try {
-                const response = await fetch("content.json");
-                if (response.ok) {
-                    const data = await response.json();
-                    populateForm(data);
+                const res = await fetch("content.json");
+                if (res.ok) {
+                    localContentData = await res.json();
+                    populateContentForm(localContentData);
                 }
-            } catch (err) {
-                console.error("Gagal meload file konten lokal:", err);
+            } catch (e) {
+                console.error("Gagal load content.json:", e);
             }
         }
 
-        function populateForm(data) {
-            document.getElementById("showPromo").checked = data.promo.show;
-            document.getElementById("promoText").value = data.promo.text;
-            document.getElementById("heroSubtitle").value = data.hero.subtitle;
-            document.getElementById("heroTitle").value = data.hero.title;
-            document.getElementById("heroDesc").value = data.hero.desc;
-            document.getElementById("aboutTitle").value = data.about.title;
-            document.getElementById("aboutDesc").value = data.about.desc;
-            document.getElementById("showEvent").checked = data.event.show;
-            document.getElementById("eventTitle").value = data.event.title || "";
-            document.getElementById("eventDesc").value = data.event.desc || "";
-            document.getElementById("waAdmin1").value = data.contacts.wa_admin1;
-            document.getElementById("waAdmin2").value = data.contacts.wa_admin2;
-            document.getElementById("igLink").value = data.contacts.instagram;
-            document.getElementById("fbLink").value = data.contacts.facebook;
+        function populateContentForm(data) {
+            if (!data) return;
+            if (data.promo) {
+                document.getElementById("showPromo").checked = !!data.promo.show;
+                document.getElementById("promoText").value = data.promo.text || "";
+            }
+            if (data.hero) {
+                document.getElementById("heroSubtitle").value = data.hero.subtitle || "";
+                document.getElementById("heroTitle").value = data.hero.title || "";
+                document.getElementById("heroDesc").value = data.hero.desc || "";
+            }
+            if (data.about) {
+                document.getElementById("aboutTitle").value = data.about.title || "";
+                document.getElementById("aboutDesc").value = data.about.desc || "";
+            }
+            if (data.event) {
+                document.getElementById("showEvent").checked = !!data.event.show;
+                document.getElementById("eventTitle").value = data.event.title || "";
+                document.getElementById("eventDesc").value = data.event.desc || "";
+            }
+            if (data.contacts) {
+                document.getElementById("waAdmin1").value = data.contacts.wa_admin1 || "";
+                document.getElementById("waAdmin2").value = data.contacts.wa_admin2 || "";
+                document.getElementById("igLink").value = data.contacts.instagram || "";
+                document.getElementById("fbLink").value = data.contacts.facebook || "";
+            }
         }
 
-        async function saveContent(event) {
-            event.preventDefault();
-            
+        async function handleSaveContent(e) {
+            e.preventDefault();
             const token = localStorage.getItem("github_pat_token");
             if (!token) {
-                alert("Tuan Muda belum memasukkan Token GitHub PAT! Silakan simpan token terlebih dahulu di kotak atas.");
+                alert("Silakan masukkan Token GitHub PAT Anda terlebih dahulu di tab 'Kredensial PAT'.");
+                switchTab('tab-settings');
                 return;
             }
 
-            const btnSave = document.getElementById("btnSaveSubmit");
-            btnSave.disabled = true;
-            btnSave.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses Commit ke Github...`;
+            const btn = document.getElementById("btnSaveContentSubmit");
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menyimpan ke GitHub...`;
 
-            const newContent = {
+            const updatedContent = {
                 promo: {
                     show: document.getElementById("showPromo").checked,
-                    text: document.getElementById("promoText").value
+                    text: document.getElementById("promoText").value.trim()
                 },
                 hero: {
-                    title: document.getElementById("heroTitle").value,
-                    subtitle: document.getElementById("heroSubtitle").value,
-                    desc: document.getElementById("heroDesc").value
+                    title: document.getElementById("heroTitle").value.trim(),
+                    subtitle: document.getElementById("heroSubtitle").value.trim(),
+                    desc: document.getElementById("heroDesc").value.trim()
                 },
                 about: {
-                    title: document.getElementById("aboutTitle").value,
-                    desc: document.getElementById("aboutDesc").value
+                    title: document.getElementById("aboutTitle").value.trim(),
+                    desc: document.getElementById("aboutDesc").value.trim()
                 },
                 event: {
                     show: document.getElementById("showEvent").checked,
-                    title: document.getElementById("eventTitle").value,
-                    desc: document.getElementById("eventDesc").value
+                    title: document.getElementById("eventTitle").value.trim(),
+                    desc: document.getElementById("eventDesc").value.trim()
                 },
                 contacts: {
-                    wa_admin1: document.getElementById("waAdmin1").value,
-                    wa_admin2: document.getElementById("waAdmin2").value,
-                    instagram: document.getElementById("igLink").value,
-                    facebook: document.getElementById("fbLink").value
+                    wa_admin1: document.getElementById("waAdmin1").value.trim(),
+                    wa_admin2: document.getElementById("waAdmin2").value.trim(),
+                    instagram: document.getElementById("igLink").value.trim(),
+                    facebook: document.getElementById("fbLink").value.trim()
                 }
             };
 
-            const jsonString = JSON.stringify(newContent, null, 2);
+            const success = await pushJsonToGitHub("content.json", updatedContent, "feat(admin): update landing page content & promo settings");
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fas fa-cloud-arrow-up"></i> Simpan & Perbarui Teks Website`;
 
-            try {
-                const getUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/content.json`;
-                const getResponse = await fetch(getUrl, {
-                    headers: {
-                        "Authorization": `token ${token}`,
-                        "Accept": "application/vnd.github.v3+json"
-                    }
-                });
-
-                if (!getResponse.ok) {
-                    throw new Error("Gagal mengambil metadata file content.json dari GitHub.");
-                }
-
-                const fileData = await getResponse.json();
-                const currentSha = fileData.sha;
-
-                const updateResponse = await fetch(getUrl, {
-                    method: "PUT",
-                    headers: {
-                        "Authorization": `token ${token}`,
-                        "Content-Type": "application/json",
-                        "Accept": "application/vnd.github.v3+json"
-                    },
-                    body: JSON.stringify({
-                        message: "feat(admin): update website content dynamically from Admin Panel",
-                        content: btoa(unescape(encodeURIComponent(jsonString))),
-                        sha: currentSha
-                    })
-                });
-
-                if (updateResponse.ok) {
-                    alert("Konten Teks Landing Page berhasil disimpan! Netlify akan memperbarui web dalam 1-2 menit.");
-                    window.location.reload();
-                } else {
-                    const errData = await updateResponse.json();
-                    throw new Error(errData.message || "Gagal melakukan update ke repositori.");
-                }
-            } catch (err) {
-                alert(`Gagal Menyimpan: ${err.message}`);
-                console.error(err);
-            } finally {
-                btnSave.disabled = false;
-                btnSave.innerHTML = `<i class="fas fa-cloud-upload-alt"></i> Simpan & Terapkan Perubahan Teks Landing Page`;
+            if (success) {
+                showToast("Teks website berhasil diperbarui! Netlify akan merilis update dalam 1-2 menit.");
             }
         }
 
-        // =========================================
-        // MANAJEMEN CRUD MENU SECTION
-        // =========================================
-        async function loadAdminMenuData() {
+        // ========================================================
+        // TAB 2: MANAJEMEN KATALOG MENU
+        // ========================================================
+        async function loadMenuCatalog() {
             try {
-                const response = await fetch("menu.json");
-                if (response.ok) {
-                    adminMenus = await response.json();
-                    renderAdminMenuTable();
+                const res = await fetch("menu.json");
+                if (res.ok) {
+                    adminMenus = await res.json();
+                    filteredMenus = [...adminMenus];
+                    document.getElementById("menuCountBadge").innerText = adminMenus.length;
+                    renderMenuCards();
                 }
-            } catch (err) {
-                console.error("Gagal meload menu.json:", err);
+            } catch (e) {
+                console.error("Gagal load menu.json:", e);
             }
         }
 
-        function formatRupiah(number) {
+        function formatRupiah(num) {
             return new Intl.NumberFormat("id-ID", {
                 style: "currency",
                 currency: "IDR",
                 minimumFractionDigits: 0
-            }).format(number);
+            }).format(num);
         }
 
-        function renderAdminMenuTable() {
-            const tbody = document.getElementById("adminMenuTableBody");
-            if (!tbody) return;
+        function renderMenuCards() {
+            const container = document.getElementById("menuCardsContainer");
+            if (!container) return;
 
-            if (adminMenus.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #888;">Belum ada menu. Silakan klik Tambah Menu Baru.</td></tr>`;
+            if (filteredMenus.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fas fa-utensils"></i>
+                        <p>Tidak ada menu yang sesuai dengan kriteria.</p>
+                    </div>
+                `;
                 return;
             }
 
-            tbody.innerHTML = adminMenus.map((item, index) => {
-                const imgUrl = item.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=150&auto=format&fit=crop';
-                const badgeText = item.badge || '-';
+            container.innerHTML = filteredMenus.map(item => {
+                const realIndex = adminMenus.findIndex(m => m.id === item.id);
+                const thumb = item.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200&auto=format&fit=crop';
                 return `
-                    <tr style="border-bottom: 1px solid #f3efe6;">
-                        <td style="padding: 12px; text-align: center;">
-                            <img class="menu-table-img" src="${imgUrl}" alt="${item.name}">
-                        </td>
-                        <td style="padding: 12px;">
-                            <strong style="color: #2d4a22; font-size: 0.9rem;">${item.name}</strong>
-                            <p style="font-size: 0.75rem; color: #666; margin: 3px 0 0 0; line-height: 1.3;">${item.desc}</p>
-                            <span style="font-size: 0.7rem; background-color: #eee; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 5px;">ID: ${item.id}</span>
-                        </td>
-                        <td style="padding: 12px; text-transform: capitalize;">${item.category}</td>
-                        <td style="padding: 12px; font-weight: 700; color: #2d4a22;">${formatRupiah(item.price)}</td>
-                        <td style="padding: 12px;">
-                            ${item.badge ? `<span style="background-color: #d4a373; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">${item.badge}</span>` : '<span style="color: #bbb;">-</span>'}
-                        </td>
-                        <td style="padding: 12px; text-align: center;">
-                            <div class="action-btn-group">
-                                <button type="button" class="btn-table-action btn-table-edit" onclick="openMenuModal('edit', ${index})">
-                                    <i class="fas fa-edit"></i> Edit
+                    <div class="menu-item-card">
+                        <div class="menu-card-main">
+                            <img class="menu-thumb" src="${thumb}" alt="${item.name}" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200&auto=format&fit=crop'">
+                            <div class="menu-info-col">
+                                <div class="menu-card-top">
+                                    <h4 class="menu-name" title="${item.name}">${item.name}</h4>
+                                    ${item.badge ? `<span class="menu-badge-pill">${item.badge}</span>` : ''}
+                                </div>
+                                <p class="menu-desc">${item.desc || 'Pilihan lezat khas Bukit Padangan.'}</p>
+                            </div>
+                        </div>
+                        <div class="menu-bottom-row">
+                            <span class="menu-price">${formatRupiah(item.price)}</span>
+                            <div class="menu-card-actions">
+                                <button type="button" class="btn-card-action edit" onclick="openMenuModal('edit', ${realIndex})" title="Edit Menu">
+                                    <i class="fas fa-pencil"></i> Ubah
                                 </button>
-                                <button type="button" class="btn-table-action btn-table-delete" onclick="deleteMenuItem(${index})">
-                                    <i class="fas fa-trash"></i> Hapus
+                                <button type="button" class="btn-card-action delete" onclick="deleteMenuItem(${realIndex})" title="Hapus Menu">
+                                    <i class="fas fa-trash-can"></i> Hapus
                                 </button>
                             </div>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                 `;
             }).join("");
         }
 
-        // Modal Form Menu Handlers
-        const menuModal = document.getElementById("menuEditorModal");
+        function handleMenuSearch() {
+            const q = document.getElementById("menuSearchInput").value.toLowerCase();
+            applyMenuFilters(q, currentMenuCategoryFilter);
+        }
 
-        function openMenuModal(mode, index = null) {
-            menuModal.style.display = "flex";
+        function filterMenuCategory(cat, btn) {
+            currentMenuCategoryFilter = cat;
+            document.querySelectorAll(".category-filter-chips .chip-btn").forEach(c => c.classList.remove("active"));
+            if (btn) btn.classList.add("active");
+            const q = document.getElementById("menuSearchInput").value.toLowerCase();
+            applyMenuFilters(q, cat);
+        }
+
+        function applyMenuFilters(query, cat) {
+            filteredMenus = adminMenus.filter(m => {
+                const matchCat = (cat === 'all' || m.category === cat);
+                const matchQ = (m.name.toLowerCase().includes(query) || (m.desc && m.desc.toLowerCase().includes(query)) || m.id.toLowerCase().includes(query));
+                return matchCat && matchQ;
+            });
+            renderMenuCards();
+        }
+
+        function openMenuModal(mode, idx = null) {
+            const modal = document.getElementById("menuModalOverlay");
             const form = document.getElementById("menuEditorForm");
             form.reset();
 
             if (mode === 'add') {
-                document.getElementById("menuModalTitle").innerText = "Tambah Menu Baru";
+                document.getElementById("menuModalHeaderTitle").innerText = "Tambah Menu Baru";
                 document.getElementById("editMenuIndex").value = "";
                 document.getElementById("menuId").disabled = false;
-            } else if (mode === 'edit' && index !== null) {
-                document.getElementById("menuModalTitle").innerText = "Edit Detail Menu";
-                document.getElementById("editMenuIndex").value = index;
-                
-                const item = adminMenus[index];
-                document.getElementById("menuId").value = item.id;
-                document.getElementById("menuId").disabled = true; // Kunci ID menu agar tidak merusak relasi keranjang
-                document.getElementById("menuName").value = item.name;
-                document.getElementById("menuCategory").value = item.category;
-                document.getElementById("menuPrice").value = item.price;
-                document.getElementById("menuBadge").value = item.badge || "";
-                document.getElementById("menuImg").value = item.img || "";
-                document.getElementById("menuDesc").value = item.desc;
+            } else if (mode === 'edit' && idx !== null) {
+                document.getElementById("menuModalHeaderTitle").innerText = "Edit Menu";
+                document.getElementById("editMenuIndex").value = idx;
+                const it = adminMenus[idx];
+                document.getElementById("menuId").value = it.id;
+                document.getElementById("menuId").disabled = true;
+                document.getElementById("menuName").value = it.name;
+                document.getElementById("menuCategory").value = it.category;
+                document.getElementById("menuPrice").value = it.price;
+                document.getElementById("menuBadge").value = it.badge || "";
+                document.getElementById("menuImg").value = it.img || "";
+                document.getElementById("menuDesc").value = it.desc || "";
             }
+            modal.style.display = "flex";
         }
 
         function closeMenuModal() {
-            menuModal.style.display = "none";
+            document.getElementById("menuModalOverlay").style.display = "none";
         }
 
-        // Simpan data menu ke array local sementara
-        function handleMenuSubmit(event) {
-            event.preventDefault();
-            
-            const index = document.getElementById("editMenuIndex").value;
+        function handleMenuSubmit(e) {
+            e.preventDefault();
+            const idx = document.getElementById("editMenuIndex").value;
             const menuId = document.getElementById("menuId").value.trim().toLowerCase();
             const name = document.getElementById("menuName").value.trim();
             const category = document.getElementById("menuCategory").value;
@@ -870,194 +2075,228 @@
             const img = document.getElementById("menuImg").value.trim();
             const desc = document.getElementById("menuDesc").value.trim();
 
-            const menuItem = { id: menuId, name, category, price, badge, img, desc };
+            const itemData = { id: menuId, name, category, price, badge, img, desc };
 
-            if (index === "") {
-                // Cek duplikasi ID
-                const exists = adminMenus.some(item => item.id === menuId);
-                if (exists) {
-                    alert("ID Menu sudah terpakai! Gunakan ID menu unik lainnya.");
+            if (idx === "") {
+                if (adminMenus.some(m => m.id === menuId)) {
+                    alert("ID Menu sudah digunakan! Harap tentukan ID unik lainnya.");
                     return;
                 }
-                adminMenus.push(menuItem);
+                adminMenus.push(itemData);
             } else {
-                adminMenus[parseInt(index)] = menuItem;
+                adminMenus[parseInt(idx)] = itemData;
             }
 
-            renderAdminMenuTable();
+            document.getElementById("menuCountBadge").innerText = adminMenus.length;
+            filterMenuCategory(currentMenuCategoryFilter, null);
             closeMenuModal();
+            showToast("Menu berhasil diperbarui di daftar kerja.");
         }
 
-        function deleteMenuItem(index) {
-            if (confirm(`Apakah Tuan yakin ingin menghapus menu "${adminMenus[index].name}" dari daftar?`)) {
-                adminMenus.splice(index, 1);
-                renderAdminMenuTable();
+        function deleteMenuItem(idx) {
+            const item = adminMenus[idx];
+            if (confirm(`Apakah Tuan yakin ingin menghapus menu "${item.name}"?`)) {
+                adminMenus.splice(idx, 1);
+                document.getElementById("menuCountBadge").innerText = adminMenus.length;
+                filterMenuCategory(currentMenuCategoryFilter, null);
+                showToast("Menu dihapus.");
             }
         }
 
-        // Tulis (Commit) array adminMenus langsung ke menu.json di GitHub
         async function saveMenuToGithub() {
             const token = localStorage.getItem("github_pat_token");
             if (!token) {
-                alert("Tuan Muda belum memasukkan Token GitHub PAT! Silakan simpan token terlebih dahulu di kotak atas.");
+                alert("Silakan masukkan Token GitHub PAT Anda terlebih dahulu di tab 'Kredensial PAT'.");
+                switchTab('tab-settings');
                 return;
             }
 
-            const btnSaveMenu = document.getElementById("btnSaveMenuSubmit");
-            btnSaveMenu.disabled = true;
-            btnSaveMenu.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses Commit Menu ke Github...`;
+            const btn = document.getElementById("btnSaveMenuSubmit");
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menyimpan Katalog Menu...`;
 
-            const jsonString = JSON.stringify(adminMenus, null, 2);
+            const success = await pushJsonToGitHub("menu.json", adminMenus, "feat(admin): update restaurant menu catalog");
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fas fa-floppy-disk"></i> Terapkan Perubahan Menu ke Server Live`;
 
-            try {
-                const getUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/menu.json`;
-                const getResponse = await fetch(getUrl, {
-                    headers: {
-                        "Authorization": `token ${token}`,
-                        "Accept": "application/vnd.github.v3+json"
-                    }
-                });
-
-                if (!getResponse.ok) {
-                    throw new Error("Gagal mengambil metadata file menu.json dari GitHub.");
-                }
-
-                const fileData = await getResponse.json();
-                const currentSha = fileData.sha;
-
-                const updateResponse = await fetch(getUrl, {
-                    method: "PUT",
-                    headers: {
-                        "Authorization": `token ${token}`,
-                        "Content-Type": "application/json",
-                        "Accept": "application/vnd.github.v3+json"
-                    },
-                    body: JSON.stringify({
-                        message: "feat(admin): update menu catalog dynamically from Admin Panel",
-                        content: btoa(unescape(encodeURIComponent(jsonString))),
-                        sha: currentSha
-                    })
-                });
-
-                if (updateResponse.ok) {
-                    alert("Daftar Menu berhasil disimpan! Netlify akan memperbarui katalog menu di web dalam 1-2 menit.");
-                    loadAdminMenuData(); // Reload data local
-                } else {
-                    const errData = await updateResponse.json();
-                    throw new Error(errData.message || "Gagal menyimpan menu.");
-                }
-            } catch (err) {
-                alert(`Gagal Menyimpan Menu: ${err.message}`);
-                console.error(err);
-            } finally {
-                btnSaveMenu.disabled = false;
-                btnSaveMenu.innerHTML = `<i class="fas fa-save"></i> Simpan & Terapkan Perubahan Menu ke Web`;
+            if (success) {
+                showToast("Katalog menu berhasil dipublikasikan ke Netlify live!");
             }
         }
 
-        // ==========================================
-        // 7. LOGIKA KELOLA DENAH MEJA RESTO (ADMIN)
-        // ==========================================
-        let adminTables = [];
-
-        async function loadAdminTablesData() {
+        // ========================================================
+        // TAB 3: STATUS KETERSEDIAAN MEJA (26 MEJA)
+        // ========================================================
+        async function loadTablesData() {
             try {
-                const response = await fetch("tables.json");
-                if (!response.ok) return;
-                adminTables = await response.json();
-                renderAdminTablesTable();
-            } catch (err) {
-                console.error("Gagal memuat tables.json di admin:", err);
+                const res = await fetch("tables.json");
+                if (res.ok) {
+                    adminTables = await res.json();
+                    document.getElementById("tablesCountBadge").innerText = adminTables.length;
+                    renderTablesCards();
+                    updateTableStats();
+                }
+            } catch (e) {
+                console.error("Gagal load tables.json:", e);
             }
         }
 
-        function renderAdminTablesTable() {
-            const tbody = document.getElementById("adminTablesTableBody");
-            if (!tbody) return;
+        let currentTableZoneFilter = 'all';
 
-            if (adminTables.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="padding: 20px; text-align: center; color: #888;">Belum ada data meja.</td></tr>`;
+        function filterTablesZone(zone, btn) {
+            currentTableZoneFilter = zone;
+            document.querySelectorAll("#tab-tables .chip-btn").forEach(b => b.classList.remove("active"));
+            if (btn) btn.classList.add("active");
+            renderTablesCards();
+        }
+
+        function updateTableStats() {
+            const tersedia = adminTables.filter(t => t.status === 'tersedia').length;
+            const terisi = adminTables.filter(t => t.status === 'terisi').length;
+            const dipesan = adminTables.filter(t => t.status === 'dipesan').length;
+
+            const elTotal = document.getElementById("totalTablesCount");
+            if (elTotal) elTotal.innerText = adminTables.length;
+
+            const elTersedia = document.getElementById("countTersedia");
+            if (elTersedia) elTersedia.innerText = tersedia;
+
+            const elTerisi = document.getElementById("countTerisi");
+            if (elTerisi) elTerisi.innerText = terisi;
+
+            const elDipesan = document.getElementById("countDipesan");
+            if (elDipesan) elDipesan.innerText = dipesan;
+
+            // Zone counts
+            const outdoor = adminTables.filter(t => t.zone === 'outdoor').length;
+            const terapi = adminTables.filter(t => t.zone === 'terapi').length;
+            const vip = adminTables.filter(t => t.zone === 'vip').length;
+
+            const elZAll = document.getElementById("countZoneAll");
+            if (elZAll) elZAll.innerText = adminTables.length;
+            const elZOut = document.getElementById("countZoneOutdoor");
+            if (elZOut) elZOut.innerText = outdoor;
+            const elZTer = document.getElementById("countZoneTerapi");
+            if (elZTer) elZTer.innerText = terapi;
+            const elZVip = document.getElementById("countZoneVip");
+            if (elZVip) elZVip.innerText = vip;
+        }
+
+        function renderTablesCards() {
+            const container = document.getElementById("tablesCardContainer");
+            if (!container) return;
+
+            let displayed = adminTables;
+            if (currentTableZoneFilter !== 'all') {
+                displayed = adminTables.filter(t => t.zone === currentTableZoneFilter);
+            }
+
+            if (displayed.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fas fa-chair"></i>
+                        <p>Tidak ada meja pada area ini.</p>
+                    </div>
+                `;
                 return;
             }
 
-            tbody.innerHTML = adminTables.map((t, index) => {
-                let badgeColor = "#28a745";
-                if (t.status === "terisi") badgeColor = "#ffc107";
-                if (t.status === "dipesan") badgeColor = "#dc3545";
-
+            container.innerHTML = displayed.map(t => {
+                const st = t.status || 'tersedia';
+                const statusClass = `status-${st}`;
+                const areaLabel = t.area || t.zoneName || 'Area Santai';
                 return `
-                    <tr style="border-bottom: 1px solid #f0eae1;">
-                        <td style="padding: 12px; text-align: center; font-weight: 600; color: #777;">${index + 1}</td>
-                        <td style="padding: 12px;">
-                            <strong style="color: #2d4a22; font-size: 0.95rem;">${t.name}</strong>
-                            <div style="font-size: 0.78rem; color: #666;">${t.description}</div>
-                        </td>
-                        <td style="padding: 12px; font-weight: 500;">
-                            <span style="display: inline-block; padding: 3px 8px; border-radius: 6px; background-color: #f7f4ee; font-size: 0.8rem;">
-                                ${t.zoneName}
-                            </span>
-                        </td>
-                        <td style="padding: 12px; text-align: center; font-weight: 600;">
-                            👥 ${t.capacity} Kursi
-                        </td>
-                        <td style="padding: 12px;">
-                            <select onchange="updateTableStatus('${t.id}', this.value)" style="width: 100%; padding: 6px 10px; border-radius: 8px; border: 1.5px solid ${badgeColor}; font-weight: 600; font-size: 0.82rem; background-color: white; cursor: pointer;">
-                                <option value="tersedia" ${t.status === 'tersedia' ? 'selected' : ''}>🟢 Tersedia</option>
-                                <option value="terisi" ${t.status === 'terisi' ? 'selected' : ''}>🟡 Terisi (Occupied)</option>
-                                <option value="dipesan" ${t.status === 'dipesan' ? 'selected' : ''}>🔴 Dipesan (Reserved)</option>
+                    <div class="table-card">
+                        <div class="table-card-header">
+                            <div>
+                                <span class="table-id-badge">${t.id}</span>
+                                <h4 style="font-size: 0.95rem; font-weight: 700; color: #fff; margin-top: 4px;">${t.name}</h4>
+                                <div class="table-zone-text">${areaLabel} • 👥 ${t.capacity} Kursi</div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="form-label" style="font-size: 0.72rem; margin-bottom: 4px;">Status Saat Ini:</label>
+                            <select class="table-card-status-select ${statusClass}" onchange="changeTableStatus('${t.id}', this.value, this)">
+                                <option value="tersedia" ${st === 'tersedia' ? 'selected' : ''}>🟢 Tersedia</option>
+                                <option value="terisi" ${st === 'terisi' ? 'selected' : ''}>🟡 Terisi (Occupied)</option>
+                                <option value="dipesan" ${st === 'dipesan' ? 'selected' : ''}>🔴 Dipesan (Reserved)</option>
                             </select>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                 `;
             }).join("");
         }
 
-        function updateTableStatus(tableId, newStatus) {
-            const table = adminTables.find(t => t.id === tableId);
-            if (table) {
-                table.status = newStatus;
-                renderAdminTablesTable();
+        function changeTableStatus(tableId, newStatus, selectEl) {
+            const t = adminTables.find(x => x.id === tableId);
+            if (t) {
+                t.status = newStatus;
+                selectEl.className = `table-card-status-select status-${newStatus}`;
+                updateTableStats();
+                showToast(`Status ${t.name} diubah ke ${newStatus.toUpperCase()}`);
             }
         }
 
-        function setAllTablesStatus(status) {
-            if (confirm(`Apakah Tuan yakin ingin mengubah status SELURUH 26 meja menjadi "${status.toUpperCase()}"?`)) {
+        function setBulkTableStatus(status) {
+            if (confirm(`Ubah status SELURUH 26 meja menjadi "${status.toUpperCase()}"?`)) {
                 adminTables.forEach(t => t.status = status);
-                renderAdminTablesTable();
+                renderTablesCards();
+                updateTableStats();
+                showToast(`Semua meja diubah menjadi ${status.toUpperCase()}`);
             }
         }
 
-        // Tulis (Commit) array adminTables langsung ke tables.json di GitHub
         async function saveTablesToGithub() {
             const token = localStorage.getItem("github_pat_token");
             if (!token) {
-                alert("Tuan Muda belum memasukkan Token GitHub PAT! Silakan simpan token terlebih dahulu di kotak atas.");
+                alert("Silakan masukkan Token GitHub PAT Anda terlebih dahulu di tab 'Kredensial PAT'.");
+                switchTab('tab-settings');
                 return;
             }
 
-            const btnSaveTables = document.getElementById("btnSaveTablesSubmit");
-            btnSaveTables.disabled = true;
-            btnSaveTables.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses Commit Status Meja ke Github...`;
+            const btn = document.getElementById("btnSaveTablesSubmit");
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menyimpan Denah Meja...`;
 
-            const jsonString = JSON.stringify(adminTables, null, 2);
+            const success = await pushJsonToGitHub("tables.json", adminTables, "feat(admin): update restaurant floor plan table status");
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fas fa-floppy-disk"></i> Terapkan Status Denah Meja ke Server Live`;
+
+            if (success) {
+                showToast("Status meja berhasil disinkronkan ke server live!");
+            }
+        }
+
+        // ========================================================
+        // CENTRAL GITHUB API COMMIT HELPER
+        // ========================================================
+        async function pushJsonToGitHub(filePath, jsonData, commitMessage) {
+            const token = localStorage.getItem("github_pat_token");
+            const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filePath}`;
 
             try {
-                const getUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/tables.json`;
-                const getResponse = await fetch(getUrl, {
+                // 1. Get existing file SHA
+                const getRes = await fetch(apiUrl, {
                     headers: {
                         "Authorization": `token ${token}`,
                         "Accept": "application/vnd.github.v3+json"
                     }
                 });
 
-                if (!getResponse.ok) {
-                    throw new Error("Gagal mengambil metadata file tables.json dari GitHub.");
+                if (!getRes.ok) {
+                    const err = await getRes.json();
+                    throw new Error(err.message || "Gagal menghubungi repository GitHub.");
                 }
 
-                const fileData = await getResponse.json();
-                const currentSha = fileData.sha;
+                const fileInfo = await getRes.json();
+                const sha = fileInfo.sha;
 
-                const updateResponse = await fetch(getUrl, {
+                // 2. Put updated JSON with Unicode base64 encoding
+                const jsonStr = JSON.stringify(jsonData, null, 2);
+                const base64Content = btoa(unescape(encodeURIComponent(jsonStr)));
+
+                const putRes = await fetch(apiUrl, {
                     method: "PUT",
                     headers: {
                         "Authorization": `token ${token}`,
@@ -1065,25 +2304,22 @@
                         "Accept": "application/vnd.github.v3+json"
                     },
                     body: JSON.stringify({
-                        message: "feat(admin): update restaurant floor plan table availability status",
-                        content: btoa(unescape(encodeURIComponent(jsonString))),
-                        sha: currentSha
+                        message: commitMessage,
+                        content: base64Content,
+                        sha: sha
                     })
                 });
 
-                if (updateResponse.ok) {
-                    alert("Status Denah Meja berhasil disimpan! Netlify akan memperbarui ketersediaan meja di web dalam 1-2 menit.");
-                    loadAdminTablesData(); // Reload data local
-                } else {
-                    const errData = await updateResponse.json();
-                    throw new Error(errData.message || "Gagal menyimpan status meja.");
+                if (!putRes.ok) {
+                    const putErr = await putRes.json();
+                    throw new Error(putErr.message || "Gagal memperbarui file di GitHub.");
                 }
+
+                return true;
             } catch (err) {
-                alert(`Gagal Menyimpan Status Meja: ${err.message}`);
+                alert(`Gagal Menyimpan ke GitHub: ${err.message}`);
                 console.error(err);
-            } finally {
-                btnSaveTables.disabled = false;
-                btnSaveTables.innerHTML = `<i class="fas fa-save"></i> Simpan & Terapkan Status Denah Meja ke Web`;
+                return false;
             }
         }
     </script>
