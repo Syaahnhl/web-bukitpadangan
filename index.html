@@ -400,25 +400,28 @@
             
             <!-- Category Tabs & Search Bar -->
             <div class="menu-filter-container">
-                <div class="menu-search-wrapper">
-                    <i class="fas fa-search menu-search-icon"></i>
-                    <input type="text" id="menuSearchInput" class="menu-search-input" placeholder="Cari menu lezat / minuman..." oninput="searchMenu(this.value)">
-                    <button type="button" id="clearMenuSearch" class="btn-clear-search" onclick="clearMenuSearch()" style="display: none;" title="Hapus pencarian">&times;</button>
+                <div class="menu-search-row">
+                    <div class="menu-search-wrapper">
+                        <i class="fas fa-search menu-search-icon"></i>
+                        <input type="text" id="menuSearchInput" class="menu-search-input" placeholder="Cari menu lezat..." oninput="searchMenu(this.value)">
+                        <button type="button" id="clearMenuSearch" class="btn-clear-search" onclick="clearMenuSearch()" style="display: none;" title="Hapus pencarian">&times;</button>
+                    </div>
+                    <button type="button" class="btn-menu-book-action" onclick="openMenuBookModal()" title="Buka Buku Menu PDF">
+                        <i class="fas fa-book-open"></i> <span>Buku Menu</span>
+                    </button>
                 </div>
                 <div class="menu-tabs">
                     <button class="tab-btn active" data-category="semua" onclick="filterMenu('semua')">Semua</button>
                     <button class="tab-btn" data-category="makanan" onclick="filterMenu('makanan')">Makanan</button>
                     <button class="tab-btn" data-category="minuman" onclick="filterMenu('minuman')">Minuman</button>
                     <button class="tab-btn" data-category="cemilan" onclick="filterMenu('cemilan')">Camilan</button>
-                    <button class="tab-btn btn-tab-highlight" onclick="openMenuBookModal()"><i class="fas fa-book-open"></i> Buku Menu (PDF)</button>
                 </div>
-                <!-- Filter Chips Cita Rasa (Pedas Bledos vs Ramah Anak vs Khas) -->
+                <!-- Filter Chips Cita Rasa (Single Row Compact) -->
                 <div class="menu-flavor-chips">
-                    <span class="flavor-chip-label"><i class="fas fa-pepper-hot"></i> Cita Rasa:</span>
-                    <button type="button" class="flavor-chip active" data-flavor="semua" onclick="filterFlavor('semua')">Semua Rasa</button>
+                    <button type="button" class="flavor-chip active" data-flavor="semua" onclick="filterFlavor('semua')"><i class="fas fa-utensils"></i> Semua Rasa</button>
                     <button type="button" class="flavor-chip chip-pedas" data-flavor="pedas" onclick="filterFlavor('pedas')"><i class="fas fa-fire"></i> Pedas Bledos</button>
-                    <button type="button" class="flavor-chip chip-anak" data-flavor="anak" onclick="filterFlavor('anak')"><i class="fas fa-child"></i> Ramah Anak & Manis</button>
-                    <button type="button" class="flavor-chip chip-khas" data-flavor="khas" onclick="filterFlavor('khas')"><i class="fas fa-mountain"></i> Khas Gunungwungkal</button>
+                    <button type="button" class="flavor-chip chip-anak" data-flavor="anak" onclick="filterFlavor('anak')"><i class="fas fa-child"></i> Ramah Anak</button>
+                    <button type="button" class="flavor-chip chip-khas" data-flavor="khas" onclick="filterFlavor('khas')"><i class="fas fa-mountain"></i> Khas Pati</button>
                 </div>
             </div>
 
