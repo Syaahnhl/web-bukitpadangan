@@ -1105,7 +1105,10 @@ function filterMenu(category) {
     currentMenuCategory = category || "semua";
     const buttons = document.querySelectorAll(".menu-tabs .tab-btn");
     buttons.forEach(btn => btn.classList.remove("active"));
-    if (event && event.currentTarget) {
+    const activeBtn = document.querySelector(`.menu-tabs .tab-btn[data-category="${currentMenuCategory}"]`);
+    if (activeBtn) {
+        activeBtn.classList.add("active");
+    } else if (typeof event !== "undefined" && event && event.currentTarget) {
         event.currentTarget.classList.add("active");
     }
     applyMenuFilters();

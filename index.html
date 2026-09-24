@@ -402,15 +402,15 @@
             <div class="menu-filter-container">
                 <div class="menu-search-wrapper">
                     <i class="fas fa-search menu-search-icon"></i>
-                    <input type="text" id="menuSearchInput" class="menu-search-input" placeholder="Cari menu lezat (ayam, bebek, wader, kopi, es...)" oninput="searchMenu(this.value)">
+                    <input type="text" id="menuSearchInput" class="menu-search-input" placeholder="Cari menu lezat / minuman..." oninput="searchMenu(this.value)">
                     <button type="button" id="clearMenuSearch" class="btn-clear-search" onclick="clearMenuSearch()" style="display: none;" title="Hapus pencarian">&times;</button>
                 </div>
                 <div class="menu-tabs">
-                    <button class="tab-btn active" onclick="filterMenu('semua')">Semua</button>
-                    <button class="tab-btn" onclick="filterMenu('makanan')">Makanan</button>
-                    <button class="tab-btn" onclick="filterMenu('minuman')">Minuman</button>
-                    <button class="tab-btn" onclick="filterMenu('cemilan')">Camilan</button>
-                    <button class="tab-btn btn-tab-highlight" onclick="openMenuBookModal()"><i class="fas fa-book-open"></i> Buku Menu Lengkap</button>
+                    <button class="tab-btn active" data-category="semua" onclick="filterMenu('semua')">Semua</button>
+                    <button class="tab-btn" data-category="makanan" onclick="filterMenu('makanan')">Makanan</button>
+                    <button class="tab-btn" data-category="minuman" onclick="filterMenu('minuman')">Minuman</button>
+                    <button class="tab-btn" data-category="cemilan" onclick="filterMenu('cemilan')">Camilan</button>
+                    <button class="tab-btn btn-tab-highlight" onclick="openMenuBookModal()"><i class="fas fa-book-open"></i> Buku Menu (PDF)</button>
                 </div>
                 <!-- Filter Chips Cita Rasa (Pedas Bledos vs Ramah Anak vs Khas) -->
                 <div class="menu-flavor-chips">
