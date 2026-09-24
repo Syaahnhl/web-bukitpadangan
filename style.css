@@ -948,25 +948,106 @@ footer {
     text-align: center;
 }
 
+/* =========================================
+   SOCIAL LINKS & BRAND FOOTER
+   ========================================= */
+.social-links {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 18px;
+}
+
 .social-links a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     background: #161a20;
     color: var(--accent-gold);
     border: 1px solid rgba(212, 163, 115, 0.25);
     border-radius: 50%;
-    margin-right: 12px;
-    transition: all 0.3s ease;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    position: relative;
 }
 
-.social-links a:hover {
+/* Ensure FontAwesome icon inside social-links is strictly centered with no inherited margin or fixed width */
+.social-links a i {
+    margin: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    color: var(--accent-gold) !important;
+    font-size: 1.25rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: color 0.25s ease;
+}
+
+#fbFooterLink i {
+    transform: translateX(-1px); /* Optical centering for Facebook letter 'f' */
+}
+
+/* Desktop hover (pointer fine) */
+@media (hover: hover) and (pointer: fine) {
+    .social-links a:hover {
+        background: var(--accent-gold);
+        border-color: var(--accent-gold);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 15px rgba(212, 163, 115, 0.4);
+    }
+    .social-links a:hover i {
+        color: #0c0e12 !important; /* Invert icon to dark on gold background */
+    }
+}
+
+/* Touch active state */
+.social-links a:active {
     background: var(--accent-gold);
-    color: #0c0e12;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(212, 163, 115, 0.4);
+    border-color: var(--accent-gold);
+    transform: scale(0.92);
+}
+.social-links a:active i {
+    color: #0c0e12 !important;
+}
+
+/* Prevent sticky mobile focus from staying solid brown after click */
+.social-links a:focus,
+.social-links a:visited {
+    background: #161a20;
+    color: var(--accent-gold);
+    border-color: rgba(212, 163, 115, 0.25);
+    transform: none;
+    box-shadow: none;
+}
+.social-links a:focus i,
+.social-links a:visited i {
+    color: var(--accent-gold) !important;
+}
+
+.social-links a:focus-visible {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+    .footer-section:first-child {
+        text-align: center;
+    }
+    .footer-section:first-child .social-links {
+        justify-content: center;
+    }
 }
 
 .footer-bottom {
