@@ -3717,6 +3717,10 @@ input:focus, select:focus {
     margin: 0;
 }
 
+.amenities-carousel-indicator {
+    display: none;
+}
+
 /* 2. Event & Gathering Packages Grid */
 .event-section {
     background: #0a0c0f;
@@ -3972,9 +3976,85 @@ input:focus, select:focus {
 }
 
 @media (max-width: 768px) {
+    /* Amenities Horizontal Carousel on Mobile */
     .amenities-grid {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 14px;
+        padding: 8px 16px 14px 16px;
+        margin: 20px -15px 0 -15px;
+        scrollbar-width: none;
     }
+
+    .amenities-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .amenities-grid::after {
+        content: '';
+        flex: 0 0 2px;
+    }
+
+    .amenity-card {
+        flex: 0 0 78%;
+        max-width: 295px;
+        scroll-snap-align: center;
+        padding: 1.5rem 1.25rem;
+        border-radius: 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .amenity-icon {
+        width: 52px;
+        height: 52px;
+        font-size: 1.35rem;
+        margin-bottom: 12px;
+    }
+
+    .amenity-card h4 {
+        font-size: 1.15rem;
+        margin-bottom: 8px;
+    }
+
+    .amenity-card p {
+        font-size: 0.86rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    /* Amenities Carousel Indicator Dots on Mobile */
+    .amenities-carousel-indicator {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        margin-top: 14px;
+        padding-bottom: 6px;
+    }
+
+    .amenity-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .amenity-dot.active {
+        width: 20px;
+        background: var(--accent-gold);
+        box-shadow: 0 0 10px rgba(212, 163, 115, 0.5);
+    }
+
     .packages-grid {
         grid-template-columns: 1fr;
     }

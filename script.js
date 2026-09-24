@@ -173,6 +173,40 @@ window.scrollToFeature = function(index) {
     }
 };
 
+// Carousel Scroll Helper for Amenities Section (Mobile)
+function initAmenitiesCarousel() {
+    const grid = document.getElementById("amenitiesGrid");
+    const indicator = document.getElementById("amenitiesIndicator");
+    if (!grid || !indicator) return;
+    const dots = indicator.querySelectorAll(".amenity-dot");
+    if (!dots.length) return;
+
+    let isThrottled = false;
+    grid.addEventListener("scroll", () => {
+        if (isThrottled) return;
+        isThrottled = true;
+        requestAnimationFrame(() => {
+            const scrollLeft = grid.scrollLeft;
+            const firstCard = grid.querySelector(".amenity-card");
+            const cardWidth = firstCard ? firstCard.offsetWidth + 14 : 260;
+            const activeIdx = Math.min(dots.length - 1, Math.max(0, Math.round(scrollLeft / cardWidth)));
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle("active", idx === activeIdx);
+            });
+            isThrottled = false;
+        });
+    }, { passive: true });
+}
+
+window.scrollToAmenity = function(index) {
+    const grid = document.getElementById("amenitiesGrid");
+    if (!grid) return;
+    const cards = grid.querySelectorAll(".amenity-card");
+    if (cards[index]) {
+        cards[index].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }
+};
+
 window.addEventListener("DOMContentLoaded", () => {
     loadDynamicContent();
     loadMenuData();
@@ -180,6 +214,7 @@ window.addEventListener("DOMContentLoaded", () => {
     initOperatingHoursStatus();
     initFaqAccordion();
     initFeaturesCarousel();
+    initAmenitiesCarousel();
     updatePackageCalc();
     initCart();
     initWeatherWidget();
