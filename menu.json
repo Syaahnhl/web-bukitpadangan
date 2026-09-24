@@ -8,7 +8,12 @@
     "price": 26000,
     "desc": "Olahan ayam empuk dengan bumbu rempah pedas mantap 'bledos' khas Bukit Padangan, disajikan dengan lalapan segar.",
     "img": "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?q=80&w=600&auto=format&fit=crop",
-    "badge": "Signature"
+    "badge": "Signature",
+    "taste_profile": "Pedas membara berpadu gurih rempah serai, lengkuas, dan daun jeruk yang meresap hingga ke serat tulang.",
+    "ingredients": "Potongan ayam kampung muda pilihan, sambal bledos cabai rawit merah segar, serundeng rempah gurih, lalapan mentimun & daun kemangi.",
+    "spice_level": "🌶️🌶️🌶️ Level 3 (Pedas Mantap)",
+    "portion": "1 Porsi Personal Mengenyangkan",
+    "story": "Menu ikonik nomor satu di lereng Bukit Padangan. Diungkep perlahan dengan api kecil sebelum digoreng garing di luar dan disiram bumbu bledos pedas rempah yang meledak di lidah."
   },
   {
     "id": "ayam-bakar",
@@ -19,7 +24,12 @@
     "price": 28000,
     "desc": "Ayam bakar bumbu rempah tradisional berpadu olesan madu murni gurih manis legit meresap hingga ke serat daging.",
     "img": "https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=600&auto=format&fit=crop",
-    "badge": "Favorit"
+    "badge": "Favorit",
+    "taste_profile": "Manis legit karamel madu alami dengan aroma smoky panggangan arang batok kelapa dan gurih ketumbar sangrai.",
+    "ingredients": "Daging ayam pilihan empuk, olesan madu murni lereng Muria, kecap manis racikan rempah, ketumbar, bawang putih, lalapan dan sambal terpisah.",
+    "spice_level": "Tanpa Pedas / Ramah Anak (Sambal Terpisah)",
+    "portion": "1 Porsi Personal",
+    "story": "Menu favorit keluarga dan anak-anak. Karamelisasi madu hutan alami berpadu arang batok kelapa menghasilkan kilau keemasan dengan tekstur daging yang tetap lembut dan juicy."
   },
   {
     "id": "ingkung-ayam",
@@ -30,7 +40,12 @@
     "price": 175000,
     "desc": "Ayam utuh ungkep bumbu santan rempah khas Jawa yang gurih lembut, cocok untuk bancakan, arisan, dan gathering keluarga.",
     "img": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=600&auto=format&fit=crop",
-    "badge": "Spesial PO"
+    "badge": "Spesial PO",
+    "taste_profile": "Gurih areh santan kelapa kental yang lembut meresap, harum kemiri, daun salam, serai, dan rempah ungkep klasik.",
+    "ingredients": "1 ekor ayam kampung utuh, santan perasan pertama kelapa tua, bumbu areh santan kental, kemiri sangrai, lalapan komplit, dan sambal terasi matang.",
+    "spice_level": "🌶️ Gurih Lembut (Sambal Terpisah)",
+    "portion": "1 Ekor Utuh (Cukup untuk 4-6 Orang)",
+    "story": "Sajian pusaka tradisi agung Jawa untuk kebersamaan. Dimasak perlahan berjam-jam dalam kuah santan bumbu areh hingga daging sangat lembut dan lepas dari tulang."
   },
   {
     "id": "bebek-bledos",
@@ -41,7 +56,12 @@
     "price": 32000,
     "desc": "Daging bebek ungkep empuk tanpa amis dengan siraman bumbu pedas rempah gurih pedas khas lereng Gunungwungkal.",
     "img": "https://images.unsplash.com/photo-1514944298352-78d12330a103?q=80&w=600&auto=format&fit=crop",
-    "badge": "Populer"
+    "badge": "Populer",
+    "taste_profile": "Pedas nendang menggigit, gurih kaya rempah khas bebek ungkep, bebas dari aroma amis.",
+    "ingredients": "Potongan bebek pilihan, bumbu ungkep rempah kapulaga & jahe, siraman bumbu bledos cabai rawit pedas, kemangi segar, dan mentimun.",
+    "spice_level": "🌶️🌶️🌶️ Level 3 (Pedas Nendang)",
+    "portion": "1 Porsi Personal",
+    "story": "Daging bebek diolah dengan teknik pengungkepan herbal lereng Gunungwungkal menghasilkan keempukan sempurna dan bumbu pedas meresap hingga ke pori-pori terdalam."
   },
   {
     "id": "bebek-bakar",
@@ -52,7 +72,12 @@
     "price": 35000,
     "desc": "Bebek empuk dibakar wangi dengan karamelisasi bumbu rempah dan kecap manis, disajikan bersama sambal bawang terpisah.",
     "img": "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=600&auto=format&fit=crop",
-    "badge": ""
+    "badge": "",
+    "taste_profile": "Manis gurih karamel arang dengan sentuhan bawang putih dan lada harum yang seimbang.",
+    "ingredients": "Daging bebek empuk ungkep bumbu, olesan saus bakar kecap kedelai hitam rempah, taburan bawang merah goreng renyah, lalapan, sambal terpisah.",
+    "spice_level": "Ramah Anak & Manis Gurih (Sambal Terpisah)",
+    "portion": "1 Porsi Personal",
+    "story": "Kelezatan daging bebek lembut dengan kulit gurih terkaramelisasi saus kecap bumbu warisan lereng bukit."
   },
   {
     "id": "nila-asam-manis",
@@ -63,7 +88,12 @@
     "price": 28000,
     "desc": "Ikan nila segar digoreng renyah disiram saus asam manis berlimpah irisan nanas, wortel, dan paprika segar tanpa rasa pedas berlebih.",
     "img": "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?q=80&w=600&auto=format&fit=crop",
-    "badge": "Favorit"
+    "badge": "Favorit",
+    "taste_profile": "Segar manis alami buah nanas lereng Muria berpadu gurih kriuk daging ikan nila segar air tawar.",
+    "ingredients": "Ikan nila hidup segar kolam pegunungan, tepung renyah tipis, saus asam manis kental, potongan nanas segar, irisan wortel, dan paprika.",
+    "spice_level": "Segar Manis Tanpa Pedas (Cocok untuk Anak)",
+    "portion": "1 Ekor Ikan Utuh (1-2 Orang)",
+    "story": "Diambil segar dari sumber mata air alami, digoreng garing lalu diguyur saus buah tropis asam manis yang menyegarkan selera makan seluruh anggota keluarga."
   },
   {
     "id": "nila-bakar",
@@ -74,7 +104,12 @@
     "price": 28000,
     "desc": "Ikan nila segar dibakar arang dengan olesan bumbu rempah rujak khas lereng Muria yang gurih pedas meresap.",
     "img": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=600&auto=format&fit=crop",
-    "badge": ""
+    "badge": "",
+    "taste_profile": "Gurih pedas manis bumbu rujak rempah arang kelapa dengan aroma daun jeruk dan serai.",
+    "ingredients": "Ikan nila segar, olesan bumbu rujak cabai merah keriting, kemiri sangrai, asam jawa, gula kelapa, daun jeruk, dan lalapan segar.",
+    "spice_level": "🌶️🌶️ Level 2 (Pedas Sedang)",
+    "portion": "1 Ekor Ikan Utuh (1-2 Orang)",
+    "story": "Perpaduan rasa asam segar asam jawa, gurih kemiri sangrai, dan pedas cabai lokal yang dibakar perlahan di atas bara api batok kelapa."
   },
   {
     "id": "wader-krispi",
@@ -85,7 +120,12 @@
     "price": 18000,
     "desc": "Ikan wader sungai pilihan digoreng tepung renyah gurih, sajian otentik khas pedesaan tepi sawah dan sungai lereng gunung.",
     "img": "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=600&auto=format&fit=crop",
-    "badge": "Khas Desa"
+    "badge": "Khas Desa",
+    "taste_profile": "Super renyah kriuk hingga ke tulang, asin gurih sedap beraroma ketumbar bawang putih.",
+    "ingredients": "Ikan wader sungai alami segar tangkapan warga, balutan tepung beras berempah ketumbar & bawang, sambal terasi matang, dan mentimun.",
+    "spice_level": "Gurih Renyah Asin Sedap (Sambal Terpisah)",
+    "portion": "1 Piring Saji Sharing / Lauk",
+    "story": "Kuliner nostalgia khas tepi sungai Gunungwungkal. Dicuci bersih dan digoreng garing dalam minyak panas agar menghasilkan kerenyahan maksimal yang bikin ketagihan."
   },
   {
     "id": "pecel-kembang-turi",
@@ -96,7 +136,12 @@
     "price": 12000,
     "desc": "Kombinasi sayuran kembang turi segar, tauge, dan kangkung disiram saus kacang sangrai medok khas Jawa Tengah.",
     "img": "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=600&auto=format&fit=crop",
-    "badge": "Khas Pati"
+    "badge": "Khas Pati",
+    "taste_profile": "Manis gurih saus kacang sangrai medok kental berpadu tekstur renyah lembut kembang turi segar kukus.",
+    "ingredients": "Bunga turi segar petik kebun, sayur kangkung/bayam rebus, tauge renyah, saus kacang tanah sangrai rempah kencur & gula jawa asli.",
+    "spice_level": "🌶️ Level 1 (Sedang Gurih)",
+    "portion": "1 Porsi Sayur Sehat Tradisional",
+    "story": "Kuliner langka otentik khas Pati yang kaya antioksidan dan serat. Kembang turi segar dipetik langsung di sekitar lereng bukit dan disajikan hangat."
   },
   {
     "id": "tempe-mendoan",
@@ -107,7 +152,12 @@
     "price": 10000,
     "desc": "Tempe kedelai berbalut adonan tepung daun bawang gurih digoreng setengah matang, disajikan bersama kecap rawit terpisah.",
     "img": "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?q=80&w=600&auto=format&fit=crop",
-    "badge": "Best Seller"
+    "badge": "Best Seller",
+    "taste_profile": "Gurih lembut bertekstur basah khas mendoan, wangi daun bawang segar, cocolan kecap manis rawit pedas nendang.",
+    "ingredients": "4 lembar tempe kedelai tipis lebar, tepung terigu & beras gurih, potongan daun bawang melimpah, dan saus cocolan kecap rawit hijau.",
+    "spice_level": "Gurih Lembut (Kecap Rawit Pedas Terpisah)",
+    "portion": "1 Porsi Isi 4 Lembar Besar",
+    "story": "Camilan wajib peneman nongkrong saat berbincang santai di hawa sejuk Bukit Padangan. Digoreng dadakan saat Anda memesan sehingga selalu hadir hangat."
   },
   {
     "id": "pisang-krispi",
@@ -118,7 +168,12 @@
     "price": 14000,
     "desc": "Pisang kepok manis digoreng tepung krispi dengan taburan cokelat leleh dan parutan keju cheddar melimpah.",
     "img": "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?q=80&w=600&auto=format&fit=crop",
-    "badge": ""
+    "badge": "",
+    "taste_profile": "Manis legit pisang kepok matang pohon, kulit tepung renyah berpadu lelehan cokelat dan gurih asin keju.",
+    "ingredients": "Pisang kepok kuning manis pilihan, adonan tepung krispi renyah, lelehan dark chocolate premium, dan parutan keju cheddar gurih.",
+    "spice_level": "Manis Gurih (Favorit Semua Usia)",
+    "portion": "1 Porsi Sharing Camilan",
+    "story": "Pilihan penutup manis yang menggoda selera. Pisang kepok manis digoreng keemasan dengan kontras tekstur luar renyah dan bagian dalam lembut lumer."
   },
   {
     "id": "singkong-keju",
@@ -129,7 +184,12 @@
     "price": 12000,
     "desc": "Singkong pulen lereng bukit digoreng merekah gurih, renyah di luar dan sangat lembut di dalam.",
     "img": "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?q=80&w=600&auto=format&fit=crop",
-    "badge": ""
+    "badge": "",
+    "taste_profile": "Asin gurih bumbu bawang merekah, kulit luar garing renyah dan bagian dalam pulen lembut meleleh.",
+    "ingredients": "Singkong mentega pilihan hasil panen lereng Gunungwungkal, bumbu rendam bawang putih ketumbar, dan taburan keju cheddar parut.",
+    "spice_level": "Gurih Lembut Pulen",
+    "portion": "1 Keranjang Saji Sharing",
+    "story": "Rahasia kelembutan singkong kami terletak pada proses perendaman air es berbumbu setelah dikukus sebelum akhirnya digoreng keemasan hingga merekah sempurna."
   },
   {
     "id": "kopi-santan",
@@ -140,7 +200,12 @@
     "price": 10000,
     "desc": "Warisan kuliner legendaris Pati: Kopi robusta pekat diseduh santan kelapa murni gurih hangat, beraroma harum memikat.",
     "img": "https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=600&auto=format&fit=crop",
-    "badge": "Khas Pati"
+    "badge": "Khas Pati",
+    "taste_profile": "Pahit pekat robusta lereng Muria berpadu gurih creamy santan kelapa asli dan harum manis karamel alami.",
+    "ingredients": "Biji kopi robusta sangrai medium-dark lereng Gunungwungkal, perasan santan kelapa asli segar, gula tebu alami pilihan.",
+    "spice_level": "Kopi Creamy Hangat / Dingin",
+    "portion": "1 Cangkir / Gelas Khas",
+    "story": "Kuliner legendaris ikonik khas Pati yang telah diakui secara nasional. Lemak nabati gurih dari kelapa segar mengimbangi keasaman kopi, menghasilkan cangkir kopi yang kaya rasa dan tak terlupakan."
   },
   {
     "id": "wedang-uwuh",
@@ -151,7 +216,12 @@
     "price": 12000,
     "desc": "Minuman herbal khas nusantara dengan seduhan kayu secang merah, jahe bakar, kapulaga, cengkeh, dan gula batu.",
     "img": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=600&auto=format&fit=crop",
-    "badge": "Tradisional"
+    "badge": "Tradisional",
+    "taste_profile": "Hangat pedas jahe bakar berpadu aroma rempah cengkeh, kayu manis harum, dan manis lembut gula batu kristal.",
+    "ingredients": "Jahe emprit bakar geprek, serutan kayu secang merah, cengkeh, kayu manis, kapulaga, daun pala, serai, dan gula batu tebu.",
+    "spice_level": "Hangat Rempah Herbal Berkhasiat",
+    "portion": "1 Cangkir Seduhan Herbal Panas",
+    "story": "Minuman penghangat tubuh pusaka kraton. Warna merah merona dari serutan secang alami berpadu jahe bakar yang berkhasiat melancarkan sirkulasi darah dan menyegarkan raga di sejuknya bukit."
   },
   {
     "id": "wedang-telang",
@@ -162,7 +232,12 @@
     "price": 12000,
     "desc": "Seduhan bunga telang biru alami dipadu perasan lemon segar dan madu, kaya antioksidan dan menyegarkan tubuh.",
     "img": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop",
-    "badge": "Segar Alami"
+    "badge": "Segar Alami",
+    "taste_profile": "Asam manis segar buah lemon alami berpadu madu hutan lereng bukit dengan warna gradasi biru-keunguan alami.",
+    "ingredients": "Kuntum bunga telang segar kebun organik Bukit Padangan, perasan lemon murni segar, madu alami lebah liar perbukitan.",
+    "spice_level": "Segar Asam Manis Sehat (Kaya Antioksidan)",
+    "portion": "1 Gelas Sajian Dingin / Hangat",
+    "story": "Minuman visual yang estetik dan menyehatkan. Ditanam langsung di kebun herbal Bukit Padangan, warna biru alaminya seketika berubah menjadi ungu cantik saat dipertemukan dengan tetesan lemon."
   },
   {
     "id": "es-kelapa-muda",
@@ -173,6 +248,11 @@
     "price": 15000,
     "desc": "Air dan daging kelapa muda segar berpadu manis legitnya sirup gula aren murni dan selasih penyejuk dahaga.",
     "img": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=600&auto=format&fit=crop",
-    "badge": "Favorit"
+    "badge": "Favorit",
+    "taste_profile": "Manis karamel legit gula aren murni lereng bukit berpadu segarnya air kelapa muda alami dan kenyalnya daging kelapa muda.",
+    "ingredients": "Air kelapa muda segar murni, kerukan daging kelapa muda lembut, sirup kental gula aren organik asli tanpa pengawet, biji selasih, dan es kristal higienis.",
+    "spice_level": "Manis Alami Segar Dingin Penyejuk Dahaga",
+    "portion": "1 Gelas Besar Segar",
+    "story": "Pelepas dahaga paling alami di siang hari yang cerah. Dipetik langsung dari pohon kelapa perbukitan Gunungwungkal, memberikan kesegaran murni yang menyejukkan jiwa dan raga."
   }
 ]

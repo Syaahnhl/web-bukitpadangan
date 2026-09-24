@@ -1572,6 +1572,75 @@
         </div>
     </div>
 
+    <!-- MENU ITEM ZOOM & DETAIL SHOWCASE MODAL -->
+    <div id="menuDetailModal" class="modal menu-detail-modal" onclick="closeMenuDetailModalOnBackdrop(event)">
+        <div class="modal-content menu-detail-content">
+            <div class="modal-sheet-handle"></div>
+            <button type="button" class="close-btn menu-detail-close" onclick="closeMenuDetailModal()" title="Tutup Detail Menu">&times;</button>
+            
+            <div class="menu-detail-img-wrapper">
+                <img id="menuDetailImg" src="" alt="Detail Menu Bukit Padangan">
+                <div class="menu-detail-badges-overlay">
+                    <span id="menuDetailBadge" class="menu-detail-badge"></span>
+                    <span id="menuDetailFlavorBadge" class="menu-detail-flavor-badge"></span>
+                </div>
+            </div>
+
+            <div class="menu-detail-body">
+                <div class="menu-detail-header-row">
+                    <div class="menu-detail-title-group">
+                        <h3 id="menuDetailTitle">Nama Menu</h3>
+                        <span id="menuDetailCategoryPill" class="menu-detail-cat-pill">Makanan Khas</span>
+                    </div>
+                    <div class="menu-detail-price-box">
+                        <span class="detail-price-label">Harga</span>
+                        <span id="menuDetailPrice" class="detail-price-val">Rp 0</span>
+                    </div>
+                </div>
+
+                <!-- Quick specs / pills row -->
+                <div class="menu-detail-quick-specs">
+                    <div class="detail-spec-chip" id="menuDetailSpiceChip">
+                        <i class="fas fa-fire"></i> <span id="menuDetailSpice">Pedas Level</span>
+                    </div>
+                    <div class="detail-spec-chip" id="menuDetailPortionChip">
+                        <i class="fas fa-user-friends"></i> <span id="menuDetailPortion">Porsi</span>
+                    </div>
+                </div>
+
+                <!-- Cita Rasa Section -->
+                <div class="menu-detail-info-block">
+                    <div class="detail-block-title">
+                        <i class="fas fa-utensils"></i> Karakter & Cita Rasa
+                    </div>
+                    <p id="menuDetailTaste" class="detail-block-text">Sensasi rasa...</p>
+                </div>
+
+                <!-- Komposisi & Isian Section -->
+                <div class="menu-detail-info-block">
+                    <div class="detail-block-title">
+                        <i class="fas fa-seedling"></i> Isian & Komposisi Bahan
+                    </div>
+                    <p id="menuDetailIngredients" class="detail-block-text">Komposisi racikan...</p>
+                </div>
+
+                <!-- Cerita & Rahasia Racikan Section -->
+                <div class="menu-detail-info-block">
+                    <div class="detail-block-title">
+                        <i class="fas fa-mortar-pestle"></i> Rahasia Racikan & Cerita Menu
+                    </div>
+                    <p id="menuDetailStory" class="detail-block-text">Cerita olahan khas...</p>
+                </div>
+
+                <div class="menu-detail-footer">
+                    <button type="button" class="btn-close-detail" onclick="closeMenuDetailModal()">
+                        <i class="fas fa-arrow-left"></i> Kembali ke Menu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- LIGHTBOX MODAL FOR GALLERY -->
     <div id="lightbox" class="lightbox" onclick="closeLightbox()">
         <span class="lightbox-close">&times;</span>

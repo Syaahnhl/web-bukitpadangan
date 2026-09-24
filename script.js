@@ -102,41 +102,238 @@ function renderMenuGrid(items) {
     const grid = document.getElementById("menuGrid");
     if (!grid) return;
     
-    if (items.length === 0) {
-        grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888; padding: 40px 0;">Menu tidak ditemukan. Silakan gunakan kata kunci pencarian lain.</p>`;
+    if (!items || items.length === 0) {
+        grid.innerHTML = `
+            <div style="text-align: center; padding: 48px 16px; color: #94a3b8; background: #14181f; border-radius: 16px; border: 1px dashed rgba(212, 163, 115, 0.25);">
+                <i class="fas fa-search" style="font-size: 2.2rem; color: var(--accent-gold); margin-bottom: 12px; display: block;"></i>
+                <h4 style="color: #ffffff; margin-bottom: 6px; font-size: 1.1rem;">Menu Tidak Ditemukan</h4>
+                <p style="font-size: 0.85rem; max-width: 400px; margin: 0 auto;">Tidak ada sajian yang sesuai dengan kriteria pencarian atau filter Anda. Silakan coba kata kunci lain atau pilih filter "Semua".</p>
+            </div>
+        `;
         return;
     }
 
-    const currentOrderUrl = typeof getKachingOrderUrl === "function" ? getKachingOrderUrl() : "https://kaching.id/order/toko/1/public";
-
-    grid.innerHTML = items.map(item => {
-        const badgeHtml = item.badge ? `<span class="menu-badge">${item.badge}</span>` : '';
-        let flavorBadgeHtml = '';
-        if (item.flavor === 'pedas') {
-            flavorBadgeHtml = `<span class="menu-item-flavor-badge badge-flavor-pedas"><i class="fas fa-fire"></i> Pedas</span>`;
-        } else if (item.flavor === 'anak') {
-            flavorBadgeHtml = `<span class="menu-item-flavor-badge badge-flavor-anak"><i class="fas fa-child"></i> Ramah Anak</span>`;
-        } else if (item.flavor === 'khas') {
-            flavorBadgeHtml = `<span class="menu-item-flavor-badge badge-flavor-khas"><i class="fas fa-mountain"></i> Khas</span>`;
+    const categoriesConfig = [
+        {
+            key: "makanan",
+            title: "Makanan Utama & Olahan Khas",
+            icon: '<i class="fas fa-utensils"></i>',
+            subtitle: "Ayam bledos, bebek ungkep, nila segar & sayuran lereng bukit"
+        },
+        {
+            key: "minuman",
+            title: "Minuman Segar & Tradisional",
+            icon: '<i class="fas fa-mug-hot"></i>',
+            subtitle: "Kopi santan khas Pati, seduhan herbal & kelapa muda"
+        },
+        {
+            key: "cemilan",
+            title: "Camilan & Kudapan Santai",
+            icon: '<i class="fas fa-cookie-bite"></i>',
+            subtitle: "Tempe mendoan hangat, pisang krispi & singkong merekah"
         }
-        const priceFormatted = formatRupiah(item.price);
-        return `
-            <div class="menu-item show" data-category="${item.category}" data-flavor="${item.flavor || ''}" data-id="${item.id}">
-                <div class="menu-img">
-                    <img src="${item.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop'}" alt="${item.name}">
-                    ${badgeHtml}
+    ];
+
+    const categoryHtmlList = [];
+
+    categoriesConfig.forEach(cat => {
+        const catItems = items.filter(item => item.category === cat.key);
+        if (catItems.length === 0) return;
+
+        const cardsHtml = catItems.map(item => renderMenuCardCarousel(item)).join("");
+
+        categoryHtmlList.push(`
+            <div class="menu-category-block" data-category="${cat.key}" id="cat-section-${cat.key}">
+                <div class="menu-category-header">
+                    <div class="category-header-info">
+                        <span class="category-badge-icon">${cat.icon}</span>
+                        <div>
+                            <h3 class="category-title">${cat.title}</h3>
+                            <span class="category-subtitle">${cat.subtitle}</span>
+                        </div>
+                    </div>
+                    <div class="category-header-actions">
+                        <span class="category-count-badge">${catItems.length} Sajian</span>
+                        <div class="category-nav-arrows">
+                            <button type="button" class="btn-cat-arrow" onclick="scrollCategoryTrack('${cat.key}', -1)" title="Geser ke kiri" aria-label="Geser ke kiri"><i class="fas fa-chevron-left"></i></button>
+                            <button type="button" class="btn-cat-arrow" onclick="scrollCategoryTrack('${cat.key}', 1)" title="Geser ke kanan" aria-label="Geser ke kanan"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
                 </div>
-                <div class="menu-info">
-                    <h4>${item.name} ${flavorBadgeHtml}</h4>
-                    <p>${item.desc}</p>
-                    <div class="menu-footer">
-                        <span class="menu-price">${priceFormatted}</span>
+                
+                <div class="menu-horizontal-scroll-container">
+                    <div class="menu-horizontal-track" id="track-${cat.key}">
+                        ${cardsHtml}
                     </div>
                 </div>
             </div>
-        `;
-    }).join("");
+        `);
+    });
+
+    grid.innerHTML = `<div class="menu-categories-wrapper">${categoryHtmlList.join("")}</div>`;
 }
+
+function renderMenuCardCarousel(item) {
+    const badgeHtml = item.badge ? `<span class="menu-badge">${item.badge}</span>` : '';
+    let flavorBadgeHtml = '';
+    if (item.flavor === 'pedas') {
+        flavorBadgeHtml = `<span class="menu-item-flavor-badge badge-flavor-pedas"><i class="fas fa-fire"></i> Pedas</span>`;
+    } else if (item.flavor === 'anak') {
+        flavorBadgeHtml = `<span class="menu-item-flavor-badge badge-flavor-anak"><i class="fas fa-child"></i> Ramah Anak</span>`;
+    } else if (item.flavor === 'khas') {
+        flavorBadgeHtml = `<span class="menu-item-flavor-badge badge-flavor-khas"><i class="fas fa-mountain"></i> Khas</span>`;
+    }
+    const priceFormatted = formatRupiah(item.price);
+
+    return `
+        <div class="menu-card-carousel" data-category="${item.category}" data-flavor="${item.flavor || ''}" data-id="${item.id}" onclick="openMenuDetailModal('${item.id}')" title="Klik untuk lihat detail rasa & isi ${item.name}">
+            <div class="menu-card-img-wrap">
+                <img src="${item.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop'}" alt="${item.name}" loading="lazy">
+                <div class="menu-card-badges">
+                    ${badgeHtml}
+                    ${flavorBadgeHtml}
+                </div>
+                <div class="menu-card-zoom-indicator" title="Perbesar & Lihat Info Rasa">
+                    <i class="fas fa-search-plus"></i>
+                </div>
+            </div>
+            <div class="menu-card-content">
+                <div>
+                    <h4 class="menu-card-name">${item.name}</h4>
+                    <p class="menu-card-desc">${item.desc}</p>
+                </div>
+                <div class="menu-card-bottom">
+                    <span class="menu-card-price">${priceFormatted}</span>
+                    <span class="menu-card-view-btn"><i class="fas fa-info-circle"></i> Info Rasa</span>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function scrollCategoryTrack(catKey, direction) {
+    const track = document.getElementById(`track-${catKey}`);
+    if (!track) return;
+    const card = track.querySelector(".menu-card-carousel");
+    const scrollAmount = card ? (card.offsetWidth + 16) * 1.8 : 360;
+    track.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
+}
+
+function openMenuDetailModal(menuId) {
+    const item = (menuData || []).find(m => m.id === menuId);
+    if (!item) return;
+
+    const modal = document.getElementById("menuDetailModal");
+    if (!modal) return;
+
+    // Foto Menu
+    const imgEl = document.getElementById("menuDetailImg");
+    if (imgEl) {
+        imgEl.src = item.img || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop";
+        imgEl.alt = item.name;
+    }
+
+    // Badge Khusus
+    const badgeEl = document.getElementById("menuDetailBadge");
+    if (badgeEl) {
+        if (item.badge) {
+            badgeEl.textContent = item.badge;
+            badgeEl.style.display = "inline-block";
+        } else {
+            badgeEl.style.display = "none";
+        }
+    }
+
+    // Badge Cita Rasa
+    const flavorEl = document.getElementById("menuDetailFlavorBadge");
+    if (flavorEl) {
+        if (item.flavor === "pedas") {
+            flavorEl.innerHTML = `<i class="fas fa-fire"></i> Pedas Bledos`;
+            flavorEl.className = "menu-detail-flavor-badge badge-flavor-pedas";
+            flavorEl.style.display = "inline-flex";
+        } else if (item.flavor === "anak") {
+            flavorEl.innerHTML = `<i class="fas fa-child"></i> Ramah Anak`;
+            flavorEl.className = "menu-detail-flavor-badge badge-flavor-anak";
+            flavorEl.style.display = "inline-flex";
+        } else if (item.flavor === "khas") {
+            flavorEl.innerHTML = `<i class="fas fa-mountain"></i> Khas Pati`;
+            flavorEl.className = "menu-detail-flavor-badge badge-flavor-khas";
+            flavorEl.style.display = "inline-flex";
+        } else {
+            flavorEl.style.display = "none";
+        }
+    }
+
+    // Nama & Kategori
+    const titleEl = document.getElementById("menuDetailTitle");
+    if (titleEl) titleEl.textContent = item.name;
+
+    const catEl = document.getElementById("menuDetailCategoryPill");
+    if (catEl) {
+        const catMap = {
+            makanan: "Makanan Utama",
+            minuman: "Minuman Segar & Tradisional",
+            cemilan: "Camilan Tradisional"
+        };
+        catEl.textContent = catMap[item.category] || "Menu Pilihan";
+    }
+
+    // Harga
+    const priceEl = document.getElementById("menuDetailPrice");
+    if (priceEl) priceEl.textContent = formatRupiah(item.price);
+
+    // Level Pedas & Porsi
+    const spiceEl = document.getElementById("menuDetailSpice");
+    if (spiceEl) spiceEl.textContent = item.spice_level || "Sedang / Selera";
+
+    const portionEl = document.getElementById("menuDetailPortion");
+    if (portionEl) portionEl.textContent = item.portion || "1 Porsi";
+
+    // Karakter Cita Rasa
+    const tasteEl = document.getElementById("menuDetailTaste");
+    if (tasteEl) tasteEl.textContent = item.taste_profile || item.desc || "Cita rasa otentik khas Bukit Padangan.";
+
+    // Isian & Komposisi
+    const ingEl = document.getElementById("menuDetailIngredients");
+    if (ingEl) ingEl.textContent = item.ingredients || "Racikan bahan segar pilihan.";
+
+    // Cerita Menu & Rahasia Racikan
+    const storyEl = document.getElementById("menuDetailStory");
+    if (storyEl) storyEl.textContent = item.story || item.desc || "Olahan khas istimewa dari dapur lereng perbukitan.";
+
+    // Buka Modal
+    modal.classList.add("active");
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
+}
+
+function closeMenuDetailModal() {
+    const modal = document.getElementById("menuDetailModal");
+    if (!modal) return;
+    modal.classList.remove("active");
+    setTimeout(() => {
+        if (!modal.classList.contains("active")) {
+            modal.style.display = "none";
+            document.body.style.overflow = "";
+        }
+    }, 200);
+}
+
+function closeMenuDetailModalOnBackdrop(event) {
+    if (event.target && (event.target.id === "menuDetailModal" || event.target.classList.contains("modal-sheet-handle"))) {
+        closeMenuDetailModal();
+    }
+}
+
+// Global escape key listener for menu detail modal
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") {
+        const modal = document.getElementById("menuDetailModal");
+        if (modal && modal.classList.contains("active")) {
+            closeMenuDetailModal();
+        }
+    }
+});
 
 // Carousel Scroll Helper for Features Section (Mobile)
 function initFeaturesCarousel() {
@@ -827,6 +1024,9 @@ function applyMenuFilters() {
         filtered = filtered.filter(item => 
             item.name.toLowerCase().includes(currentMenuSearch) ||
             (item.desc && item.desc.toLowerCase().includes(currentMenuSearch)) ||
+            (item.taste_profile && item.taste_profile.toLowerCase().includes(currentMenuSearch)) ||
+            (item.ingredients && item.ingredients.toLowerCase().includes(currentMenuSearch)) ||
+            (item.story && item.story.toLowerCase().includes(currentMenuSearch)) ||
             (item.badge && item.badge.toLowerCase().includes(currentMenuSearch)) ||
             (item.flavor_name && item.flavor_name.toLowerCase().includes(currentMenuSearch))
         );
