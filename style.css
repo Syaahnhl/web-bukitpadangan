@@ -499,9 +499,8 @@ section {
 }
 
 .menu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2.5rem;
+    display: block;
+    width: 100%;
 }
 
 .menu-item {
@@ -840,10 +839,10 @@ section {
     top: 8px;
     left: 8px;
     display: flex;
-    gap: 5px;
+    gap: 6px;
     z-index: 2;
     flex-wrap: wrap;
-    max-width: calc(100% - 40px);
+    max-width: calc(100% - 42px);
 }
 
 .menu-card-badges .menu-badge,
@@ -855,6 +854,8 @@ section {
     display: inline-flex !important;
     align-items: center;
     margin: 0 !important;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .menu-card-content {
