@@ -1392,6 +1392,7 @@ function submitReservation(event) {
 function toggleNavMenu(forceState) {
     const navLinks = document.querySelector(".nav-links");
     const navBackdrop = document.getElementById("navBackdrop");
+    const floatingChatWidget = document.getElementById("floatingChatWidget");
     if (!navLinks) return;
 
     const isCurrentlyActive = navLinks.classList.contains("active");
@@ -1401,10 +1402,20 @@ function toggleNavMenu(forceState) {
         navLinks.classList.add("active");
         if (navBackdrop) navBackdrop.classList.add("active");
         document.body.style.overflow = "hidden";
+        if (floatingChatWidget && window.innerWidth <= 768) {
+            floatingChatWidget.style.display = "none";
+        }
     } else {
         navLinks.classList.remove("active");
         if (navBackdrop) navBackdrop.classList.remove("active");
         document.body.style.overflow = "";
+        if (floatingChatWidget) {
+            const aiChatWindow = document.getElementById("aiChatWindow");
+            const isChatOpen = aiChatWindow && aiChatWindow.classList.contains("open");
+            if (!isChatOpen) {
+                floatingChatWidget.style.display = "flex";
+            }
+        }
     }
 }
 
