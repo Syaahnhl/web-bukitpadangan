@@ -31,8 +31,12 @@ async function loadDynamicContent() {
 
         // 3. About Section
         if (data.about) {
-            if (document.getElementById("aboutTitleText")) document.getElementById("aboutTitleText").innerText = data.about.title;
-            if (document.getElementById("aboutDescText")) document.getElementById("aboutDescText").innerText = data.about.desc;
+            if (document.getElementById("aboutTitleText")) {
+                document.getElementById("aboutTitleText").innerText = data.about.title || "Suasana Alam & Rasa Otentik";
+            }
+            if (document.getElementById("aboutDescText")) {
+                document.getElementById("aboutDescText").innerText = data.about.desc || "";
+            }
         }
 
         // 4. Event Section
@@ -859,9 +863,17 @@ function updateCartUI() {
     const mobileCartBadge = document.getElementById("mobileCartBadge");
     const bannerCartCount = document.getElementById("bannerCartCount");
 
-    if (cartCountBadge) cartCountBadge.innerText = totalQty;
-    if (mobileCartBadge) mobileCartBadge.innerText = totalQty;
-    if (bannerCartCount) bannerCartCount.innerText = totalQty;
+    if (cartCountBadge) {
+        cartCountBadge.innerText = totalQty;
+        cartCountBadge.style.display = totalQty > 0 ? "flex" : "none";
+    }
+    if (mobileCartBadge) {
+        mobileCartBadge.innerText = totalQty;
+        mobileCartBadge.style.display = totalQty > 0 ? "flex" : "none";
+    }
+    if (bannerCartCount) {
+        bannerCartCount.innerText = totalQty;
+    }
 
     if (floatingCart) {
         floatingCart.style.display = totalQty > 0 ? "flex" : "none";

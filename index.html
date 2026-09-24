@@ -129,15 +129,20 @@
     <div class="weather-sunset-banner">
         <div class="container">
             <div id="weatherWidget" class="weather-widget-card" style="margin-bottom: 0;">
-                <div class="weather-widget-main">
+                <div class="weather-card-topbar">
+                    <div class="weather-location-pill">
+                        <span class="pulse-green"></span>
+                        <span class="weather-loc-text"><i class="fas fa-mountain"></i> Lereng Gunungwungkal, Pati • <span id="weatherElev">245 mdpl</span></span>
+                    </div>
+                    <button type="button" class="btn-refresh-weather" onclick="refreshWeatherWidget(true)" title="Perbarui Data Cuaca Live">
+                        <i class="fas fa-sync-alt" id="weatherRefreshIcon"></i>
+                    </button>
+                </div>
+                <div class="weather-widget-body">
                     <div class="weather-icon-wrap" id="weatherIconWrap">
                         <i class="fas fa-cloud-sun weather-icon-sun"></i>
                     </div>
                     <div class="weather-info-primary">
-                        <div class="weather-location-pill">
-                            <span class="pulse-green"></span>
-                            <span class="weather-loc-text"><i class="fas fa-mountain"></i> Lereng Gunungwungkal, Pati • <span id="weatherElev">245 mdpl</span></span>
-                        </div>
                         <div class="weather-temp-row">
                             <span class="weather-temp" id="weatherTemp">24.5°C</span>
                             <span class="weather-condition" id="weatherCondition">Sejuk & Segar</span>
@@ -159,9 +164,6 @@
                         <strong class="stat-value">16:30 - 17:45 WIB</strong>
                     </div>
                 </div>
-                <button type="button" class="btn-refresh-weather" onclick="refreshWeatherWidget(true)" title="Perbarui Data Cuaca Live">
-                    <i class="fas fa-sync-alt" id="weatherRefreshIcon"></i>
-                </button>
             </div>
         </div>
     </div>
@@ -1620,7 +1622,7 @@
         <button type="button" class="quick-bar-item quick-cart-btn" onclick="openCartDrawer()">
             <div class="quick-cart-icon-wrap">
                 <i class="fas fa-shopping-bag"></i>
-                <span id="mobileCartBadge" class="mobile-cart-badge">0</span>
+                <span id="mobileCartBadge" class="mobile-cart-badge" style="display: none;">0</span>
             </div>
             <span>Pesanan</span>
         </button>
