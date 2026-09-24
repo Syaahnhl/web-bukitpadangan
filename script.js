@@ -131,9 +131,6 @@ function renderMenuGrid(items) {
                     <p>${item.desc}</p>
                     <div class="menu-footer">
                         <span class="menu-price">${priceFormatted}</span>
-                        <a href="${currentOrderUrl}" target="_blank" rel="noopener noreferrer" class="btn-order-kaching" title="Pesan Menu di Kaching Web Order">
-                            <i class="fas fa-utensils"></i> Pesan
-                        </a>
                     </div>
                 </div>
             </div>
