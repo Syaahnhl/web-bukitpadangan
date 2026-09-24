@@ -411,6 +411,7 @@ window.addEventListener("DOMContentLoaded", () => {
     initFaqAccordion();
     initFeaturesCarousel();
     initAmenitiesCarousel();
+    initPackagesCarousel();
     updatePackageCalc();
     updateMenuOrderLinks();
     initWeatherWidget();
@@ -1264,6 +1265,56 @@ function closeMenuBookModal() {
         modal.style.display = "none";
         document.body.style.overflow = "";
     }
+}
+
+// Packages Horizontal Carousel & Slider Controls
+function scrollPackagesTrack(direction) {
+    const track = document.getElementById("packagesTrack");
+    if (!track) return;
+    const firstCard = track.querySelector(".package-card");
+    const cardWidth = firstCard ? firstCard.offsetWidth + 20 : 340;
+    track.scrollBy({ left: direction * cardWidth, behavior: "smooth" });
+}
+
+function jumpToPackageSlide(index) {
+    const track = document.getElementById("packagesTrack");
+    if (!track) return;
+    const cards = track.querySelectorAll(".package-card");
+    if (cards[index]) {
+        cards[index].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }
+}
+
+function initPackagesCarousel() {
+    const track = document.getElementById("packagesTrack");
+    if (!track) return;
+    const dots = document.querySelectorAll("#packagesDots .package-dot");
+
+    let isScrolling = null;
+    track.addEventListener("scroll", () => {
+        window.clearTimeout(isScrolling);
+        isScrolling = setTimeout(() => {
+            if (!dots.length) return;
+            const cards = track.querySelectorAll(".package-card");
+            if (!cards.length) return;
+            const trackCenter = track.scrollLeft + track.offsetWidth / 2;
+            let closestIndex = 0;
+            let minDistance = Infinity;
+
+            cards.forEach((card, idx) => {
+                const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+                const dist = Math.abs(trackCenter - cardCenter);
+                if (dist < minDistance) {
+                    minDistance = dist;
+                    closestIndex = idx;
+                }
+            });
+
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle("active", idx === closestIndex);
+            });
+        }, 50);
+    }, { passive: true });
 }
 
 // Feature 2: Kalkulator Paket Acara & Rombongan

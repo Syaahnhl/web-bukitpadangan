@@ -441,8 +441,22 @@
                 </div>
             </div>
 
-            <div class="packages-grid">
-                <!-- Activity 1: Reuni -->
+            <!-- Packages Horizontal Carousel Section -->
+            <div class="packages-carousel-wrapper">
+                <div class="packages-carousel-header">
+                    <span class="packages-carousel-hint"><i class="fas fa-arrows-alt-h"></i> Geser ke kanan untuk melihat jenis acara lainnya</span>
+                    <div class="packages-carousel-nav">
+                        <button type="button" class="btn-packages-nav btn-prev" onclick="scrollPackagesTrack(-1)" aria-label="Acara Sebelumnya">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button type="button" class="btn-packages-nav btn-next" onclick="scrollPackagesTrack(1)" aria-label="Acara Berikutnya">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="packagesTrack" class="packages-grid packages-carousel-track">
+                    <!-- Activity 1: Reuni -->
                 <div class="package-card">
                     <div class="package-img-wrap">
                         <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=800&auto=format&fit=crop" alt="Acara Reuni Bukit Padangan" loading="lazy">
@@ -574,7 +588,17 @@
                 </div>
             </div>
             
-            <!-- KALKULATOR ESTIMASI PAKET ROMBONGAN -->
+            <!-- Carousel Navigation Dots -->
+            <div class="packages-dots" id="packagesDots">
+                <span class="package-dot active" onclick="jumpToPackageSlide(0)" title="Acara 1: Reuni & Temu Kangen"></span>
+                <span class="package-dot" onclick="jumpToPackageSlide(1)" title="Acara 2: Rapat Kerja & Kedinasan"></span>
+                <span class="package-dot" onclick="jumpToPackageSlide(2)" title="Acara 3: Arisan Keluarga & Sahabat"></span>
+                <span class="package-dot" onclick="jumpToPackageSlide(3)" title="Acara 4: Buka Bersama"></span>
+                <span class="package-dot" onclick="jumpToPackageSlide(4)" title="Acara 5: Ulang Tahun & Syukuran"></span>
+            </div>
+        </div>
+            
+        <!-- KALKULATOR ESTIMASI PAKET ROMBONGAN -->
             <div class="event-calculator-card">
                 <div class="calc-header">
                     <div class="calc-title-wrap">
