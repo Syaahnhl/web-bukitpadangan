@@ -366,15 +366,20 @@
             <!-- Selected Table Floating Banner -->
             <div id="selectedTableBanner" class="selected-table-banner" style="display: none;">
                 <div class="selected-banner-info">
-                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-check-circle" style="color: var(--accent-gold);"></i>
                     <div>
                         <span class="selected-banner-title">Meja Terpilih: <strong id="selectedTableBannerName">-</strong></span>
                         <span class="selected-banner-zone" id="selectedTableBannerZone">-</span>
                     </div>
                 </div>
-                <button class="btn-reservasi" onclick="proceedReservationWithTable()" style="padding: 8px 18px; font-size: 0.9rem;">
-                    Lanjut Isi Form Reservasi <i class="fas fa-arrow-right"></i>
-                </button>
+                <div class="selected-banner-actions" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                    <a id="selectedBannerKachingBtn" href="https://kaching.id/order/toko/1/public" target="_blank" rel="noopener noreferrer" class="btn-reservasi" style="background: linear-gradient(135deg, #e5b382 0%, #d4a373 100%); color: #0c0e12; font-weight: 700; text-decoration: none; padding: 8px 16px; border-radius: 20px; font-size: 0.88rem; display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fas fa-utensils"></i> Pesan Menu di Meja Ini
+                    </a>
+                    <button class="btn-reservasi" onclick="proceedReservationWithTable()" style="padding: 8px 16px; font-size: 0.88rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px;">
+                        <i class="fab fa-whatsapp"></i> Booking Jadwal
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -418,16 +423,20 @@
                 <!-- Menu akan dimuat secara dinamis via JavaScript dari menu.json -->
             </div>
 
-            <!-- Pre-Order & Kaching POS Live Sync Banner -->
+            <!-- Kaching Web Order Self-Order Banner -->
             <div class="menu-notice-banner">
-                <div class="notice-icon"><i class="fas fa-shopping-bag"></i></div>
+                <div class="notice-icon"><i class="fas fa-utensils"></i></div>
                 <div class="notice-body">
-                    <h4>Pre-Order Menu & Terhubung Langsung ke Kasir Tablet</h4>
-                    <p>Pilih menu favorit Anda dan klik tombol <strong>+ Pesan</strong>. Pesanan akan otomatis tersambung dengan sistem kasir tablet & antrean KDS dapur kami, atau buka Web Order Kaching POS.</p>
+                    <h4>Pesan Menu Langsung via Kaching Web Order</h4>
+                    <p>Pesan makanan & minuman langsung dari meja Anda tanpa antre di kasir. Terintegrasi langsung dengan antrean KDS Dapur & Kasir Tablet Bukit Padangan.</p>
                 </div>
                 <div class="notice-action" style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button type="button" class="btn btn-gold btn-sm" onclick="openCartDrawer()"><i class="fas fa-shopping-bag"></i> Lihat Pesanan (<span id="bannerCartCount">0</span>)</button>
-                    <a id="bannerKachingLink" href="https://kaching.id/order/toko/1/public" target="_blank" class="btn btn-outline btn-sm"><i class="fas fa-external-link-alt"></i> Web Order Kaching</a>
+                    <a id="bannerKachingOrderBtn" href="https://kaching.id/order/toko/1/public" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">
+                        <i class="fas fa-external-link-alt"></i> Buka Web Order Kaching
+                    </a>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('tables').scrollIntoView({behavior: 'smooth'})">
+                        <i class="fas fa-chair"></i> Pilih Meja di Denah / 3D
+                    </button>
                 </div>
             </div>
         </div>
@@ -1568,9 +1577,12 @@
                         <!-- Dynamic chips -->
                     </div>
                 </div>
-                <div class="table-preview-footer">
+                <div class="table-preview-footer" style="display: flex; flex-direction: column; gap: 10px;">
+                    <a id="btnOrderKachingTable" href="https://kaching.id/order/toko/1/public" target="_blank" rel="noopener noreferrer" class="btn-table-order-kaching">
+                        <i class="fas fa-utensils"></i> Pesan Menu di Meja Ini (Kaching Web Order)
+                    </a>
                     <button id="btnSelectThisTable" class="btn-select-table" onclick="confirmSelectTable()">
-                        <i class="fas fa-check"></i> Pilih Meja Ini untuk Reservasi
+                        <i class="fab fa-whatsapp"></i> Reservasi Jadwal Meja Ini
                     </button>
                 </div>
             </div>
@@ -1588,115 +1600,7 @@
         <button class="lightbox-btn next" onclick="changeLightboxImage(1, event)">&#10095;</button>
     </div>
 
-    <!-- =========================================
-         FLOATING CART BUTTON, SLIDE-OVER DRAWER, MOBILE QUICK BAR & TOAST
-         ========================================= -->
-    <!-- Floating Cart Button (Desktop & Tablet) -->
-    <div id="floatingCart" class="floating-cart" onclick="openCartDrawer()" title="Lihat Keranjang Pesanan" style="display: none;">
-        <i class="fas fa-shopping-bag"></i>
-        <span id="cartCountBadge" class="cart-badge">0</span>
-    </div>
 
-    <!-- Backdrop Overlay for Cart Drawer -->
-    <div id="cartBackdrop" class="cart-backdrop" onclick="closeCartDrawer()"></div>
-
-    <!-- Slide-over Cart Drawer -->
-    <div id="cartDrawer" class="cart-drawer">
-        <div class="cart-drawer-content">
-            <div class="cart-drawer-header">
-                <div>
-                    <h3><i class="fas fa-receipt"></i> Keranjang Pesanan</h3>
-                    <span class="cart-drawer-subtitle">Warung Makan Bukit Padangan</span>
-                </div>
-                <span class="close-drawer" onclick="closeCartDrawer()">&times;</span>
-            </div>
-
-            <!-- Table Status Pill inside Cart -->
-            <div id="cartTableInfo" class="cart-table-pill">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-chair"></i>
-                    <span id="cartTableText">Belum pilih meja</span>
-                </div>
-                <button type="button" class="btn-cart-pick-table" onclick="closeCartDrawer(); document.getElementById('tables').scrollIntoView({behavior: 'smooth'})">
-                    Pilih Meja
-                </button>
-            </div>
-
-            <!-- List of Items in Cart -->
-            <div id="cartItemsList" class="cart-items-list">
-                <!-- Dynamically injected via script.js -->
-            </div>
-
-            <!-- Cart Drawer Footer -->
-            <div class="cart-drawer-footer">
-                <!-- Promo Voucher Section -->
-                <div class="cart-voucher-box">
-                    <label for="cartVoucherInput" class="cart-voucher-label">
-                        <i class="fas fa-tags"></i> Voucher & Kode Promo
-                    </label>
-                    <div class="cart-voucher-input-group">
-                        <input type="text" id="cartVoucherInput" placeholder="Masukkan kode promo (contoh: WEEKDAY10)" autocomplete="off">
-                        <button type="button" id="btnApplyCartVoucher" class="btn-apply-voucher" onclick="applyCartVoucher()">Gunakan</button>
-                    </div>
-                    <div id="cartVoucherFeedback" class="cart-voucher-feedback" style="display: none;"></div>
-                    <div class="cart-quick-vouchers">
-                        <span class="quick-voucher-tag" onclick="setQuickVoucher('WEEKDAY10')"><i class="fas fa-percentage"></i> WEEKDAY10 (-10%)</span>
-                        <span class="quick-voucher-tag" onclick="setQuickVoucher('PADANGAN10K')"><i class="fas fa-ticket-alt"></i> PADANGAN10K (-10rb)</span>
-                    </div>
-                </div>
-
-                <!-- Financial Summary -->
-                <div class="cart-summary-breakdown">
-                    <div class="cart-total-row">
-                        <span>Total Item:</span>
-                        <strong id="cartTotalItems">0 Porsi</strong>
-                    </div>
-                    <div class="cart-total-row">
-                        <span>Subtotal Pesanan:</span>
-                        <strong id="cartSubtotalPrice">Rp 0</strong>
-                    </div>
-                    <div id="cartDiscountRow" class="cart-total-row cart-discount-row" style="display: none;">
-                        <span class="discount-label"><i class="fas fa-ticket-alt"></i> Diskon (<span id="cartDiscountCodeName"></span>):</span>
-                        <div class="discount-val-group">
-                            <strong id="cartDiscountVal" class="discount-amount">-Rp 0</strong>
-                            <button type="button" class="btn-cancel-voucher" onclick="removeCartVoucher()" title="Batalkan kupon">&times;</button>
-                        </div>
-                    </div>
-                    <div class="cart-total-row cart-grand-total-row">
-                        <span>Total Bayar:</span>
-                        <strong id="cartTotalPrice" style="color: var(--accent-gold);">Rp 0</strong>
-                    </div>
-                </div>
-
-                <!-- Customer Order Form Details -->
-                <div class="cart-customer-form">
-                    <input type="text" id="cartCustName" placeholder="Nama Pemesan (contoh: Budi Santoso)" autocomplete="name">
-                    <input type="tel" id="cartCustPhone" placeholder="Nomor WhatsApp (contoh: 08123456789)" autocomplete="tel">
-                    <div class="cart-form-row">
-                        <select id="cartOrderType">
-                            <option value="dine_in">Makan di Tempat (Dine In)</option>
-                            <option value="take_away">Bawa Pulang (Take Away)</option>
-                        </select>
-                        <select id="cartPayMethod">
-                            <option value="Kasir">Bayar di Kasir (Saat Tiba)</option>
-                            <option value="Transfer DP Mandiri">Transfer DP Mandiri</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <button type="button" id="btnSubmitCartOrder" class="btn-checkout" onclick="submitCartOrder()">
-                    <i class="fas fa-paper-plane"></i> Kirim Pesanan ke Kasir & Dapur
-                </button>
-                <a id="kachingOrderDirectBtn" href="https://kaching.id/order/toko/1/public" target="_blank" class="btn-kaching-checkout">
-                    <i class="fas fa-mobile-alt"></i> Buka Web Order Kaching POS
-                </a>
-                <button type="button" class="btn-cart-confirm-dp" onclick="closeCartDrawer(); openConfirmDpModal();">
-                    <i class="fas fa-receipt"></i> Sudah Bayar DP? Konfirmasi Bukti Transfer
-                </button>
-            </div>
-        </div>
-    </div>
 
 
 

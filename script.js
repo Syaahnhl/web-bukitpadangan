@@ -107,6 +107,8 @@ function renderMenuGrid(items) {
         return;
     }
 
+    const currentOrderUrl = typeof getKachingOrderUrl === "function" ? getKachingOrderUrl() : "https://kaching.id/order/toko/1/public";
+
     grid.innerHTML = items.map(item => {
         const badgeHtml = item.badge ? `<span class="menu-badge">${item.badge}</span>` : '';
         let flavorBadgeHtml = '';
@@ -129,9 +131,9 @@ function renderMenuGrid(items) {
                     <p>${item.desc}</p>
                     <div class="menu-footer">
                         <span class="menu-price">${priceFormatted}</span>
-                        <button type="button" class="btn-add-cart" onclick="addToCart('${item.id}', event)" title="Tambah ke Pesanan">
-                            <i class="fas fa-plus"></i> Pesan
-                        </button>
+                        <a href="${currentOrderUrl}" target="_blank" rel="noopener noreferrer" class="btn-order-kaching" title="Pesan Menu di Kaching Web Order">
+                            <i class="fas fa-utensils"></i> Pesan
+                        </a>
                     </div>
                 </div>
             </div>
@@ -216,7 +218,7 @@ window.addEventListener("DOMContentLoaded", () => {
     initFeaturesCarousel();
     initAmenitiesCarousel();
     updatePackageCalc();
-    initCart();
+    updateMenuOrderLinks();
     initWeatherWidget();
     initLiveMusicSchedule();
     initConfirmDpModal();
@@ -241,15 +243,31 @@ window.addEventListener("DOMContentLoaded", () => {
 
 // Elemen-elemen DOM
 const modal = document.getElementById("reservationModal");
-const kachingDirectLink = document.getElementById("kachingDirectLink");
 
-// Tautan Resmi Kaching Self-Order (User ID Bukit Padangan = 1)
-const KACHING_ORDER_URL = "https://kaching.id/order/toko/1/public";
+// =========================================
+// INTEGRASI RESMI KACHING WEB ORDER
+// (Bukit Padangan User ID = 1)
+// =========================================
+const KACHING_STORE_ID = 1;
+const KACHING_ORDER_URL = `https://kaching.id/order/toko/${KACHING_STORE_ID}/public`;
 
-// Mengaktifkan Tombol Kaching Direct Link
-if (kachingDirectLink) {
-    kachingDirectLink.classList.remove("disabled");
-    kachingDirectLink.href = KACHING_ORDER_URL;
+function getKachingOrderUrl(tableNum) {
+    let num = tableNum;
+    if (!num && typeof selectedTable !== "undefined" && selectedTable && selectedTable.number) {
+        num = selectedTable.number;
+    }
+    if (num) {
+        return `https://kaching.id/order/toko/${KACHING_STORE_ID}/meja/${num}`;
+    }
+    return `https://kaching.id/order/toko/${KACHING_STORE_ID}/public`;
+}
+
+function updateMenuOrderLinks() {
+    const url = getKachingOrderUrl();
+    const buttons = document.querySelectorAll(".btn-order-kaching");
+    buttons.forEach(btn => {
+        btn.href = url;
+    });
 }
 
 // =========================================
@@ -493,21 +511,36 @@ function openTableModal(tableId) {
         t.id.toLowerCase() === cleanId || 
         t.id.toLowerCase() === `t${cleanId.replace(/\D/g, '').padStart(2, '0')}` ||
         `table-${t.number}`.toLowerCase() === cleanId ||
-        `table-${String(t.number).padStart(2, '0')}`.toLowerCase() === cleanId
+        `table-${String(t.number).padStart(2, '0')}`.toLowerCase() === cleanId ||
+        t.number === Number(tableId)
     );
     if (!table) return;
 
-    activePreviewTableId = tableId;
+    activePreviewTableId = table.id;
 
-    document.getElementById("tableModalImg").src = table.image || "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop";
-    document.getElementById("tableModalTitle").innerText = table.name;
-    document.getElementById("tableModalZone").innerText = table.zoneName;
-    document.getElementById("tableModalCapacity").innerText = `${table.capacity} Orang`;
-    document.getElementById("tableModalDesc").innerText = table.description;
+    // Otomatiskan meja terpilih di state web (tanpa langsung buka form modal reservasi)
+    selectThisTable(table.id, false);
+
+    const modalImg = document.getElementById("tableModalImg");
+    if (modalImg) modalImg.src = table.image || "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop";
+    
+    const modalTitle = document.getElementById("tableModalTitle");
+    if (modalTitle) modalTitle.innerText = table.name;
+    
+    const modalZone = document.getElementById("tableModalZone");
+    if (modalZone) modalZone.innerText = table.zoneName;
+    
+    const modalCapacity = document.getElementById("tableModalCapacity");
+    if (modalCapacity) modalCapacity.innerText = `${table.capacity} Orang`;
+    
+    const modalDesc = document.getElementById("tableModalDesc");
+    if (modalDesc) modalDesc.innerText = table.description;
 
     const statusBadge = document.getElementById("tableModalStatusBadge");
-    statusBadge.className = `table-status-pill ${table.status}`;
-    statusBadge.innerText = table.status.toUpperCase();
+    if (statusBadge) {
+        statusBadge.className = `table-status-pill ${table.status}`;
+        statusBadge.innerText = table.status.toUpperCase();
+    }
 
     const facilitiesContainer = document.getElementById("tableModalFacilities");
     if (facilitiesContainer) {
@@ -516,21 +549,29 @@ function openTableModal(tableId) {
         `).join("");
     }
 
+    // Tombol Kaching Web Order Meja (Otomatiskan nomor meja)
+    const btnKaching = document.getElementById("btnOrderKachingTable");
+    if (btnKaching) {
+        btnKaching.href = getKachingOrderUrl(table.number);
+        btnKaching.innerHTML = `<i class="fas fa-utensils"></i> Pesan Menu di ${table.name} (Kaching Web Order)`;
+    }
+
     const btnSelect = document.getElementById("btnSelectThisTable");
-    if (table.status === "tersedia") {
-        btnSelect.className = "btn-select-table";
-        btnSelect.disabled = false;
-        btnSelect.innerHTML = `<i class="fas fa-check"></i> Pilih Meja Ini untuk Reservasi`;
-    } else {
-        btnSelect.className = "btn-select-table disabled";
-        btnSelect.disabled = true;
-        btnSelect.innerHTML = `<i class="fas fa-ban"></i> Meja Sedang ${table.status.toUpperCase()}`;
+    if (btnSelect) {
+        if (table.status === "tersedia") {
+            btnSelect.className = "btn-select-table";
+            btnSelect.disabled = false;
+            btnSelect.innerHTML = `<i class="fab fa-whatsapp"></i> Reservasi Jadwal Meja Ini`;
+        } else {
+            btnSelect.className = "btn-select-table disabled";
+            btnSelect.disabled = true;
+            btnSelect.innerHTML = `<i class="fas fa-ban"></i> Meja Sedang ${table.status.toUpperCase()}`;
+        }
     }
 
     if (tableModal) {
         tableModal.style.display = "flex";
         document.body.style.overflow = "hidden";
-        
     }
 }
 
@@ -538,31 +579,49 @@ function closeTableModal() {
     if (tableModal) {
         tableModal.style.display = "none";
         document.body.style.overflow = "";
-        
     }
     activePreviewTableId = null;
 }
 
 function confirmSelectTable() {
     if (!activePreviewTableId) return;
-    selectThisTable(activePreviewTableId);
+    selectThisTable(activePreviewTableId, true);
     closeTableModal();
 }
 
-function selectThisTable(tableId) {
-    const table = tablesData.find(t => t.id === tableId);
+function selectThisTable(tableId, shouldOpenModal = false) {
+    const cleanId = String(tableId).toLowerCase().trim();
+    const table = tablesData.find(t => 
+        t.id.toLowerCase() === cleanId || 
+        t.id.toLowerCase() === `t${cleanId.replace(/\D/g, '').padStart(2, '0')}` ||
+        `table-${t.number}`.toLowerCase() === cleanId ||
+        `table-${String(t.number).padStart(2, '0')}`.toLowerCase() === cleanId ||
+        t.number === Number(tableId)
+    );
     if (!table) return;
 
     selectedTable = table;
 
-    // Update banner di atas grid denah
+    // Update banner di atas grid denah meja
     const banner = document.getElementById("selectedTableBanner");
-    const bannerText = document.getElementById("selectedBannerText");
-    const bannerZone = document.getElementById("selectedBannerZone");
-    if (banner && bannerText && bannerZone) {
-        bannerText.innerText = table.name;
-        bannerZone.innerText = `${table.zoneName} (${table.capacity} Kursi)`;
+    const bannerName = document.getElementById("selectedTableBannerName") || document.getElementById("selectedBannerText");
+    const bannerZone = document.getElementById("selectedTableBannerZone") || document.getElementById("selectedBannerZone");
+    const bannerOrderBtn = document.getElementById("selectedBannerKachingBtn");
+    if (banner) {
+        if (bannerName) bannerName.innerText = table.name;
+        if (bannerZone) bannerZone.innerText = `${table.zoneName} (${table.capacity} Kursi)`;
+        if (bannerOrderBtn) {
+            bannerOrderBtn.href = getKachingOrderUrl(table.number);
+            bannerOrderBtn.innerHTML = `<i class="fas fa-utensils"></i> Pesan Menu di ${table.name}`;
+        }
         banner.style.display = "flex";
+    }
+
+    // Update banner di seksi menu
+    const bannerKachingBtn = document.getElementById("bannerKachingOrderBtn");
+    if (bannerKachingBtn) {
+        bannerKachingBtn.href = getKachingOrderUrl(table.number);
+        bannerKachingBtn.innerHTML = `<i class="fas fa-utensils"></i> Pesan Menu di ${table.name} (Kaching Web Order)`;
     }
 
     // Update callout badge di modal form reservasi
@@ -585,7 +644,7 @@ function selectThisTable(tableId) {
     const areaSelect = document.getElementById("resArea");
     if (areaSelect) {
         if (table.zone === "outdoor") areaSelect.value = "Outdoor (View Persawahan & Sungai)";
-        else if (table.zone === "gazebo") areaSelect.value = "Area Terapi Ikan & Ramah Anak";
+        else if (table.zone === "gazebo" || table.zone === "terapi") areaSelect.value = "Area Terapi Ikan & Ramah Anak";
         else if (table.zone === "vip") {
             if (table.id.startsWith("IU")) areaSelect.value = "Indoor Utama (6x6 m)";
             else areaSelect.value = "Indoor Timur (Sayap 1 & 2)";
@@ -599,11 +658,13 @@ function selectThisTable(tableId) {
         renderTablesGrid(tablesData.filter(t => t.zone === currentTableZone));
     }
 
-    // Sinkronisasi status meja ke keranjang pesanan
-    updateCartUI();
+    // Sinkronkan seluruh tombol pesan di katalog ke nomor meja ini
+    updateMenuOrderLinks();
 
-    // Buka modal reservasi
-    openModal();
+    // Buka modal reservasi jika diminta
+    if (shouldOpenModal) {
+        openModal();
+    }
 }
 
 function clearSelectedTable() {
@@ -611,6 +672,12 @@ function clearSelectedTable() {
 
     const banner = document.getElementById("selectedTableBanner");
     if (banner) banner.style.display = "none";
+
+    const bannerKachingBtn = document.getElementById("bannerKachingOrderBtn");
+    if (bannerKachingBtn) {
+        bannerKachingBtn.href = getKachingOrderUrl();
+        bannerKachingBtn.innerHTML = `<i class="fas fa-external-link-alt"></i> Buka Web Order Kaching`;
+    }
 
     const formBadge = document.getElementById("formSelectedTableBadge");
     if (formBadge) formBadge.style.display = "none";
@@ -624,7 +691,7 @@ function clearSelectedTable() {
         renderTablesGrid(tablesData.filter(t => t.zone === currentTableZone));
     }
 
-    updateCartUI();
+    updateMenuOrderLinks();
 }
 
 function handleManualTableSelect() {
@@ -654,135 +721,36 @@ window.onclick = function (event) {
 }
 
 // =========================================
-// 7. KERANJANG BELANJA NATIVE & SEARCH MENU
+// 7. KATALOG MENU & PEMESANAN VIA KACHING WEB ORDER
+// (Web profil tidak menyimpan keranjang/transaksi lokal)
 // =========================================
-let cartItems = []; // Array of { id, name, price, qty, note, img }
 let currentMenuSearch = "";
 let currentMenuCategory = "semua";
 let currentMenuFlavor = "semua";
 
-// Inisialisasi Cart dari LocalStorage
-function initCart() {
-    try {
-        const saved = localStorage.getItem("bukit_cart");
-        if (saved) {
-            cartItems = JSON.parse(saved);
-        }
-    } catch (e) {
-        cartItems = [];
+// Fungsi Aksi Pemesanan Menu via Kaching Web Order
+function orderMenuViaKaching(menuId, event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
     }
-    updateCartUI();
+    const targetUrl = getKachingOrderUrl();
+    window.open(targetUrl, "_blank");
 }
 
-// Simpan Cart ke LocalStorage
-function saveCart() {
-    try {
-        localStorage.setItem("bukit_cart", JSON.stringify(cartItems));
-    } catch (e) {}
-}
-
-// Tambah Item ke Keranjang
-function addToCart(menuId, event) {
-    if (event) event.stopPropagation();
-    const item = menuData.find(m => m.id === menuId);
-    if (!item) return;
-
-    const existing = cartItems.find(c => c.id === menuId);
-    if (existing) {
-        existing.qty += 1;
-    } else {
-        cartItems.push({
-            id: item.id,
-            name: item.name,
-            price: item.price,
-            qty: 1,
-            note: "",
-            img: item.img || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop"
-        });
-    }
-
-    saveCart();
-    updateCartUI();
-    showCartToast(`✓ ${item.name} ditambahkan`);
-
-    // Feedback visual tombol
-    if (event && event.currentTarget) {
-        const btn = event.currentTarget;
-        const originalText = btn.innerHTML;
-        btn.innerHTML = `<i class="fas fa-check"></i> Ditambah`;
-        btn.style.background = "linear-gradient(135deg, #25D366 0%, #1ea952 100%)";
-        btn.style.color = "#ffffff";
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            btn.style.background = "";
-            btn.style.color = "";
-        }, 800);
-    }
-}
-
-// Ubah Qty Item (+ / -)
-function updateCartItemQty(menuId, delta) {
-    const item = cartItems.find(c => c.id === menuId);
-    if (!item) return;
-
-    item.qty += delta;
-    if (item.qty <= 0) {
-        cartItems = cartItems.filter(c => c.id !== menuId);
-    }
-
-    saveCart();
-    updateCartUI();
-}
-
-// Hapus Item
-function removeCartItem(menuId) {
-    cartItems = cartItems.filter(c => c.id !== menuId);
-    saveCart();
-    updateCartUI();
-}
-
-// Update Catatan Khusus Item
-function updateCartItemNote(menuId, note) {
-    const item = cartItems.find(c => c.id === menuId);
-    if (item) {
-        item.note = note.trim();
-        saveCart();
-    }
-}
-
-// Buka Drawer Keranjang
+// Stub Kompatibilitas untuk Menjaga Stabilitas Integrasi
+let cartItems = [];
+function initCart() { cartItems = []; }
+function saveCart() {}
+function addToCart(menuId, event) { orderMenuViaKaching(menuId, event); }
+function updateCartItemQty() {}
+function removeCartItem() {}
+function updateCartItemNote() {}
 function openCartDrawer() {
-    closeModal();
-    const drawer = document.getElementById("cartDrawer");
-    const backdrop = document.getElementById("cartBackdrop");
-    if (drawer) drawer.classList.add("open");
-    if (backdrop) backdrop.classList.add("active");
-    updateCartUI();
+    window.open(getKachingOrderUrl(), "_blank");
 }
-
-// Tutup Drawer Keranjang
-function closeCartDrawer() {
-    const drawer = document.getElementById("cartDrawer");
-    const backdrop = document.getElementById("cartBackdrop");
-    if (drawer) drawer.classList.remove("open");
-    if (backdrop) backdrop.classList.remove("active");
-}
-
-// Toast Notifikasi
-let toastTimeout = null;
-function showCartToast(msg) {
-    const toast = document.getElementById("cartToast");
-    const toastMsg = document.getElementById("cartToastMsg");
-    if (!toast || !toastMsg) return;
-
-    toastMsg.innerText = msg;
-    toast.classList.add("show");
-
-    if (toastTimeout) clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(() => {
-        toast.classList.remove("show");
-    }, 2400);
-}
+function closeCartDrawer() {}
+function showCartToast() {}
 
 // =========================================
 // WHATSAPP DYNAMIC LOAD BALANCER & ADMIN CONTACTS (SSOT)
@@ -799,279 +767,15 @@ function getAssignedAdmin(mode = "auto") {
     return rand ? ADMIN_CONTACTS.mila.phone : ADMIN_CONTACTS.bukhori.phone;
 }
 
-// =========================================
-// FITUR 3: SISTEM KUPON & VOUCHER PROMO PRE-ORDER
-// =========================================
+// Stub Kompatibilitas Voucher Promo (Web Profil)
 let activeCartVoucher = null;
-const VOUCHER_CATALOG = {
-    "WEEKDAY10": {
-        code: "WEEKDAY10",
-        type: "percent",
-        value: 10,
-        minOrder: 40000,
-        desc: "Diskon 10% Spesial Pre-Order Hari Kerja"
-    },
-    "PADANGAN10K": {
-        code: "PADANGAN10K",
-        type: "fixed",
-        value: 10000,
-        minOrder: 60000,
-        desc: "Potongan Rp 10.000 Pre-Order Menu"
-    },
-    "GATHERING50K": {
-        code: "GATHERING50K",
-        type: "fixed",
-        value: 50000,
-        minOrder: 250000,
-        desc: "Potongan Rp 50.000 Rombongan & Acara"
-    },
-    "KOPISORE": {
-        code: "KOPISORE",
-        type: "fixed",
-        value: 5000,
-        minOrder: 30000,
-        desc: "Potongan Rp 5.000 Santap Kopi Senja"
-    }
-};
+function applyCartVoucher() {}
+function removeCartVoucher() {}
+function setQuickVoucher() {}
 
-function applyCartVoucher(manualCode) {
-    const input = document.getElementById("cartVoucherInput");
-    const code = (manualCode || (input ? input.value : "")).trim().toUpperCase();
-    const feedback = document.getElementById("cartVoucherFeedback");
-
-    if (!code) {
-        if (feedback) {
-            feedback.style.display = "block";
-            feedback.className = "cart-voucher-feedback error";
-            feedback.innerText = "Masukkan kode voucher terlebih dahulu.";
-        }
-        return;
-    }
-
-    const voucher = VOUCHER_CATALOG[code];
-    if (!voucher) {
-        if (feedback) {
-            feedback.style.display = "block";
-            feedback.className = "cart-voucher-feedback error";
-            feedback.innerText = `Kode voucher "${code}" tidak ditemukan atau tidak aktif.`;
-        }
-        return;
-    }
-
-    const subtotal = cartItems.reduce((sum, it) => sum + (it.price * it.qty), 0);
-    if (subtotal < voucher.minOrder) {
-        if (feedback) {
-            feedback.style.display = "block";
-            feedback.className = "cart-voucher-feedback error";
-            feedback.innerText = `Minimal order untuk kode ${code} adalah ${formatRupiah(voucher.minOrder)}. (Subtotal Anda: ${formatRupiah(subtotal)})`;
-        }
-        return;
-    }
-
-    activeCartVoucher = voucher;
-    if (input) input.value = code;
-    if (feedback) {
-        feedback.style.display = "block";
-        feedback.className = "cart-voucher-feedback success";
-        feedback.innerHTML = `✓ Voucher <strong>${code}</strong> berhasil dipasang! (${voucher.desc})`;
-    }
-
-    updateCartUI();
-    showCartToast(`🎉 Voucher ${code} aktif! Diskon terpasang.`);
-}
-
-function removeCartVoucher() {
-    activeCartVoucher = null;
-    const input = document.getElementById("cartVoucherInput");
-    if (input) input.value = "";
-    const feedback = document.getElementById("cartVoucherFeedback");
-    if (feedback) {
-        feedback.style.display = "none";
-        feedback.innerText = "";
-    }
-    updateCartUI();
-    showCartToast("Kupon promo dibatalkan.");
-}
-
-function setQuickVoucher(code) {
-    const input = document.getElementById("cartVoucherInput");
-    if (input) input.value = code;
-    applyCartVoucher(code);
-}
-
-// Update Seluruh Tampilan UI Terkait Cart
-function updateCartUI() {
-    const totalQty = cartItems.reduce((sum, it) => sum + it.qty, 0);
-    const subtotal = cartItems.reduce((sum, it) => sum + (it.price * it.qty), 0);
-
-    // Hitung Diskon Kupon
-    let discountAmount = 0;
-    if (activeCartVoucher) {
-        if (subtotal >= activeCartVoucher.minOrder) {
-            if (activeCartVoucher.type === 'percent') {
-                discountAmount = Math.round(subtotal * (activeCartVoucher.value / 100));
-            } else if (activeCartVoucher.type === 'fixed') {
-                discountAmount = activeCartVoucher.value;
-            }
-            discountAmount = Math.min(discountAmount, subtotal);
-        } else {
-            activeCartVoucher = null;
-            const feedback = document.getElementById("cartVoucherFeedback");
-            if (feedback) {
-                feedback.style.display = "block";
-                feedback.className = "cart-voucher-feedback error";
-                feedback.innerText = "Kupon dinonaktifkan: subtotal pesanan di bawah syarat minimum.";
-            }
-        }
-    }
-
-    const finalTotalPrice = Math.max(0, subtotal - discountAmount);
-
-    // Update Badges
-    const floatingCart = document.getElementById("floatingCart");
-    const cartCountBadge = document.getElementById("cartCountBadge");
-    const mobileCartBadge = document.getElementById("mobileCartBadge");
-    const bannerCartCount = document.getElementById("bannerCartCount");
-
-    if (cartCountBadge) {
-        cartCountBadge.innerText = totalQty;
-        cartCountBadge.style.display = totalQty > 0 ? "flex" : "none";
-    }
-    if (mobileCartBadge) {
-        mobileCartBadge.innerText = totalQty;
-        mobileCartBadge.style.display = totalQty > 0 ? "flex" : "none";
-    }
-    if (bannerCartCount) {
-        bannerCartCount.innerText = totalQty;
-    }
-
-    if (floatingCart) {
-        floatingCart.style.display = totalQty > 0 ? "flex" : "none";
-    }
-
-    // Update Table Info inside Drawer
-    const cartTableText = document.getElementById("cartTableText");
-    if (cartTableText) {
-        if (selectedTable) {
-            cartTableText.innerHTML = `<strong>${selectedTable.name}</strong> • ${selectedTable.zoneName} (${selectedTable.capacity} Kursi)`;
-        } else {
-            const manualSelect = document.getElementById("resTableSelect");
-            if (manualSelect && manualSelect.value) {
-                const opt = manualSelect.options[manualSelect.selectedIndex];
-                cartTableText.innerHTML = `<strong>${opt.text}</strong>`;
-            } else {
-                cartTableText.innerText = "Belum pilih meja (Bisa dipilih nanti)";
-            }
-        }
-    }
-
-    // Update Totals
-    const cartTotalItems = document.getElementById("cartTotalItems");
-    const cartSubtotalPrice = document.getElementById("cartSubtotalPrice");
-    const cartDiscountRow = document.getElementById("cartDiscountRow");
-    const cartDiscountCodeName = document.getElementById("cartDiscountCodeName");
-    const cartDiscountVal = document.getElementById("cartDiscountVal");
-    const cartTotalPrice = document.getElementById("cartTotalPrice");
-
-    if (cartTotalItems) cartTotalItems.innerText = `${totalQty} Porsi`;
-    if (cartSubtotalPrice) cartSubtotalPrice.innerText = formatRupiah(subtotal);
-
-    if (cartDiscountRow) {
-        if (discountAmount > 0 && activeCartVoucher) {
-            cartDiscountRow.style.display = "flex";
-            if (cartDiscountCodeName) cartDiscountCodeName.innerText = activeCartVoucher.code;
-            if (cartDiscountVal) cartDiscountVal.innerText = `-${formatRupiah(discountAmount)}`;
-        } else {
-            cartDiscountRow.style.display = "none";
-        }
-    }
-
-    if (cartTotalPrice) cartTotalPrice.innerText = formatRupiah(finalTotalPrice);
-
-    // Update Items List inside Drawer
-    const listContainer = document.getElementById("cartItemsList");
-    if (listContainer) {
-        if (cartItems.length === 0) {
-            listContainer.innerHTML = `
-                <div class="empty-cart-box">
-                    <i class="fas fa-shopping-basket"></i>
-                    <p>Keranjang pesanan masih kosong</p>
-                    <span>Silakan klik "+ Pesan" pada menu favorit Anda.</span>
-                </div>
-            `;
-        } else {
-            listContainer.innerHTML = cartItems.map(it => `
-                <div class="cart-item" data-id="${it.id}">
-                    <div class="cart-item-left">
-                        <img src="${it.img}" alt="${it.name}" class="cart-item-thumb">
-                        <div class="cart-item-details">
-                            <h5>${it.name}</h5>
-                            <span class="cart-item-unit-price">${formatRupiah(it.price)}</span>
-                            <input type="text" class="cart-item-note-input" placeholder="Catatan (misal: pedas / es sedikit)" value="${it.note || ''}" onchange="updateCartItemNote('${it.id}', this.value)">
-                        </div>
-                    </div>
-                    <div class="cart-item-right">
-                        <div class="cart-item-qty">
-                            <button type="button" class="qty-btn" onclick="updateCartItemQty('${it.id}', -1)">-</button>
-                            <span class="qty-val">${it.qty}</span>
-                            <button type="button" class="qty-btn" onclick="updateCartItemQty('${it.id}', 1)">+</button>
-                        </div>
-                        <span class="cart-item-subtotal">${formatRupiah(it.price * it.qty)}</span>
-                        <button type="button" class="btn-remove-item" onclick="removeCartItem('${it.id}')" title="Hapus"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </div>
-            `).join("");
-        }
-    }
-
-    // Update Kaching Direct Link URL with Table Number if Selected
-    const kachingBtn = document.getElementById("kachingOrderDirectBtn");
-    let kachingUrl = "https://kaching.id/order/toko/1/public";
-    if (selectedTable && selectedTable.id) {
-        const tableNum = selectedTable.id.replace(/\D/g, "") || "1";
-        kachingUrl = `https://kaching.id/order/toko/1/meja/${tableNum}`;
-    }
-    if (kachingBtn) kachingBtn.href = kachingUrl;
-
-    // Update Form Preorder Summary inside Reservation Modal if exists
-    updateReservationModalPreorderSummary();
-}
-
-// Sinkronisasi Ringkasan Pre-Order ke Form Modal Reservasi
-function updateReservationModalPreorderSummary() {
-    const resForm = document.getElementById("reservationForm");
-    if (!resForm) return;
-
-    let summaryBox = document.getElementById("resPreorderSummaryBox");
-    if (cartItems.length === 0) {
-        if (summaryBox) summaryBox.style.display = "none";
-        return;
-    }
-
-    if (!summaryBox) {
-        summaryBox = document.createElement("div");
-        summaryBox.id = "resPreorderSummaryBox";
-        summaryBox.className = "form-preorder-summary";
-        const submitBtn = resForm.querySelector(".btn-submit");
-        if (submitBtn) resForm.insertBefore(summaryBox, submitBtn);
-    }
-
-    summaryBox.style.display = "block";
-    const totalPrice = cartItems.reduce((sum, it) => sum + (it.price * it.qty), 0);
-    summaryBox.innerHTML = `
-        <h4><i class="fas fa-shopping-bag"></i> Pre-Order Santapan (${cartItems.length} Menu):</h4>
-        ${cartItems.map(it => `
-            <div class="summary-item-line">
-                <span>${it.name} x${it.qty}</span>
-                <span>${formatRupiah(it.price * it.qty)}</span>
-            </div>
-        `).join("")}
-        <div class="summary-total">
-            <span>Total Santapan:</span>
-            <strong style="color: var(--accent-gold);">${formatRupiah(totalPrice)}</strong>
-        </div>
-    `;
-}
+// Stub Kompatibilitas UI Keranjang
+function updateCartUI() {}
+function updateReservationModalPreorderSummary() {}
 
 // Pencarian Menu Real-time
 function searchMenu(query) {
@@ -1133,145 +837,9 @@ function applyMenuFilters() {
     renderMenuGrid(filtered);
 }
 
-// Dual-Sync Checkout Handler (Kaching API + WhatsApp Receipt)
-async function submitCartOrder() {
-    if (cartItems.length === 0) {
-        alert("Keranjang pesanan Anda masih kosong. Silakan pilih menu terlebih dahulu.");
-        return;
-    }
-
-    const nameInput = document.getElementById("cartCustName");
-    const phoneInput = document.getElementById("cartCustPhone");
-    const orderTypeSelect = document.getElementById("cartOrderType");
-    const payMethodSelect = document.getElementById("cartPayMethod");
-
-    const custName = nameInput ? nameInput.value.trim() : "";
-    const custPhone = phoneInput ? phoneInput.value.trim() : "";
-    const orderType = orderTypeSelect ? orderTypeSelect.value : "dine_in";
-    const payMethod = payMethodSelect ? payMethodSelect.value : "Kasir";
-
-    if (!custName) {
-        alert("Mohon masukkan nama pemesan.");
-        if (nameInput) nameInput.focus();
-        return;
-    }
-
-    if (!custPhone) {
-        alert("Mohon masukkan nomor WhatsApp yang aktif.");
-        if (phoneInput) phoneInput.focus();
-        return;
-    }
-
-    const submitBtn = document.getElementById("btnSubmitCartOrder");
-    const originalBtnText = submitBtn ? submitBtn.innerHTML : "";
-    if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menghubungkan ke Kasir...`;
-    }
-
-    // Tentukan Info Meja
-    let tableText = "Bebas / Belum Pilih Meja";
-    let tableNum = "0";
-    if (selectedTable) {
-        tableText = `${selectedTable.name} (${selectedTable.zoneName} - ${selectedTable.capacity} Kursi)`;
-        tableNum = selectedTable.id.replace(/\D/g, "") || "1";
-    } else {
-        const manualSelect = document.getElementById("resTableSelect");
-        if (manualSelect && manualSelect.value) {
-            const opt = manualSelect.options[manualSelect.selectedIndex];
-            tableText = opt.text;
-            tableNum = manualSelect.value.replace(/\D/g, "") || "1";
-        }
-    }
-
-    const subtotal = cartItems.reduce((sum, it) => sum + (it.price * it.qty), 0);
-    let discountAmount = 0;
-    if (activeCartVoucher && subtotal >= activeCartVoucher.minOrder) {
-        if (activeCartVoucher.type === 'percent') {
-            discountAmount = Math.round(subtotal * (activeCartVoucher.value / 100));
-        } else if (activeCartVoucher.type === 'fixed') {
-            discountAmount = activeCartVoucher.value;
-        }
-        discountAmount = Math.min(discountAmount, subtotal);
-    }
-    const finalPrice = Math.max(0, subtotal - discountAmount);
-
-    // 1. Kirim Payload ke API Kaching Backend (Pusher Event & POS Web-Order Table)
-    const kachingPayload = {
-        customer_name: custName,
-        phone: custPhone,
-        order_type: orderType,
-        payment_method: payMethod,
-        table_number: tableNum,
-        voucher_code: activeCartVoucher ? activeCartVoucher.code : null,
-        discount_amount: discountAmount,
-        subtotal: subtotal,
-        final_total: finalPrice,
-        items: cartItems.map(it => ({
-            menu_id: it.id,
-            qty: it.qty,
-            note: it.note || ""
-        }))
-    };
-
-    try {
-        fetch(`https://kaching.id/order/toko/1/meja/${tableNum}/submit`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Requested-With": "XMLHttpRequest"
-            },
-            body: JSON.stringify(kachingPayload)
-        }).catch(err => {
-            console.log("Kaching POS notification dispatched:", err);
-        });
-    } catch (e) {
-        console.warn("Kaching API push:", e);
-    }
-
-    // 2. Susun Pesan WhatsApp Konfirmasi untuk Tamu & Kasir
-    let waText = `*HALO BUKIT PADANGAN, SAYA INGIN PESAN SANTAPAN*\n\n`;
-    waText += `📋 *Data Pemesan:*\n`;
-    waText += `• Nama: ${custName}\n`;
-    waText += `• No. WhatsApp: ${custPhone}\n`;
-    waText += `• Pilihan Meja: *${tableText}*\n`;
-    waText += `• Tipe Pesanan: ${orderType === 'dine_in' ? 'Makan di Tempat (Dine In)' : 'Bawa Pulang (Take Away)'}\n\n`;
-    waText += `🍽️ *Rincian Pesanan Menu:*\n`;
-    cartItems.forEach((it, idx) => {
-        waText += `${idx + 1}. *${it.name}* x${it.qty} = ${formatRupiah(it.price * it.qty)}\n`;
-        if (it.note) waText += `   ↳ _Catatan: ${it.note}_\n`;
-    });
-    waText += `\n💰 *Subtotal Menu:* ${formatRupiah(subtotal)}\n`;
-    if (activeCartVoucher && discountAmount > 0) {
-        waText += `🎟️ *Voucher Promo:* ${activeCartVoucher.code} (-${formatRupiah(discountAmount)})\n`;
-    }
-    waText += `💵 *Total Pembayaran:* *${formatRupiah(finalPrice)}*\n`;
-    waText += `💳 *Metode Pembayaran:* ${payMethod}\n`;
-    if (payMethod.includes("Transfer") || payMethod.includes("DP")) {
-        waText += `• Rekening: Bank Mandiri *1840011559968* (a.n. Mila Elmeida)\n`;
-        waText += `• Batas Konfirmasi Hari-H: 14.00 WIB\n`;
-    }
-    waText += `\nMohon konfirmasi pesanan dan ketersediaan meja kami. Terima kasih!`;
-
-    const adminPhone = getAssignedAdmin("auto");
-    const encodedText = encodeURIComponent(waText);
-    const waUrl = `https://wa.me/${adminPhone}?text=${encodedText}`;
-
-    // Feedback sukses
-    if (submitBtn) {
-        submitBtn.innerHTML = `<i class="fas fa-check"></i> Pesanan Terkirim!`;
-        submitBtn.style.background = "#25D366";
-    }
-
-    setTimeout(() => {
-        window.open(waUrl, "_blank");
-        if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalBtnText;
-            submitBtn.style.background = "";
-        }
-        closeCartDrawer();
-    }, 600);
+// Handler Kompatibilitas Checkout (Dialihkan ke Kaching Web Order)
+function submitCartOrder() {
+    window.open(getKachingOrderUrl(), "_blank");
 }
 
 // =========================================
@@ -1339,34 +907,6 @@ function submitReservation(event) {
         waText += `• Catatan Khusus: _${userNotes}_\n`;
     }
     waText += `\n`;
-
-    // Jika ada santapan di keranjang, sertakan dalam pesan reservasi
-    if (cartItems && cartItems.length > 0) {
-        const totalFoodPrice = cartItems.reduce((sum, it) => sum + (it.price * it.qty), 0);
-        waText += `🍽️ *Pre-Order Santapan (${cartItems.length} Menu):*\n`;
-        cartItems.forEach((it, idx) => {
-            waText += `${idx + 1}. *${it.name}* x${it.qty} = ${formatRupiah(it.price * it.qty)}\n`;
-            if (it.note) waText += `   ↳ _Catatan: ${it.note}_\n`;
-        });
-        waText += `💰 *Total Estimasi Santapan:* *${formatRupiah(totalFoodPrice)}*\n\n`;
-
-        // Background push ke Kaching POS agar lonceng kasir berdering
-        try {
-            const tableNum = (selectedTable && selectedTable.id) ? (selectedTable.id.replace(/\D/g, '') || '1') : '1';
-            fetch(`https://kaching.id/order/toko/1/meja/${tableNum}/submit`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json", "X-Requested-With": "XMLHttpRequest" },
-                body: JSON.stringify({
-                    customer_name: `${name} (Reservasi)`,
-                    phone: targetPhone,
-                    order_type: "reservasi",
-                    payment_method: "Kasir",
-                    table_number: tableNum,
-                    items: cartItems.map(it => ({ menu_id: it.id, qty: it.qty, note: it.note || "" }))
-                })
-            }).catch(e => console.log("Kaching reservation order dispatched:", e));
-        } catch(e) {}
-    }
 
     waText += `💳 *Ketentuan & Konfirmasi DP:*\n`;
     waText += `• Rekening: Bank Mandiri 1840011559968 (a.n. Mila Elmeida)\n`;

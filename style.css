@@ -592,9 +592,11 @@ ul {
     color: var(--primary-green);
 }
 
+.btn-order-kaching,
 .btn-add-cart {
     background: linear-gradient(135deg, #e5b382 0%, #d4a373 100%);
-    color: #0c0e12;
+    color: #0c0e12 !important;
+    text-decoration: none;
     border: none;
     padding: 8px 18px;
     border-radius: 50px;
@@ -602,17 +604,19 @@ ul {
     font-weight: 700;
     font-size: 0.85rem;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 6px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(212, 163, 115, 0.3);
 }
 
+.btn-order-kaching:hover,
 .btn-add-cart:hover {
     background: linear-gradient(135deg, #f0c294 0%, #e5b382 100%);
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(212, 163, 115, 0.5);
+    color: #000 !important;
 }
 
 /* =========================================
@@ -1089,26 +1093,18 @@ footer {
 }
 
 /* =========================================
-   8. FLOATING CART & DRAWER
+   8. POS & CART REMOVED: 100% KACHING WEB ORDER
    ========================================= */
-.floating-cart {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #e5b382 0%, #d4a373 100%);
-    color: #0c0e12;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    box-shadow: 0 6px 25px rgba(212, 163, 115, 0.5);
-    cursor: pointer;
-    z-index: 99;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    transition: all 0.3s ease;
+#floatingCart,
+.floating-cart,
+#cartDrawer,
+.cart-drawer,
+#cartBackdrop,
+.cart-backdrop,
+#cartToast {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
 }
 
 .floating-cart:hover {
@@ -2807,11 +2803,12 @@ input:focus, select:focus {
     gap: 6px;
 }
 
-.btn-select-table {
+.btn-table-order-kaching {
     background: linear-gradient(135deg, #e5b382 0%, #d4a373 100%);
-    color: #0c0e12;
+    color: #0c0e12 !important;
+    text-decoration: none;
     border: none;
-    padding: 12px 24px;
+    padding: 13px 22px;
     border-radius: 30px;
     font-family: var(--font-body);
     font-weight: 700;
@@ -2821,19 +2818,51 @@ input:focus, select:focus {
     align-items: center;
     justify-content: center;
     gap: 8px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 16px rgba(212, 163, 115, 0.4);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.btn-table-order-kaching:hover {
+    background: linear-gradient(135deg, #f0c294 0%, #e5b382 100%);
+    box-shadow: 0 6px 22px rgba(212, 163, 115, 0.6);
+    transform: translateY(-2px);
+    color: #000 !important;
+}
+
+.btn-select-table {
+    background: rgba(255, 255, 255, 0.06);
+    color: #f1f5f9;
+    border: 1px solid rgba(212, 163, 115, 0.35);
+    padding: 11px 22px;
+    border-radius: 30px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(212, 163, 115, 0.35);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .btn-select-table:hover {
-    background: linear-gradient(135deg, #f0c294 0%, #e5b382 100%);
-    box-shadow: 0 6px 20px rgba(212, 163, 115, 0.55);
+    background: rgba(212, 163, 115, 0.15);
+    border-color: var(--accent-gold);
+    color: #fff;
     transform: translateY(-2px);
 }
 
 .btn-select-table.disabled {
-    background-color: #bbb;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #666;
     cursor: not-allowed;
+    transform: none !important;
 }
 
 /* Callout in Reservation Form */
