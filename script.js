@@ -55,18 +55,18 @@ async function loadDynamicContent() {
         if (data.contacts) {
             waAdminNumber = data.contacts.wa_admin1;
             
-            // Update dropdown values di form
+            // Update input / dropdown value di form
             const resAdminSelect = document.getElementById("resAdmin");
             if (resAdminSelect) {
-                resAdminSelect.innerHTML = `
-                    <option value="${data.contacts.wa_admin1}">Admin 1 (Mila/Bukit Padangan)</option>
-                    <option value="${data.contacts.wa_admin2}">Admin 2 (Layanan Alternatif)</option>
-                `;
+                if (resAdminSelect.tagName === "SELECT") {
+                    resAdminSelect.innerHTML = `<option value="${data.contacts.wa_admin1}">Admin WhatsApp (${formatPhoneDisplay(data.contacts.wa_admin1)})</option>`;
+                }
+                resAdminSelect.value = data.contacts.wa_admin1;
             }
 
-            // Update footer
+            // Update footer & location
             if (document.getElementById("waAdmin1Text")) document.getElementById("waAdmin1Text").innerText = formatPhoneDisplay(data.contacts.wa_admin1);
-            if (document.getElementById("waAdmin2Text")) document.getElementById("waAdmin2Text").innerText = formatPhoneDisplay(data.contacts.wa_admin2);
+            if (document.getElementById("waAdminNumberText")) document.getElementById("waAdminNumberText").innerText = formatPhoneDisplay(data.contacts.wa_admin1);
             if (document.getElementById("igFooterLink")) document.getElementById("igFooterLink").href = data.contacts.instagram;
             if (document.getElementById("fbFooterLink")) document.getElementById("fbFooterLink").href = data.contacts.facebook;
             if (document.getElementById("tiktokFooterLink") && data.contacts.tiktok) document.getElementById("tiktokFooterLink").href = data.contacts.tiktok;
@@ -78,10 +78,17 @@ async function loadDynamicContent() {
 }
 
 function formatPhoneDisplay(num) {
-    if (num.startsWith("62")) {
-        return "0" + num.slice(2);
+    if (!num) return "";
+    let clean = num.toString().trim();
+    if (clean.startsWith("+62")) {
+        clean = "0" + clean.slice(3);
+    } else if (clean.startsWith("62")) {
+        clean = "0" + clean.slice(2);
     }
-    return num;
+    if (clean.length >= 11 && clean.length <= 13) {
+        return clean.slice(0, 4) + "-" + clean.slice(4, 8) + "-" + clean.slice(8);
+    }
+    return clean;
 }
 
 // Logika Menu Dinamis
@@ -951,15 +958,11 @@ function showCartToast() {}
 // WHATSAPP DYNAMIC LOAD BALANCER & ADMIN CONTACTS (SSOT)
 // =========================================
 const ADMIN_CONTACTS = {
-    mila: { name: "Mila Elmeida (Admin 1)", phone: "6285226210408" },
-    bukhori: { name: "M. Bukhori (Admin 2)", phone: "6282329384594" }
+    mila: { name: "Admin Mila", phone: "6285226210408" }
 };
 
 function getAssignedAdmin(mode = "auto") {
-    if (mode === "mila") return ADMIN_CONTACTS.mila.phone;
-    if (mode === "bukhori") return ADMIN_CONTACTS.bukhori.phone;
-    const rand = Math.random() < 0.5;
-    return rand ? ADMIN_CONTACTS.mila.phone : ADMIN_CONTACTS.bukhori.phone;
+    return ADMIN_CONTACTS.mila.phone;
 }
 
 // Stub Kompatibilitas Voucher Promo (Web Profil)
@@ -2115,12 +2118,10 @@ function generateAiKnowledgeResponse(query) {
     // 7. Kontak Admin WhatsApp Langsung
     if (/(wa|whatsapp|kontak|admin|nomor|telepon|cs|mila|bukhori|hubungi|chat)/i.test(q)) {
         return {
-            text: "Anda dapat langsung menghubungi tim Admin Bukit Padangan via WhatsApp:\n\n" +
-                  "• 👩 **Admin Mila**: `0852-2621-0408` (Reservasi & Paket Acara)\n" +
-                  "• 👨 **Admin Bukhori**: `0823-2938-4594` (Operasional & Layanan Tamu)",
+            text: "Anda dapat langsung menghubungi Admin resmi Bukit Padangan via WhatsApp:\n\n" +
+                  "• 👩 **Admin WhatsApp (Mila)**: `0852-2621-0408` (Reservasi, Informasi Menu & Paket Acara)",
             actions: [
-                { label: "💬 Chat Admin Mila", action: "external:https://wa.me/6285226210408?text=Halo%20Admin%20Mila%20Bukit%20Padangan" },
-                { label: "💬 Chat Admin Bukhori", action: "external:https://wa.me/6282329384594?text=Halo%20Admin%20Bukhori%20Bukit%20Padangan" }
+                { label: "💬 Chat WhatsApp Admin", action: "external:https://wa.me/6285226210408?text=Halo%20Admin%20Bukit%20Padangan" }
             ]
         };
     }
