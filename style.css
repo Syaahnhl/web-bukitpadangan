@@ -422,6 +422,10 @@ ul {
     font-size: 0.95rem;
 }
 
+.features-carousel-indicator {
+    display: none;
+}
+
 /* =========================================
    5. MENU SECTION & PRE-ORDER
    ========================================= */
@@ -3030,14 +3034,81 @@ input:focus, select:focus {
         line-height: 1.5;
     }
 
-    /* Features Grid */
+    /* Features Horizontal Carousel on Mobile */
     .features-grid {
-        grid-template-columns: 1fr;
-        gap: 1.2rem;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 14px;
+        padding: 8px 16px 14px 16px;
+        margin: 0 -15px;
+        scrollbar-width: none;
+    }
+
+    .features-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .features-grid::after {
+        content: '';
+        flex: 0 0 2px;
     }
 
     .feature-card {
-        padding: 2rem 1.5rem;
+        flex: 0 0 82%;
+        max-width: 310px;
+        scroll-snap-align: center;
+        padding: 1.5rem 1.25rem;
+        border-radius: 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .feature-card i {
+        font-size: 2.4rem;
+        margin-bottom: 1rem;
+    }
+
+    .feature-card h4 {
+        font-size: 1.25rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .feature-card p {
+        font-size: 0.88rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    /* Features Carousel Indicator Dots on Mobile */
+    .features-carousel-indicator {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-top: 14px;
+        padding-bottom: 6px;
+    }
+
+    .feat-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .feat-dot.active {
+        width: 24px;
+        background: var(--accent-gold);
+        box-shadow: 0 0 10px rgba(212, 163, 115, 0.5);
     }
 
     /* 3D Floor Plan Mobile Responsive */

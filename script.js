@@ -139,12 +139,47 @@ function renderMenuGrid(items) {
     }).join("");
 }
 
+// Carousel Scroll Helper for Features Section (Mobile)
+function initFeaturesCarousel() {
+    const grid = document.getElementById("featuresGrid");
+    const indicator = document.getElementById("featuresIndicator");
+    if (!grid || !indicator) return;
+    const dots = indicator.querySelectorAll(".feat-dot");
+    if (!dots.length) return;
+
+    let isThrottled = false;
+    grid.addEventListener("scroll", () => {
+        if (isThrottled) return;
+        isThrottled = true;
+        requestAnimationFrame(() => {
+            const scrollLeft = grid.scrollLeft;
+            const firstCard = grid.querySelector(".feature-card");
+            const cardWidth = firstCard ? firstCard.offsetWidth + 14 : 280;
+            const activeIdx = Math.min(dots.length - 1, Math.max(0, Math.round(scrollLeft / cardWidth)));
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle("active", idx === activeIdx);
+            });
+            isThrottled = false;
+        });
+    }, { passive: true });
+}
+
+window.scrollToFeature = function(index) {
+    const grid = document.getElementById("featuresGrid");
+    if (!grid) return;
+    const cards = grid.querySelectorAll(".feature-card");
+    if (cards[index]) {
+        cards[index].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }
+};
+
 window.addEventListener("DOMContentLoaded", () => {
     loadDynamicContent();
     loadMenuData();
     loadTablesData();
     initOperatingHoursStatus();
     initFaqAccordion();
+    initFeaturesCarousel();
     updatePackageCalc();
     initCart();
     initWeatherWidget();
