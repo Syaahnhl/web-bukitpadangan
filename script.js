@@ -2038,4 +2038,321 @@ function consultParkingWA() {
     window.open(`https://wa.me/${adminPhone}?text=${encoded}`, "_blank");
 }
 
+// ========================================================
+// 15. FLOATING BOTTOM-RIGHT CHAT & AI ASSISTANT CONCIERGE
+// ========================================================
+let isAiChatOpen = false;
+let isAiChatInitialized = false;
+
+function toggleAiChat(forceOpen = null) {
+    const chatWin = document.getElementById('aiChatWindow');
+    const floatWidget = document.getElementById('floatingChatWidget');
+    if (!chatWin) return;
+
+    if (forceOpen !== null) {
+        isAiChatOpen = forceOpen;
+    } else {
+        isAiChatOpen = !isAiChatOpen;
+    }
+
+    if (isAiChatOpen) {
+        chatWin.style.display = 'flex';
+        chatWin.setAttribute('aria-hidden', 'false');
+        if (floatWidget && window.innerWidth <= 768) {
+            floatWidget.style.display = 'none';
+        }
+        if (!isAiChatInitialized) {
+            initAiChat();
+        }
+        setTimeout(() => {
+            const input = document.getElementById('aiChatInput');
+            if (input && window.innerWidth > 768) {
+                input.focus();
+            }
+            scrollAiChatToBottom();
+        }, 100);
+    } else {
+        chatWin.style.display = 'none';
+        chatWin.setAttribute('aria-hidden', 'true');
+        if (floatWidget) {
+            floatWidget.style.display = 'flex';
+        }
+    }
+}
+
+function initAiChat() {
+    isAiChatInitialized = true;
+    const initialText = "Halo! Selamat datang di **Bukit Padangan Resto** 🍃\n" +
+                        "Saya Asisten AI Bukit Padangan. Ada yang bisa saya bantu seputar menu andalan, reservasi meja, sistem paket rombongan, atau rute lokasi resto?";
+    const initialActions = [
+        { label: "🍛 Menu Favorit", action: "chip:Rekomendasi Menu Favorit" },
+        { label: "🪑 Booking Meja", action: "scroll:#tables" },
+        { label: "💬 Chat Admin WA", action: "wa" }
+    ];
+    appendAiMessage("bot", initialText, initialActions);
+}
+
+function scrollAiChatToBottom() {
+    const msgContainer = document.getElementById('aiChatMessages');
+    if (msgContainer) {
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+    }
+}
+
+function appendAiMessage(role, text, actions = []) {
+    const msgContainer = document.getElementById('aiChatMessages');
+    if (!msgContainer) return;
+
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `ai-msg ai-msg-${role}`;
+
+    // Format Markdown-like basic bold & linebreaks
+    let formattedText = text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n/g, '<br>');
+
+    let actionsHtml = '';
+    if (actions && actions.length > 0) {
+        actionsHtml = '<div class="ai-msg-actions">';
+        actions.forEach(act => {
+            const isWa = act.action && act.action.startsWith('wa');
+            actionsHtml += `<button type="button" class="ai-btn-action ${isWa ? 'action-wa' : ''}" onclick="handleAiActionClick('${act.action}')">${act.label}</button>`;
+        });
+        actionsHtml += '</div>';
+    }
+
+    msgDiv.innerHTML = `
+        <div class="ai-msg-bubble">
+            ${formattedText}
+            ${actionsHtml}
+        </div>
+    `;
+
+    msgContainer.appendChild(msgDiv);
+    scrollAiChatToBottom();
+}
+
+function showAiTypingIndicator() {
+    const msgContainer = document.getElementById('aiChatMessages');
+    if (!msgContainer) return null;
+
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'ai-msg ai-msg-bot';
+    typingDiv.id = 'aiTypingIndicatorBubble';
+    typingDiv.innerHTML = `
+        <div class="ai-typing-indicator">
+            <span class="ai-typing-dot"></span>
+            <span class="ai-typing-dot"></span>
+            <span class="ai-typing-dot"></span>
+        </div>
+    `;
+    msgContainer.appendChild(typingDiv);
+    scrollAiChatToBottom();
+    return typingDiv;
+}
+
+function removeAiTypingIndicator() {
+    const typingBubble = document.getElementById('aiTypingIndicatorBubble');
+    if (typingBubble) {
+        typingBubble.remove();
+    }
+}
+
+function handleAiChipClick(chipText) {
+    if (!isAiChatOpen) {
+        toggleAiChat(true);
+    }
+    const input = document.getElementById('aiChatInput');
+    if (input) {
+        input.value = chipText;
+        handleAiChatSubmit(new Event('submit'));
+    }
+}
+
+function handleAiActionClick(actionStr) {
+    if (!actionStr) return;
+
+    if (actionStr.startsWith('chip:')) {
+        const text = actionStr.replace('chip:', '');
+        handleAiChipClick(text);
+    } else if (actionStr.startsWith('scroll:')) {
+        const targetId = actionStr.replace('scroll:', '');
+        const targetEl = document.querySelector(targetId);
+        if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+        }
+    } else if (actionStr.startsWith('func:')) {
+        const funcName = actionStr.replace('func:', '');
+        if (typeof window[funcName] === 'function') {
+            window[funcName]();
+        }
+    } else if (actionStr.startsWith('external:')) {
+        const url = actionStr.replace('external:', '');
+        window.open(url, '_blank');
+    } else if (actionStr.startsWith('wa')) {
+        let msg = "Halo Admin Bukit Padangan, saya ingin konsultasi info resto dan reservasi.";
+        if (actionStr === 'wa:menu') {
+            msg = "Halo Admin Bukit Padangan, saya ingin bertanya seputar rekomendasi menu andalan dan pemesanan.";
+        } else if (actionStr === 'wa:paket') {
+            msg = "Halo Admin Bukit Padangan, saya ingin konsultasi kustom paket acara rombongan (reuni/rapat/arisan/gathering).";
+        } else if (actionStr === 'wa:meja') {
+            msg = "Halo Admin Bukit Padangan, saya ingin reservasi meja dan memastikan ketersediaan tempat.";
+        } else if (actionStr === 'wa:dp') {
+            msg = "Halo Admin Bukit Padangan, saya ingin konfirmasi transfer pembayaran DP reservasi meja.";
+        } else if (actionStr === 'wa:rute') {
+            msg = "Halo Admin Bukit Padangan, mohon panduan rute dan info parkir bus menuju Bukit Padangan.";
+        }
+        const adminPhone = typeof getAssignedAdmin === 'function' ? getAssignedAdmin("auto") : "6285226210408";
+        window.open(`https://wa.me/${adminPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+}
+
+function handleAiChatSubmit(event) {
+    if (event) event.preventDefault();
+    const input = document.getElementById('aiChatInput');
+    if (!input) return;
+
+    const rawText = input.value.trim();
+    if (!rawText) return;
+
+    input.value = '';
+    appendAiMessage('user', rawText);
+
+    showAiTypingIndicator();
+
+    setTimeout(() => {
+        removeAiTypingIndicator();
+        const botResponse = generateAiKnowledgeResponse(rawText);
+        appendAiMessage('bot', botResponse.text, botResponse.actions);
+    }, 450);
+}
+
+function generateAiKnowledgeResponse(query) {
+    const q = query.toLowerCase();
+
+    // 1. Salam & Sapaan
+    if (/^(halo|hai|hi|hey|assalam|pagi|siang|sore|malam|permisi|tes|test)/i.test(q)) {
+        return {
+            text: "Halo! Senang bisa menyapa Anda di **Bukit Padangan Resto** 🍃\nAda yang bisa saya bantu hari ini? Anda bisa menanyakan rekomendasi menu, ketersediaan meja, paket kustom rombongan, atau rute ke resto.",
+            actions: [
+                { label: "🍛 Menu Favorit", action: "chip:Rekomendasi Menu Favorit" },
+                { label: "🪑 Booking Meja", action: "scroll:#tables" },
+                { label: "💬 Chat Admin WA", action: "wa" }
+            ]
+        };
+    }
+
+    // 2. Menu, Makanan, Minuman, Harga
+    if (/(menu|makan|minum|harga|katalog|favorit|spesial|enak|ayam|bebek|ikan|gurame|nila|ingkung|bledos|mendoan|kopi|wedang|jus|kelapa|pedas)/i.test(q)) {
+        return {
+            text: "Berikut beberapa **menu favorit & andalan** di Bukit Padangan Resto:\n\n" +
+                  "🔥 **Ayam Bledos & Bebek Bledos** (Rp 26k - 32k): Bumbu rempah pedas khas meresap, juara rasa!\n" +
+                  "🍯 **Ayam & Nila Bakar Madu** (Rp 26k - 28k): Manis gurih legit, sangat cocok untuk keluarga & anak-anak.\n" +
+                  "👑 **Ayam Ingkung Komplit** (Rp 175k): 1 ekor ayam kampung utuh empuk bumbu gurih komplit lalapan.\n" +
+                  "☕ **Kopi Gula Aren & Wedang Rempah** (Rp 12k - 15k): Hangat khas lereng pegunungan Muria.\n" +
+                  "🥥 **Es Kelapa Muda Jeruk & Aneka Jus Segar** (Rp 16k - 18k).",
+            actions: [
+                { label: "🍽️ Buka Menu Lengkap", action: "scroll:#menu" },
+                { label: "💬 Pesan via WhatsApp", action: "wa:menu" }
+            ]
+        };
+    }
+
+    // 3. Paket Acara, Rombongan, Reuni, Rapat, Arisan, Bukber, Ultah
+    if (/(paket|rombongan|acara|reuni|rapat|arisan|bukber|buka bersama|ultah|ulang tahun|pernikahan|gathering|komunitas|budget|sound|kapasitas)/i.test(q)) {
+        return {
+            text: "Bukit Padangan menyediakan **Sistem Penawaran Paket Acara 100% Kustom** 🎉\n\n" +
+                  "Anda bebas menentukan menu dan budget per orang (misal Rp 25k, Rp 35k, atau Rp 50k+ per pax), untuk kapasitas hingga 200+ orang. Sudah termasuk fasilitas:\n" +
+                  "• Sound system wireless & mic gratis\n" +
+                  "• Area lesehan saung / meja panjang luas\n" +
+                  "• Spot foto panorama perbukitan asri\n" +
+                  "• Parkir luas motor, mobil, hingga bus pariwisata",
+            actions: [
+                { label: "🎉 Kalkulator Paket", action: "scroll:#packages" },
+                { label: "💬 Konsultasi WA Rombongan", action: "wa:paket" }
+            ]
+        };
+    }
+
+    // 4. Meja, Reservasi, Booking, 3D, Gazebo, Saung
+    if (/(meja|reservasi|booking|tempat|denah|3d|outdoor|indoor|gazebo|saung|lesehan|terapi ikan|sunset)/i.test(q)) {
+        return {
+            text: "Untuk reservasi tempat di Bukit Padangan sangat fleksibel! Anda bisa memilih zona favorit:\n\n" +
+                  "• **Gazebo Saung Kolam**: Suasana sejuk di atas kolam terapi ikan santai.\n" +
+                  "• **Indoor Utama & Sayap Musik**: Nyaman, dekat panggung akustik, pas untuk acara formal atau keluarga.\n" +
+                  "• **Outdoor Deck Sunset**: Panorama alam terbuka, syahdu saat sore menjelang matahari terbenam.",
+            actions: [
+                { label: "🪑 Pilih Meja Interaktif", action: "scroll:#tables" },
+                { label: "💬 Tanya Meja via WA", action: "wa:meja" }
+            ]
+        };
+    }
+
+    // 5. Jam Buka, Lokasi, Rute, Alamat, Parkir
+    if (/(jam|buka|tutup|operasional|lokasi|alamat|dimana|rute|jalan|maps|google|pati|gunungwungkal|parkir|bus)/i.test(q)) {
+        return {
+            text: "⏰ **Jam Operasional:**\nBuka setiap hari: **11.00 – 22.00 WIB**\n\n" +
+                  "📍 **Alamat & Lokasi:**\nJl. Raya Gunungwungkal-Gulangpongge, Kec. Gunungwungkal, Kab. Pati, Jawa Tengah (lereng perbukitan Gunung Muria yang sejuk).\n\n" +
+                  "🚌 **Fasilitas Parkir:**\nArea parkir sangat luas dan aman untuk sepeda motor, mobil keluarga, hingga iringan bus pariwisata.",
+            actions: [
+                { label: "🗺️ Buka Google Maps", action: "external:https://maps.google.com/?q=Bukit+Padangan+Resto+Pati" },
+                { label: "💬 Panduan Rute WA", action: "wa:rute" }
+            ]
+        };
+    }
+
+    // 6. DP, Rekening, Pembayaran, Mandiri
+    if (/(dp|down payment|uang muka|bayar|transfer|rekening|mandiri|bank|konfirmasi)/i.test(q)) {
+        return {
+            text: "💳 **Rekening Resmi Pembayaran DP:**\n• **Bank Mandiri**: `1840011559968`\n• **Atas Nama**: Mila Elmeida\n\n" +
+                  "⚠️ **Ketentuan Reservasi:**\nKonfirmasi bukti transfer DP diterima maksimal pukul **14.00 WIB** pada hari-H agar meja dan pesanan Anda dipersiapkan dengan optimal.",
+            actions: [
+                { label: "📤 Konfirmasi Bukti DP", action: "func:openConfirmDpModal" },
+                { label: "💬 Kirim Bukti ke WA Admin", action: "wa:dp" }
+            ]
+        };
+    }
+
+    // 7. Kontak Admin WhatsApp Langsung
+    if (/(wa|whatsapp|kontak|admin|nomor|telepon|cs|mila|bukhori|hubungi|chat)/i.test(q)) {
+        return {
+            text: "Anda dapat langsung menghubungi tim Admin Bukit Padangan via WhatsApp:\n\n" +
+                  "• 👩 **Admin Mila**: `0852-2621-0408` (Reservasi & Paket Acara)\n" +
+                  "• 👨 **Admin Bukhori**: `0823-2938-4594` (Operasional & Layanan Tamu)",
+            actions: [
+                { label: "💬 Chat Admin Mila", action: "external:https://wa.me/6285226210408?text=Halo%20Admin%20Mila%20Bukit%20Padangan" },
+                { label: "💬 Chat Admin Bukhori", action: "external:https://wa.me/6282329384594?text=Halo%20Admin%20Bukhori%20Bukit%20Padangan" }
+            ]
+        };
+    }
+
+    // 8. Fasilitas (Mushola, Wifi, Toilet, Playground)
+    if (/(fasilitas|toilet|mushola|musala|wifi|colokan|listrik|stopkontak|anak|playground|ikan)/i.test(q)) {
+        return {
+            text: "Fasilitas lengkap di Bukit Padangan Resto:\n" +
+                  "• 🕌 Mushola bersih & nyaman\n" +
+                  "• 🚻 Toilet higienis di beberapa titik\n" +
+                  "• 🐟 Kolam terapi ikan alami (santai di saung)\n" +
+                  "• 🛝 Mini playground ramah anak\n" +
+                  "• 📶 Wi-Fi gratis & stopkontak di area meja\n" +
+                  "• 🅿️ Area parkir luas motor, mobil, bus",
+            actions: [
+                { label: "🪑 Pilih Meja Saung", action: "scroll:#tables" },
+                { label: "💬 Tanya Info Fasilitas", action: "wa" }
+            ]
+        };
+    }
+
+    // Default / Fallback
+    return {
+        text: "Terima kasih atas pertanyaannya! Asisten AI Bukit Padangan siap membantu Anda mencari info menu lezat, reservasi meja, atau paket rombongan.\n\n" +
+              "Jika Anda butuh bantuan khusus atau ingin berbicara dengan tim staf kami, silakan klik tombol di bawah untuk terhubung langsung ke WhatsApp Admin 😊",
+        actions: [
+            { label: "🍛 Menu Favorit", action: "chip:Rekomendasi Menu Favorit" },
+            { label: "🪑 Booking Meja", action: "scroll:#tables" },
+            { label: "💬 Chat WhatsApp Admin", action: "wa" }
+        ]
+    };
+}
+
 

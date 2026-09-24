@@ -1843,6 +1843,67 @@
         <span id="cartToastMsg">Item berhasil ditambahkan ke keranjang</span>
     </div>
 
+    <!-- Floating Bottom-Right Chat & AI Assistant Widget -->
+    <div id="floatingChatWidget" class="floating-chat-widget">
+        <!-- Direct WhatsApp Chat Floating Button -->
+        <a id="floatingWaBtn" href="https://wa.me/6285226210408?text=Halo%20Admin%20Bukit%20Padangan%2C%20saya%20ingin%20tanya%20seputar%20menu%20dan%20reservasi." target="_blank" rel="noopener noreferrer" class="floating-chat-btn floating-wa-btn" title="Chat WhatsApp Admin" aria-label="Chat WhatsApp Admin">
+            <i class="fab fa-whatsapp"></i>
+            <span class="floating-chat-tooltip">Chat WhatsApp</span>
+        </a>
+
+        <!-- AI Assistant Floating Button -->
+        <button type="button" id="floatingAiBtn" class="floating-chat-btn floating-ai-btn" onclick="toggleAiChat()" title="Tanya Asisten AI Bukit Padangan" aria-label="Tanya Asisten AI Bukit Padangan">
+            <span class="floating-ai-ring"></span>
+            <i class="fas fa-robot"></i>
+            <span class="floating-chat-tooltip">Asisten AI</span>
+            <span class="floating-ai-badge">AI</span>
+        </button>
+    </div>
+
+    <!-- AI Chatbot Window Popup -->
+    <div id="aiChatWindow" class="ai-chat-window" style="display: none;" aria-hidden="true">
+        <div class="ai-chat-header">
+            <div class="ai-chat-brand">
+                <div class="ai-chat-avatar">
+                    <i class="fas fa-robot"></i>
+                    <span class="ai-online-indicator"></span>
+                </div>
+                <div class="ai-chat-info">
+                    <h4>Asisten AI Bukit Padangan</h4>
+                    <span class="ai-chat-status"><i class="fas fa-circle"></i> Online • Siap Membantu 24 Jam</span>
+                </div>
+            </div>
+            <div class="ai-chat-actions">
+                <button type="button" class="btn-ai-close" onclick="toggleAiChat()" title="Tutup Chat" aria-label="Tutup Chat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="aiChatMessages" class="ai-chat-messages">
+            <!-- Messages rendered dynamically via JS -->
+        </div>
+
+        <div id="aiQuickChips" class="ai-quick-chips">
+            <button type="button" class="ai-chip" onclick="handleAiChipClick('Rekomendasi Menu Favorit')">🍛 Menu Favorit</button>
+            <button type="button" class="ai-chip" onclick="handleAiChipClick('Paket Custom Rombongan')">🎉 Paket Rombongan</button>
+            <button type="button" class="ai-chip" onclick="handleAiChipClick('Cara Booking Meja')">🪑 Booking Meja</button>
+            <button type="button" class="ai-chip" onclick="handleAiChipClick('Jam Buka & Lokasi')">⏰ Jam Buka & Rute</button>
+            <button type="button" class="ai-chip" onclick="handleAiChipClick('Nomor Rekening DP')">💳 Info Transfer DP</button>
+            <button type="button" class="ai-chip" onclick="handleAiChipClick('Chat WhatsApp Admin')">💬 Tanya Admin WA</button>
+        </div>
+
+        <form id="aiChatForm" class="ai-chat-input-bar" onsubmit="handleAiChatSubmit(event)">
+            <input type="text" id="aiChatInput" placeholder="Tanya menu, meja, paket..." autocomplete="off">
+            <button type="submit" id="aiChatSendBtn" aria-label="Kirim Pesan">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </form>
+        <div class="ai-chat-footer-brand">
+            <span>🍃 Bukit Padangan AI Virtual Concierge</span>
+        </div>
+    </div>
+
     <!-- Three.js & 3D Interactive Floor Plan Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
