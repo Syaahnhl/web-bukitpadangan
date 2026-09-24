@@ -201,6 +201,35 @@ ul {
     color: var(--accent-gold);
 }
 
+/* Nav Admin Link */
+.nav-links a.nav-admin-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(212, 163, 115, 0.35);
+    background: rgba(22, 26, 32, 0.6);
+    color: #e2e8f0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.nav-links a.nav-admin-link i {
+    display: inline-block !important;
+    font-size: 0.85rem;
+    color: var(--accent-gold);
+}
+
+.nav-links a.nav-admin-link:hover {
+    color: var(--accent-gold);
+    border-color: var(--accent-gold);
+    background: rgba(212, 163, 115, 0.15);
+    box-shadow: 0 0 15px rgba(212, 163, 115, 0.25);
+    transform: translateY(-1px);
+}
+
 /* Tombol Reservasi di Navbar */
 .btn-reservasi {
     background: linear-gradient(135deg, #e5b382 0%, #d4a373 50%, #b38253 100%);
@@ -3082,6 +3111,35 @@ input:focus, select:focus {
 
     .nav-desktop-cta {
         display: none;
+    }
+
+    .nav-links li a.nav-admin-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 14px 1.4rem 8px 1.4rem;
+        width: calc(100% - 2.8rem);
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 1px solid rgba(212, 163, 115, 0.4);
+        background: rgba(22, 26, 33, 0.85);
+        color: #f1f5f9;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-links li a.nav-admin-link i {
+        display: inline-block !important;
+        width: auto;
+        font-size: 1.1rem;
+        color: var(--accent-gold) !important;
+    }
+
+    .nav-links li a.nav-admin-link:hover,
+    .nav-links li a.nav-admin-link:active {
+        border-color: var(--accent-gold);
+        background: rgba(212, 163, 115, 0.2);
+        color: var(--accent-gold);
     }
 
     .nav-drawer-footer {
