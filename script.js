@@ -1625,19 +1625,17 @@ function sendPackageCalcToWA() {
     const grandTotal = document.getElementById("summaryGrandTotal") ? document.getElementById("summaryGrandTotal").textContent : "Rp 0";
     const dpVal = document.getElementById("summaryDpVal") ? document.getElementById("summaryDpVal").textContent : "Rp 0";
 
-    let waText = `Halo Admin Bukit Padangan, saya ingin konsultasi reservasi acara rombongan:\n\n`;
+    let waText = `Halo Admin Bukit Padangan, saya ingin konsultasi penawaran custom acara rombongan:\n\n`;
     waText += `🎉 *Kategori Acara:* ${eventType}\n`;
     waText += `👥 *Estimasi Tamu:* ${pax} Orang\n`;
-    waText += `📋 *Paket Konsumsi:* ${pkgName}\n`;
-    waText += `✨ *Fasilitas & Extra:*\n`;
+    waText += `📋 *Pilihan Estimasi Menu:* ${pkgName}\n`;
+    waText += `✨ *Fasilitas & Layanan:*\n`;
     addons.forEach(item => {
         waText += `  • ${item}\n`;
     });
-    waText += `\n💰 *Total Estimasi Biaya:* ${grandTotal}\n`;
-    waText += `🔒 *Estimasi DP 20% (Kunci Jadwal):* ${dpVal}\n\n`;
-    waText += `💳 *Rekening Pembayaran DP:*\n`;
-    waText += `• Bank Mandiri: *1840011559968* (a.n. Mila Elmeida)\n\n`;
-    waText += `Mohon info ketersediaan slot tanggal & arahan lebih lanjut. Terima kasih!`;
+    waText += `\n💰 *Total Estimasi Biaya (Acuan):* ${grandTotal}\n`;
+    waText += `🔒 *Estimasi DP 20% (Kunci Slot):* ${dpVal}\n\n`;
+    waText += `Mohon info ketersediaan slot tanggal & arahan penawaran custom selanjutnya. Terima kasih!`;
 
     const chosenAdmin = adminSelect ? adminSelect.value : "auto";
     const adminPhone = getAssignedAdmin(chosenAdmin);
