@@ -24,27 +24,31 @@ async function loadDynamicContent() {
 
         // 2. Hero Section
         if (data.hero) {
-            if (document.getElementById("heroTitleText")) document.getElementById("heroTitleText").innerText = data.hero.title;
-            if (document.getElementById("heroSubtitleText") && data.hero.subtitle) document.getElementById("heroSubtitleText").innerText = data.hero.subtitle;
-            if (document.getElementById("heroDescText")) document.getElementById("heroDescText").innerText = data.hero.desc;
+            const hTitle = document.getElementById("heroTitleText");
+            const hSub = document.getElementById("heroSubtitleText");
+            const hDesc = document.getElementById("heroDescText");
+            if (hTitle && data.hero.title && hTitle.innerText !== data.hero.title) hTitle.innerText = data.hero.title;
+            if (hSub && data.hero.subtitle && hSub.innerText !== data.hero.subtitle) hSub.innerText = data.hero.subtitle;
+            if (hDesc && data.hero.desc && hDesc.innerText !== data.hero.desc) hDesc.innerText = data.hero.desc;
         }
 
         // 3. About Section
         if (data.about) {
-            if (document.getElementById("aboutTitleText")) {
-                document.getElementById("aboutTitleText").innerText = data.about.title || "Suasana Alam & Rasa Otentik";
-            }
-            if (document.getElementById("aboutDescText")) {
-                document.getElementById("aboutDescText").innerText = data.about.desc || "";
-            }
+            const aTitle = document.getElementById("aboutTitleText");
+            const aDesc = document.getElementById("aboutDescText");
+            const expectedTitle = data.about.title || "Suasana Alam & Rasa Otentik";
+            if (aTitle && aTitle.innerText !== expectedTitle) aTitle.innerText = expectedTitle;
+            if (aDesc && data.about.desc && aDesc.innerText !== data.about.desc) aDesc.innerText = data.about.desc;
         }
 
         // 4. Event Section
         const eventSection = document.getElementById("event");
         const navEventLink = document.getElementById("navEventLink");
         if (data.event) {
-            if (data.event.title && document.getElementById("eventTitleText")) document.getElementById("eventTitleText").innerText = data.event.title;
-            if (data.event.desc && document.getElementById("eventDescText")) document.getElementById("eventDescText").innerText = data.event.desc;
+            const eTitle = document.getElementById("eventTitleText");
+            const eDesc = document.getElementById("eventDescText");
+            if (eTitle && data.event.title && eTitle.innerText !== data.event.title) eTitle.innerText = data.event.title;
+            if (eDesc && data.event.desc && eDesc.innerText !== data.event.desc) eDesc.innerText = data.event.desc;
             if (data.event.show !== false) {
                 if (eventSection) eventSection.style.display = "block";
                 if (navEventLink) navEventLink.style.display = "block";
