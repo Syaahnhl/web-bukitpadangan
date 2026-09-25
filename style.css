@@ -8032,10 +8032,10 @@ input:focus, select:focus {
     position: fixed;
     bottom: 24px;
     right: 24px;
-    width: 375px;
+    width: 360px;
     max-width: calc(100vw - 32px);
-    height: 500px;
-    max-height: calc(100vh - 90px);
+    height: 465px;
+    max-height: calc(100vh - 100px);
     background: #0f131a;
     border: 1px solid rgba(212, 163, 115, 0.35);
     border-radius: 20px;
@@ -8589,13 +8589,12 @@ input:focus, select:focus {
     }
 }
 
-/* Quick prompt chips */
+/* Quick prompt chips - Symmetrical 2x2 grid */
 .ai-quick-chips {
     display: flex;
+    flex-wrap: wrap;
     gap: 6px;
-    padding: 8px 12px;
-    overflow-x: auto;
-    scrollbar-width: none;
+    padding: 6px 12px 8px;
     background: rgba(10, 13, 18, 0.6);
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     flex-shrink: 0;
@@ -8610,12 +8609,14 @@ input:focus, select:focus {
     border: 1px solid rgba(212, 163, 115, 0.25);
     color: #cbd5e1;
     font-size: 0.72rem;
-    padding: 4px 10px;
-    border-radius: 14px;
+    padding: 6px 8px;
+    border-radius: 12px;
     white-space: nowrap;
     cursor: pointer;
     transition: all 0.2s ease;
-    flex-shrink: 0;
+    flex: 1 1 calc(50% - 6px);
+    text-align: center;
+    box-sizing: border-box;
 }
 
 .ai-chip:hover {
