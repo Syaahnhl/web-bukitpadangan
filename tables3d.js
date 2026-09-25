@@ -168,8 +168,7 @@ function init3DFloorPlan() {
         : Math.min(window.devicePixelRatio || 1, 1.75);
     renderer3D.setPixelRatio(targetDPR);
 
-    renderer3D.shadowMap.enabled = true;
-    renderer3D.shadowMap.type = isMobileDevice ? THREE.BasicShadowMap : THREE.PCFSoftShadowMap;
+    renderer3D.shadowMap.enabled = false;
     renderer3D.toneMapping = THREE.ACESFilmicToneMapping;
     renderer3D.toneMappingExposure = 1.15;
 
@@ -220,21 +219,10 @@ function setup3DLighting() {
     hemiLight.position.set(0, 50, 0);
     scene3D.add(hemiLight);
 
-    // Main Warm Golden Key Light
-    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768);
-    const sunLight = new THREE.DirectionalLight(0xffdfa9, 0.85);
+    // Main Warm Golden Key Light (Zero shadow map pass for silky smooth FPS)
+    const sunLight = new THREE.DirectionalLight(0xffdfa9, 0.95);
     sunLight.position.set(28, 45, 25);
-    sunLight.castShadow = true;
-    sunLight.shadow.mapSize.width = isMobileDevice ? 1024 : 2048;
-    sunLight.shadow.mapSize.height = isMobileDevice ? 1024 : 2048;
-    sunLight.shadow.camera.near = 1;
-    sunLight.shadow.camera.far = 120;
-    const d = 40;
-    sunLight.shadow.camera.left = -d;
-    sunLight.shadow.camera.right = d;
-    sunLight.shadow.camera.top = d;
-    sunLight.shadow.camera.bottom = -d;
-    sunLight.shadow.bias = -0.0008;
+    sunLight.castShadow = false;
     scene3D.add(sunLight);
 
     // Warm Gold Ambient fill
@@ -1286,66 +1274,7 @@ function buildIndoorUtama() {
         group.add(beam);
     });
 
-    // 5. Exposed Timber Roof Truss & Rafters (Rangka Atap Usuk Kayu Terekspos)
-    [-2.6, 2.6].forEach(kx => {
-        const kingPost = new THREE.Mesh(new THREE.BoxGeometry(0.24, 1.8, 0.24), beamMat);
-        kingPost.position.set(kx, 4.65, 0);
-        group.add(kingPost);
-    });
-
-    const ridgeBeam = new THREE.Mesh(new THREE.BoxGeometry(14.0, 0.24, 0.24), beamMat);
-    ridgeBeam.position.set(0, 5.55, 0);
-    group.add(ridgeBeam);
-
-    // Exposed Timber Rafters (Usuk-Usuk Kayu Berjejer Rapat)
-    for (let rx = -7.4; rx <= 7.4; rx += 0.65) {
-        const rafterN = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.14, 8.4), rafterMat);
-        rafterN.position.set(rx, 4.65, -3.5);
-        rafterN.rotation.x = 0.44;
-        group.add(rafterN);
-
-        const rafterS = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.14, 8.4), rafterMat);
-        rafterS.position.set(rx, 4.65, 3.5);
-        rafterS.rotation.x = -0.44;
-        group.add(rafterS);
-    }
-
-    // Exposed Horizontal Ceiling Battens / Purlins (Reng Bambu/Kayu di Bawah Atap)
-    [-5.8, -4.2, -2.6, -1.0, 1.0, 2.6, 4.2, 5.8].forEach(pz => {
-        const purlin = new THREE.Mesh(new THREE.BoxGeometry(15.6, 0.08, 0.08), battenMat);
-        const yPurlin = 5.55 - Math.abs(pz) * 0.26;
-        purlin.position.set(0, yPurlin, pz);
-        group.add(purlin);
-    });
-
-    // 6. Terracotta Clay Tile Pitched Roof (Genteng Tanah Liat Limasan Tradisional)
-    const roofN = new THREE.Mesh(new THREE.BoxGeometry(17.4, 0.12, 8.8), tileMat);
-    roofN.position.set(0, 4.75, -3.6);
-    roofN.rotation.x = 0.44;
-    roofN.castShadow = true;
-    roofN.receiveShadow = true;
-    group.add(roofN);
-
-    const roofS = new THREE.Mesh(new THREE.BoxGeometry(17.4, 0.12, 8.8), tileMat);
-    roofS.position.set(0, 4.75, 3.6);
-    roofS.rotation.x = -0.44;
-    roofS.castShadow = true;
-    roofS.receiveShadow = true;
-    group.add(roofS);
-
-    const eastHip = new THREE.Mesh(new THREE.ConeGeometry(5.2, 2.2, 4), tileMat);
-    eastHip.position.set(8.2, 4.65, 0);
-    eastHip.rotation.y = Math.PI / 4;
-    group.add(eastHip);
-
-    const westHip = new THREE.Mesh(new THREE.ConeGeometry(5.2, 2.2, 4), tileMat);
-    westHip.position.set(-8.2, 4.65, 0);
-    westHip.rotation.y = Math.PI / 4;
-    group.add(westHip);
-
-    const ridgeCap = new THREE.Mesh(new THREE.BoxGeometry(15.2, 0.18, 0.42), tileMat);
-    ridgeCap.position.set(0, 5.65, 0);
-    group.add(ridgeCap);
+    // 5. Open-Top Cutaway Architecture (Atap limasan & usuk genteng ditiadakan agar seluruh meja terlihat jelas dari atas)
 
     // 7. Authentic Directional Signboard: "MUSHOLA / TOILET ➔" (Sesuai Persis Foto img_bcb8e1b7e299.jpg)
     // Menggantung di balok kayu koridor tengah-kanan pada ketinggian pandangan mata (y = 2.2m)
@@ -1706,588 +1635,47 @@ function buildIndoorTimur1() {
     bCenter.position.set(0, 3.75, 0);
     group.add(bCenter);
 
-    // Traditional Pitched Terracotta Roof
-    const roofN = new THREE.Mesh(new THREE.BoxGeometry(10.2, 0.12, 5.6), tileMat);
-    roofN.position.set(0, 4.55, -2.4);
-    roofN.rotation.x = 0.36;
-    group.add(roofN);
+    // Traditional Indoor Timur 1 - Open-Top Architecture (Tanpa atap genteng agar meja IT1-13 s/d IT1-16 bebas diakses)
 
-    const roofS = new THREE.Mesh(new THREE.BoxGeometry(10.2, 0.12, 5.6), tileMat);
-    roofS.position.set(0, 4.55, 2.4);
-    roofS.rotation.x = -0.36;
-    group.add(roofS);
-
-    // 7. Iconic Museum-Grade Ultra-Smooth Vintage Sepeda Onthel (Gazelle Champion / Fongers Style)
-    // Geometri presisi beresolusi tinggi: lingkar lengkung kurva ultra-halus, sadel Brooks berkontur, stang dongkol pipa mulus
+    // 7. Vintage Sepeda Onthel (Lightweight Low-Poly Decorative Art Prop)
     const bikeGroup = new THREE.Group();
     bikeGroup.position.set(0, 0.40, -3.1);
-    bikeGroup.rotation.y = 0.16; // Angled gracefully towards the audience for perfect silhouette
+    bikeGroup.rotation.y = 0.16;
 
-    // Materials
-    const bikeBlackMat = new THREE.MeshStandardMaterial({
-        color: 0x0a0c10,
-        roughness: 0.15,
-        metalness: 0.50,
-        side: THREE.DoubleSide
-    }); // High-gloss Dutch black enamel lacquer with rich reflections
-    const bikeChromeMat = new THREE.MeshStandardMaterial({
-        color: 0xf8fafc,
-        roughness: 0.08,
-        metalness: 0.98
-    }); // Mirror-finish vintage chrome
-    const bikeTireMat = new THREE.MeshStandardMaterial({
-        color: 0x16171a,
-        roughness: 0.88,
-        metalness: 0.04
-    }); // Deep matte vintage tire rubber
-    const bikeLeatherMat = new THREE.MeshStandardMaterial({
-        color: 0x3d1b0d,
-        roughness: 0.38,
-        metalness: 0.10
-    }); // Aged Brooks chestnut brown leather
-    const goldPinstripeMat = new THREE.MeshStandardMaterial({
-        color: 0xe5aa52,
-        roughness: 0.22,
-        metalness: 0.88,
-        emissive: 0x4a300a,
-        emissiveIntensity: 0.30
-    }); // Elegant gold pinstripe accent
-    const brassMat = new THREE.MeshStandardMaterial({
-        color: 0xd4af37,
-        roughness: 0.20,
-        metalness: 0.92
-    }); // Polished brass for rivets & bell
+    const bikeMat = new THREE.MeshLambertMaterial({ color: 0x1a1c20 });
+    const wheelMat = new THREE.MeshLambertMaterial({ color: 0x2b2d32 });
 
-    // --- A. WHEELS (28" Chrome Rims, Fine Wire Spokes, Deep Rubber Tires, Ultra-Smooth 128-Seg) ---
-    function createOnthelWheel(xPos) {
-        const wGroup = new THREE.Group();
-        wGroup.position.set(xPos, 0.42, 0);
-
-        // Ultra-Smooth Polished Chrome Rim (128 tubular segments for seamless circle)
-        const rim = new THREE.Mesh(new THREE.TorusGeometry(0.385, 0.015, 16, 64), bikeChromeMat);
-        wGroup.add(rim);
-
-        // Ultra-Smooth Vintage Tread Rubber Tire (128 tubular segments)
-        const tire = new THREE.Mesh(new THREE.TorusGeometry(0.402, 0.026, 16, 64), bikeTireMat);
-        wGroup.add(tire);
-
-        // Center Chrome Hub with Flanges & Axle Nuts
-        const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.14, 32), bikeChromeMat);
-        hub.rotation.x = Math.PI / 2;
-        wGroup.add(hub);
-
-        // Spoke Flange Rings
-        [-0.05, 0.05].forEach(fz => {
-            const flange = new THREE.Mesh(new THREE.TorusGeometry(0.036, 0.004, 12, 32), bikeChromeMat);
-            flange.position.z = fz;
-            wGroup.add(flange);
-        });
-
-        [-0.07, 0.07].forEach(nz => {
-            const nut = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.02, 16), bikeChromeMat);
-            nut.rotation.x = Math.PI / 2;
-            nut.position.z = nz;
-            wGroup.add(nut);
-        });
-
-        // Fine Round Wire Spokes via InstancedMesh (36 spokes per wheel in EXACTLY 1 draw call!)
-        const spokeCount = 36;
-        const spokeGeo = new THREE.CylinderGeometry(0.0022, 0.0022, 0.77, 6);
-        const spokeInst = new THREE.InstancedMesh(spokeGeo, bikeChromeMat, spokeCount);
-        const dummy = new THREE.Object3D();
-        for (let s = 0; s < spokeCount; s++) {
-            const angle = (s * Math.PI * 2) / spokeCount;
-            const side = (s % 2 === 0) ? 0.012 : -0.012;
-            const offset = (s % 2 === 0) ? 0 : 0.08;
-            dummy.position.set(0, 0, side);
-            dummy.rotation.set(0, 0, angle + offset);
-            dummy.updateMatrix();
-            spokeInst.setMatrixAt(s, dummy.matrix);
-        }
-        spokeInst.instanceMatrix.needsUpdate = true;
-        wGroup.add(spokeInst);
-        return wGroup;
-    }
-
-    const frontWheel = createOnthelWheel(0.74);
-    bikeGroup.add(frontWheel);
-
-    const rearWheel = createOnthelWheel(-0.74);
-    bikeGroup.add(rearWheel);
-
-    // --- B. VINTAGE C-CHANNEL FENDERS WITH WHITE TIP & GAZELLE MASCOT (128 Radial Segments) ---
-    // Front Fender (Lengkung Depan Ber-Volume Halus Tanpa Facet)
-    const frontFender = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.435, 0.435, 0.072, 64, 1, true, -Math.PI * 0.18, Math.PI * 0.82),
-        bikeBlackMat
-    );
-    frontFender.rotation.x = Math.PI / 2;
-    frontFender.position.set(0.74, 0.42, 0);
-    bikeGroup.add(frontFender);
-
-    // Iconic Gazelle Leaping Mascot on Front Fender Tip
-    const mascotGroup = new THREE.Group();
-    mascotGroup.position.set(0.96, 0.76, 0);
-    mascotGroup.rotation.z = 0.55;
-    const mascotBody = new THREE.Mesh(new THREE.ConeGeometry(0.018, 0.065, 24), bikeChromeMat);
-    mascotBody.rotation.z = -Math.PI / 2;
-    mascotGroup.add(mascotBody);
-    const mascotHead = new THREE.Mesh(new THREE.SphereGeometry(0.014, 20, 20), bikeChromeMat);
-    mascotHead.position.set(0.038, 0.012, 0);
-    mascotGroup.add(mascotHead);
-    const mascotHorns = new THREE.Mesh(new THREE.TorusGeometry(0.012, 0.0025, 8, 20, Math.PI * 0.6), bikeChromeMat);
-    mascotHorns.position.set(0.040, 0.024, 0);
-    mascotHorns.rotation.z = 0.4;
-    mascotGroup.add(mascotHorns);
-    bikeGroup.add(mascotGroup);
-
-    // Front Fender Stays (Dual Chrome Wire Stays to Front Axle)
-    [-0.045, 0.045].forEach(sz => {
-        const stay = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.44, 16), bikeChromeMat);
-        stay.position.set(0.74, 0.22, sz);
-        stay.rotation.z = 0.22;
-        bikeGroup.add(stay);
+    // Wheels
+    [-0.74, 0.74].forEach(wx => {
+        const wheel = new THREE.Mesh(new THREE.TorusGeometry(0.38, 0.025, 8, 24), wheelMat);
+        wheel.position.set(wx, 0.38, 0);
+        bikeGroup.add(wheel);
     });
 
-    // Rear Fender (Lengkung Belakang Ber-Volume Panjang 128 Segments)
-    const rearFender = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.435, 0.435, 0.072, 64, 1, true, -Math.PI * 0.48, Math.PI * 1.02),
-        bikeBlackMat
-    );
-    rearFender.rotation.x = Math.PI / 2;
-    rearFender.position.set(-0.74, 0.42, 0);
-    bikeGroup.add(rearFender);
-
-    // Rear Fender Stays (Dual Chrome Wire Stays to Rear Axle)
-    [-0.045, 0.045].forEach(sz => {
-        const stay = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.44, 16), bikeChromeMat);
-        stay.position.set(-0.74, 0.22, sz);
-        stay.rotation.z = -0.22;
-        bikeGroup.add(stay);
+    // Frame tubes (Diamond frame)
+    const frameTubes = [
+        { geo: [0.03, 0.03, 0.76, 8], pos: [0, 0.52, 0], rot: [0, 0, 0] },
+        { geo: [0.03, 0.03, 0.78, 8], pos: [0.38, 0.52, 0], rot: [0, 0, -0.42] },
+        { geo: [0.03, 0.03, 0.74, 8], pos: [0.36, 0.78, 0], rot: [0, 0, 1.57] },
+        { geo: [0.03, 0.03, 0.76, 8], pos: [-0.37, 0.38, 0], rot: [0, 0, 1.57] }
+    ];
+    frameTubes.forEach(t => {
+        const m = new THREE.Mesh(new THREE.CylinderGeometry(...t.geo), bikeMat);
+        m.position.set(...t.pos);
+        m.rotation.set(...t.rot);
+        bikeGroup.add(m);
     });
 
-    // Rear Fender White Tip Patch (Cat Putih Ujung Spatbor Belakang Khas Onthel Belanda)
-    const rearWhiteTip = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.438, 0.438, 0.074, 96, 1, true, -Math.PI * 0.48, Math.PI * 0.28),
-        new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.35 })
-    );
-    rearWhiteTip.rotation.x = Math.PI / 2;
-    rearWhiteTip.position.set(-0.74, 0.42, 0);
-    bikeGroup.add(rearWhiteTip);
+    // Handlebar & Saddle
+    const handlebar = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.04, 0.46), bikeMat);
+    handlebar.position.set(0.72, 0.88, 0);
+    bikeGroup.add(handlebar);
 
-    // --- C. ICONIC JASBESCHERMERS (Penutup Kain / Anyaman Jala Roda Belakang - 96 Segments) ---
-    const coatGuardMat = new THREE.MeshStandardMaterial({
-        color: 0x14161a,
-        roughness: 0.85,
-        metalness: 0.08,
-        transparent: true,
-        opacity: 0.94,
-        side: THREE.DoubleSide
-    });
-    [-0.038, 0.038].forEach(sideZ => {
-        // Upper rear quarter woven shield (96 theta segments for perfectly round arc)
-        const coatGuard = new THREE.Mesh(
-            new THREE.RingGeometry(0.18, 0.425, 96, 1, Math.PI * 0.48, Math.PI * 0.52),
-            coatGuardMat
-        );
-        coatGuard.position.set(-0.74, 0.42, sideZ);
-        bikeGroup.add(coatGuard);
-
-        // Cord/rib lace patterns across the coat guard (8 fine radial laces)
-        for (let cr = 0; cr < 8; cr++) {
-            const cordAngle = Math.PI * 0.50 + cr * 0.072;
-            const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.0022, 0.0022, 0.24, 12), goldPinstripeMat);
-            cord.position.set(
-                -0.74 + Math.cos(cordAngle) * 0.30,
-                0.42 + Math.sin(cordAngle) * 0.30,
-                sideZ + (sideZ > 0 ? 0.002 : -0.002)
-            );
-            cord.rotation.z = cordAngle + Math.PI / 2;
-            bikeGroup.add(cord);
-        }
-    });
-
-    // --- D. CLASSIC HEREN DIAMOND FRAME (Rangka Batangan Onthel Lanang - 32-Seg Tubes) ---
-    // Head Tube (Pipa Leher Tebal dengan Badge Onthel)
-    const headTube = new THREE.Mesh(new THREE.CylinderGeometry(0.024, 0.024, 0.26, 32), bikeBlackMat);
-    headTube.position.set(0.58, 0.90, 0);
-    headTube.rotation.z = -0.32;
-    bikeGroup.add(headTube);
-
-    // Head Badge (Emblem Gazelle / Fongers di Pipa Leher)
-    const headBadge = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.06, 32, 1, true, 0, Math.PI), goldPinstripeMat);
-    headBadge.position.set(0.58, 0.90, 0);
-    headBadge.rotation.z = -0.32;
-    headBadge.rotation.y = Math.PI / 2;
-    bikeGroup.add(headBadge);
-
-    // Front Fork Blades (Garpu Depan Kokoh dengan Crown Khas Onthel)
-    const forkCrown = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.03, 0.09), bikeChromeMat);
-    forkCrown.position.set(0.61, 0.78, 0);
-    forkCrown.rotation.z = -0.32;
-    bikeGroup.add(forkCrown);
-
-    [-0.042, 0.042].forEach(fz => {
-        const forkBlade = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.012, 0.54, 24), bikeBlackMat);
-        forkBlade.position.set(0.67, 0.58, fz);
-        forkBlade.rotation.z = -0.32;
-        bikeGroup.add(forkBlade);
-
-        // Gold pinstripe on fork blade
-        const fStripe = new THREE.Mesh(new THREE.CylinderGeometry(0.0155, 0.0125, 0.38, 24, 1, true, 0, Math.PI), goldPinstripeMat);
-        fStripe.position.set(0.67, 0.60, fz);
-        fStripe.rotation.z = -0.32;
-        fStripe.rotation.y = fz > 0 ? Math.PI / 2 : -Math.PI / 2;
-        bikeGroup.add(fStripe);
-    });
-
-    // Bottle Dynamo mounted on Right Front Fork (Dinamo Botol Roda Depan)
-    const dynamoGroup = new THREE.Group();
-    dynamoGroup.position.set(0.69, 0.68, 0.065);
-    const dynamoBody = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.024, 0.09, 24), bikeChromeMat);
-    dynamoGroup.add(dynamoBody);
-    const dynamoCap = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.012, 0.024, 24), bikeBlackMat);
-    dynamoCap.position.y = 0.055;
-    dynamoGroup.add(dynamoCap);
-    // Wire from dynamo to headlight
-    const dynamoWire = new THREE.Mesh(new THREE.CylinderGeometry(0.0022, 0.0022, 0.36, 12), bikeBlackMat);
-    dynamoWire.position.set(-0.06, 0.16, -0.04);
-    dynamoWire.rotation.z = 0.6;
-    dynamoGroup.add(dynamoWire);
-    bikeGroup.add(dynamoGroup);
-
-    // Bottom Bracket Shell (Rumah As Tengah Chrome)
-    const bb = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.13, 32), bikeChromeMat);
-    bb.position.set(-0.10, 0.42, 0);
-    bb.rotation.x = Math.PI / 2;
-    bikeGroup.add(bb);
-
-    // Seat Tube (Pipa Tiang Sadel - 32-Seg)
-    const seatTube = new THREE.Mesh(new THREE.CylinderGeometry(0.019, 0.019, 0.60, 32), bikeBlackMat);
-    seatTube.position.set(-0.21, 0.68, 0);
-    seatTube.rotation.z = -0.36;
-    bikeGroup.add(seatTube);
-
-    // Top Tube (Palang Batangan Lurus Horisontal Khas Onthel Heren - 32-Seg)
-    const topTube = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.88, 32), bikeBlackMat);
-    topTube.position.set(0.14, 0.92, 0);
-    topTube.rotation.z = Math.PI / 2 - 0.03;
-    bikeGroup.add(topTube);
-
-    // Gold Pinstripe on Top Tube
-    const topStripe = new THREE.Mesh(new THREE.CylinderGeometry(0.0185, 0.0185, 0.72, 32, 1, true, 0, Math.PI), goldPinstripeMat);
-    topStripe.position.set(0.14, 0.92, 0);
-    topStripe.rotation.z = Math.PI / 2 - 0.03;
-    topStripe.rotation.x = Math.PI / 2;
-    bikeGroup.add(topStripe);
-
-    // Down Tube (Pipa Serong Bawah - 32-Seg)
-    const downTube = new THREE.Mesh(new THREE.CylinderGeometry(0.020, 0.020, 0.86, 32), bikeBlackMat);
-    downTube.position.set(0.24, 0.66, 0);
-    downTube.rotation.z = -0.92;
-    bikeGroup.add(downTube);
-
-    // Vintage Frame Tire Pump (Pompa Angin Tabung Jadul Terpasang di Down Tube)
-    const pumpGroup = new THREE.Group();
-    pumpGroup.position.set(0.21, 0.63, 0.032);
-    pumpGroup.rotation.z = -0.92;
-    const pumpBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.44, 24), bikeChromeMat);
-    pumpGroup.add(pumpBarrel);
-    const pumpHandle = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, 0.05, 24), bikeLeatherMat);
-    pumpHandle.position.y = 0.24;
-    pumpGroup.add(pumpHandle);
-    [-0.20, 0.20].forEach(cy => {
-        const clip = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.012, 0.035), bikeChromeMat);
-        clip.position.y = cy;
-        pumpGroup.add(clip);
-    });
-    bikeGroup.add(pumpGroup);
-
-    // Rear Seat Stays (Penopang Sadel ke As Belakang)
-    [-0.042, 0.042].forEach(sz => {
-        const stay = new THREE.Mesh(new THREE.CylinderGeometry(0.013, 0.011, 0.66, 20), bikeBlackMat);
-        stay.position.set(-0.53, 0.67, sz);
-        stay.rotation.z = 0.86;
-        bikeGroup.add(stay);
-    });
-
-    // Chain Stays (Garpu Bawah Rantai)
-    [-0.042, 0.042].forEach(cz => {
-        const cStay = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.012, 0.66, 20), bikeBlackMat);
-        cStay.position.set(-0.42, 0.42, cz);
-        cStay.rotation.z = Math.PI / 2;
-        bikeGroup.add(cStay);
-    });
-
-    // --- E. FULL ENCLOSED CHAINCASE (Katengkas Penuh Khas Onthel dengan Garis Emas - 64 Seg) ---
-    const chaincaseGroup = new THREE.Group();
-    chaincaseGroup.position.set(-0.38, 0.42, 0.055);
-
-    // Body Katengkas (Plat Enamel Hitam Melengkung Rapi)
-    const caseMain = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.20, 0.035), bikeBlackMat);
-    chaincaseGroup.add(caseMain);
-
-    // Front Round Bulge for Chainring (64 segments for perfect circle)
-    const caseDisc = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.13, 0.038, 64), bikeBlackMat);
-    caseDisc.rotation.x = Math.PI / 2;
-    caseDisc.position.set(0.28, 0, 0);
-    chaincaseGroup.add(caseDisc);
-
-    // Rear Axle Round Cap
-    const caseRearDisc = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.036, 48), bikeBlackMat);
-    caseRearDisc.rotation.x = Math.PI / 2;
-    caseRearDisc.position.set(-0.34, 0, 0);
-    chaincaseGroup.add(caseRearDisc);
-
-    // Elegant Gold Pinstripe Border on Chaincase (Lis Emas Mewah)
-    const goldLine1 = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.008, 0.04), goldPinstripeMat);
-    goldLine1.position.set(0, 0.06, 0.002);
-    chaincaseGroup.add(goldLine1);
-
-    const goldLine2 = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.008, 0.04), goldPinstripeMat);
-    goldLine2.position.set(0, -0.06, 0.002);
-    chaincaseGroup.add(goldLine2);
-
-    const goldRing = new THREE.Mesh(new THREE.TorusGeometry(0.10, 0.005, 16, 64), goldPinstripeMat);
-    goldRing.position.set(0.28, 0, 0.02);
-    chaincaseGroup.add(goldRing);
-
-    // Chrome Crank Arms & Vintage Rubber Block Pedals
-    const crankR = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.19, 20), bikeChromeMat);
-    crankR.position.set(0.28, -0.08, 0.045);
-    chaincaseGroup.add(crankR);
-
-    const pedalR = new THREE.Mesh(new THREE.BoxGeometry(0.10, 0.032, 0.065), bikeTireMat);
-    pedalR.position.set(0.28, -0.18, 0.085);
-    chaincaseGroup.add(pedalR);
-
-    // Pedal Amber Reflector
-    const pedalReflector = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.012, 0.01), new THREE.MeshBasicMaterial({ color: 0xf59e0b }));
-    pedalReflector.position.set(0.28, -0.18, 0.12);
-    chaincaseGroup.add(pedalReflector);
-
-    bikeGroup.add(chaincaseGroup);
-
-    // --- F. VINTAGE BROOKS CONTOURED LEATHER SADDLE WITH COPPER RIVETS & TOOL BAG ---
-    const saddleGroup = new THREE.Group();
-    saddleGroup.position.set(-0.33, 0.98, 0);
-
-    // Chrome Seatpost & Clamp Lug
-    const seatPost = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.18, 24), bikeChromeMat);
-    seatPost.position.y = -0.08;
-    saddleGroup.add(seatPost);
-
-    const seatClamp = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 0.05), bikeChromeMat);
-    seatClamp.position.y = 0.01;
-    saddleGroup.add(seatClamp);
-
-    // Organically Contoured Aged Brown Leather Saddle Top (Smooth Bezier Spline + Beveled Extrusion)
-    const saddleShape = new THREE.Shape();
-    saddleShape.moveTo(0.19, 0);
-    saddleShape.bezierCurveTo(0.14, 0.032, 0.02, 0.052, -0.06, 0.098);
-    saddleShape.bezierCurveTo(-0.13, 0.140, -0.17, 0.115, -0.19, 0.065);
-    saddleShape.bezierCurveTo(-0.20, 0.025, -0.20, -0.025, -0.19, -0.065);
-    saddleShape.bezierCurveTo(-0.17, -0.115, -0.13, -0.140, -0.06, -0.098);
-    saddleShape.bezierCurveTo(0.02, -0.052, 0.14, -0.032, 0.19, 0);
-
-    const saddleExtrudeSettings = {
-        steps: 1,
-        depth: 0.038,
-        bevelEnabled: true,
-        bevelThickness: 0.024,
-        bevelSize: 0.018,
-        bevelSegments: 8
-    };
-    const saddleGeo = new THREE.ExtrudeGeometry(saddleShape, saddleExtrudeSettings);
-    saddleGeo.rotateX(-Math.PI / 2);
-    saddleGeo.center();
-    const saddleTop = new THREE.Mesh(saddleGeo, bikeLeatherMat);
-    saddleTop.position.set(-0.04, 0.075, 0);
-    saddleGroup.add(saddleTop);
-
-    // 7 Solid Brass Rivets along the back curve of the saddle (Paku Keling Kuningan Brooks)
-    for (let rv = 0; rv < 7; rv++) {
-        const rvAngle = -Math.PI * 0.38 + rv * (Math.PI * 0.76 / 6);
-        const rivet = new THREE.Mesh(new THREE.SphereGeometry(0.006, 16, 16), brassMat);
-        rivet.position.set(-0.15 + Math.cos(rvAngle) * 0.035, 0.088, Math.sin(rvAngle) * 0.105);
-        saddleGroup.add(rivet);
-    }
-
-    // Dual Heavy-Duty Chrome Coil Springs (Per Keong Sadel Belakang)
-    [-0.055, 0.055].forEach(sz => {
-        for (let sp = 0; sp < 3; sp++) {
-            const coil = new THREE.Mesh(new THREE.TorusGeometry(0.026, 0.007, 16, 32), bikeChromeMat);
-            coil.rotation.x = Math.PI / 2;
-            coil.position.set(-0.14, 0.02 + sp * 0.025, sz);
-            saddleGroup.add(coil);
-        }
-    });
-
-    // Vintage Leather Saddle Tool Bag Hanging Behind Seat (Tas Sadel Kulit Khas Onthel)
-    const toolBag = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.09, 0.16), bikeLeatherMat);
-    toolBag.position.set(-0.24, 0.04, 0);
-    saddleGroup.add(toolBag);
-    // Brass buckles on tool bag
-    [-0.045, 0.045].forEach(bz => {
-        const buckle = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.02, 0.02), brassMat);
-        buckle.position.set(-0.31, 0.04, bz);
-        saddleGroup.add(buckle);
-    });
-
-    bikeGroup.add(saddleGroup);
-
-    // --- G. SWEPT-BACK CONTINUOUS CURVED HANDLEBARS, BULLET HEADLIGHT & BRASS BELL ---
-    const handleGroup = new THREE.Group();
-    handleGroup.position.set(0.55, 1.01, 0);
-
-    // Chrome Quill Stem (Leher Stang Angsa)
-    const stemVert = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.18, 24), bikeChromeMat);
-    stemVert.position.y = 0.04;
-    handleGroup.add(stemVert);
-
-    const stemForward = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.10, 24), bikeChromeMat);
-    stemForward.position.set(0.03, 0.12, 0);
-    stemForward.rotation.z = Math.PI / 2;
-    handleGroup.add(stemForward);
-
-    // Seamless Continuous Curved Handlebar (Stang Dongkol Klasik - CatmullRom Tube 64-Seg)
-    const barCurve = new THREE.CatmullRomCurve3([
-        new THREE.Vector3(-0.16, 0.128, 0.28),   // left grip end
-        new THREE.Vector3(-0.06, 0.142, 0.25),   // sweep forward
-        new THREE.Vector3(0.035, 0.150, 0.14),   // bend towards center
-        new THREE.Vector3(0.065, 0.140, 0.00),   // center stem clamp
-        new THREE.Vector3(0.035, 0.150, -0.14),  // bend towards right
-        new THREE.Vector3(-0.06, 0.142, -0.25),  // sweep back
-        new THREE.Vector3(-0.16, 0.128, -0.28)   // right grip end
-    ]);
-    const barGeo = new THREE.TubeGeometry(barCurve, 64, 0.013, 24, false);
-    const barMesh = new THREE.Mesh(barGeo, bikeChromeMat);
-    handleGroup.add(barMesh);
-
-    // Vintage Ribbed Grips and Rod Brake Levers
-    [-0.265, 0.265].forEach(bz => {
-        const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.019, 0.019, 0.12, 24), bikeTireMat);
-        grip.position.set(-0.12, 0.133, bz);
-        grip.rotation.y = bz > 0 ? 0.35 : -0.35;
-        handleGroup.add(grip);
-
-        // Rod Brake Levers (Tuas Rem Kawat/Batangan Klasik)
-        const brakeLever = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.14, 16), bikeChromeMat);
-        brakeLever.position.set(-0.08, 0.10, bz > 0 ? bz - 0.025 : bz + 0.025);
-        brakeLever.rotation.x = Math.PI / 2;
-        brakeLever.rotation.z = bz > 0 ? 0.3 : -0.3;
-        handleGroup.add(brakeLever);
-    });
-
-    // Vintage Polished Brass Dome Bell (Bel Kring-Kring Kuningan - 32-Seg)
-    const bell = new THREE.Mesh(new THREE.SphereGeometry(0.038, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2), brassMat);
-    bell.position.set(0.04, 0.18, -0.14);
-    handleGroup.add(bell);
-
-    // Iconic Vintage Bullet / Torpedo Headlight (Lampu Torpedo Bosch / Miller - 48-Seg)
-    const headlampGroup = new THREE.Group();
-    headlampGroup.position.set(0.18, 0.06, 0);
-
-    const lampBracket = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.015, 0.04), bikeChromeMat);
-    lampBracket.position.set(-0.06, 0, 0);
-    headlampGroup.add(lampBracket);
-
-    // Torpedo Chrome Bullet Body (48 radial segments for ultra-smooth bullet shape)
-    const lampBody = new THREE.Mesh(new THREE.ConeGeometry(0.085, 0.19, 48), bikeChromeMat);
-    lampBody.rotation.z = -Math.PI / 2;
-    headlampGroup.add(lampBody);
-
-    // Convex Ribbed Glass Lens with Warm Golden Glow (36x36 segments)
-    const lampLens = new THREE.Mesh(
-        new THREE.SphereGeometry(0.082, 36, 36, 0, Math.PI * 2, 0, Math.PI / 2),
-        new THREE.MeshStandardMaterial({
-            color: 0xfff6d4,
-            emissive: 0xffd15c,
-            emissiveIntensity: 0.95,
-            roughness: 0.1,
-            metalness: 0.1
-        })
-    );
-    lampLens.rotation.z = Math.PI / 2;
-    lampLens.position.set(0.085, 0, 0);
-    headlampGroup.add(lampLens);
-
-    // Warm Torpedo Point Light Pool on Stage Floor
-    const headlampLight = new THREE.PointLight(0xffbe6b, 2.8, 6.0);
-    headlampLight.position.set(0.18, 0, 0);
-    headlampGroup.add(headlampLight);
-
-    handleGroup.add(headlampGroup);
-    bikeGroup.add(handleGroup);
-
-    // --- H. REAR TUBULAR LUGGAGE CARRIER (Boncengan / Bagasi Pipa Bulat - 20-Seg) ---
-    const rackGroup = new THREE.Group();
-    rackGroup.position.set(-0.72, 0.84, 0);
-
-    // Heavy-Duty Luggage Platform
-    const rackFrame = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.024, 0.18), bikeBlackMat);
-    rackGroup.add(rackFrame);
-
-    // Spring Clip (Jepitan Bagasi Klasik)
-    const springClip = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.018, 0.14), bikeChromeMat);
-    springClip.position.set(0.05, 0.022, 0);
-    rackGroup.add(springClip);
-
-    // Dual Tubular Legs to Rear Axle (20 radial segments)
-    [-0.07, 0.07].forEach(rz => {
-        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.48, 20), bikeBlackMat);
-        leg.position.set(0, -0.23, rz);
-        rackGroup.add(leg);
-    });
-
-    // Ruby Red Cat's-Eye Reflector (Mata Kucing Merah Belakang - 32-Seg)
-    const rearReflector = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.025, 0.025, 0.018, 32),
-        new THREE.MeshStandardMaterial({
-            color: 0xef4444,
-            emissive: 0xdc2626,
-            emissiveIntensity: 0.85,
-            roughness: 0.2
-        })
-    );
-    rearReflector.rotation.z = Math.PI / 2;
-    rearReflector.position.set(-0.27, -0.04, 0);
-    rackGroup.add(rearReflector);
-
-    bikeGroup.add(rackGroup);
-
-    // --- I. DUAL-LEG KICKSTAND (Standar Dua Kares Kokoh Menyentuh Lantai - 20-Seg) ---
-    const standGroup = new THREE.Group();
-    standGroup.position.set(-0.74, 0.42, 0);
-
-    [-0.14, 0.14].forEach(sz => {
-        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.010, 0.009, 0.44, 20), bikeBlackMat);
-        leg.position.set(0, -0.21, sz);
-        leg.rotation.x = sz > 0 ? 0.38 : -0.38;
-        standGroup.add(leg);
-    });
-    bikeGroup.add(standGroup);
-
-    // --- J. DEDICATED CENTERPIECE ACCENT LIGHT ---
-    // Teater Spotlight panggung hangat terfokus presisi ke Sepeda Onthel agar lekukan krom & enamel hitam berkilau mewah
-    const bikeSpot = new THREE.SpotLight(0xfff5e6, 5.2, 10.0, Math.PI / 4.2, 0.45, 1.2);
-    bikeSpot.position.set(0, 3.4, -1.8);
-    bikeSpot.target.position.set(0, 0.65, -3.1);
-    bikeSpot.castShadow = false;
-    bikeSpot.shadow.mapSize.width = 1024;
-    bikeSpot.shadow.mapSize.height = 1024;
-    bikeSpot.shadow.bias = -0.0003;
-    group.add(bikeSpot);
-    group.add(bikeSpot.target);
-
-    // Warm ambient rim fill to illuminate spoke details
-    const bikeRimFill = new THREE.PointLight(0xffeedb, 1.8, 4.5);
-    bikeRimFill.position.set(0, 0.85, -2.3);
-    group.add(bikeRimFill);
+    const saddle = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.06, 0.18), new THREE.MeshLambertMaterial({ color: 0x4a2e1b }));
+    saddle.position.set(-0.02, 0.82, 0);
+    bikeGroup.add(saddle);
 
     group.add(bikeGroup);
-
-
 
     // 8. Stage Monitor Speaker & "Kotak Apresiasi" Akustik (Stage Right)
     const soundGroup = new THREE.Group();
@@ -2581,13 +1969,7 @@ function buildIndoorTimur2() {
     backWall.position.set(0, 1.8, -4.9);
     group.add(backWall);
 
-    // Roof Pergola Slats
-    const colMat = new THREE.MeshLambertMaterial({ color: 0x1f1913 });
-    for (let bx = -4.0; bx <= 4.0; bx += 1.6) {
-        const slat = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.3, 10.2), colMat);
-        slat.position.set(bx, 3.6, 0);
-        group.add(slat);
-    }
+    // Indoor Timur 2 - Open Pergola (Kisi-kisi atap ditiadakan agar meja IT2-17 s/d IT2-20 terlihat plong)
 
     // Signboard "INDOOR TIMUR 2"
     const sign = create3DSignboard("INDOOR TIMUR 2", 4.8, 0.8);
@@ -2866,20 +2248,10 @@ function populate3DTables() {
         tableGroup.add(ring);
         tableGroup.userData.glowRing = ring;
 
-        // Floating 3D Table Sprite Badge with perspective distance compensation
-        let badgeY = 2.4;
-        let badgeScaleX = 3.2;
-        let badgeScaleY = 1.35;
-
-        if (layout.zone === "outdoor" || layout.umbrella) {
-            badgeY = 3.6;
-        } else if (layout.zone === "vip") {
-            badgeY = 4.2; // Above glass pergola roof
-            badgeScaleX = 4.2; // Perspective distance compensation
-            badgeScaleY = 1.7;
-        } else if (layout.umbrella) {
-            badgeY = 3.4;
-        }
+        // Floating 3D Table Sprite Badge right above each table (Clean open-top layout)
+        const badgeY = 2.2;
+        const badgeScaleX = 2.8;
+        const badgeScaleY = 1.2;
 
         const sprite = createTableSpriteBadge(table, statusColor);
         sprite.position.set(0, badgeY, 0);
@@ -2888,10 +2260,10 @@ function populate3DTables() {
         tableGroup.userData.sprite = sprite;
 
         // Interaction Hitbox (Invisible bounding box for smooth touch & click)
-        const hitBoxGeo = new THREE.BoxGeometry(3.6, 4.0, 3.6);
+        const hitBoxGeo = new THREE.BoxGeometry(3.6, 3.2, 3.6);
         const hitBoxMat = new THREE.MeshBasicMaterial({ visible: false });
         const hitBox = new THREE.Mesh(hitBoxGeo, hitBoxMat);
-        hitBox.position.y = 2.0;
+        hitBox.position.y = 1.6;
         tableGroup.add(hitBox);
 
         // Save reference
@@ -2930,12 +2302,7 @@ function buildGazebo3D(group, table) {
         group.add(pillar);
     });
 
-    // 3. Thatched Pyramid Roof
-    const roof = new THREE.Mesh(new THREE.ConeGeometry(2.6, 1.4, 4), roofMat);
-    roof.position.y = 2.9;
-    roof.rotation.y = Math.PI / 4;
-    roof.castShadow = true;
-    group.add(roof);
+    // Gazebo Saung - Open-Air (Atap kerucut ditiadakan agar lesehan & meja tampak jelas dari atas)
 
     // 4. Low Dining Table (Lesehan)
     const tableMat = new THREE.MeshLambertMaterial({ color: 0x8b5a2b });
@@ -3010,23 +2377,7 @@ function buildOutdoorTable3D(group, table, hasUmbrella = false) {
         group.add(chair);
     });
 
-    // Patio Parasol Umbrella
-    if (hasUmbrella) {
-        const umbrellaGroup = new THREE.Group();
-        const poleMat = new THREE.MeshLambertMaterial({ color: 0x4a3b32 });
-        const canopyMat = new THREE.MeshLambertMaterial({ color: 0xf5f0e1 }); // Warm cream canopy
-
-        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 2.7, 8), poleMat);
-        pole.position.y = 1.35;
-        umbrellaGroup.add(pole);
-
-        const canopy = new THREE.Mesh(new THREE.ConeGeometry(1.8, 0.7, 8), canopyMat);
-        canopy.position.y = 2.6;
-        canopy.castShadow = true;
-        umbrellaGroup.add(canopy);
-
-        group.add(umbrellaGroup);
-    }
+    // Outdoor Dining - Open Sky (Kanopi payung ditiadakan agar meja outdoor OD-01 s/d OD-06 bebas terhalang)
 }
 
 /**
@@ -3154,37 +2505,7 @@ function buildVipTable3D(group, table, type = "vip-large") {
         group.add(benchGroup);
     });
 
-    // 3. Hanging Woven Bamboo Pendant Lamp (Lampu Gantung Anyaman Bambu Kerucut Tradisional)
-    // Tepat di atas meja makan sesuai foto img_bcb8e1b7e299.jpg
-    const lampGroup = new THREE.Group();
-    lampGroup.position.set(0, 2.35, 0);
-
-    // Drop cord from ceiling truss
-    const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 1.6, 6), cordMat);
-    cord.position.y = 0.8;
-    lampGroup.add(cord);
-
-    // Conical Woven Bamboo Lampshade (Caping Anyaman Bambu Terbalik)
-    const shade = new THREE.Mesh(new THREE.ConeGeometry(0.48, 0.32, 16, 1, true), shadeMat);
-    shade.position.y = 0;
-    shade.castShadow = true;
-    lampGroup.add(shade);
-
-    // Glowing warm amber bulb inside
-    const bulb = new THREE.Mesh(
-        new THREE.SphereGeometry(0.09, 8, 8),
-        new THREE.MeshBasicMaterial({ color: 0xffe29a })
-    );
-    bulb.position.y = -0.06;
-    lampGroup.add(bulb);
-
-    // Localized Warm Amber Point Light (Cahaya Kuning Hangat 2200K Menerangi Meja)
-    const tableLight = new THREE.PointLight(0xffa834, 2.4, 6.5);
-    tableLight.position.y = -0.15;
-    tableLight.castShadow = false;
-    lampGroup.add(tableLight);
-
-    group.add(lampGroup);
+    // Overhead space open & unobstructed for table badge clarity
 }
 
 /**
@@ -3585,14 +2906,26 @@ if (typeof IntersectionObserver !== "undefined") {
     }
 }
 
+let lastRenderTime = 0;
+
 /**
- * Animation Frame Loop (Adaptive 60 FPS with Off-Screen Sleep)
+ * Animation Frame Loop (Adaptive 60 FPS with Off-Screen Sleep & Mobile Throttle)
  */
 function animate3D(time) {
     animFrameId = requestAnimationFrame(animate3D);
 
     // Pause WebGL rendering if 3D section is scrolled off-screen (0% GPU drain when reading menus/home)
     if (!isCanvasInView) return;
+
+    // Mobile frame throttling: cap at ~38 FPS on mobile to keep device cool & save battery
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768);
+    if (isMobile) {
+        const now = time || performance.now();
+        if (now - lastRenderTime < 26) {
+            return;
+        }
+        lastRenderTime = now;
+    }
 
     if (typeof TWEEN !== "undefined") {
         TWEEN.update();
