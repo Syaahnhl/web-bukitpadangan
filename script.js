@@ -2347,59 +2347,165 @@ function handleAiChatSubmit(event) {
 }
 
 function generateAiKnowledgeResponse(query) {
-    const q = query.toLowerCase();
+    const raw = (query || "").trim();
+    const q = raw.toLowerCase();
 
-    // 1. Salam & Sapaan
-    if (/^(halo|hai|hi|hey|assalam|pagi|siang|sore|malam|permisi|tes|test)/i.test(q)) {
+    if (!q) {
         return {
-            text: "Halo! Senang bisa menyapa Anda di **Bukit Padangan Resto** 🍃\nAda yang bisa saya bantu hari ini? Anda bisa menanyakan rekomendasi menu, ketersediaan meja, paket kustom rombongan, atau rute ke resto.",
+            text: "Ada yang bisa saya bantu seputar Warung Makan Bukit Padangan? Silakan pilih topik di bawah ini:",
+            actions: [
+                { label: "🍛 Menu Favorit", action: "chip:Rekomendasi Menu Favorit" },
+                { label: "🪑 Reservasi Meja", action: "scroll:#tables" },
+                { label: "⏰ Jam & Lokasi", action: "chip:Jam Buka & Lokasi" },
+                { label: "💬 WhatsApp Admin", action: "func:openWaChooserModal" }
+            ]
+        };
+    }
+
+    // 1. Terima Kasih & Penutup Sopan
+    if (/^(makasih|terima kasih|suwun|matursuwun|thank|thanks|ok|oke|siap|baik|sip|mantap|yoi|keren)/i.test(q)) {
+        return {
+            text: "Sama-sama! Senang bisa membantu Anda di **Warung Makan Bukit Padangan** 🍃\n\nJika ada hal lain yang ingin ditanyakan seputar menu, reservasi, atau kunjungan Anda, silakan tanyakan kapan saja.",
+            actions: [
+                { label: "🍛 Menu Andalan", action: "scroll:#menu" },
+                { label: "🪑 Reservasi Meja", action: "scroll:#tables" },
+                { label: "💬 Hubungi Admin WA", action: "func:openWaChooserModal" }
+            ]
+        };
+    }
+
+    // 2. Salam & Sapaan Awal
+    if (/^(halo|hai|hi|hey|assalam|pagi|siang|sore|malam|permisi|tes|test|halo bot|halo min|halo admin)/i.test(q)) {
+        return {
+            text: "Halo! Selamat datang di asisten virtual **Warung Makan Bukit Padangan** 🍃\n\nAda yang bisa saya bantu untuk kunjungan Anda? Anda dapat menanyakan rekomendasi menu, jam operasional, rute lokasi lereng Muria, fasilitas, atau reservasi meja & paket acara.",
             actions: [
                 { label: "🍛 Menu Favorit", action: "chip:Rekomendasi Menu Favorit" },
                 { label: "🪑 Booking Meja", action: "scroll:#tables" },
+                { label: "⏰ Jam Buka & Lokasi", action: "chip:Jam Buka & Lokasi" },
+                { label: "💬 Chat Admin WA", action: "func:openWaChooserModal" }
+            ]
+        };
+    }
+
+    // 3. Menu, Makanan, Minuman, Harga, Rekomendasi, Pedas, Halal
+    if (/(menu|makan|minum|katalog|harga|favorit|spesial|enak|rekomendasi|hidangan|lauk|masakan|pedas|sambal|ayam|bebek|ikan|gurame|nila|ingkung|bledos|madu|bakar|goreng|mendoan|tahu|tempe|lalapan|kopi|kopi muria|wedang|rempah|jahe|jus|kelapa|es kelapa|teh|jeruk|halal|higienis)/i.test(q)) {
+        return {
+            text: "Berikut sajian **menu andalan & favorit** di Warung Makan Bukit Padangan:\n\n" +
+                  "🔥 **Ayam Bledos & Bebek Bledos** (Rp 26k - 32k): Diracik dengan bumbu rempah pedas khas meresap, pedas gurih mantap!\n" +
+                  "🍯 **Ayam & Nila Bakar Madu** (Rp 26k - 28k): Gurih manis legit meresap, favorit keluarga & anak-anak.\n" +
+                  "🐟 **Gurame Asam Manis / Gurame Bakar** (Rp 45k - 55k): Ikan segar ukuran pas untuk dinikmati bersama.\n" +
+                  "👑 **Ayam Ingkung Komplit** (Rp 175k): 1 ekor ayam kampung utuh empuk bumbu rempah komplit sambal & lalapan.\n" +
+                  "🍘 **Mendoan & Camilan Tradisional** (Rp 10k - 15k): Renyah hangat cocok dinikmati di tengah hawa perbukitan sejuk.\n" +
+                  "☕ **Kopi Muria Gula Aren & Wedang Rempah** (Rp 12k - 15k): Hangat khas lereng pegunungan Muria.\n" +
+                  "🥥 **Es Kelapa Muda Jeruk & Aneka Jus Buah Segar** (Rp 16k - 18k).\n\n" +
+                  "✅ *Semua makanan & minuman 100% Halal, higienis, dan diolah dari bahan segar pilihan.*",
+            actions: [
+                { label: "🍽️ Buka Menu Lengkap", action: "scroll:#menu" },
+                { label: "💬 Pesan / Tanya Menu WA", action: "wa:menu" }
+            ]
+        };
+    }
+
+    // 4. Jam Buka, Jam Operasional & Hari Buka
+    if (/(jam|buka|tutup|operasional|hari|libur|jadwal|wib|buka jam|tutup jam|hari apa|minggu buka|tanggal merah)/i.test(q)) {
+        return {
+            text: "⏰ **Jam Operasional Warung Makan Bukit Padangan:**\n\n" +
+                  "• **Buka Setiap Hari**: Pukul **11.00 – 22.00 WIB** (Senin s/d Minggu)\n" +
+                  "• Hari libur nasional & tanggal merah **tetap buka normal**.\n\n" +
+                  "🌅 **Waktu Favorit Berkunjung:**\n" +
+                  "• **Makan Siang (11.30 – 14.30 WIB)**: Suasana alam asri sejuk bersama keluarga atau rekan kerja.\n" +
+                  "• **Golden Hour (16.30 – 17.45 WIB)**: Paling favorit untuk menikmati pemandangan matahari terbenam (sunset) di lereng Muria.",
+            actions: [
+                { label: "🪑 Reservasi Meja", action: "scroll:#tables" },
+                { label: "📍 Rute & Lokasi", action: "scroll:#about" },
+                { label: "💬 Tanya Jadwal via WA", action: "wa" }
+            ]
+        };
+    }
+
+    // 5. Lokasi, Alamat, Rute, Patokan & Akses Bus / Kendaraan
+    if (/(lokasi|alamat|dimana|posisi|rute|arah|jalan|patokan|daerah|wilayah|maps|google maps|gmap|akses|bus|rombongan bus|kendaraan|mobil|gunungwungkal|gulangpongge|pati|muria)/i.test(q)) {
+        return {
+            text: "📍 **Alamat & Akses Warung Makan Bukit Padangan:**\n\n" +
+                  "Jl. Raya Gunungwungkal - Gulangpongge, Kec. Gunungwungkal, Kab. Pati, Jawa Tengah (kawasan lereng Pegunungan Muria yang sejuk & hijau).\n\n" +
+                  "🚗 **Akses Kendaraan & Parkir:**\n" +
+                  "• Akses jalan aspal mulus dan aman dilalui oleh motor, mobil keluarga, hingga **bus pariwisata medium**.\n" +
+                  "• Area parkir kami sangat luas, aman, dan gratis untuk kendaraan rombongan.",
+            actions: [
+                { label: "🗺️ Buka Google Maps", action: "external:https://maps.google.com/?q=Bukit+Padangan+Resto+Pati" },
+                { label: "💬 Panduan Rute via WA", action: "wa:rute" }
+            ]
+        };
+    }
+
+    // 6. Fasilitas (Mushola, Toilet, Wifi, Colokan, Playground, Terapi Ikan)
+    if (/(fasilitas|toilet|kamar mandi|wc|mushola|musala|sholat|solat|wudhu|wifi|internet|colokan|listrik|stopkontak|charger|anak|playground|bermain|kolam|terapi ikan|ikan|saung|gazebo|lesehan|smoking|merokok)/i.test(q)) {
+        return {
+            text: "🍃 **Fasilitas Lengkap di Warung Makan Bukit Padangan:**\n\n" +
+                  "• 🕌 **Mushola Bersih**: Nyaman, lengkap dengan sarana wudhu yang jernih, sajadah & mukena.\n" +
+                  "• 🚻 **Toilet Higienis**: Tersedia di beberapa titik strategis resto.\n" +
+                  "• 🐟 **Kolam Terapi Ikan Alami**: Santai merendam kaki di pinggir saung gazebo sembari menikmati hidangan.\n" +
+                  "• 🛝 **Mini Playground**: Area bermain aman untuk anak-anak.\n" +
+                  "• 📶 **Wi-Fi Gratis & Colokan Listrik**: Tersedia stopkontak di area meja/saung santap.\n" +
+                  "• 🅿️ **Parkir Luas**: Aman untuk motor, mobil, dan bus rombongan.",
+            actions: [
+                { label: "🪑 Pilih Meja Saung", action: "scroll:#tables" },
+                { label: "💬 Tanya Fasilitas WA", action: "wa" }
+            ]
+        };
+    }
+
+    // 7. Spot Foto & Sunset
+    if (/(spot foto|foto|estetik|pemandangan|view|panorama|sunset|senja|matahari terbenam|alam|sawah|bukit)/i.test(q)) {
+        return {
+            text: "📸 **Spot Foto & Panorama Alam Bukit Padangan:**\n\n" +
+                  "• 🌅 **Sunset Deck Lereng Muria**: Waktu terbaik pukul **16.30 – 17.45 WIB** dengan panorama langit senja dan hamparan sawah.\n" +
+                  "• 🎋 **Saung Gazebo Bambu di Atas Kolam**: Nuansa tradisional asri diiringi gemericik air kolam terapi ikan.\n" +
+                  "• 🌿 **Pelataran Alam Terbuka**: Udara sejuk pegunungan cocok untuk berfoto bersama keluarga maupun komunitas.",
+            actions: [
+                { label: "🪑 Reservasi Meja Sunset", action: "scroll:#tables" },
+                { label: "🍽️ Lihat Menu Lengkap", action: "scroll:#menu" }
+            ]
+        };
+    }
+
+    // 8. Live Music & Hiburan
+    if (/(live music|musik|akustik|band|hiburan|lagu|nyanyi|malam minggu|sabtu malam)/i.test(q)) {
+        return {
+            text: "🎶 **Live Music Akustik Bukit Padangan:**\n\n" +
+                  "• **Jadwal**: Setiap **Malam Minggu (Sabtu Malam)** pukul **19.00 – 21.30 WIB**\n" +
+                  "• **Aliran Musik**: Akustik Nostalgia, Tembang Kenangan, Pop Indo & Senandung Senja\n" +
+                  "• Suasana hangat dan syahdu menemani santap malam Anda bersama pasangan, keluarga, atau kawan.",
+            actions: [
+                { label: "🪑 Booking Meja Malam Minggu", action: "scroll:#tables" },
                 { label: "💬 Chat Admin WA", action: "wa" }
             ]
         };
     }
 
-    // 2. Menu, Makanan, Minuman, Harga
-    if (/(menu|makan|minum|harga|katalog|favorit|spesial|enak|ayam|bebek|ikan|gurame|nila|ingkung|bledos|mendoan|kopi|wedang|jus|kelapa|pedas)/i.test(q)) {
+    // 9. Paket Acara, Rombongan, Reuni, Rapat, Arisan, Bukber, Ultah, Sound System
+    if (/(paket|rombongan|acara|reuni|rapat|dinas|kantor|arisan|bukber|buka bersama|ultah|ulang tahun|syukuran|gathering|komunitas|sound|mic|sound system|kapasitas|kustom|custom|bawa kue)/i.test(q)) {
         return {
-            text: "Berikut beberapa **menu favorit & andalan** di Bukit Padangan Resto:\n\n" +
-                  "🔥 **Ayam Bledos & Bebek Bledos** (Rp 26k - 32k): Bumbu rempah pedas khas meresap, juara rasa!\n" +
-                  "🍯 **Ayam & Nila Bakar Madu** (Rp 26k - 28k): Manis gurih legit, sangat cocok untuk keluarga & anak-anak.\n" +
-                  "👑 **Ayam Ingkung Komplit** (Rp 175k): 1 ekor ayam kampung utuh empuk bumbu gurih komplit lalapan.\n" +
-                  "☕ **Kopi Gula Aren & Wedang Rempah** (Rp 12k - 15k): Hangat khas lereng pegunungan Muria.\n" +
-                  "🥥 **Es Kelapa Muda Jeruk & Aneka Jus Segar** (Rp 16k - 18k).",
+            text: "🎉 **Paket Acara & Rombongan 100% Kustom:**\n\n" +
+                  "Warung Makan Bukit Padangan siap melayani berbagai acara (kapasitas 20 hingga 200+ orang), seperti reuni, rapat dinas/kantor, arisan, buka bersama, maupun ulang tahun:\n\n" +
+                  "• **Bebas Kustom Menu & Budget**: Sesuaikan menu lauk & minuman dengan anggaran per orang (misal Rp 25k, Rp 35k, atau Rp 50k+ per pax).\n" +
+                  "• **Gratis Fasilitas**: Sound system wireless & mic untuk sambutan acara.\n" +
+                  "• Diperbolehkan membawa kue ulang tahun sendiri dari luar.\n" +
+                  "• Pilihan area luas: saung gazebo lesehan atau meja kursi panjang terpadu.",
             actions: [
-                { label: "🍽️ Buka Menu Lengkap", action: "scroll:#menu" },
-                { label: "💬 Pesan via WhatsApp", action: "wa:menu" }
-            ]
-        };
-    }
-
-    // 3. Paket Acara, Rombongan, Reuni, Rapat, Arisan, Bukber, Ultah
-    if (/(paket|rombongan|acara|reuni|rapat|arisan|bukber|buka bersama|ultah|ulang tahun|pernikahan|gathering|komunitas|budget|sound|kapasitas)/i.test(q)) {
-        return {
-            text: "Bukit Padangan menyediakan **Sistem Penawaran Paket Acara 100% Kustom** 🎉\n\n" +
-                  "Anda bebas menentukan menu dan budget per orang (misal Rp 25k, Rp 35k, atau Rp 50k+ per pax), untuk kapasitas hingga 200+ orang. Sudah termasuk fasilitas:\n" +
-                  "• Sound system wireless & mic gratis\n" +
-                  "• Area lesehan saung / meja panjang luas\n" +
-                  "• Spot foto panorama perbukitan asri\n" +
-                  "• Parkir luas motor, mobil, hingga bus pariwisata",
-            actions: [
-                { label: "🎉 Kalkulator Paket", action: "scroll:#packages" },
+                { label: "🎉 Hitung di Kalkulator Paket", action: "scroll:#packages" },
                 { label: "💬 Konsultasi WA Rombongan", action: "wa:paket" }
             ]
         };
     }
 
-    // 4. Meja, Reservasi, Booking, 3D, Gazebo, Saung
-    if (/(meja|reservasi|booking|tempat|denah|3d|outdoor|indoor|gazebo|saung|lesehan|terapi ikan|sunset)/i.test(q)) {
+    // 10. Meja, Reservasi, Booking & Denah
+    if (/(meja|reservasi|booking|pesan tempat|pesan meja|denah|3d|outdoor|indoor|saung|gazebo|lesehan|kursi)/i.test(q)) {
         return {
-            text: "Untuk reservasi tempat di Bukit Padangan sangat fleksibel! Anda bisa memilih zona favorit:\n\n" +
-                  "• **Gazebo Saung Kolam**: Suasana sejuk di atas kolam terapi ikan santai.\n" +
-                  "• **Indoor Utama & Sayap Musik**: Nyaman, dekat panggung akustik, pas untuk acara formal atau keluarga.\n" +
-                  "• **Outdoor Deck Sunset**: Panorama alam terbuka, syahdu saat sore menjelang matahari terbenam.",
+            text: "🪑 **Pilihan Zona Meja di Bukit Padangan:**\n\n" +
+                  "• **Gazebo Saung Kolam**: Suasana lesehan sejuk tepat di atas kolam terapi ikan alami.\n" +
+                  "• **Indoor Utama & Sayap Musik**: Nyaman, dekat panggung akustik, sangat pas untuk acara formal atau rombongan keluarga.\n" +
+                  "• **Outdoor Deck Alam**: Bersantap di udara terbuka dengan pemandangan langsung lereng bukit dan sawah.",
             actions: [
                 { label: "🪑 Pilih Meja Interaktif", action: "scroll:#tables" },
                 { label: "💬 Tanya Meja via WA", action: "wa:meja" }
@@ -2407,24 +2513,13 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // 5. Jam Buka, Lokasi, Rute, Alamat, Parkir
-    if (/(jam|buka|tutup|operasional|lokasi|alamat|dimana|rute|jalan|maps|google|pati|gunungwungkal|parkir|bus)/i.test(q)) {
+    // 11. DP, Rekening, Pembayaran, Mandiri, Aturan Hari-H, Kasir (QRIS/Cash)
+    if (/(dp|down payment|uang muka|bayar|transfer|rekening|mandiri|bank|qris|cash|tunai|kartu|bukti|konfirmasi dp|aturan dp|batas)/i.test(q)) {
         return {
-            text: "⏰ **Jam Operasional:**\nBuka setiap hari: **11.00 – 22.00 WIB**\n\n" +
-                  "📍 **Alamat & Lokasi:**\nJl. Raya Gunungwungkal-Gulangpongge, Kec. Gunungwungkal, Kab. Pati, Jawa Tengah (lereng perbukitan Gunung Muria yang sejuk).\n\n" +
-                  "🚌 **Fasilitas Parkir:**\nArea parkir sangat luas dan aman untuk sepeda motor, mobil keluarga, hingga iringan bus pariwisata.",
-            actions: [
-                { label: "🗺️ Buka Google Maps", action: "external:https://maps.google.com/?q=Bukit+Padangan+Resto+Pati" },
-                { label: "💬 Panduan Rute WA", action: "wa:rute" }
-            ]
-        };
-    }
-
-    // 6. DP, Rekening, Pembayaran, Mandiri
-    if (/(dp|down payment|uang muka|bayar|transfer|rekening|mandiri|bank|konfirmasi)/i.test(q)) {
-        return {
-            text: "💳 **Rekening Resmi Pembayaran DP:**\n• **Bank Mandiri**: `1840011559968`\n• **Atas Nama**: Mila Elmeida\n\n" +
-                  "⚠️ **Ketentuan Reservasi:**\nKonfirmasi bukti transfer DP diterima maksimal pukul **14.00 WIB** pada hari-H agar meja dan pesanan Anda dipersiapkan dengan optimal.",
+            text: "💳 **Ketentuan Pembayaran & DP Resmi:**\n\n" +
+                  "• **Rekening Resmi DP**: **Bank Mandiri: `1840011559968` a.n. Mila Elmeida**\n" +
+                  "• **Batas Reservasi Hari-H**: Konfirmasi bukti transfer DP diterima maksimal pukul **14.00 WIB** pada hari kunjungan agar meja & pesanan disiapkan prima.\n" +
+                  "• **Metode di Kasir**: Menerima Tunai (Cash), Transfer Bank Mandiri, dan QRIS.",
             actions: [
                 { label: "📤 Konfirmasi Bukti DP", action: "func:openConfirmDpModal" },
                 { label: "💬 Kirim Bukti ke WA Admin", action: "wa:dp" }
@@ -2432,7 +2527,7 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // 7. Kontak Admin WhatsApp Langsung
+    // 12. Kontak Admin WhatsApp Langsung
     if (/(wa|whatsapp|kontak|admin|nomor|telepon|cs|hubungi|chat)/i.test(q)) {
         return {
             text: "Silakan hubungi kontak WhatsApp Admin Bukit Padangan:\n\n" +
@@ -2446,31 +2541,17 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // 8. Fasilitas (Mushola, Wifi, Toilet, Playground)
-    if (/(fasilitas|toilet|mushola|musala|wifi|colokan|listrik|stopkontak|anak|playground|ikan)/i.test(q)) {
-        return {
-            text: "Fasilitas lengkap di Bukit Padangan Resto:\n" +
-                  "• 🕌 Mushola bersih & nyaman\n" +
-                  "• 🚻 Toilet higienis di beberapa titik\n" +
-                  "• 🐟 Kolam terapi ikan alami (santai di saung)\n" +
-                  "• 🛝 Mini playground ramah anak\n" +
-                  "• 📶 Wi-Fi gratis & stopkontak di area meja\n" +
-                  "• 🅿️ Area parkir luas motor, mobil, bus",
-            actions: [
-                { label: "🪑 Pilih Meja Saung", action: "scroll:#tables" },
-                { label: "💬 Tanya Info Fasilitas", action: "wa" }
-            ]
-        };
-    }
-
-    // Default / Fallback
+    // =========================================
+    // OUT OF TOPIC (OOT) / DI LUAR BUKIT PADANGAN
+    // =========================================
     return {
-        text: "Terima kasih atas pertanyaannya! Asisten AI Bukit Padangan siap membantu Anda mencari info menu lezat, reservasi meja, atau paket rombongan.\n\n" +
-              "Jika Anda butuh bantuan khusus atau ingin berbicara dengan tim staf kami, silakan klik tombol di bawah untuk memilih WhatsApp Admin 😊",
+        text: "Maaf, saya tidak diprogram untuk menjawab itu. 🙏\n\n" +
+              "Saya adalah asisten virtual resmi **Warung Makan Bukit Padangan** dan hanya dapat membantu informasi seputar resto kami, seperti rekomendasi menu, jam operasional, rute lokasi, fasilitas, reservasi meja, dan paket acara.",
         actions: [
-            { label: "🍛 Menu Favorit", action: "chip:Rekomendasi Menu Favorit" },
-            { label: "🪑 Booking Meja", action: "scroll:#tables" },
-            { label: "💬 Direct WhatsApp", action: "func:openWaChooserModal" }
+            { label: "🍛 Menu & Harga", action: "scroll:#menu" },
+            { label: "🪑 Reservasi Meja", action: "scroll:#tables" },
+            { label: "📍 Rute & Lokasi", action: "scroll:#about" },
+            { label: "💬 Hubungi Admin WA", action: "func:openWaChooserModal" }
         ]
     };
 }
