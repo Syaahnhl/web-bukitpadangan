@@ -1276,28 +1276,266 @@ section {
    ========================================= */
 .gallery-section {
     background-color: var(--bg-cream);
+    position: relative;
+    overflow: hidden;
 }
 
+/* Gallery Header Controls */
+.gallery-carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.gallery-hint-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(212, 163, 115, 0.12);
+    color: var(--accent-gold);
+    border: 1px solid rgba(212, 163, 115, 0.3);
+    border-radius: 9999px;
+    padding: 0.45rem 1.15rem;
+    font-size: 0.88rem;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-hint-pill i {
+    color: var(--gold-light);
+    animation: pulseHoriz 2s infinite ease-in-out;
+}
+
+@keyframes pulseHoriz {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(4px); }
+}
+
+.gallery-nav-buttons {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.btn-gallery-nav {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    color: var(--gold-light);
+    border: 1px solid rgba(212, 163, 115, 0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.btn-gallery-nav:hover {
+    background: var(--accent-gold);
+    color: #0a0c0f;
+    border-color: var(--accent-gold);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 18px rgba(229, 184, 130, 0.35);
+}
+
+.btn-gallery-nav:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Gallery Carousel Wrapper & Track */
+.gallery-carousel-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.gallery-carousel-track {
+    display: flex;
+    gap: 1.35rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.5rem 0.25rem 1.75rem 0.25rem;
+    cursor: grab;
+    user-select: none;
+}
+
+.gallery-carousel-track.dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+    scroll-snap-type: none;
+}
+
+/* Custom Scrollbar for Carousel Track */
+.gallery-carousel-track::-webkit-scrollbar {
+    height: 8px;
+}
+
+.gallery-carousel-track::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    margin: 0 10px;
+}
+
+.gallery-carousel-track::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #b8834a, #e5b882);
+    border-radius: 10px;
+}
+
+.gallery-carousel-track::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-gold);
+}
+
+/* Gallery Card (Slide Item) */
+.gallery-card {
+    flex: 0 0 320px;
+    max-width: 320px;
+    scroll-snap-align: start;
+    background: var(--bg-card);
+    border: 1px solid rgba(212, 163, 115, 0.22);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.gallery-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent-gold);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 24px rgba(229, 184, 130, 0.18);
+}
+
+.gallery-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: #14171d;
+}
+
+.gallery-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-card:hover .gallery-image-wrapper img {
+    transform: scale(1.09);
+}
+
+.gallery-spot-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(10, 12, 15, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--gold-light);
+    border: 1px solid rgba(212, 163, 115, 0.4);
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    z-index: 2;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-zoom-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(10, 12, 15, 0.85);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: var(--gold-light);
+    border: 1px solid rgba(212, 163, 115, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.88rem;
+    opacity: 0.85;
+    transition: all 0.25s ease;
+    z-index: 2;
+}
+
+.gallery-card:hover .gallery-zoom-badge {
+    background: var(--accent-gold);
+    color: #0a0c0f;
+    border-color: var(--accent-gold);
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+.gallery-card-content {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background: var(--bg-card);
+}
+
+.gallery-spot-name {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 0.45rem;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+}
+
+.gallery-card:hover .gallery-spot-name {
+    color: var(--gold-light);
+}
+
+.gallery-spot-desc {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    line-height: 1.5;
+    margin: 0;
+}
+
+@media (max-width: 640px) {
+    .gallery-card {
+        flex: 0 0 280px;
+        max-width: 280px;
+    }
+    .gallery-image-wrapper {
+        height: 190px;
+    }
+    .gallery-hint-pill {
+        font-size: 0.78rem;
+        padding: 0.35rem 0.85rem;
+    }
+    .btn-gallery-nav {
+        width: 38px;
+        height: 38px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Backward compatibility fallback */
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
-}
-
-.gallery-item {
-    position: relative;
-    border-radius: 15px;
-    overflow: hidden;
-    height: 250px;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-}
-
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
 }
 
 .gallery-overlay {
@@ -1317,14 +1555,6 @@ section {
     transition: opacity 0.3s ease;
     padding: 20px;
     text-align: center;
-}
-
-.gallery-item:hover img {
-    transform: scale(1.1);
-}
-
-.gallery-item:hover .gallery-overlay {
-    opacity: 1;
 }
 
 /* Lightbox Modal */

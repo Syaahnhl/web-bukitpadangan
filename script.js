@@ -419,6 +419,7 @@ window.addEventListener("DOMContentLoaded", () => {
     initFeaturesCarousel();
     initAmenitiesCarousel();
     initPackagesCarousel();
+    initGalleryCarousel();
     updatePackageCalc();
     updateMenuOrderLinks();
     initWeatherWidget();
@@ -544,25 +545,31 @@ if (slides.length > 0) {
 }
 
 // =========================================
-// 3. LIGHTBOX GALLERY ZOOM
+// 3. LIGHTBOX GALLERY ZOOM & HORIZONTAL SLIDER
 // =========================================
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightboxImg");
 const lightboxCaption = document.getElementById("lightboxCaption");
 let activeImageIndex = 0;
 
-// Ambil list semua gambar di dalam grid galeri
-const galleryImages = Array.from(document.querySelectorAll(".gallery-item img"));
+function getGalleryImages() {
+    return Array.from(document.querySelectorAll("#galleryTrack img, .gallery-item img"));
+}
 
 function openLightbox(index) {
-    if (!lightbox || galleryImages.length === 0) return;
-    activeImageIndex = index;
+    const images = getGalleryImages();
+    if (!lightbox || images.length === 0) return;
+    activeImageIndex = (index + images.length) % images.length;
     lightbox.style.display = "flex";
     
     // Tampilkan gambar dan caption
-    const activeImg = galleryImages[activeImageIndex];
+    const activeImg = images[activeImageIndex];
     lightboxImg.src = activeImg.src;
-    lightboxCaption.innerText = activeImg.alt || "Galeri Bukit Padangan";
+    
+    const card = activeImg.closest(".gallery-card, .gallery-item");
+    const title = card ? card.querySelector(".gallery-spot-name, .gallery-overlay span")?.innerText : "";
+    const desc = card ? card.querySelector(".gallery-spot-desc")?.innerText : "";
+    lightboxCaption.innerHTML = title ? `<div style="font-size:1.15rem; font-weight:700; color:#f8fafc; margin-bottom:4px;">${title}</div>${desc ? `<div style="font-size:0.9rem; color:#cbd5e1; font-weight:400; max-width:600px; text-align:center;">${desc}</div>` : ""}` : (activeImg.alt || "Galeri Bukit Padangan");
 }
 
 function closeLightbox() {
@@ -571,12 +578,73 @@ function closeLightbox() {
 
 function changeLightboxImage(delta, event) {
     if (event) event.stopPropagation(); // Mencegah modal tertutup karena event click di bubble up
-    let newIndex = activeImageIndex + delta;
-    
-    if (newIndex >= galleryImages.length) newIndex = 0;
-    else if (newIndex < 0) newIndex = galleryImages.length - 1;
-    
+    const images = getGalleryImages();
+    if (images.length === 0) return;
+    let newIndex = (activeImageIndex + delta + images.length) % images.length;
     openLightbox(newIndex);
+}
+
+// Navigasi geser slider galeri (slide kanan / kiri)
+function scrollGalleryTrack(direction) {
+    const track = document.getElementById("galleryTrack");
+    if (!track) return;
+    const card = track.querySelector(".gallery-card, .gallery-item");
+    const scrollAmount = card ? (card.offsetWidth + 22) : 340;
+    track.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
+}
+
+// Inisialisasi drag scroll dengan mouse & swipe
+function initGalleryCarousel() {
+    const track = document.getElementById("galleryTrack");
+    if (!track) return;
+
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    let hasMoved = false;
+
+    track.addEventListener("mousedown", (e) => {
+        isDown = true;
+        hasMoved = false;
+        track.classList.add("dragging");
+        startX = e.pageX - track.offsetLeft;
+        scrollLeft = track.scrollLeft;
+    });
+
+    window.addEventListener("mouseup", () => {
+        if (!isDown) return;
+        isDown = false;
+        track.classList.remove("dragging");
+    });
+
+    track.addEventListener("mousemove", (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - track.offsetLeft;
+        const walk = (x - startX);
+        if (Math.abs(walk) > 5) hasMoved = true;
+        track.scrollLeft = scrollLeft - walk;
+    });
+
+    // Cegah trigger modal jika user sedang drag/geser
+    track.querySelectorAll(".gallery-card").forEach((card) => {
+        card.addEventListener("click", (e) => {
+            if (hasMoved) {
+                e.stopPropagation();
+                e.preventDefault();
+                hasMoved = false;
+            }
+        }, true);
+    });
+
+    // Support keyboard panah kiri/kanan saat lightbox terbuka
+    document.addEventListener("keydown", (e) => {
+        if (lightbox && lightbox.style.display === "flex") {
+            if (e.key === "ArrowRight") changeLightboxImage(1);
+            if (e.key === "ArrowLeft") changeLightboxImage(-1);
+            if (e.key === "Escape") closeLightbox();
+        }
+    });
 }
 
 // =========================================

@@ -1057,31 +1057,130 @@
     <!-- GALLERY SECTION -->
     <section id="gallery" class="section-padding gallery-section">
         <div class="container">
-            <h2 class="section-title">Galeri Suasana Bukit</h2>
-            <p class="section-desc">Intip keindahan sudut tempat nongkrong dan keelokan panorama alam di Bukit Padangan. Klik foto untuk memperbesar.</p>
-            <div class="gallery-grid">
-                <div class="gallery-item" onclick="openLightbox(0)">
-                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop" alt="Pemandangan Resto">
-                    <div class="gallery-overlay">
-                        <span>Pemandangan Bukit Asri</span>
-                    </div>
+            <div class="section-badge-center"><span class="badge-gold"><i class="fas fa-camera-retro"></i> Galeri & Spot Foto</span></div>
+            <h2 class="section-title">Galeri Suasana Bukit & Spot Foto</h2>
+            <p class="section-desc">Intip keindahan sudut tempat nongkrong, saung gazebo tepi sawah, kolam terapi ikan, hingga kehangatan lentera malam. Geser ke kanan untuk menjelajahi seluruh spot estetik Bukit Padangan.</p>
+
+            <!-- Gallery Carousel Controls & Navigation -->
+            <div class="gallery-carousel-header">
+                <div class="gallery-hint-pill">
+                    <i class="fas fa-arrows-alt-h"></i> <span>Geser ke kanan untuk melihat spot lainnya</span>
                 </div>
-                <div class="gallery-item" onclick="openLightbox(1)">
-                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=800&auto=format&fit=crop" alt="Sudut Santap Tradisional">
-                    <div class="gallery-overlay">
-                        <span>Sudut Ngopi & Santap Tradisional</span>
-                    </div>
+                <div class="gallery-nav-buttons">
+                    <button type="button" class="btn-gallery-nav" id="btnGalleryPrev" onclick="scrollGalleryTrack(-1)" aria-label="Geser ke kiri" title="Geser ke kiri">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button type="button" class="btn-gallery-nav" id="btnGalleryNext" onclick="scrollGalleryTrack(1)" aria-label="Geser ke kanan" title="Geser ke kanan">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
-                <div class="gallery-item" onclick="openLightbox(2)">
-                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop" alt="Area Keluarga">
-                    <div class="gallery-overlay">
-                        <span>Area Makan Outdoor Keluarga</span>
+            </div>
+
+            <!-- Horizontal Carousel Track (Swipe / Slideable to Right) -->
+            <div class="gallery-carousel-wrapper">
+                <div id="galleryTrack" class="gallery-carousel-track" role="region" aria-label="Galeri Suasana Bukit Padangan">
+                    <!-- Spot 1 -->
+                    <div class="gallery-card gallery-item" onclick="openLightbox(0)">
+                        <div class="gallery-image-wrapper">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Bali%2C_Rice_fields%2C_Rice_terraces_in_East_Bali%2C_Indonesia.jpg" alt="Panorama Bukit & Lembah Muria" loading="lazy">
+                            <span class="gallery-spot-badge"><i class="fas fa-mountain"></i> Panorama Alam</span>
+                            <div class="gallery-zoom-badge"><i class="fas fa-search-plus"></i></div>
+                        </div>
+                        <div class="gallery-card-content">
+                            <h3 class="gallery-spot-name">Panorama Bukit & Lembah Muria</h3>
+                            <p class="gallery-spot-desc">Hamparan bukit hijau asri berundak dan semilir angin lereng pegunungan yang menyejukkan.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="gallery-item" onclick="openLightbox(3)">
-                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=800&auto=format&fit=crop" alt="Makanan Malam">
-                    <div class="gallery-overlay">
-                        <span>Makan Malam Romantis</span>
+
+                    <!-- Spot 2 -->
+                    <div class="gallery-card gallery-item" onclick="openLightbox(1)">
+                        <div class="gallery-image-wrapper">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/76/Terraced_Rice_Fields_Landscape_in_Pagerwojo%2C_Tulungagung.jpg" alt="Saung Gazebo Lesehan Tepi Sawah" loading="lazy">
+                            <span class="gallery-spot-badge"><i class="fas fa-home"></i> Saung Lesehan</span>
+                            <div class="gallery-zoom-badge"><i class="fas fa-search-plus"></i></div>
+                        </div>
+                        <div class="gallery-card-content">
+                            <h3 class="gallery-spot-name">Gazebo Tepi Hamparan Sawah</h3>
+                            <p class="gallery-spot-desc">Saung santai berkonsep terbuka persis di sisi petak sawah bertingkat untuk makan bersama keluarga.</p>
+                        </div>
+                    </div>
+
+                    <!-- Spot 3 -->
+                    <div class="gallery-card gallery-item" onclick="openLightbox(2)">
+                        <div class="gallery-image-wrapper">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/3/31/Aliran_Sungai_Bangek.jpg" alt="Aliran Sungai Bebatuan Alami" loading="lazy">
+                            <span class="gallery-spot-badge"><i class="fas fa-water"></i> Sungai Alami</span>
+                            <div class="gallery-zoom-badge"><i class="fas fa-search-plus"></i></div>
+                        </div>
+                        <div class="gallery-card-content">
+                            <h3 class="gallery-spot-name">Gemericik Sungai & Bebatuan</h3>
+                            <p class="gallery-spot-desc">Aliran air jernih bebatuan kali alami yang mengalir sejuk di batas pelataran resto.</p>
+                        </div>
+                    </div>
+
+                    <!-- Spot 4 -->
+                    <div class="gallery-card gallery-item" onclick="openLightbox(3)">
+                        <div class="gallery-image-wrapper">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Koi_Pond_-_Portland_Japanese_Garden_%2818206438211%29.jpg" alt="Kolam Terapi Ikan Alami" loading="lazy">
+                            <span class="gallery-spot-badge"><i class="fas fa-fish"></i> Terapi Ikan</span>
+                            <div class="gallery-zoom-badge"><i class="fas fa-search-plus"></i></div>
+                        </div>
+                        <div class="gallery-card-content">
+                            <h3 class="gallery-spot-name">Kolam Terapi Ikan Segar</h3>
+                            <p class="gallery-spot-desc">Sensasi rileks merendam kaki bersama ikan terapi di air jernih bebatuan alami.</p>
+                        </div>
+                    </div>
+
+                    <!-- Spot 5 -->
+                    <div class="gallery-card gallery-item" onclick="openLightbox(4)">
+                        <div class="gallery-image-wrapper">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Water_reflection_of_a_hut_and_colorful_sky_over_karst_mountains_at_sunset_in_a_paddy_field_in_Vang_Vieng_Laos.jpg" alt="Senja Sunset Golden Hour" loading="lazy">
+                            <span class="gallery-spot-badge"><i class="fas fa-sun"></i> Golden Hour</span>
+                            <div class="gallery-zoom-badge"><i class="fas fa-search-plus"></i></div>
+                        </div>
+                        <div class="gallery-card-content">
+                            <h3 class="gallery-spot-name">Senja Sunset di Ufuk Bukit</h3>
+                            <p class="gallery-spot-desc">Pancaran langit keemasan saat matahari terbenam berpadu cermin air sawah nan magis.</p>
+                        </div>
+                    </div>
+
+                    <!-- Spot 6 -->
+                    <div class="gallery-card gallery-item" onclick="openLightbox(5)">
+                        <div class="gallery-image-wrapper">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/02/DZ6_2632_A_cozy_outdoor_corner_at_night_a_wicker_chair_beside_a_small_table_potted_plants_a_glowing_candle_and_twinkling_string_lights_welcoming_passersby.jpg" alt="Suasana Malam Bertabur Lentera" loading="lazy">
+                            <span class="gallery-spot-badge"><i class="fas fa-lightbulb"></i> Malam Lentera</span>
+                            <div class="gallery-zoom-badge"><i class="fas fa-search-plus"></i></div>
+                        </div>
+                        <div class="gallery-card-content">
+                            <h3 class="gallery-spot-name">Malam Syahdu Bertabur Lentera</h3>
+                            <p class="gallery-spot-desc">Kilau hangat lampu gantung dan lentera temaram yang intim nan romantis saat senja beranjak malam.</p>
+                        </div>
+                    </div>
+
+                    <!-- Spot 7 -->
+                    <div class="gallery-card gallery-item" onclick="openLightbox(6)">
+                        <div class="gallery-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?q=80&w=800&auto=format&fit=crop" alt="Panggung Musik Akustik" loading="lazy">
+                            <span class="gallery-spot-badge"><i class="fas fa-music"></i> Live Music</span>
+                            <div class="gallery-zoom-badge"><i class="fas fa-search-plus"></i></div>
+                        </div>
+                        <div class="gallery-card-content">
+                            <h3 class="gallery-spot-name">Panggung Akustik Akhir Pekan</h3>
+                            <p class="gallery-spot-desc">Harmoni alunan musik akustik merdu menemani santap sore dan malam Anda bersama keluarga.</p>
+                        </div>
+                    </div>
+
+                    <!-- Spot 8 -->
+                    <div class="gallery-card gallery-item" onclick="openLightbox(7)">
+                        <div class="gallery-image-wrapper">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Secangkir_kopi_di_tepi_sawah_Desa_pariangan.jpg" alt="Secangkir Kopi di Tepi Sawah" loading="lazy">
+                            <span class="gallery-spot-badge"><i class="fas fa-coffee"></i> Ngopi Santai</span>
+                            <div class="gallery-zoom-badge"><i class="fas fa-search-plus"></i></div>
+                        </div>
+                        <div class="gallery-card-content">
+                            <h3 class="gallery-spot-name">Secangkir Kopi di Tepi Sawah</h3>
+                            <p class="gallery-spot-desc">Menikmati seduhan Kopi Santan hangat dengan pemandangan terbuka persawahan lereng.</p>
+                        </div>
                     </div>
                 </div>
             </div>
