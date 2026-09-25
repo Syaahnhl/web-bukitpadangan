@@ -1081,10 +1081,13 @@ function showCartToast() {}
 // WHATSAPP DYNAMIC LOAD BALANCER & ADMIN CONTACTS (SSOT)
 // =========================================
 const ADMIN_CONTACTS = {
-    mila: { name: "Admin Mila", phone: "6285226210408" }
+    mila: { name: "Admin 1 (Mila Elmeida)", phone: "6285226210408", role: "Reservasi Meja & Menu" },
+    bukhori: { name: "Admin 2 (M. Bukhori)", phone: "6282329384594", role: "Operasional, Rute & Pelayanan" }
 };
 
 function getAssignedAdmin(mode = "auto") {
+    if (mode === "mila") return ADMIN_CONTACTS.mila.phone;
+    if (mode === "bukhori") return ADMIN_CONTACTS.bukhori.phone;
     return ADMIN_CONTACTS.mila.phone;
 }
 
@@ -2009,7 +2012,7 @@ function initAiChat() {
     const initialActions = [
         { label: "🍛 Menu Favorit", action: "chip:Rekomendasi Menu Favorit" },
         { label: "🪑 Booking Meja", action: "scroll:#tables" },
-        { label: "💬 Chat Admin WA", action: "wa" }
+        { label: "💬 Direct WhatsApp", action: "func:openWaChooserModal" }
     ];
     appendAiMessage("bot", initialText, initialActions);
 }
@@ -2091,6 +2094,46 @@ function handleAiChipClick(chipText) {
     }
 }
 
+let pendingWaContext = '';
+
+function openWaChooserModal(context = '') {
+    pendingWaContext = context || '';
+    const modal = document.getElementById('aiWaChooserModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+    }
+}
+
+function closeWaChooserModal() {
+    const modal = document.getElementById('aiWaChooserModal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+    }
+}
+
+function directToWaAdmin(phone, adminLabel) {
+    let msg = `Halo ${adminLabel} Bukit Padangan, saya ingin konsultasi info resto dan reservasi.`;
+    if (pendingWaContext === 'wa:menu') {
+        msg = `Halo ${adminLabel} Bukit Padangan, saya ingin bertanya seputar rekomendasi menu andalan dan pemesanan.`;
+    } else if (pendingWaContext === 'wa:paket') {
+        msg = `Halo ${adminLabel} Bukit Padangan, saya ingin konsultasi kustom paket acara rombongan (reuni/rapat/arisan/gathering).`;
+    } else if (pendingWaContext === 'wa:meja') {
+        msg = `Halo ${adminLabel} Bukit Padangan, saya ingin reservasi meja dan memastikan ketersediaan tempat.`;
+    } else if (pendingWaContext === 'wa:dp') {
+        msg = `Halo ${adminLabel} Bukit Padangan, saya ingin konfirmasi transfer pembayaran DP reservasi meja.`;
+    } else if (pendingWaContext === 'wa:rute') {
+        msg = `Halo ${adminLabel} Bukit Padangan, mohon panduan rute dan info parkir bus menuju Bukit Padangan.`;
+    }
+    closeWaChooserModal();
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+window.openWaChooserModal = openWaChooserModal;
+window.closeWaChooserModal = closeWaChooserModal;
+window.directToWaAdmin = directToWaAdmin;
+
 function handleAiActionClick(actionStr) {
     if (!actionStr) return;
 
@@ -2112,20 +2155,14 @@ function handleAiActionClick(actionStr) {
         const url = actionStr.replace('external:', '');
         window.open(url, '_blank');
     } else if (actionStr.startsWith('wa')) {
-        let msg = "Halo Admin Bukit Padangan, saya ingin konsultasi info resto dan reservasi.";
-        if (actionStr === 'wa:menu') {
-            msg = "Halo Admin Bukit Padangan, saya ingin bertanya seputar rekomendasi menu andalan dan pemesanan.";
-        } else if (actionStr === 'wa:paket') {
-            msg = "Halo Admin Bukit Padangan, saya ingin konsultasi kustom paket acara rombongan (reuni/rapat/arisan/gathering).";
-        } else if (actionStr === 'wa:meja') {
-            msg = "Halo Admin Bukit Padangan, saya ingin reservasi meja dan memastikan ketersediaan tempat.";
-        } else if (actionStr === 'wa:dp') {
-            msg = "Halo Admin Bukit Padangan, saya ingin konfirmasi transfer pembayaran DP reservasi meja.";
-        } else if (actionStr === 'wa:rute') {
-            msg = "Halo Admin Bukit Padangan, mohon panduan rute dan info parkir bus menuju Bukit Padangan.";
+        if (actionStr === 'wa:mila') {
+            directToWaAdmin('6285226210408', 'Admin 1 (Mila)');
+        } else if (actionStr === 'wa:bukhori') {
+            directToWaAdmin('6282329384594', 'Admin 2 (Bukhori)');
+        } else {
+            // Sebelum direct ke WA, buka pilihan 2 nomor WA
+            openWaChooserModal(actionStr);
         }
-        const adminPhone = typeof getAssignedAdmin === 'function' ? getAssignedAdmin("auto") : "6285226210408";
-        window.open(`https://wa.me/${adminPhone}?text=${encodeURIComponent(msg)}`, '_blank');
     }
 }
 
@@ -2238,10 +2275,15 @@ function generateAiKnowledgeResponse(query) {
     // 7. Kontak Admin WhatsApp Langsung
     if (/(wa|whatsapp|kontak|admin|nomor|telepon|cs|mila|bukhori|hubungi|chat)/i.test(q)) {
         return {
-            text: "Anda dapat langsung menghubungi Admin resmi Bukit Padangan via WhatsApp:\n\n" +
-                  "• 👩 **Admin WhatsApp (Mila)**: `0852-2621-0408` (Reservasi, Informasi Menu & Paket Acara)",
+            text: "Silakan pilih kontak WhatsApp Admin resmi Bukit Padangan sesuai kebutuhan Anda:\n\n" +
+                  "• 👩 **Admin 1 — Mila Elmeida** (`0852-2621-0408`)\n" +
+                  "  Khusus: Reservasi Meja, Pilihan Menu, Transfer DP & Paket Acara\n\n" +
+                  "• 👨 **Admin 2 — M. Bukhori** (`0823-2938-4594`)\n" +
+                  "  Khusus: Informasi Umum, Rute Kendaraan, Parkir Bus & Operasional Resto",
             actions: [
-                { label: "💬 Chat WhatsApp Admin", action: "external:https://wa.me/6285226210408?text=Halo%20Admin%20Bukit%20Padangan" }
+                { label: "👩 Chat Admin 1 (Mila)", action: "wa:mila" },
+                { label: "👨 Chat Admin 2 (Bukhori)", action: "wa:bukhori" },
+                { label: "💬 Buka Pilihan Admin", action: "func:openWaChooserModal" }
             ]
         };
     }
@@ -2266,11 +2308,11 @@ function generateAiKnowledgeResponse(query) {
     // Default / Fallback
     return {
         text: "Terima kasih atas pertanyaannya! Asisten AI Bukit Padangan siap membantu Anda mencari info menu lezat, reservasi meja, atau paket rombongan.\n\n" +
-              "Jika Anda butuh bantuan khusus atau ingin berbicara dengan tim staf kami, silakan klik tombol di bawah untuk terhubung langsung ke WhatsApp Admin 😊",
+              "Jika Anda butuh bantuan khusus atau ingin berbicara dengan tim staf kami, silakan klik tombol di bawah untuk memilih WhatsApp Admin 😊",
         actions: [
             { label: "🍛 Menu Favorit", action: "chip:Rekomendasi Menu Favorit" },
             { label: "🪑 Booking Meja", action: "scroll:#tables" },
-            { label: "💬 Chat WhatsApp Admin", action: "wa" }
+            { label: "💬 Direct WhatsApp", action: "func:openWaChooserModal" }
         ]
     };
 }

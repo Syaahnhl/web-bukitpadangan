@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warung Makan Bukit Padangan - Restoran Alam & Keluarga Gunungwungkal, Pati</title>
-    <link rel="stylesheet" href="style.css?v=20260925-photospots-v4">
+    <link rel="stylesheet" href="style.css?v=20260925-wa-in-chatbot-v5">
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -1825,12 +1825,6 @@
 
     <!-- Floating Bottom-Right Chat & AI Assistant Widget -->
     <div id="floatingChatWidget" class="floating-chat-widget">
-        <!-- Direct WhatsApp Chat Floating Button -->
-        <a id="floatingWaBtn" href="https://wa.me/6285226210408?text=Halo%20Admin%20Bukit%20Padangan%2C%20saya%20ingin%20tanya%20seputar%20menu%20dan%20reservasi." target="_blank" rel="noopener noreferrer" class="floating-chat-btn floating-wa-btn" title="Chat WhatsApp Admin" aria-label="Chat WhatsApp Admin">
-            <i class="fab fa-whatsapp"></i>
-            <span class="floating-chat-tooltip">Chat WhatsApp</span>
-        </a>
-
         <!-- AI Assistant Floating Button -->
         <button type="button" id="floatingAiBtn" class="floating-chat-btn floating-ai-btn" onclick="toggleAiChat()" title="Tanya Asisten AI Bukit Padangan" aria-label="Tanya Asisten AI Bukit Padangan">
             <span class="floating-ai-ring"></span>
@@ -1854,9 +1848,78 @@
                 </div>
             </div>
             <div class="ai-chat-actions">
+                <button type="button" class="btn-ai-header-wa" onclick="openWaChooserModal()" title="Direct WhatsApp Admin" aria-label="Direct WhatsApp Admin">
+                    <i class="fab fa-whatsapp"></i> <span>Direct WA</span>
+                </button>
                 <button type="button" class="btn-ai-close" onclick="toggleAiChat()" title="Tutup Chat" aria-label="Tutup Chat">
                     <i class="fas fa-times"></i>
                 </button>
+            </div>
+        </div>
+
+        <!-- 2 Pilihan Nomor WhatsApp Admin (Drawer / Overlay) -->
+        <div id="aiWaChooserModal" class="ai-wa-chooser-overlay" style="display: none;" aria-hidden="true">
+            <div class="ai-wa-chooser-card">
+                <div class="ai-wa-chooser-header">
+                    <div class="ai-wa-chooser-title">
+                        <div class="ai-wa-chooser-icon-badge">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div>
+                            <h5>Pilih Admin WhatsApp</h5>
+                            <p>Silakan hubungi admin sesuai keperluan Anda:</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-ai-wa-close" onclick="closeWaChooserModal()" title="Tutup Pilihan" aria-label="Tutup Pilihan">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="ai-wa-chooser-list">
+                    <!-- Opsi 1: Admin 1 Mila -->
+                    <button type="button" class="ai-wa-contact-item" onclick="directToWaAdmin('6285226210408', 'Admin Mila')">
+                        <div class="ai-wa-contact-avatar">
+                            <i class="fas fa-calendar-check"></i>
+                            <span class="ai-wa-badge-online"></span>
+                        </div>
+                        <div class="ai-wa-contact-body">
+                            <div class="ai-wa-contact-name-row">
+                                <span class="ai-wa-contact-name">Admin 1 — Mila Elmeida</span>
+                                <span class="ai-wa-tag-pill">Reservasi</span>
+                            </div>
+                            <div class="ai-wa-contact-phone">0852-2621-0408</div>
+                            <div class="ai-wa-contact-desc">Reservasi meja, pesanan menu, transfer DP, & paket rombongan</div>
+                        </div>
+                        <div class="ai-wa-contact-action">
+                            <span class="btn-wa-direct-go"><i class="fab fa-whatsapp"></i> Chat</span>
+                        </div>
+                    </button>
+
+                    <!-- Opsi 2: Admin 2 Bukhori -->
+                    <button type="button" class="ai-wa-contact-item" onclick="directToWaAdmin('6282329384594', 'Admin Bukhori')">
+                        <div class="ai-wa-contact-avatar avatar-operational">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span class="ai-wa-badge-online"></span>
+                        </div>
+                        <div class="ai-wa-contact-body">
+                            <div class="ai-wa-contact-name-row">
+                                <span class="ai-wa-contact-name">Admin 2 — M. Bukhori</span>
+                                <span class="ai-wa-tag-pill tag-operational">Operasional</span>
+                            </div>
+                            <div class="ai-wa-contact-phone">0823-2938-4594</div>
+                            <div class="ai-wa-contact-desc">Info umum resto, rute bus/mobil, parkir rombongan, & operasional</div>
+                        </div>
+                        <div class="ai-wa-contact-action">
+                            <span class="btn-wa-direct-go"><i class="fab fa-whatsapp"></i> Chat</span>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="ai-wa-chooser-footer">
+                    <button type="button" class="btn-ai-wa-back" onclick="closeWaChooserModal()">
+                        <i class="fas fa-arrow-left"></i> Kembali ke Percakapan AI
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -1889,7 +1952,7 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
     <script src="tables3d.js"></script>
-    <script src="script.js?v=20260925-photospots-v4"></script>
+    <script src="script.js?v=20260925-wa-in-chatbot-v5"></script>
 </body>
 
 </html>
