@@ -425,6 +425,7 @@ window.addEventListener("DOMContentLoaded", () => {
     updateMenuOrderLinks();
     initWeatherWidget();
     initLiveMusicSchedule();
+    initReviewsCarousel();
     initConfirmDpModal();
 
     // Event listener untuk menutup menuBookModal jika klik di luar area konten
@@ -1569,7 +1570,7 @@ function sendPackageCalcToWA() {
     window.open(`https://wa.me/${adminPhone}?text=${encoded}`, "_blank");
 }
 
-// Feature 3: Filter Ulasan Pengunjung Google
+// Feature 3: Filter Ulasan Pengunjung Google & Horizontal Scroll Controls
 function filterReviews(type, event) {
     const pills = document.querySelectorAll(".review-pill");
     pills.forEach(pill => pill.classList.remove("active"));
@@ -1589,6 +1590,55 @@ function filterReviews(type, event) {
         } else {
             card.style.display = "none";
         }
+    });
+
+    const track = document.getElementById("reviewsGrid");
+    if (track) {
+        track.scrollTo({ left: 0, behavior: "smooth" });
+    }
+}
+
+// Navigasi Tombol Geser Ulasan (Kiri / Kanan)
+function scrollReviewTrack(direction) {
+    const track = document.getElementById("reviewsGrid");
+    if (!track) return;
+    const card = track.querySelector(".review-card");
+    const scrollAmount = card ? (card.offsetWidth + 20) : (track.clientWidth * 0.8);
+    track.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
+}
+
+// Inisialisasi Drag Scroll untuk Carousel Ulasan
+function initReviewsCarousel() {
+    const track = document.getElementById("reviewsGrid");
+    if (!track) return;
+
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    track.addEventListener("mousedown", (e) => {
+        isDown = true;
+        track.classList.add("dragging");
+        startX = e.pageX - track.offsetLeft;
+        scrollLeft = track.scrollLeft;
+    });
+
+    track.addEventListener("mouseleave", () => {
+        isDown = false;
+        track.classList.remove("dragging");
+    });
+
+    track.addEventListener("mouseup", () => {
+        isDown = false;
+        track.classList.remove("dragging");
+    });
+
+    track.addEventListener("mousemove", (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - track.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        track.scrollLeft = scrollLeft - walk;
     });
 }
 
@@ -1696,23 +1746,14 @@ function initWeatherWidget() {
 // 9. JADWAL LIVE MUSIC AKUSTIK & PANGGUNG
 // =========================================
 function initLiveMusicSchedule() {
-    const today = new Date().getDay(); // 0 = Minggu, 5 = Jumat, 6 = Sabtu
-    const liveTagFri = document.getElementById("liveBadgeFri");
+    const today = new Date().getDay(); // 0 = Minggu, 6 = Sabtu
     const liveTagSat = document.getElementById("liveBadgeSat");
-    const liveTagSun = document.getElementById("liveBadgeSun");
-    const cardFri = document.getElementById("scheduleFri");
     const cardSat = document.getElementById("scheduleSat");
-    const cardSun = document.getElementById("scheduleSun");
 
-    if (today === 5) {
-        if (liveTagFri) liveTagFri.style.display = "inline-flex";
-        if (cardFri) cardFri.classList.add("highlight");
-    } else if (today === 6) {
+    // Malam Minggu = Sabtu
+    if (today === 6) {
         if (liveTagSat) liveTagSat.style.display = "inline-flex";
         if (cardSat) cardSat.classList.add("highlight");
-    } else if (today === 0) {
-        if (liveTagSun) liveTagSun.style.display = "inline-flex";
-        if (cardSun) cardSun.classList.add("highlight");
     }
 }
 

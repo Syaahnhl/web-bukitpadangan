@@ -687,51 +687,35 @@
                 </div>
             </div>
 
-            <!-- JADWAL LIVE MUSIC MINGGUAN -->
+            <!-- JADWAL LIVE MUSIC AKUSTIK -->
             <div class="event-schedule-wrap" id="liveMusicSchedule">
                 <div class="schedule-header">
                     <div class="badge-gold"><i class="fas fa-guitar"></i> Hiburan Panggung Akustik</div>
-                    <h3>Jadwal Live Music Akustik Mingguan</h3>
+                    <h3>Jadwal Live Music Akustik</h3>
                     <p>Suasana santap Anda semakin syahdu ditemani alunan live acoustic di Panggung Onthel Heritage (Area Indoor Timur 1):</p>
                 </div>
-                <div class="schedule-grid">
-                    <div class="schedule-card" id="scheduleFri">
+                <div class="schedule-single-wrap">
+                    <div class="schedule-card highlight schedule-card-featured" id="scheduleSat">
+                        <div class="schedule-badge-gold"><i class="fas fa-star"></i> Panggung Utama</div>
                         <div class="schedule-day-row">
-                            <span class="schedule-day">Jumat Malam</span>
-                            <span class="schedule-live-badge" id="liveBadgeFri" style="display: none;"><span class="pulse-red"></span> LIVE MALAM INI</span>
+                            <span class="schedule-day"><i class="fas fa-calendar-alt"></i> Malam Minggu</span>
+                            <span class="schedule-live-badge" id="liveBadgeSat" style="display: none;"><span class="pulse-red"></span> LIVE MALAM INI</span>
                         </div>
                         <div class="schedule-time"><i class="far fa-clock"></i> 19.00 – 21.30 WIB</div>
-                        <div class="schedule-genre">Akustik Nostalgia & Pop Indo</div>
-                        <p class="schedule-desc">Alunan tembang kenangan dan lagu pop santai pengiring makan malam syahdu bersama keluarga tercinta.</p>
-                        <span class="schedule-stage"><i class="fas fa-map-marker-alt"></i> Panggung Onthel Heritage (Indoor Timur 1)</span>
-                        <button type="button" class="btn-stage-book" onclick="bookTableNearStage('Jumat')">
-                            <i class="fas fa-chair"></i> Pesan Meja Dekat Panggung
-                        </button>
-                    </div>
-                    <div class="schedule-card highlight" id="scheduleSat">
-                        <div class="schedule-badge-gold">Paling Favorit</div>
-                        <div class="schedule-day-row">
-                            <span class="schedule-day">Sabtu Sore – Malam</span>
-                            <span class="schedule-live-badge" id="liveBadgeSat" style="display: none;"><span class="pulse-red"></span> LIVE HARI INI</span>
+                        <div class="schedule-genre"><i class="fas fa-guitar"></i> Akustik Nostalgia, Pop Indo & Senandung Senja</div>
+                        <p class="schedule-desc">Menikmati alunan tembang kenangan dan musik akustik santai pengiring makan malam syahdu bersama keluarga, pasangan, maupun sahabat tercinta.</p>
+                        
+                        <!-- Catatan Situasional Fleksibel -->
+                        <div class="schedule-situational-note">
+                            <i class="fas fa-info-circle"></i>
+                            <div>
+                                <strong>Jadwal Fleksibel:</strong>
+                                <span>Jadwal live music diadakan khusus malam minggu dan dapat berubah atau disesuaikan sewaktu-waktu tergantung situasi, kondisi cuaca perbukitan, maupun agenda khusus.</span>
+                            </div>
                         </div>
-                        <div class="schedule-time"><i class="far fa-clock"></i> 16.30 – 21.30 WIB</div>
-                        <div class="schedule-genre">Senandung Senja & Top Hits Weekend</div>
-                        <p class="schedule-desc">Menikmati matahari terbenam (Golden Hour) hingga malam minggu hangat bersama sahabat dan pasangan.</p>
+
                         <span class="schedule-stage"><i class="fas fa-map-marker-alt"></i> Panggung Onthel Heritage (Indoor Timur 1)</span>
-                        <button type="button" class="btn-stage-book btn-stage-book-gold" onclick="bookTableNearStage('Sabtu')">
-                            <i class="fas fa-chair"></i> Pesan Meja Dekat Panggung
-                        </button>
-                    </div>
-                    <div class="schedule-card" id="scheduleSun">
-                        <div class="schedule-day-row">
-                            <span class="schedule-day">Minggu Siang – Sore</span>
-                            <span class="schedule-live-badge" id="liveBadgeSun" style="display: none;"><span class="pulse-red"></span> LIVE HARI INI</span>
-                        </div>
-                        <div class="schedule-time"><i class="far fa-clock"></i> 12.00 – 16.00 WIB</div>
-                        <div class="schedule-genre">Family Weekend Melodies & Request Lagu</div>
-                        <p class="schedule-desc">Melodi santai ramah keluarga. Pengunjung bebas me-request lagu favorit atau bernyanyi bersama!</p>
-                        <span class="schedule-stage"><i class="fas fa-map-marker-alt"></i> Panggung Onthel Heritage (Indoor Timur 1)</span>
-                        <button type="button" class="btn-stage-book" onclick="bookTableNearStage('Minggu')">
+                        <button type="button" class="btn-stage-book btn-stage-book-gold" onclick="bookTableNearStage('Malam Minggu')">
                             <i class="fas fa-chair"></i> Pesan Meja Dekat Panggung
                         </button>
                     </div>
@@ -767,98 +751,149 @@
 
                 <!-- Review Filter Pills -->
                 <div class="review-filter-pills">
-                    <button class="review-pill active" onclick="filterReviews('all', event)">Semua Ulasan (5)</button>
-                    <button class="review-pill" onclick="filterReviews('rasa', event)">Ayam Bledos & Rasa (2)</button>
-                    <button class="review-pill" onclick="filterReviews('suasana', event)">Suasana & Sunset (2)</button>
-                    <button class="review-pill" onclick="filterReviews('keluarga', event)">Keluarga & Fasilitas (2)</button>
+                    <button class="review-pill active" onclick="filterReviews('all', event)">Semua Ulasan (7)</button>
+                    <button class="review-pill" onclick="filterReviews('rasa', event)">Ayam Bledos & Rasa (3)</button>
+                    <button class="review-pill" onclick="filterReviews('suasana', event)">Suasana & Sunset (4)</button>
+                    <button class="review-pill" onclick="filterReviews('keluarga', event)">Keluarga & Fasilitas (3)</button>
                 </div>
             </div>
 
-            <!-- Review Cards Grid -->
-            <div class="reviews-grid" id="reviewsGrid">
-                <div class="review-card show" data-type="rasa keluarga">
-                    <div class="review-card-top">
-                        <div class="reviewer-meta">
-                            <div class="reviewer-avatar">HG</div>
-                            <div class="reviewer-info">
-                                <h5>Hendra Gunawan</h5>
-                                <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Local Guide Level 6</span>
-                            </div>
-                        </div>
-                        <div class="review-rating">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                    <p class="review-text">"Ayam Bledosnya juara banget! Pedas rempahnya mantap meresap, lalapan kembang turinya segar. Suasana outdoor pinggir jalan dan pemandangan bukitnya sejuk bikin betah. Anak-anak seneng banget main di kolam terapi ikan gratisnya."</p>
-                    <span class="review-date"><i class="far fa-calendar-alt"></i> Kunjungan Keluarga • 2 minggu lalu</span>
+            <!-- Review Carousel Header (Hint & Navigation Buttons) -->
+            <div class="reviews-carousel-header">
+                <div class="reviews-hint-pill">
+                    <i class="fas fa-arrows-alt-h"></i> <span>Geser / scroll ke kanan untuk ulasan lainnya</span>
                 </div>
-
-                <div class="review-card show" data-type="keluarga rasa">
-                    <div class="review-card-top">
-                        <div class="reviewer-meta">
-                            <div class="reviewer-avatar">SN</div>
-                            <div class="reviewer-info">
-                                <h5>Siti Nurhaliza</h5>
-                                <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Rombongan Arisan</span>
-                            </div>
-                        </div>
-                        <div class="review-rating">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                    <p class="review-text">"Tempat terbaik di Gunungwungkal buat kumpul keluarga besar dan arisan. Kopi santan khas Patinya gurih dan harum. Parkiran luas banget, muat rombongan 2 elf kami tanpa susah putar balik."</p>
-                    <span class="review-date"><i class="far fa-calendar-alt"></i> Rombongan 30 Pax • 1 bulan lalu</span>
+                <div class="reviews-nav-buttons">
+                    <button type="button" class="btn-review-nav" id="btnReviewPrev" onclick="scrollReviewTrack(-1)" aria-label="Geser ulasan ke kiri" title="Geser ke kiri">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button type="button" class="btn-review-nav" id="btnReviewNext" onclick="scrollReviewTrack(1)" aria-label="Geser ulasan ke kanan" title="Geser ke kanan">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
+            </div>
 
-                <div class="review-card show" data-type="suasana">
-                    <div class="review-card-top">
-                        <div class="reviewer-meta">
-                            <div class="reviewer-avatar">DP</div>
-                            <div class="reviewer-info">
-                                <h5>Dimas Prasetyo</h5>
-                                <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Pengunjung Luar Kota</span>
+            <!-- Review Cards Track (Horizontal Scroll / Swipe to Right) -->
+            <div class="reviews-carousel-wrapper">
+                <div class="reviews-grid" id="reviewsGrid">
+                    <div class="review-card show" data-type="rasa keluarga">
+                        <div class="review-card-top">
+                            <div class="reviewer-meta">
+                                <div class="reviewer-avatar">HG</div>
+                                <div class="reviewer-info">
+                                    <h5>Hendra Gunawan</h5>
+                                    <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Local Guide Level 6</span>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                         </div>
-                        <div class="review-rating">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
+                        <p class="review-text">"Ayam Bledosnya juara banget! Pedas rempahnya mantap meresap, lalapan kembang turinya segar. Suasana outdoor pinggir jalan dan pemandangan bukitnya sejuk bikin betah. Anak-anak seneng banget main di kolam terapi ikan gratisnya."</p>
+                        <span class="review-date"><i class="far fa-calendar-alt"></i> Kunjungan Keluarga • 2 minggu lalu</span>
                     </div>
-                    <p class="review-text">"Pemandangan matahari terbenam dari Saung nomor 1 luar biasa magis saat golden hour jam 5 sore. Pelayanan ramah, pesanan datang tepat waktu. Cocok banget buat yang mau healing dari hiruk pikuk kota."</p>
-                    <span class="review-date"><i class="far fa-calendar-alt"></i> Bersama Pasangan • 3 minggu lalu</span>
-                </div>
 
-                <div class="review-card show" data-type="rasa keluarga">
-                    <div class="review-card-top">
-                        <div class="reviewer-meta">
-                            <div class="reviewer-avatar">RW</div>
-                            <div class="reviewer-info">
-                                <h5>Ratna Wulandari</h5>
-                                <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Warga Pati Kota</span>
+                    <div class="review-card show" data-type="keluarga rasa">
+                        <div class="review-card-top">
+                            <div class="reviewer-meta">
+                                <div class="reviewer-avatar">SN</div>
+                                <div class="reviewer-info">
+                                    <h5>Siti Nurhaliza</h5>
+                                    <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Rombongan Arisan</span>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                         </div>
-                        <div class="review-rating">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
+                        <p class="review-text">"Tempat terbaik di Gunungwungkal buat kumpul keluarga besar dan arisan. Kopi santan khas Patinya gurih dan harum. Parkiran luas banget, muat rombongan 2 elf kami tanpa susah putar balik."</p>
+                        <span class="review-date"><i class="far fa-calendar-alt"></i> Rombongan 30 Pax • 1 bulan lalu</span>
                     </div>
-                    <p class="review-text">"Fasilitas lengkap banget, ada area mewarnai buat si kecil dan kolam terapi ikan. Pesan Ayam Ingkung Utuh komplit buat ulang tahun ibu, bumbunya empuk dan gurih pol. Sangat recommended!"</p>
-                    <span class="review-date"><i class="far fa-calendar-alt"></i> Acara Ultah Keluarga • 1 bulan lalu</span>
-                </div>
 
-                <div class="review-card show" data-type="suasana">
-                    <div class="review-card-top">
-                        <div class="reviewer-meta">
-                            <div class="reviewer-avatar">BS</div>
-                            <div class="reviewer-info">
-                                <h5>Budi Santoso</h5>
-                                <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Komunitas Sepeda</span>
+                    <div class="review-card show" data-type="suasana">
+                        <div class="review-card-top">
+                            <div class="reviewer-meta">
+                                <div class="reviewer-avatar">DP</div>
+                                <div class="reviewer-info">
+                                    <h5>Dimas Prasetyo</h5>
+                                    <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Pengunjung Luar Kota</span>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                         </div>
-                        <div class="review-rating">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
+                        <p class="review-text">"Pemandangan matahari terbenam dari Saung nomor 1 luar biasa magis saat golden hour jam 5 sore. Pelayanan ramah, pesanan datang tepat waktu. Cocok banget buat yang mau healing dari hiruk pikuk kota."</p>
+                        <span class="review-date"><i class="far fa-calendar-alt"></i> Bersama Pasangan • 3 minggu lalu</span>
                     </div>
-                    <p class="review-text">"Jalur gowes lewat Gunungwungkal terus mampir sarapan di Bukit Padangan. Udara pagi lereng bukit segar banget, wedang uwuh dan polo pendem bentul rebusnya pas buat memulihkan tenaga."</p>
-                    <span class="review-date"><i class="far fa-calendar-alt"></i> Gowes Akhir Pekan • 2 minggu lalu</span>
+
+                    <div class="review-card show" data-type="rasa keluarga">
+                        <div class="review-card-top">
+                            <div class="reviewer-meta">
+                                <div class="reviewer-avatar">RW</div>
+                                <div class="reviewer-info">
+                                    <h5>Ratna Wulandari</h5>
+                                    <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Warga Pati Kota</span>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="review-text">"Fasilitas lengkap banget, ada area mewarnai buat si kecil dan kolam terapi ikan. Pesan Ayam Ingkung Utuh komplit buat ulang tahun ibu, bumbunya empuk dan gurih pol. Sangat recommended!"</p>
+                        <span class="review-date"><i class="far fa-calendar-alt"></i> Acara Ultah Keluarga • 1 bulan lalu</span>
+                    </div>
+
+                    <div class="review-card show" data-type="suasana">
+                        <div class="review-card-top">
+                            <div class="reviewer-meta">
+                                <div class="reviewer-avatar">BS</div>
+                                <div class="reviewer-info">
+                                    <h5>Budi Santoso</h5>
+                                    <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Komunitas Sepeda</span>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="review-text">"Jalur gowes lewat Gunungwungkal terus mampir sarapan di Bukit Padangan. Udara pagi lereng bukit segar banget, wedang uwuh dan polo pendem bentul rebusnya pas buat memulihkan tenaga."</p>
+                        <span class="review-date"><i class="far fa-calendar-alt"></i> Gowes Akhir Pekan • 2 minggu lalu</span>
+                    </div>
+
+                    <div class="review-card show" data-type="suasana rasa">
+                        <div class="review-card-top">
+                            <div class="reviewer-meta">
+                                <div class="reviewer-avatar">JS</div>
+                                <div class="reviewer-info">
+                                    <h5>Joko Susanto</h5>
+                                    <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Pengunjung Akhir Pekan</span>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="review-text">"Nyaman banget nongkrong di pelataran outdoor sambil santap malam. Ditambah alunan live music akustik malam minggu yang bikin suasana makin syahdu dan betah. Nasi goreng dan tempe mendoannya mantap!"</p>
+                        <span class="review-date"><i class="far fa-calendar-alt"></i> Kunjungan Weekend • 1 minggu lalu</span>
+                    </div>
+
+                    <div class="review-card show" data-type="keluarga suasana">
+                        <div class="review-card-top">
+                            <div class="reviewer-meta">
+                                <div class="reviewer-avatar">MA</div>
+                                <div class="reviewer-info">
+                                    <h5>Maya Anggraini</h5>
+                                    <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Local Foodie</span>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="review-text">"Pemandangan sawah terasering dan bukitnya luar biasa adem di mata. Saungnya bersih, musala dan toilet sangat terawat. Pas banget buat istirahat sejenak dari rutinitas kerja."</p>
+                        <span class="review-date"><i class="far fa-calendar-alt"></i> Santap Siang • 3 minggu lalu</span>
+                    </div>
                 </div>
             </div>
         </div>
