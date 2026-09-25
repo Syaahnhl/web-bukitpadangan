@@ -2008,11 +2008,10 @@ function toggleAiChat(forceOpen = null) {
 function initAiChat() {
     isAiChatInitialized = true;
     const initialText = "Halo! Selamat datang di **Bukit Padangan Resto** 🍃\n" +
-                        "Saya Asisten AI Bukit Padangan. Ada yang bisa saya bantu seputar menu andalan, reservasi meja, sistem paket rombongan, atau rute lokasi resto?";
+                        "Ada yang bisa saya bantu seputar rekomendasi menu, reservasi meja, atau paket rombongan? Anda juga bisa langsung terhubung ke WhatsApp Admin.";
     const initialActions = [
-        { label: "🍛 Menu Favorit", action: "chip:Rekomendasi Menu Favorit" },
-        { label: "🪑 Booking Meja", action: "scroll:#tables" },
-        { label: "💬 Direct WhatsApp", action: "func:openWaChooserModal" }
+        { label: "🪑 Reservasi Meja", action: "scroll:#tables" },
+        { label: "💬 Hubungi WA Admin", action: "func:openWaChooserModal" }
     ];
     appendAiMessage("bot", initialText, initialActions);
 }

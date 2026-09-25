@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warung Makan Bukit Padangan - Restoran Alam & Keluarga Gunungwungkal, Pati</title>
-    <link rel="stylesheet" href="style.css?v=20260925-wa-in-chatbot-v5">
+    <link rel="stylesheet" href="style.css?v=20260925-ui-clean-v6">
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -1844,12 +1844,12 @@
                 </div>
                 <div class="ai-chat-info">
                     <h4>Asisten AI Bukit Padangan</h4>
-                    <span class="ai-chat-status"><i class="fas fa-circle"></i> Online • Siap Membantu 24 Jam</span>
+                    <span class="ai-chat-status"><i class="fas fa-circle"></i> Online 24 Jam</span>
                 </div>
             </div>
             <div class="ai-chat-actions">
-                <button type="button" class="btn-ai-header-wa" onclick="openWaChooserModal()" title="Direct WhatsApp Admin" aria-label="Direct WhatsApp Admin">
-                    <i class="fab fa-whatsapp"></i> <span>Direct WA</span>
+                <button type="button" class="btn-ai-header-wa" onclick="openWaChooserModal()" title="Hubungi WhatsApp Admin" aria-label="Hubungi WhatsApp Admin">
+                    <i class="fab fa-whatsapp"></i> <span>WhatsApp</span>
                 </button>
                 <button type="button" class="btn-ai-close" onclick="toggleAiChat()" title="Tutup Chat" aria-label="Tutup Chat">
                     <i class="fas fa-times"></i>
@@ -1860,14 +1860,15 @@
         <!-- 2 Pilihan Nomor WhatsApp Admin (Drawer / Overlay) -->
         <div id="aiWaChooserModal" class="ai-wa-chooser-overlay" style="display: none;" aria-hidden="true">
             <div class="ai-wa-chooser-card">
+                <div class="ai-wa-drawer-handle"></div>
                 <div class="ai-wa-chooser-header">
                     <div class="ai-wa-chooser-title">
                         <div class="ai-wa-chooser-icon-badge">
                             <i class="fab fa-whatsapp"></i>
                         </div>
                         <div>
-                            <h5>Pilih Admin WhatsApp</h5>
-                            <p>Silakan hubungi admin sesuai keperluan Anda:</p>
+                            <h5>Hubungi Admin WhatsApp</h5>
+                            <p>Silakan pilih admin sesuai kebutuhan Anda:</p>
                         </div>
                     </div>
                     <button type="button" class="btn-ai-wa-close" onclick="closeWaChooserModal()" title="Tutup Pilihan" aria-label="Tutup Pilihan">
@@ -1891,7 +1892,7 @@
                             <div class="ai-wa-contact-desc">Reservasi meja, pesanan menu, transfer DP, & paket rombongan</div>
                         </div>
                         <div class="ai-wa-contact-action">
-                            <span class="btn-wa-direct-go"><i class="fab fa-whatsapp"></i> Chat</span>
+                            <span class="btn-wa-direct-go" title="Hubungi Admin 1 via WhatsApp"><i class="fab fa-whatsapp"></i></span>
                         </div>
                     </button>
 
@@ -1910,7 +1911,7 @@
                             <div class="ai-wa-contact-desc">Info umum resto, rute bus/mobil, parkir rombongan, & operasional</div>
                         </div>
                         <div class="ai-wa-contact-action">
-                            <span class="btn-wa-direct-go"><i class="fab fa-whatsapp"></i> Chat</span>
+                            <span class="btn-wa-direct-go" title="Hubungi Admin 2 via WhatsApp"><i class="fab fa-whatsapp"></i></span>
                         </div>
                     </button>
                 </div>
@@ -1952,7 +1953,7 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
     <script src="tables3d.js"></script>
-    <script src="script.js?v=20260925-wa-in-chatbot-v5"></script>
+    <script src="script.js?v=20260925-ui-clean-v6"></script>
 </body>
 
 </html>
