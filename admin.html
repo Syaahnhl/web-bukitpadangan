@@ -518,6 +518,202 @@
             }
         }
 
+        /* Menu Photo Uploader Box */
+        .menu-photo-box {
+            background: var(--bg-surface-elevated, #161b26);
+            border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+            border-radius: var(--radius-md, 12px);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .menu-photo-preview-wrap {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(212, 163, 115, 0.25);
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+
+        .menu-photo-thumb-container {
+            width: 72px;
+            height: 72px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 1px solid rgba(212, 163, 115, 0.4);
+            background: #0d1117;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .menu-photo-thumb-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .menu-photo-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .photo-ready-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #34d399;
+        }
+
+        .photo-btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-photo-sm {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            padding: 7px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(212, 163, 115, 0.35);
+            background: rgba(212, 163, 115, 0.12);
+            color: var(--gold-primary, #d4a373);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-photo-sm:hover {
+            background: rgba(212, 163, 115, 0.25);
+            border-color: var(--gold-primary, #d4a373);
+        }
+
+        .btn-photo-danger {
+            border-color: rgba(239, 68, 68, 0.35);
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+        }
+
+        .btn-photo-danger:hover {
+            background: rgba(239, 68, 68, 0.22);
+            border-color: #ef4444;
+        }
+
+        .menu-photo-empty-prompt {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1.5px dashed rgba(212, 163, 115, 0.35);
+            border-radius: 10px;
+            padding: 14px 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .menu-photo-empty-prompt:hover {
+            border-color: var(--gold-primary, #d4a373);
+            background: rgba(212, 163, 115, 0.06);
+        }
+
+        .upload-pulse-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(212, 163, 115, 0.15);
+            color: var(--gold-primary, #d4a373);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .upload-prompt-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .prompt-main {
+            font-size: 0.86rem;
+            font-weight: 600;
+            color: var(--text-main, #f1f5f9);
+        }
+
+        .prompt-sub {
+            font-size: 0.74rem;
+            color: var(--text-muted, #94a3b8);
+            line-height: 1.35;
+        }
+
+        .btn-select-file-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 13px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #d4a373 0%, #b88654 100%);
+            color: #120e09;
+            font-size: 0.76rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .menu-photo-url-accordion {
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 8px;
+            margin-top: 2px;
+        }
+
+        .btn-toggle-url-field {
+            background: none;
+            border: none;
+            color: var(--text-muted, #94a3b8);
+            font-size: 0.76rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            cursor: pointer;
+            padding: 4px 2px;
+            transition: color 0.2s;
+        }
+
+        .btn-toggle-url-field:hover {
+            color: var(--gold-primary, #d4a373);
+        }
+
+        .menu-url-input-container {
+            margin-top: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-input-help {
+            font-size: 0.72rem;
+            color: var(--text-muted, #64748b);
+        }
+
         /* Modern Toggle Switch */
         .toggle-card {
             display: flex;
@@ -1825,14 +2021,68 @@
                         </div>
                     </div>
 
-                    <div class="form-grid form-grid-2" style="margin-bottom: 14px;">
-                        <div class="form-group">
-                            <label class="form-label" for="menuBadge">Badge Label (Opsional)</label>
-                            <input type="text" class="form-input" id="menuBadge" placeholder="Favorit / Spesial / Baru">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="menuImg">URL Foto (Opsional)</label>
-                            <input type="text" class="form-input" id="menuImg" placeholder="https://images.unsplash.com/...">
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label class="form-label" for="menuBadge">Badge Label (Opsional)</label>
+                        <input type="text" class="form-input" id="menuBadge" placeholder="Favorit / Spesial / Baru">
+                    </div>
+
+                    <!-- FOTO MENU UPLOAD & PREVIEW SECTION -->
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span><i class="fas fa-camera" style="color: var(--gold-primary);"></i> Foto Menu</span>
+                            <span id="photoStatusText" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">Bisa upload galeri atau URL</span>
+                        </label>
+                        
+                        <!-- Hidden File Input for Native Camera / Gallery Picker -->
+                        <input type="file" id="menuImgFileInput" accept="image/*" style="display: none;" onchange="handleMenuPhotoFile(this)">
+                        
+                        <!-- Main Photo Upload Box -->
+                        <div class="menu-photo-box">
+                            <!-- Preview State (when photo exists) -->
+                            <div id="menuPhotoPreviewWrap" class="menu-photo-preview-wrap" style="display: none;">
+                                <div class="menu-photo-thumb-container">
+                                    <img id="menuPhotoPreviewImg" src="" alt="Preview Foto Menu">
+                                </div>
+                                <div class="menu-photo-details">
+                                    <div class="photo-title-wrap">
+                                        <span class="photo-ready-badge"><i class="fas fa-check-circle"></i> Foto Terpasang</span>
+                                    </div>
+                                    <div class="photo-btn-group">
+                                        <button type="button" class="btn-photo-sm" onclick="document.getElementById('menuImgFileInput').click()">
+                                            <i class="fas fa-camera-rotate"></i> Ganti Foto (Galeri/Kamera)
+                                        </button>
+                                        <button type="button" class="btn-photo-sm btn-photo-danger" onclick="removeMenuPhoto()">
+                                            <i class="fas fa-trash-can"></i> Hapus Foto
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Empty Upload State (when no photo) -->
+                            <div id="menuPhotoEmptyPrompt" class="menu-photo-empty-prompt" onclick="document.getElementById('menuImgFileInput').click()">
+                                <div class="upload-pulse-icon">
+                                    <i class="fas fa-cloud-arrow-up"></i>
+                                </div>
+                                <div class="upload-prompt-text">
+                                    <span class="prompt-main">Pilih / Upload Foto Menu</span>
+                                    <span class="prompt-sub">Dari Galeri HP, Kamera, atau File Komputer (JPG, PNG, WebP)</span>
+                                </div>
+                                <button type="button" class="btn-select-file-pill">
+                                    <i class="fas fa-folder-open"></i> Pilih File
+                                </button>
+                            </div>
+
+                            <!-- Manual URL / Link Accordion Toggle -->
+                            <div class="menu-photo-url-accordion">
+                                <button type="button" class="btn-toggle-url-field" onclick="toggleMenuUrlField()">
+                                    <span><i class="fas fa-link"></i> <span id="toggleUrlLabel">Atau masukkan URL gambar online</span></span>
+                                    <i class="fas fa-chevron-down" id="toggleUrlIcon"></i>
+                                </button>
+                                <div id="menuUrlInputContainer" class="menu-url-input-container" style="display: none;">
+                                    <input type="text" class="form-input" id="menuImg" placeholder="https://images.unsplash.com/..." oninput="handleManualUrlInput(this.value)">
+                                    <span class="form-input-help">Tautan online Unsplash, ImgBB, atau Cloudinary dapat tetap digunakan.</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -2297,10 +2547,20 @@
             const form = document.getElementById("menuEditorForm");
             form.reset();
 
+            // Reset file input & URL accordion
+            const fileInput = document.getElementById("menuImgFileInput");
+            if (fileInput) fileInput.value = "";
+            const urlContainer = document.getElementById("menuUrlInputContainer");
+            if (urlContainer) urlContainer.style.display = "none";
+            const urlIcon = document.getElementById("toggleUrlIcon");
+            if (urlIcon) urlIcon.className = "fas fa-chevron-down";
+
             if (mode === 'add') {
                 document.getElementById("menuModalHeaderTitle").innerText = "Tambah Menu Baru";
                 document.getElementById("editMenuIndex").value = "";
                 document.getElementById("menuId").disabled = false;
+                document.getElementById("menuImg").value = "";
+                updateMenuPhotoUI("");
             } else if (mode === 'edit' && idx !== null) {
                 document.getElementById("menuModalHeaderTitle").innerText = "Edit Menu";
                 document.getElementById("editMenuIndex").value = idx;
@@ -2313,12 +2573,122 @@
                 document.getElementById("menuBadge").value = it.badge || "";
                 document.getElementById("menuImg").value = it.img || "";
                 document.getElementById("menuDesc").value = it.desc || "";
+                updateMenuPhotoUI(it.img || "");
             }
             modal.style.display = "flex";
         }
 
         function closeMenuModal() {
             document.getElementById("menuModalOverlay").style.display = "none";
+        }
+
+        // ========================================================
+        // PHOTO UPLOAD & PREVIEW LOGIC
+        // ========================================================
+        function updateMenuPhotoUI(imgUrl) {
+            const previewWrap = document.getElementById("menuPhotoPreviewWrap");
+            const emptyPrompt = document.getElementById("menuPhotoEmptyPrompt");
+            const previewImg = document.getElementById("menuPhotoPreviewImg");
+            const statusText = document.getElementById("photoStatusText");
+
+            if (imgUrl && imgUrl.trim() !== "") {
+                previewImg.src = imgUrl;
+                previewWrap.style.display = "flex";
+                emptyPrompt.style.display = "none";
+                if (statusText) statusText.innerText = "Foto siap disimpan";
+            } else {
+                previewImg.src = "";
+                previewWrap.style.display = "none";
+                emptyPrompt.style.display = "flex";
+                if (statusText) statusText.innerText = "Belum ada foto";
+            }
+        }
+
+        function handleMenuPhotoFile(input) {
+            const file = input.files && input.files[0];
+            if (!file) return;
+
+            if (file.size > 15 * 1024 * 1024) {
+                alert("Ukuran foto maksimal 15MB. Silakan pilih foto yang lebih ringkas.");
+                input.value = "";
+                return;
+            }
+
+            const statusText = document.getElementById("photoStatusText");
+            if (statusText) statusText.innerText = "Mengompres foto...";
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                compressImageToWebp(e.target.result, 800, 800, 0.85, function(compressedDataUrl) {
+                    document.getElementById("menuImg").value = compressedDataUrl;
+                    updateMenuPhotoUI(compressedDataUrl);
+                    showToast("Foto berhasil dipilih & dioptimasi!");
+                });
+            };
+            reader.onerror = function() {
+                alert("Gagal membaca file foto dari perangkat.");
+                if (statusText) statusText.innerText = "Gagal memuat foto";
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function compressImageToWebp(src, maxW, maxH, quality, callback) {
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = function() {
+                let w = img.width;
+                let h = img.height;
+
+                if (w > maxW || h > maxH) {
+                    if (w > h) {
+                        h = Math.round((h * maxW) / w);
+                        w = maxW;
+                    } else {
+                        w = Math.round((w * maxH) / h);
+                        h = maxH;
+                    }
+                }
+
+                const canvas = document.createElement("canvas");
+                canvas.width = w;
+                canvas.height = h;
+                const ctx = canvas.getContext("2d");
+                
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = "high";
+                ctx.drawImage(img, 0, 0, w, h);
+
+                let output = canvas.toDataURL("image/webp", quality);
+                if (!output.startsWith("data:image/webp")) {
+                    output = canvas.toDataURL("image/jpeg", quality);
+                }
+                callback(output);
+            };
+            img.onerror = function() {
+                callback(src);
+            };
+            img.src = src;
+        }
+
+        function removeMenuPhoto() {
+            document.getElementById("menuImg").value = "";
+            const fileInput = document.getElementById("menuImgFileInput");
+            if (fileInput) fileInput.value = "";
+            updateMenuPhotoUI("");
+            showToast("Foto menu dihapus.");
+        }
+
+        function toggleMenuUrlField() {
+            const container = document.getElementById("menuUrlInputContainer");
+            const icon = document.getElementById("toggleUrlIcon");
+            if (!container) return;
+            const isOpen = container.style.display !== "none";
+            container.style.display = isOpen ? "none" : "flex";
+            if (icon) icon.className = isOpen ? "fas fa-chevron-down" : "fas fa-chevron-up";
+        }
+
+        function handleManualUrlInput(val) {
+            updateMenuPhotoUI(val.trim());
         }
 
         function handleMenuSubmit(e) {
@@ -2372,12 +2742,39 @@
             btn.disabled = true;
             btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menyimpan Katalog Menu...`;
 
-            const success = await pushJsonToGitHub("menu.json", adminMenus, "feat(admin): update restaurant menu catalog");
-            btn.disabled = false;
-            btn.innerHTML = `<i class="fas fa-floppy-disk"></i> Terapkan Perubahan Menu ke Server Live`;
+            try {
+                // Check if any menu item has uploaded base64 data
+                for (let i = 0; i < adminMenus.length; i++) {
+                    const item = adminMenus[i];
+                    if (item.img && item.img.startsWith("data:image/")) {
+                        const parts = item.img.split(",");
+                        if (parts.length === 2) {
+                            const isWebp = item.img.includes("webp");
+                            const ext = isWebp ? "webp" : "jpg";
+                            const filePath = `assets/menu/${item.id}.${ext}`;
+                            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Mengunggah foto ${item.name}...`;
+                            try {
+                                const uploaded = await uploadBinaryToGitHub(filePath, parts[1], `feat(menu): upload photo asset for ${item.name}`);
+                                if (uploaded) {
+                                    item.img = `${filePath}?v=${Date.now()}`;
+                                }
+                            } catch (err) {
+                                console.warn("Gagal upload binary ke GitHub, mempertahankan data URL:", err);
+                            }
+                        }
+                    }
+                }
 
-            if (success) {
-                showToast("Katalog menu berhasil dipublikasikan ke Netlify live!");
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menyimpan menu.json...`;
+                const success = await pushJsonToGitHub("menu.json", adminMenus, "feat(admin): update restaurant menu catalog");
+                if (success) {
+                    showToast("Katalog menu & foto berhasil dipublikasikan ke server live!");
+                }
+            } catch (err) {
+                alert("Terjadi kendala saat publikasi: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fas fa-floppy-disk"></i> Terapkan Perubahan Menu ke Server Live`;
             }
         }
 
@@ -2578,6 +2975,45 @@
                 console.error(err);
                 return false;
             }
+        }
+
+        async function uploadBinaryToGitHub(filePath, base64Content, commitMessage) {
+            const token = localStorage.getItem("github_pat_token");
+            const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filePath}`;
+
+            let sha = null;
+            try {
+                const getRes = await fetch(apiUrl, {
+                    headers: {
+                        "Authorization": `token ${token}`,
+                        "Accept": "application/vnd.github.v3+json"
+                    }
+                });
+                if (getRes.ok) {
+                    const fileInfo = await getRes.json();
+                    sha = fileInfo.sha;
+                }
+            } catch (e) {
+                // file doesn't exist yet, sha remains null
+            }
+
+            const payload = {
+                message: commitMessage,
+                content: base64Content
+            };
+            if (sha) payload.sha = sha;
+
+            const putRes = await fetch(apiUrl, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `token ${token}`,
+                    "Content-Type": "application/json",
+                    "Accept": "application/vnd.github.v3+json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            return putRes.ok;
         }
     </script>
 </body>
