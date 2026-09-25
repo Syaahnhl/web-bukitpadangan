@@ -1405,7 +1405,6 @@ function updatePackageCalc() {
 }
 
 function sendPackageCalcToWA() {
-    const eventTypeSelect = document.getElementById("calcEventType");
     const paxRange = document.getElementById("calcPaxRange");
     const packageSelect = document.getElementById("calcPackageSelect");
     const addonMusic = document.getElementById("calcAddonMusic");
@@ -1413,7 +1412,6 @@ function sendPackageCalcToWA() {
     const addonSnack = document.getElementById("calcAddonSnack");
     const adminSelect = document.getElementById("calcAdminSelect");
 
-    const eventType = eventTypeSelect ? eventTypeSelect.value : "Gathering & Rombongan";
     const pax = paxRange ? paxRange.value : "25";
     const pkgName = packageSelect ? packageSelect.options[packageSelect.selectedIndex].text : "Paket Acara";
     
@@ -1428,7 +1426,6 @@ function sendPackageCalcToWA() {
     const dpVal = document.getElementById("summaryDpVal") ? document.getElementById("summaryDpVal").textContent : "Rp 0";
 
     let waText = `Halo Admin Bukit Padangan, saya ingin konsultasi penawaran custom acara rombongan:\n\n`;
-    waText += `🎉 *Kategori Acara:* ${eventType}\n`;
     waText += `👥 *Estimasi Tamu:* ${pax} Orang\n`;
     waText += `📋 *Pilihan Estimasi Menu:* ${pkgName}\n`;
     waText += `✨ *Fasilitas & Layanan:*\n`;
