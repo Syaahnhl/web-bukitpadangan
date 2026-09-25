@@ -1252,6 +1252,142 @@
         }
 
         /* ========================================================
+           TAB: GALERI & FOTO MANAGEMENT
+           ======================================================== */
+        .gallery-admin-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 640px) {
+            .gallery-admin-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .gallery-admin-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 18px;
+            }
+        }
+
+        .gallery-admin-card {
+            background: var(--bg-surface-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .gallery-admin-card:hover {
+            border-color: rgba(212, 163, 115, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .gallery-admin-thumb-wrap {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            background: #0b0f15;
+            overflow: hidden;
+        }
+
+        .gallery-admin-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-admin-card:hover .gallery-admin-thumb {
+            transform: scale(1.04);
+        }
+
+        .gallery-admin-category-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            backdrop-filter: blur(8px);
+            background: rgba(10, 15, 23, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        .gallery-admin-category-badge.reuni {
+            border-color: rgba(59, 130, 246, 0.5);
+            color: #93c5fd;
+        }
+
+        .gallery-admin-category-badge.pemandangan {
+            border-color: rgba(245, 158, 11, 0.5);
+            color: #fcd34d;
+        }
+
+        .gallery-admin-category-badge.galeri {
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #6ee7b7;
+        }
+
+        .gallery-admin-content {
+            padding: 14px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .gallery-admin-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .gallery-admin-pill {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(212, 163, 115, 0.15);
+            color: var(--gold-light);
+            border: 1px solid rgba(212, 163, 115, 0.25);
+            margin-bottom: 8px;
+        }
+
+        .gallery-admin-desc {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .gallery-admin-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* ========================================================
            TAB 4: GITHUB TOKEN & SETTINGS
            ======================================================== */
         .token-hero-box {
@@ -1416,6 +1552,7 @@
         .modal-flex-body {
             padding: 18px 20px;
             overflow-y: auto;
+            overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
             flex: 1 1 auto;
             min-height: 0;
@@ -1648,6 +1785,9 @@
                 <button type="button" class="tab-btn" id="tabBtnMenu" onclick="switchTab('tab-menu')">
                     <i class="fas fa-utensils"></i> Menu <span class="tab-badge" id="menuCountBadge">0</span>
                 </button>
+                <button type="button" class="tab-btn" id="tabBtnGallery" onclick="switchTab('tab-gallery')">
+                    <i class="fas fa-camera-retro"></i> Galeri & Foto <span class="tab-badge" id="galleryCountBadge">0</span>
+                </button>
                 <button type="button" class="tab-btn" id="tabBtnTables" onclick="switchTab('tab-tables')">
                     <i class="fas fa-chair"></i> Meja <span class="tab-badge" id="tablesCountBadge">23</span>
                 </button>
@@ -1869,6 +2009,53 @@
                 <!-- SUBMIT BUTTON COMMIT MENU -->
                 <button type="button" class="btn-primary" id="btnSaveMenuSubmit" onclick="saveMenuToGithub()">
                     <i class="fas fa-floppy-disk"></i> Terapkan Perubahan Menu ke Server Live
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================================
+             TAB: GALERI & FOTO DOKUMENTASI (REUNI, PEMANDANGAN, SUASANA)
+             ======================================================== -->
+        <div id="tab-gallery" class="tab-panel">
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon"><i class="fas fa-camera-retro"></i></div>
+                        <div>
+                            <h3 class="card-title">Manajemen Galeri & Foto Dokumentasi</h3>
+                            <p class="card-subtitle">Ganti dan tambah foto reuni acara, pemandangan sunset bukit, dan galeri spot suasana.</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary btn-success" onclick="openGalleryModal('add')">
+                        <i class="fas fa-plus-circle"></i> Tambah Foto Baru
+                    </button>
+                </div>
+
+                <!-- TOOLBAR PENCARIAN & FILTER KATEGORI -->
+                <div class="catalog-toolbar">
+                    <div class="search-box-wrap">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="search-input" id="gallerySearchInput" placeholder="Cari judul foto, spot, atau kategori..." oninput="handleGallerySearch()">
+                    </div>
+                    <div class="category-filter-chips">
+                        <button type="button" class="chip-btn active" onclick="filterGalleryCategory('all', this)">Semua Foto (<span id="countAllGallery">0</span>)</button>
+                        <button type="button" class="chip-btn" onclick="filterGalleryCategory('reuni', this)"><i class="fas fa-user-friends"></i> Foto Reuni & Acara (<span id="countReuniGallery">0</span>)</button>
+                        <button type="button" class="chip-btn" onclick="filterGalleryCategory('pemandangan', this)"><i class="fas fa-mountain-sun"></i> Pemandangan & Sunset (<span id="countPemandanganGallery">0</span>)</button>
+                        <button type="button" class="chip-btn" onclick="filterGalleryCategory('galeri', this)"><i class="fas fa-images"></i> Galeri Suasana & Spot (<span id="countGaleriGallery">0</span>)</button>
+                    </div>
+                </div>
+
+                <!-- GRID DAFTAR FOTO -->
+                <div class="gallery-admin-grid" id="galleryCardsContainer">
+                    <div class="empty-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Memuat galeri foto...</p>
+                    </div>
+                </div>
+
+                <!-- SUBMIT BUTTON COMMIT GALLERY -->
+                <button type="button" class="btn-primary" id="btnSaveGallerySubmit" onclick="saveGalleryToGithub()">
+                    <i class="fas fa-floppy-disk"></i> Terapkan Perubahan Foto ke Server Live
                 </button>
             </div>
         </div>
@@ -2102,6 +2289,118 @@
         </div>
     </div>
 
+    <!-- ========================================================
+         MODAL 3: FORM TAMBAH / GANTI FOTO GALERI (REUNI, PEMANDANGAN, SUASANA)
+         ======================================================== -->
+    <div id="galleryModalOverlay" class="modal-overlay" style="display: none;">
+        <div class="modal-box modal-flex-box" style="max-width: 540px; width: 100%;">
+            <div class="modal-flex-header">
+                <h3 class="modal-title" id="galleryModalHeaderTitle">Tambah Foto Galeri Baru</h3>
+                <button type="button" class="btn-modal-close" onclick="closeGalleryModal()">&times;</button>
+            </div>
+            
+            <form id="galleryForm" class="modal-flex-form" onsubmit="handleGallerySubmit(event)">
+                <input type="hidden" id="galleryModalMode" value="add">
+                <input type="hidden" id="galleryItemIndex" value="-1">
+                <input type="hidden" id="galleryItemId" value="">
+
+                <div class="modal-flex-body">
+                    <!-- KATEGORI FOTO -->
+                    <div class="form-group">
+                        <label class="form-label" for="galleryCategory">Kategori Penempatan Foto</label>
+                        <select class="form-input" id="galleryCategory" required onchange="handleGalleryCategoryChange(this.value)">
+                            <option value="reuni">Foto Reuni & Paket Acara (Gathering / Arisan / Rapat)</option>
+                            <option value="pemandangan">Pemandangan & Sunset Bukit (Panorama / Sawah)</option>
+                            <option value="galeri">Galeri Suasana & Spot Foto (Saung / Sungai / Malam)</option>
+                        </select>
+                        <span class="form-input-help">Foto akan otomatis tayang di seksi beranda yang sesuai.</span>
+                    </div>
+
+                    <!-- JUDUL FOTO -->
+                    <div class="form-group">
+                        <label class="form-label" for="galleryTitle">Judul / Nama Acara / Spot Foto</label>
+                        <input type="text" class="form-input" id="galleryTitle" required placeholder="Contoh: Reuni Temu Kangen Alumni, Sunset Sawah...">
+                    </div>
+
+                    <!-- BADGE LABEL -->
+                    <div class="form-group">
+                        <label class="form-label" for="galleryBadge">Label Badge (Opsional)</label>
+                        <input type="text" class="form-input" id="galleryBadge" placeholder="Contoh: Reuni & Gathering, Golden Hour 16:45, Saung Lesehan...">
+                    </div>
+
+                    <!-- UPLOAD ATAU GANTI FOTO DENGAN PREVIEW -->
+                    <div class="form-group">
+                        <label class="form-label">Foto Dokumentasi</label>
+                        
+                        <input type="file" id="galleryImgFileInput" accept="image/*" style="display: none;" onchange="handleGalleryPhotoFile(this)">
+
+                        <div class="menu-photo-box">
+                            <!-- Preview State (when photo exists) -->
+                            <div id="galleryPhotoPreviewBox" class="menu-photo-preview-wrap" style="display: none;">
+                                <div class="menu-photo-thumb-container" style="width: 100px; height: 75px; border-radius: 8px;">
+                                    <img id="galleryImgPreview" src="" alt="Pratinjau Foto Galeri">
+                                </div>
+                                <div class="menu-photo-details">
+                                    <div class="photo-title-wrap">
+                                        <span class="photo-ready-badge" id="galleryPhotoBadge"><i class="fas fa-check-circle"></i> Foto Terpasang</span>
+                                        <span class="preview-file-source" id="galleryPhotoSourceLabel" style="font-size: 0.72rem; color: #94a3b8; margin-left: 6px;">Siap</span>
+                                    </div>
+                                    <div class="photo-btn-group">
+                                        <button type="button" class="btn-photo-sm" onclick="document.getElementById('galleryImgFileInput').click()">
+                                            <i class="fas fa-camera-rotate"></i> Ganti Foto
+                                        </button>
+                                        <button type="button" class="btn-photo-sm btn-photo-danger" onclick="removeGalleryPhoto()">
+                                            <i class="fas fa-trash-can"></i> Hapus Foto
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Empty Upload State (when no photo) -->
+                            <div id="galleryPhotoEmptyPrompt" class="menu-photo-empty-prompt" onclick="document.getElementById('galleryImgFileInput').click()">
+                                <div class="upload-pulse-icon">
+                                    <i class="fas fa-cloud-arrow-up"></i>
+                                </div>
+                                <div class="upload-prompt-text">
+                                    <span class="prompt-main">Pilih / Upload Foto Galeri</span>
+                                    <span class="prompt-sub">Dari Galeri HP, Jepret Kamera, atau File Komputer (JPG, PNG, WebP)</span>
+                                </div>
+                                <button type="button" class="btn-select-file-pill">
+                                    <i class="fas fa-folder-open"></i> Pilih File
+                                </button>
+                            </div>
+
+                            <!-- Manual URL / Link Accordion Toggle -->
+                            <div class="menu-photo-url-accordion">
+                                <button type="button" class="btn-toggle-url-field" onclick="toggleGalleryUrlField()">
+                                    <span><i class="fas fa-link"></i> <span id="toggleGalleryUrlLabel">Atau masukkan URL tautan gambar online</span></span>
+                                    <i class="fas fa-chevron-down" id="toggleGalleryUrlIcon"></i>
+                                </button>
+                                <div id="galleryUrlInputContainer" class="menu-url-input-container" style="display: none;">
+                                    <input type="text" class="form-input" id="galleryImg" placeholder="https://images.unsplash.com/... atau assets/..." oninput="handleManualGalleryUrlInput(this.value)">
+                                    <span class="form-input-help">Tautan online Unsplash, Wikimedia, atau ImgBB dapat langsung digunakan.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DESKRIPSI -->
+                    <div class="form-group" style="margin-bottom: 4px;">
+                        <label class="form-label" for="galleryDesc">Keterangan / Deskripsi Singkat</label>
+                        <textarea class="form-textarea" id="galleryDesc" rows="3" required placeholder="Deskripsi suasana acara, spot santai, atau lanskap pemandangan..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-flex-footer">
+                    <button type="button" class="btn-secondary" style="flex: 1; padding: 12px 16px;" onclick="closeGalleryModal()">Batal</button>
+                    <button type="submit" class="btn-primary" style="flex: 2; padding: 12px 16px;">
+                        <i class="fas fa-check"></i> Simpan ke Galeri
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- TOAST CONTAINER -->
     <div id="toastNotification" class="toast-notification" style="display: none;">
         <i class="fas fa-info-circle" id="toastIcon"></i>
@@ -2124,6 +2423,9 @@
         let adminMenus = [];
         let filteredMenus = [];
         let currentMenuCategoryFilter = "all";
+        let adminGallery = [];
+        let filteredGallery = [];
+        let currentGalleryCategoryFilter = "all";
         let adminTables = [];
 
         // 1. OTORISASI & INISIALISASI
@@ -2182,6 +2484,7 @@
             document.getElementById("adminAppWorkspace").style.display = "block";
             loadLandingContent();
             loadMenuCatalog();
+            loadGalleryData();
             loadTablesData();
         }
 
@@ -2200,6 +2503,7 @@
 
             if (tabId === 'tab-content') document.getElementById("tabBtnContent").classList.add("active");
             if (tabId === 'tab-menu') document.getElementById("tabBtnMenu").classList.add("active");
+            if (tabId === 'tab-gallery') document.getElementById("tabBtnGallery").classList.add("active");
             if (tabId === 'tab-tables') document.getElementById("tabBtnTables").classList.add("active");
             if (tabId === 'tab-settings') document.getElementById("tabBtnSettings").classList.add("active");
 
@@ -2775,6 +3079,357 @@
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = `<i class="fas fa-floppy-disk"></i> Terapkan Perubahan Menu ke Server Live`;
+            }
+        }
+
+        // ========================================================
+        // TAB: GALERI & FOTO MANAGEMENT (REUNI, PEMANDANGAN, SUASANA)
+        // ========================================================
+        function escapeHtml(str) {
+            if (!str) return "";
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        async function loadGalleryData() {
+            try {
+                const res = await fetch("gallery.json");
+                if (res.ok) {
+                    adminGallery = await res.json();
+                } else {
+                    adminGallery = [];
+                }
+            } catch (err) {
+                console.warn("Gagal membaca gallery.json, inisialisasi array kosong:", err);
+                adminGallery = [];
+            }
+            updateGalleryStats();
+            applyGalleryFilter();
+        }
+
+        function updateGalleryStats() {
+            const total = adminGallery.length;
+            const countReuni = adminGallery.filter(i => i.category === 'reuni').length;
+            const countPemandangan = adminGallery.filter(i => i.category === 'pemandangan').length;
+            const countGaleri = adminGallery.filter(i => i.category === 'galeri').length;
+
+            const badge = document.getElementById("galleryCountBadge");
+            if (badge) badge.innerText = total;
+
+            const countAllEl = document.getElementById("countAllGallery");
+            if (countAllEl) countAllEl.innerText = total;
+
+            const countReuniEl = document.getElementById("countReuniGallery");
+            if (countReuniEl) countReuniEl.innerText = countReuni;
+
+            const countPemandanganEl = document.getElementById("countPemandanganGallery");
+            if (countPemandanganEl) countPemandanganEl.innerText = countPemandangan;
+
+            const countGaleriEl = document.getElementById("countGaleriGallery");
+            if (countGaleriEl) countGaleriEl.innerText = countGaleri;
+        }
+
+        function filterGalleryCategory(cat, btn) {
+            currentGalleryCategoryFilter = cat;
+            document.querySelectorAll(".category-filter-chips .chip-btn").forEach(b => {
+                if (b.closest("#tab-gallery")) b.classList.remove("active");
+            });
+            if (btn) btn.classList.add("active");
+            applyGalleryFilter();
+        }
+
+        function handleGallerySearch() {
+            applyGalleryFilter();
+        }
+
+        function applyGalleryFilter() {
+            const query = (document.getElementById("gallerySearchInput")?.value || "").toLowerCase().trim();
+            filteredGallery = adminGallery.filter(item => {
+                const matchesCat = (currentGalleryCategoryFilter === "all") || (item.category === currentGalleryCategoryFilter);
+                const matchesQuery = !query || 
+                    (item.title && item.title.toLowerCase().includes(query)) ||
+                    (item.desc && item.desc.toLowerCase().includes(query)) ||
+                    (item.badge && item.badge.toLowerCase().includes(query));
+                return matchesCat && matchesQuery;
+            });
+            renderGalleryCards();
+        }
+
+        function renderGalleryCards() {
+            const container = document.getElementById("galleryCardsContainer");
+            if (!container) return;
+
+            if (filteredGallery.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1; padding: 40px 20px; text-align: center;">
+                        <i class="fas fa-camera-retro" style="font-size: 2.5rem; color: var(--gold-primary); opacity: 0.5; margin-bottom: 12px;"></i>
+                        <p style="color: #fff; font-weight: 600; margin-bottom: 4px;">Belum ada foto dalam kategori ini</p>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">Tambahkan foto baru untuk memperkaya dokumentasi Bukit Padangan.</p>
+                        <button type="button" class="btn-secondary btn-success" onclick="openGalleryModal('add')">
+                            <i class="fas fa-plus-circle"></i> Tambah Foto Baru
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredGallery.map((item) => {
+                const originalIndex = adminGallery.findIndex(g => g.id === item.id);
+                let catBadgeLabel = "Galeri Suasana";
+                let catBadgeClass = "galeri";
+                if (item.category === "reuni") {
+                    catBadgeLabel = "Reuni & Paket Acara";
+                    catBadgeClass = "reuni";
+                } else if (item.category === "pemandangan") {
+                    catBadgeLabel = "Pemandangan & Sunset";
+                    catBadgeClass = "pemandangan";
+                }
+
+                const imgSrc = item.img || "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=800&auto=format&fit=crop";
+                const badgePill = item.badge ? `<span class="gallery-admin-pill"><i class="fas fa-tag"></i> ${escapeHtml(item.badge)}</span>` : "";
+
+                return `
+                    <div class="gallery-admin-card" id="gallery-card-${item.id}">
+                        <div class="gallery-admin-thumb-wrap">
+                            <img src="${escapeHtml(imgSrc)}" class="gallery-admin-thumb" alt="${escapeHtml(item.title || '')}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=800&auto=format&fit=crop'">
+                            <span class="gallery-admin-category-badge ${catBadgeClass}">${catBadgeLabel}</span>
+                        </div>
+                        <div class="gallery-admin-content">
+                            <div>
+                                <h4 class="gallery-admin-title">${escapeHtml(item.title || "Tanpa Judul")}</h4>
+                                ${badgePill}
+                                <p class="gallery-admin-desc">${escapeHtml(item.desc || "Tidak ada keterangan.")}</p>
+                            </div>
+                            <div class="gallery-admin-actions">
+                                <button type="button" class="btn-table-action" style="flex: 1.2;" onclick="openGalleryModal('edit', ${originalIndex})">
+                                    <i class="fas fa-camera"></i> Ganti Foto / Edit
+                                </button>
+                                <button type="button" class="btn-table-action btn-danger" style="flex: 0.6;" onclick="deleteGalleryItem(${originalIndex})">
+                                    <i class="fas fa-trash-can"></i> Hapus
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function openGalleryModal(mode, idx = null) {
+            const modal = document.getElementById("galleryModalOverlay");
+            const headerTitle = document.getElementById("galleryModalHeaderTitle");
+            const modeInput = document.getElementById("galleryModalMode");
+            const idxInput = document.getElementById("galleryItemIndex");
+            const idInput = document.getElementById("galleryItemId");
+            const catSelect = document.getElementById("galleryCategory");
+            const titleInput = document.getElementById("galleryTitle");
+            const badgeInput = document.getElementById("galleryBadge");
+            const descInput = document.getElementById("galleryDesc");
+            const urlInput = document.getElementById("galleryImg");
+            const fileInput = document.getElementById("galleryImgFileInput");
+
+            if (fileInput) fileInput.value = "";
+            modeInput.value = mode;
+
+            if (mode === "add") {
+                headerTitle.innerText = "Tambah Foto Galeri Baru";
+                idxInput.value = "-1";
+                idInput.value = `foto-${Date.now()}`;
+                
+                // Set default kategori dari filter aktif jika bukan "all"
+                catSelect.value = (currentGalleryCategoryFilter !== "all") ? currentGalleryCategoryFilter : "reuni";
+                titleInput.value = "";
+                badgeInput.value = "";
+                descInput.value = "";
+                urlInput.value = "";
+                updateGalleryPhotoUI("");
+            } else if (mode === "edit" && idx !== null && adminGallery[idx]) {
+                const item = adminGallery[idx];
+                headerTitle.innerText = "Ganti & Edit Foto Galeri";
+                idxInput.value = idx;
+                idInput.value = item.id || `foto-${Date.now()}`;
+                catSelect.value = item.category || "reuni";
+                titleInput.value = item.title || "";
+                badgeInput.value = item.badge || "";
+                descInput.value = item.desc || "";
+                urlInput.value = item.img || "";
+                updateGalleryPhotoUI(item.img || "", "Foto Terpasang");
+            }
+
+            modal.style.display = "flex";
+        }
+
+        function closeGalleryModal() {
+            document.getElementById("galleryModalOverlay").style.display = "none";
+        }
+
+        function handleGalleryCategoryChange(val) {
+            // Optional callback jika ingin ganti placeholder
+        }
+
+        function updateGalleryPhotoUI(imgUrl, sourceNote = "Tersimpan") {
+            const previewBox = document.getElementById("galleryPhotoPreviewBox");
+            const emptyPrompt = document.getElementById("galleryPhotoEmptyPrompt");
+            const previewImg = document.getElementById("galleryImgPreview");
+            const sourceLabel = document.getElementById("galleryPhotoSourceLabel");
+
+            if (imgUrl && imgUrl.trim() !== "") {
+                previewImg.src = imgUrl;
+                previewBox.style.display = "flex";
+                emptyPrompt.style.display = "none";
+                if (sourceLabel) sourceLabel.innerText = sourceNote;
+            } else {
+                previewImg.src = "";
+                previewBox.style.display = "none";
+                emptyPrompt.style.display = "flex";
+            }
+        }
+
+        function toggleGalleryUrlField() {
+            const container = document.getElementById("galleryUrlInputContainer");
+            const icon = document.getElementById("toggleGalleryUrlIcon");
+            if (!container) return;
+            const isOpen = container.style.display !== "none";
+            container.style.display = isOpen ? "none" : "block";
+            if (icon) icon.className = isOpen ? "fas fa-chevron-down" : "fas fa-chevron-up";
+        }
+
+        function handleManualGalleryUrlInput(val) {
+            if (val && val.trim() !== "") {
+                updateGalleryPhotoUI(val.trim(), "Tautan URL Online");
+            } else {
+                const fileInput = document.getElementById("galleryImgFileInput");
+                if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+                    updateGalleryPhotoUI("");
+                }
+            }
+        }
+
+        async function handleGalleryPhotoFile(input) {
+            if (!input.files || input.files.length === 0) return;
+            const file = input.files[0];
+            
+            const sourceLabel = document.getElementById("galleryPhotoSourceLabel");
+            if (sourceLabel) sourceLabel.innerText = "Mengompresi foto...";
+
+            try {
+                const compressedBase64 = await compressImageToWebp(file, 1280, 0.85);
+                document.getElementById("galleryImg").value = compressedBase64;
+                updateGalleryPhotoUI(compressedBase64, "Foto Kamera/Galeri (WebP Siap)");
+                showToast("Foto berhasil dimuat & dikompresi!");
+            } catch (err) {
+                console.error("Gagal kompresi:", err);
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById("galleryImg").value = e.target.result;
+                    updateGalleryPhotoUI(e.target.result, "Foto Kamera/Galeri (Original)");
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeGalleryPhoto() {
+            document.getElementById("galleryImg").value = "";
+            const fileInput = document.getElementById("galleryImgFileInput");
+            if (fileInput) fileInput.value = "";
+            updateGalleryPhotoUI("");
+            showToast("Foto galeri dihapus.");
+        }
+
+        function handleGallerySubmit(e) {
+            e.preventDefault();
+            const mode = document.getElementById("galleryModalMode").value;
+            const idx = parseInt(document.getElementById("galleryItemIndex").value, 10);
+            const id = document.getElementById("galleryItemId").value || `foto-${Date.now()}`;
+            const category = document.getElementById("galleryCategory").value;
+            const title = document.getElementById("galleryTitle").value.trim();
+            const badge = document.getElementById("galleryBadge").value.trim();
+            const desc = document.getElementById("galleryDesc").value.trim();
+            const img = document.getElementById("galleryImg").value.trim();
+
+            if (!img) {
+                alert("Harap pilih/upload foto atau masukkan tautan URL foto terlebih dahulu.");
+                return;
+            }
+
+            const itemData = {
+                id: id,
+                category: category,
+                title: title,
+                badge: badge,
+                img: img,
+                desc: desc
+            };
+
+            // Jika kategori reuni, bawa kelengkapan fitur dan teks wa jika sebelumnya ada
+            if (mode === "edit" && idx >= 0 && adminGallery[idx]) {
+                if (adminGallery[idx].features) itemData.features = adminGallery[idx].features;
+                if (adminGallery[idx].waText) itemData.waText = adminGallery[idx].waText;
+                if (adminGallery[idx].zone) itemData.zone = adminGallery[idx].zone;
+                if (adminGallery[idx].tips) itemData.tips = adminGallery[idx].tips;
+                if (adminGallery[idx].tableCode) itemData.tableCode = adminGallery[idx].tableCode;
+                adminGallery[idx] = itemData;
+                showToast("Data & foto berhasil diperbarui!");
+            } else {
+                adminGallery.unshift(itemData);
+                showToast("Foto baru berhasil ditambahkan!");
+            }
+
+            updateGalleryStats();
+            applyGalleryFilter();
+            closeGalleryModal();
+        }
+
+        function deleteGalleryItem(idx) {
+            if (idx < 0 || idx >= adminGallery.length) return;
+            const item = adminGallery[idx];
+            if (!confirm(`Apakah Anda yakin ingin menghapus foto "${item.title || 'ini'}" dari galeri?`)) {
+                return;
+            }
+
+            adminGallery.splice(idx, 1);
+            updateGalleryStats();
+            applyGalleryFilter();
+            showToast("Foto berhasil dihapus dari galeri.");
+        }
+
+        async function saveGalleryToGithub() {
+            const btn = document.getElementById("btnSaveGallerySubmit");
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menyimpan Perubahan Foto ke GitHub...`;
+
+            try {
+                // Periksa apakah ada foto dengan base64 (hasil upload file lokal)
+                for (let i = 0; i < adminGallery.length; i++) {
+                    const item = adminGallery[i];
+                    if (item.img && item.img.startsWith("data:image/")) {
+                        const ext = item.img.includes("webp") ? "webp" : "jpg";
+                        const fileName = `${item.id}.${ext}`;
+                        const filePath = `assets/gallery/${fileName}`;
+
+                        btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Mengunggah foto (${i + 1}/${adminGallery.length})...`;
+                        const uploadOk = await uploadBinaryToGitHub(filePath, item.img, `feat(gallery): upload image asset ${fileName}`);
+                        if (uploadOk) {
+                            item.img = filePath;
+                        } else {
+                            console.warn("Gagal upload gambar biner, tetap menggunakan data yang ada.");
+                        }
+                    }
+                }
+
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memperbarui data gallery.json...`;
+                const success = await pushJsonToGitHub("gallery.json", adminGallery, "feat(admin): update gallery, reunion, and scenic photos catalog");
+                if (success) {
+                    showToast("Koleksi foto galeri berhasil dipublikasikan ke server live!");
+                }
+            } catch (err) {
+                alert("Terjadi kendala saat publikasi foto galeri: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fas fa-floppy-disk"></i> Terapkan Perubahan Foto ke Server Live`;
             }
         }
 

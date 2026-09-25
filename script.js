@@ -105,6 +105,108 @@ async function loadMenuData() {
     }
 }
 
+// =========================================
+// SINKRONISASI DATA GALERI & FOTO DOKUMENTASI (REUNI, PEMANDANGAN, SUASANA)
+// =========================================
+let publicGalleryData = [];
+
+async function loadGalleryData() {
+    try {
+        const response = await fetch("gallery.json");
+        if (!response.ok) return;
+        publicGalleryData = await response.json();
+        if (Array.isArray(publicGalleryData) && publicGalleryData.length > 0) {
+            renderPublicGallery(publicGalleryData);
+        }
+    } catch (err) {
+        console.warn("Gagal memuat gallery.json, menggunakan konten default:", err);
+    }
+}
+
+function renderPublicGallery(items) {
+    if (!items || items.length === 0) return;
+
+    // 1. Render Foto Reuni & Paket Acara (#packagesTrack)
+    const reuniItems = items.filter(i => i.category === "reuni");
+    const packagesTrack = document.getElementById("packagesTrack");
+    if (packagesTrack && reuniItems.length > 0) {
+        packagesTrack.innerHTML = reuniItems.map(item => {
+            const featuresHtml = Array.isArray(item.features) 
+                ? item.features.map(f => `<li><i class="fas fa-check-circle"></i> <span>${escapeHtml(f)}</span></li>`).join("")
+                : `<li><i class="fas fa-check-circle"></i> <span>${escapeHtml(item.desc || "")}</span></li>`;
+            
+            const waMsg = encodeURIComponent(item.waText || `Halo Admin Bukit Padangan, saya ingin konsultasi Paket Custom untuk acara ${item.title}. Boleh minta info fasilitas dan penawarannya?`);
+
+            return `
+                <div class="package-card" style="flex: 0 0 340px !important; min-width: 340px !important; max-width: 340px !important; scroll-snap-align: start !important;">
+                    <div class="package-img-wrap">
+                        <img src="${escapeHtml(item.img)}" alt="${escapeHtml(item.title)}" loading="lazy">
+                        <span class="package-badge">${escapeHtml(item.badge || "Paket Acara")}</span>
+                    </div>
+                    <div class="package-body">
+                        <h3>${escapeHtml(item.title)}</h3>
+                        <p class="package-desc">${escapeHtml(item.desc || "")}</p>
+                        <ul class="package-features">
+                            ${featuresHtml}
+                        </ul>
+                        <a href="https://wa.me/6285226210408?text=${waMsg}" target="_blank" rel="noopener noreferrer" class="btn-package">
+                            Konsultasi Paket <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    // 2. Render Pemandangan & Sunset (#photospotsTrack)
+    const pemandanganItems = items.filter(i => i.category === "pemandangan");
+    const photospotsTrack = document.getElementById("photospotsTrack");
+    if (photospotsTrack && pemandanganItems.length > 0) {
+        photospotsTrack.innerHTML = pemandanganItems.map(item => {
+            return `
+                <article class="photospot-card">
+                    <div class="photospot-card-img-wrap">
+                        <img src="${escapeHtml(item.img)}" alt="${escapeHtml(item.title)}" class="photospot-card-img" loading="lazy">
+                        ${item.badge ? `<span class="photospot-time-badge"><i class="fas fa-clock"></i> ${escapeHtml(item.badge)}</span>` : ""}
+                        ${item.zone ? `<span class="photospot-zone-badge">${escapeHtml(item.zone)}</span>` : ""}
+                    </div>
+                    <div class="photospot-card-content">
+                        <h3 class="photospot-card-title">${escapeHtml(item.title)}</h3>
+                        <p class="photospot-card-desc">${escapeHtml(item.desc || "")}</p>
+                        ${item.tips ? `
+                        <div class="photospot-card-tip">
+                            <i class="fas fa-camera"></i>
+                            <span><strong>Tip Foto:</strong> ${escapeHtml(item.tips)}</span>
+                        </div>` : ""}
+                        <a href="#reservasi" class="photospot-reserve-link" ${item.tableCode ? `onclick="selectSpotTable('${escapeHtml(item.tableCode)}')"` : ""}>Pesan Meja Area Ini <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            `;
+        }).join("");
+    }
+
+    // 3. Render Galeri Suasana & Spot Foto (#galleryTrack)
+    const galeriItems = items.filter(i => i.category === "galeri");
+    const galleryTrack = document.getElementById("galleryTrack");
+    if (galleryTrack && galeriItems.length > 0) {
+        galleryTrack.innerHTML = galeriItems.map((item, idx) => {
+            return `
+                <div class="gallery-card gallery-item" onclick="openLightbox(${idx})" style="flex: 0 0 320px !important; min-width: 320px !important; max-width: 320px !important; scroll-snap-align: start !important;">
+                    <div class="gallery-image-wrapper">
+                        <img src="${escapeHtml(item.img)}" alt="${escapeHtml(item.title)}" loading="lazy">
+                        ${item.badge ? `<span class="gallery-spot-badge"><i class="fas fa-star"></i> ${escapeHtml(item.badge)}</span>` : ""}
+                        <div class="gallery-zoom-badge"><i class="fas fa-search-plus"></i></div>
+                    </div>
+                    <div class="gallery-card-content">
+                        <h3 class="gallery-spot-name">${escapeHtml(item.title)}</h3>
+                        <p class="gallery-spot-desc">${escapeHtml(item.desc || "")}</p>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+}
+
 function renderMenuGrid(items) {
     const grid = document.getElementById("menuGrid");
     if (!grid) return;
@@ -413,6 +515,7 @@ window.scrollToAmenity = function(index) {
 window.addEventListener("DOMContentLoaded", () => {
     loadDynamicContent();
     loadMenuData();
+    loadGalleryData();
     loadTablesData();
     initOperatingHoursStatus();
     initFaqAccordion();

@@ -1,0 +1,179 @@
+[
+  {
+    "id": "reuni-1",
+    "category": "reuni",
+    "title": "Reuni & Temu Kangen",
+    "badge": "Reuni & Temu Kangen",
+    "img": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=800&auto=format&fit=crop",
+    "desc": "Kapasitas rombongan kecil hingga besar dengan area outdoor & meja panjang terpadu, menu makan bersama & camilan khas, sound system & mic.",
+    "features": [
+      "Kapasitas rombongan kecil hingga besar",
+      "Area outdoor & meja panjang terpadu",
+      "Menu makan bersama & camilan khas",
+      "Sound system & mic untuk sambutan",
+      "Spot foto panorama perbukitan"
+    ],
+    "wa_text": "Halo Admin Bukit Padangan, saya ingin konsultasi Paket Custom untuk acara Reuni. Boleh minta info pilihan menu dan penawaran harga customnya?"
+  },
+  {
+    "id": "reuni-2",
+    "category": "reuni",
+    "title": "Rapat Kerja & Kedinasan",
+    "badge": "Rapat & Pertemuan",
+    "img": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop",
+    "desc": "Suasana tenang & kondusif untuk rapat kedinasan, dilengkapi sound system, coffee break tradisional, dan stopkontak tata meja rapat.",
+    "features": [
+      "Suasana tenang & kondusif",
+      "Sound system & mic wireless jernih",
+      "Coffee break & camilan tradisional",
+      "Prasmanan atau paket nasi box",
+      "Stopkontak & tata meja format rapat"
+    ],
+    "wa_text": "Halo Admin Bukit Padangan, saya ingin konsultasi Paket Custom untuk Rapat Kerja / Pertemuan Dinas. Boleh minta info fasilitas dan penawaran customnya?"
+  },
+  {
+    "id": "reuni-3",
+    "category": "reuni",
+    "title": "Arisan Keluarga & Sahabat",
+    "badge": "Arisan & Paguyuban",
+    "img": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop",
+    "desc": "Saung lesehan & meja santap keluarga, menu ayam bledos khas, area ramah anak & lansia, spot foto berlatar alam.",
+    "features": [
+      "Saung lesehan & meja santap keluarga",
+      "Menu ayam bledos & aneka olahan khas",
+      "Aneka es segar & wedang hangat",
+      "Area ramah anak & lansia",
+      "Spot foto keluarga berlatar alam"
+    ],
+    "wa_text": "Halo Admin Bukit Padangan, saya ingin konsultasi Paket Custom untuk acara Arisan. Boleh minta rekomendasi pilihan menu dan penawaran budgetnya?"
+  },
+  {
+    "id": "reuni-4",
+    "category": "reuni",
+    "title": "Buka Bersama (Bukber)",
+    "badge": "Buka Puasa Bersama",
+    "img": "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=800&auto=format&fit=crop",
+    "desc": "Pemandangan sunset & golden hour lereng Muria, takjil gratis, makanan siap saji saat azan, musala bersih.",
+    "features": [
+      "Pemandangan sunset & golden hour",
+      "Takjil kurma & minuman segar gratis",
+      "Makanan siap saji tepat saat azan",
+      "Musala bersih & tempat wudhu nyaman",
+      "Jaminan meja tanpa takut kehabisan"
+    ],
+    "wa_text": "Halo Admin Bukit Padangan, saya ingin tanya Paket Custom Buka Bersama (Bukber) rombongan. Boleh info pilihan menu dan booking jadwalnya?"
+  },
+  {
+    "id": "reuni-5",
+    "category": "reuni",
+    "title": "Ulang Tahun & Syukuran",
+    "badge": "Ulang Tahun & Ultah",
+    "img": "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?q=80&w=800&auto=format&fit=crop",
+    "desc": "Boleh bawa kue ultah sendiri, dekorasi meja sederhana, lagu ucapan selamat dari sound system resto, pemandangan terbuka bukit.",
+    "features": [
+      "Boleh bawa kue ultah & lilin sendiri",
+      "Dekorasi meja sederhana diperbolehkan",
+      "Lagu ucapan selamat dari sound system",
+      "Pilihan tumpeng mini / paket hidangan",
+      "Spot foto seru bersama sahabat & keluarga"
+    ],
+    "wa_text": "Halo Admin Bukit Padangan, saya ingin konsultasi Paket Ulang Tahun / Syukuran keluarga. Boleh info reservasi dan paket hidangannya?"
+  },
+  {
+    "id": "pemandangan-1",
+    "category": "pemandangan",
+    "title": "Sunset Panoramic Tepi Sawah",
+    "badge": "Golden Hour 16:45 – 17:30 WIB",
+    "zone": "Zona Outdoor Barat",
+    "img": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=800&auto=format&fit=crop",
+    "desc": "Posisi terbuka menghadap langsung ke hamparan sawah hijau dan lembah Gunungwungkal. Menikmati semburat jingga senja dengan pencahayaan alami paling lembut.",
+    "tips": "Mode siluet senja atau wide-angle 0.5x dengan secangkir Kopi Tubruk Muria.",
+    "table_code": "OD"
+  },
+  {
+    "id": "pemandangan-2",
+    "category": "pemandangan",
+    "title": "Panorama Bukit & Lembah Muria",
+    "badge": "Panorama Alam",
+    "zone": "Lereng Gunungwungkal",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/8/88/Bali%2C_Rice_fields%2C_Rice_terraces_in_East_Bali%2C_Indonesia.jpg",
+    "desc": "Hamparan bukit hijau asri berundak dan semilir angin lereng pegunungan yang menyejukkan.",
+    "tips": "Sudut pandang panorama luas berlatar kabut tipis lereng perbukitan.",
+    "table_code": "OD"
+  },
+  {
+    "id": "pemandangan-3",
+    "category": "pemandangan",
+    "title": "Senja Sunset di Ufuk Bukit",
+    "badge": "Sunset Golden Hour",
+    "zone": "Ufuk Barat Bukit",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/2/24/Water_reflection_of_a_hut_and_colorful_sky_over_karst_mountains_at_sunset_in_a_paddy_field_in_Vang_Vieng_Laos.jpg",
+    "desc": "Pancaran langit keemasan saat matahari terbenam berpadu cermin air sawah nan magis.",
+    "tips": "Mode golden hour di tepi pelataran bambu atau gazebo santai.",
+    "table_code": "OD"
+  },
+  {
+    "id": "galeri-1",
+    "category": "galeri",
+    "title": "Gazebo Tepi Hamparan Sawah",
+    "badge": "Saung Lesehan",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/7/76/Terraced_Rice_Fields_Landscape_in_Pagerwojo%2C_Tulungagung.jpg",
+    "desc": "Saung santai berkonsep terbuka persis di sisi petak sawah bertingkat untuk makan bersama keluarga."
+  },
+  {
+    "id": "galeri-2",
+    "category": "galeri",
+    "title": "Panggung Onthel Heritage",
+    "badge": "Vintage Heritage",
+    "img": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop",
+    "desc": "Perpaduan sepeda onthel antik Jawa, panggung kayu akustik, dan pendaran lampu gantung edison yang vintage klasik."
+  },
+  {
+    "id": "galeri-3",
+    "category": "galeri",
+    "title": "Ruang Tradisional Indoor Utama",
+    "badge": "Indoor Tradisional",
+    "img": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop",
+    "desc": "Suasana meja kayu tradisional Jawa yang luas, tenang, dan teduh. Ideal untuk kumpul keluarga besar & rombongan."
+  },
+  {
+    "id": "galeri-4",
+    "category": "galeri",
+    "title": "Kolam Terapi Ikan Segar",
+    "badge": "Terapi Ikan & Ramah Anak",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Koi_Pond_-_Portland_Japanese_Garden_%2818206438211%29.jpg",
+    "desc": "Sensasi rileks merendam kaki bersama ikan terapi di air jernih pegunungan dan bebatuan kali alami."
+  },
+  {
+    "id": "galeri-5",
+    "category": "galeri",
+    "title": "Gemericik Sungai & Bebatuan",
+    "badge": "Sungai Alami",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/3/31/Aliran_Sungai_Bangek.jpg",
+    "desc": "Aliran air jernih bebatuan kali alami yang mengalir sejuk di batas pelataran resto."
+  },
+  {
+    "id": "galeri-6",
+    "category": "galeri",
+    "title": "Malam Syahdu Bertabur Lentera",
+    "badge": "Malam Lentera",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/0/02/DZ6_2632_A_cozy_outdoor_corner_at_night_a_wicker_chair_beside_a_small_table_potted_plants_a_glowing_candle_and_twinkling_string_lights_welcoming_passersby.jpg",
+    "desc": "Kilau hangat lampu gantung dan lentera temaram yang intim nan romantis saat senja beranjak malam."
+  },
+  {
+    "id": "galeri-7",
+    "category": "galeri",
+    "title": "Panggung Musik Akustik",
+    "badge": "Live Akustik",
+    "img": "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?q=80&w=800&auto=format&fit=crop",
+    "desc": "Alunan petikan gitar dan melodi syahdu menemani santap malam akhir pekan di lereng bukit."
+  },
+  {
+    "id": "galeri-8",
+    "category": "galeri",
+    "title": "Secangkir Kopi di Tepi Sawah",
+    "badge": "Kopi & Santai",
+    "img": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=800&auto=format&fit=crop",
+    "desc": "Cita rasa otentik Kopi Tubruk Muria dan Wedang Rempah dinikmati di tengah sejuknya alam terbuka."
+  }
+]
