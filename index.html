@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warung Makan Bukit Padangan - Restoran Alam & Keluarga Gunungwungkal, Pati</title>
-    <link rel="stylesheet" href="style.css?v=20260925-gallery-v3">
+    <link rel="stylesheet" href="style.css?v=20260925-photospots-v4">
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -946,107 +946,128 @@
                 Abadikan momen terbaik Anda berlatar panorama alam lereng Muria, hamparan sawah berundak, dan ornamen vintage ikonik Bukit Padangan.
             </p>
 
-            <div class="photospots-grid">
-                <!-- Spot 1 -->
-                <div class="photospot-card">
-                    <div class="photospot-img-wrap">
-                        <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=800&auto=format&fit=crop" alt="Sunset Tepi Sawah Bukit Padangan">
-                        <span class="photospot-badge-time"><i class="fas fa-sun"></i> Golden Hour 16:45 – 17:30 WIB</span>
-                    </div>
-                    <div class="photospot-body">
-                        <div class="photospot-header">
-                            <h3>Sunset Panoramic Tepi Sawah</h3>
-                            <span class="photospot-zone">Zona Outdoor Barat</span>
-                        </div>
-                        <p class="photospot-desc">
-                            Posisi terbuka menghadap langsung ke hamparan sawah hijau dan lembah Gunungwungkal. Menikmati semburat jingga senja dengan pencahayaan alami paling lembut tanpa bayangan tajam.
-                        </p>
-                        <div class="photospot-tips">
-                            <i class="fas fa-lightbulb"></i>
-                            <span><strong>Tips Foto:</strong> Mode siluet senja atau wide-angle 0.5x dengan secangkir Kopi Tubruk Muria.</span>
-                        </div>
-                        <div class="photospot-actions">
-                            <button type="button" class="btn-spot-locate" onclick="locateSpotTable('OD', 'Outdoor (View Persawahan & Sungai)')">
-                                <i class="fas fa-map-pin"></i> Lihat Meja Terdekat (OD-01 – OD-04)
-                            </button>
-                        </div>
-                    </div>
+            <!-- Controls Bar: Hint & Navigation Buttons -->
+            <div class="gallery-controls-bar">
+                <div class="gallery-hint-pill">
+                    <i class="fas fa-arrows-left-right"></i> Geser ke kanan untuk melihat spot lainnya
                 </div>
-
-                <!-- Spot 2 -->
-                <div class="photospot-card">
-                    <div class="photospot-img-wrap">
-                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop" alt="Panggung Onthel Heritage Bukit Padangan">
-                        <span class="photospot-badge-time"><i class="fas fa-moon"></i> Syahdu 18:00 – 21:00 WIB</span>
-                    </div>
-                    <div class="photospot-body">
-                        <div class="photospot-header">
-                            <h3>Panggung Onthel Heritage</h3>
-                            <span class="photospot-zone">Zona Indoor Timur 1</span>
-                        </div>
-                        <p class="photospot-desc">
-                            Perpaduan sepeda onthel antik Jawa, panggung kayu akustik, dan pendaran lampu gantung edison yang menghadirkan nuansa vintage klasik pedesaan nan hangat.
-                        </p>
-                        <div class="photospot-tips">
-                            <i class="fas fa-lightbulb"></i>
-                            <span><strong>Tips Foto:</strong> Portrait mode f/1.8 dengan pencahayaan hangat lampu gantung vintage di malam hari.</span>
-                        </div>
-                        <div class="photospot-actions">
-                            <button type="button" class="btn-spot-locate" onclick="locateSpotTable('IT', 'Indoor Timur (Sayap 1 & 2)')">
-                                <i class="fas fa-map-pin"></i> Lihat Meja Terdekat (IT-01 – IT-03)
-                            </button>
-                        </div>
-                    </div>
+                <div class="gallery-nav-actions">
+                    <span class="gallery-counter-badge"><i class="fas fa-camera"></i> 4 Spot Estetik</span>
+                    <button type="button" class="gallery-nav-btn prev" onclick="scrollPhotospotsTrack(-1)" aria-label="Spot Sebelumnya">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button type="button" class="gallery-nav-btn next" onclick="scrollPhotospotsTrack(1)" aria-label="Spot Berikutnya">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
+            </div>
 
-                <!-- Spot 3 -->
-                <div class="photospot-card">
-                    <div class="photospot-img-wrap">
-                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop" alt="Ruang Tradisional Joglo Bukit Padangan">
-                        <span class="photospot-badge-time"><i class="fas fa-store-alt"></i> Siang – Malam 11:00 – 21:00 WIB</span>
+            <!-- Horizontal Carousel Track (Swipe / Slideable to Right) -->
+            <div class="photospots-carousel-wrapper">
+                <div id="photospotsTrack" class="photospots-carousel-track photospots-grid" role="region" aria-label="Koleksi Spot Foto Estetik"
+                     style="display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; overflow-x: auto !important; scroll-snap-type: x mandatory !important; -webkit-overflow-scrolling: touch !important;">
+                    
+                    <!-- Spot 1 -->
+                    <div class="photospot-card" style="flex: 0 0 320px !important; min-width: 320px !important; max-width: 320px !important; scroll-snap-align: start !important;">
+                        <div class="photospot-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=800&auto=format&fit=crop" alt="Sunset Tepi Sawah Bukit Padangan">
+                            <span class="photospot-badge-time"><i class="fas fa-sun"></i> Golden Hour 16:45 – 17:30 WIB</span>
+                        </div>
+                        <div class="photospot-body">
+                            <div class="photospot-header">
+                                <h3>Sunset Panoramic Tepi Sawah</h3>
+                                <span class="photospot-zone">Zona Outdoor Barat</span>
+                            </div>
+                            <p class="photospot-desc">
+                                Posisi terbuka menghadap langsung ke hamparan sawah hijau dan lembah Gunungwungkal. Menikmati semburat jingga senja dengan pencahayaan alami paling lembut tanpa bayangan tajam.
+                            </p>
+                            <div class="photospot-tips">
+                                <i class="fas fa-lightbulb"></i>
+                                <span><strong>Tips Foto:</strong> Mode siluet senja atau wide-angle 0.5x dengan secangkir Kopi Tubruk Muria.</span>
+                            </div>
+                            <div class="photospot-actions">
+                                <button type="button" class="btn-spot-locate" onclick="locateSpotTable('OD', 'Outdoor (View Persawahan & Sungai)')">
+                                    <i class="fas fa-map-pin"></i> Lihat Meja Terdekat (OD-01 – OD-04)
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="photospot-body">
-                        <div class="photospot-header">
-                            <h3>Ruang Tradisional Indoor Utama</h3>
-                            <span class="photospot-zone">Zona Indoor Utama</span>
-                        </div>
-                        <p class="photospot-desc">
-                            Suasana meja kayu tradisional Jawa yang luas, tenang, dan terlindung dari cuaca lereng. Sangat ideal untuk kumpul keluarga besar, rombongan rapat, maupun acara arisan.
-                        </p>
-                        <div class="photospot-tips">
-                            <i class="fas fa-lightbulb"></i>
-                            <span><strong>Tips Foto:</strong> Foto bersama rombongan keluarga dengan komposisi meja kayu panjang dan dekorasi tradisional.</span>
-                        </div>
-                        <div class="photospot-actions">
-                            <button type="button" class="btn-spot-locate" onclick="locateSpotTable('IU', 'Indoor Utama (6x6 m)')">
-                                <i class="fas fa-map-pin"></i> Lihat Meja Terdekat (IU-07 – IU-12)
-                            </button>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Spot 4 -->
-                <div class="photospot-card">
-                    <div class="photospot-img-wrap">
-                        <img src="assets/hero-bg.jpg" alt="Kolam Ikan Terapi & Batu Alami Bukit Padangan">
-                        <span class="photospot-badge-time"><i class="fas fa-water"></i> Ramah Keluarga 11:00 – 17:30 WIB</span>
+                    <!-- Spot 2 -->
+                    <div class="photospot-card" style="flex: 0 0 320px !important; min-width: 320px !important; max-width: 320px !important; scroll-snap-align: start !important;">
+                        <div class="photospot-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop" alt="Panggung Onthel Heritage Bukit Padangan">
+                            <span class="photospot-badge-time"><i class="fas fa-moon"></i> Syahdu 18:00 – 21:00 WIB</span>
+                        </div>
+                        <div class="photospot-body">
+                            <div class="photospot-header">
+                                <h3>Panggung Onthel Heritage</h3>
+                                <span class="photospot-zone">Zona Indoor Timur 1</span>
+                            </div>
+                            <p class="photospot-desc">
+                                Perpaduan sepeda onthel antik Jawa, panggung kayu akustik, dan pendaran lampu gantung edison yang menghadirkan nuansa vintage klasik pedesaan nan hangat.
+                            </p>
+                            <div class="photospot-tips">
+                                <i class="fas fa-lightbulb"></i>
+                                <span><strong>Tips Foto:</strong> Portrait mode f/1.8 dengan pencahayaan hangat lampu gantung vintage di malam hari.</span>
+                            </div>
+                            <div class="photospot-actions">
+                                <button type="button" class="btn-spot-locate" onclick="locateSpotTable('IT', 'Indoor Timur (Sayap 1 & 2)')">
+                                    <i class="fas fa-map-pin"></i> Lihat Meja Terdekat (IT-01 – IT-03)
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="photospot-body">
-                        <div class="photospot-header">
-                            <h3>Kolam Terapi Ikan & Batu Alami</h3>
-                            <span class="photospot-zone">Zona Rekreasi Keluarga</span>
+
+                    <!-- Spot 3 -->
+                    <div class="photospot-card" style="flex: 0 0 320px !important; min-width: 320px !important; max-width: 320px !important; scroll-snap-align: start !important;">
+                        <div class="photospot-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop" alt="Ruang Tradisional Joglo Bukit Padangan">
+                            <span class="photospot-badge-time"><i class="fas fa-store-alt"></i> Siang – Malam 11:00 – 21:00 WIB</span>
                         </div>
-                        <p class="photospot-desc">
-                            Air pegunungan yang jernih dengan bebatuan kali dan tanaman hias asri. Tempat favorit pengunjung untuk bersantai sambil merendam kaki di sela-sela santap siang.
-                        </p>
-                        <div class="photospot-tips">
-                            <i class="fas fa-lightbulb"></i>
-                            <span><strong>Tips Foto:</strong> Candid santai kaki mencelup ke air jernih dengan pantulan cahaya matahari alami.</span>
+                        <div class="photospot-body">
+                            <div class="photospot-header">
+                                <h3>Ruang Tradisional Indoor Utama</h3>
+                                <span class="photospot-zone">Zona Indoor Utama</span>
+                            </div>
+                            <p class="photospot-desc">
+                                Suasana meja kayu tradisional Jawa yang luas, tenang, dan terlindung dari cuaca lereng. Sangat ideal untuk kumpul keluarga besar, rombongan rapat, maupun acara arisan.
+                            </p>
+                            <div class="photospot-tips">
+                                <i class="fas fa-lightbulb"></i>
+                                <span><strong>Tips Foto:</strong> Foto bersama rombongan keluarga dengan komposisi meja kayu panjang dan dekorasi tradisional.</span>
+                            </div>
+                            <div class="photospot-actions">
+                                <button type="button" class="btn-spot-locate" onclick="locateSpotTable('IU', 'Indoor Utama (6x6 m)')">
+                                    <i class="fas fa-map-pin"></i> Lihat Meja Terdekat (IU-07 – IU-12)
+                                </button>
+                            </div>
                         </div>
-                        <div class="photospot-actions">
-                            <button type="button" class="btn-spot-locate" onclick="locateSpotTable('IKAN', 'Area Terapi Ikan & Ramah Anak')">
-                                <i class="fas fa-map-pin"></i> Lihat Meja Terdekat (Area Anak & Ikan)
-                            </button>
+                    </div>
+
+                    <!-- Spot 4 -->
+                    <div class="photospot-card" style="flex: 0 0 320px !important; min-width: 320px !important; max-width: 320px !important; scroll-snap-align: start !important;">
+                        <div class="photospot-img-wrap">
+                            <img src="assets/hero-bg.jpg" alt="Kolam Ikan Terapi & Batu Alami Bukit Padangan">
+                            <span class="photospot-badge-time"><i class="fas fa-water"></i> Ramah Keluarga 11:00 – 17:30 WIB</span>
+                        </div>
+                        <div class="photospot-body">
+                            <div class="photospot-header">
+                                <h3>Kolam Terapi Ikan & Batu Alami</h3>
+                                <span class="photospot-zone">Zona Rekreasi Keluarga</span>
+                            </div>
+                            <p class="photospot-desc">
+                                Air pegunungan yang jernih dengan bebatuan kali dan tanaman hias asri. Tempat favorit pengunjung untuk bersantai sambil merendam kaki di sela-sela santap siang.
+                            </p>
+                            <div class="photospot-tips">
+                                <i class="fas fa-lightbulb"></i>
+                                <span><strong>Tips Foto:</strong> Candid santai kaki mencelup ke air jernih dengan pantulan cahaya matahari alami.</span>
+                            </div>
+                            <div class="photospot-actions">
+                                <button type="button" class="btn-spot-locate" onclick="locateSpotTable('IKAN', 'Area Terapi Ikan & Ramah Anak')">
+                                    <i class="fas fa-map-pin"></i> Lihat Meja Terdekat (Area Anak & Ikan)
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1868,7 +1889,7 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
     <script src="tables3d.js"></script>
-    <script src="script.js?v=20260925-gallery-v3"></script>
+    <script src="script.js?v=20260925-photospots-v4"></script>
 </body>
 
 </html>

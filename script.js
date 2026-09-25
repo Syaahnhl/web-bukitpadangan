@@ -420,6 +420,7 @@ window.addEventListener("DOMContentLoaded", () => {
     initAmenitiesCarousel();
     initPackagesCarousel();
     initGalleryCarousel();
+    initPhotospotsCarousel();
     updatePackageCalc();
     updateMenuOrderLinks();
     initWeatherWidget();
@@ -644,6 +645,60 @@ function initGalleryCarousel() {
             if (e.key === "ArrowLeft") changeLightboxImage(-1);
             if (e.key === "Escape") closeLightbox();
         }
+    });
+}
+
+// Navigasi geser slider kurasi spot foto (slide kanan / kiri)
+function scrollPhotospotsTrack(direction) {
+    const track = document.getElementById("photospotsTrack") || document.querySelector(".photospots-carousel-track") || document.querySelector(".photospots-grid");
+    if (!track) return;
+    const card = track.querySelector(".photospot-card");
+    const scrollAmount = card ? (card.offsetWidth + 22) : 340;
+    track.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
+}
+
+// Inisialisasi drag scroll dengan mouse & touch swipe untuk Spot Foto
+function initPhotospotsCarousel() {
+    const track = document.getElementById("photospotsTrack") || document.querySelector(".photospots-carousel-track") || document.querySelector(".photospots-grid");
+    if (!track) return;
+
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    let hasMoved = false;
+
+    track.addEventListener("mousedown", (e) => {
+        isDown = true;
+        hasMoved = false;
+        track.classList.add("dragging");
+        startX = e.pageX - track.offsetLeft;
+        scrollLeft = track.scrollLeft;
+    });
+
+    window.addEventListener("mouseup", () => {
+        if (!isDown) return;
+        isDown = false;
+        track.classList.remove("dragging");
+    });
+
+    track.addEventListener("mousemove", (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - track.offsetLeft;
+        const walk = (x - startX);
+        if (Math.abs(walk) > 5) hasMoved = true;
+        track.scrollLeft = scrollLeft - walk;
+    });
+
+    // Cegah klik tombol di dalam kartu jika sedang drag
+    track.querySelectorAll(".photospot-card button").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            if (hasMoved) {
+                e.stopPropagation();
+                e.preventDefault();
+                hasMoved = false;
+            }
+        }, true);
     });
 }
 
