@@ -58,18 +58,25 @@ async function loadDynamicContent() {
         // 5. Contacts & Social Media
         if (data.contacts) {
             waAdminNumber = data.contacts.wa_admin1;
-            
+            if (typeof ADMIN_CONTACTS !== 'undefined') {
+                if (ADMIN_CONTACTS.admin1) ADMIN_CONTACTS.admin1.phone = data.contacts.wa_admin1;
+                if (ADMIN_CONTACTS.admin2 && data.contacts.wa_admin2) ADMIN_CONTACTS.admin2.phone = data.contacts.wa_admin2;
+            }
+
             // Update input / dropdown value di form
             const resAdminSelect = document.getElementById("resAdmin");
             if (resAdminSelect) {
                 if (resAdminSelect.tagName === "SELECT") {
-                    resAdminSelect.innerHTML = `<option value="${data.contacts.wa_admin1}">Admin WhatsApp (${formatPhoneDisplay(data.contacts.wa_admin1)})</option>`;
+                    resAdminSelect.innerHTML = `<option value="${data.contacts.wa_admin1}">Admin 1 (${formatPhoneDisplay(data.contacts.wa_admin1)})</option>`;
                 }
                 resAdminSelect.value = data.contacts.wa_admin1;
             }
 
             // Update footer & location
             if (document.getElementById("waAdmin1Text")) document.getElementById("waAdmin1Text").innerText = formatPhoneDisplay(data.contacts.wa_admin1);
+            if (document.getElementById("waAdmin2Text") && data.contacts.wa_admin2) document.getElementById("waAdmin2Text").innerText = formatPhoneDisplay(data.contacts.wa_admin2);
+            if (document.getElementById("waFooterAdmin1Link")) document.getElementById("waFooterAdmin1Link").href = `https://wa.me/${data.contacts.wa_admin1}`;
+            if (document.getElementById("waFooterAdmin2Link") && data.contacts.wa_admin2) document.getElementById("waFooterAdmin2Link").href = `https://wa.me/${data.contacts.wa_admin2}`;
             if (document.getElementById("waAdminNumberText")) document.getElementById("waAdminNumberText").innerText = formatPhoneDisplay(data.contacts.wa_admin1);
             if (document.getElementById("igFooterLink")) document.getElementById("igFooterLink").href = data.contacts.instagram;
             if (document.getElementById("fbFooterLink")) document.getElementById("fbFooterLink").href = data.contacts.facebook;
@@ -153,7 +160,7 @@ function renderPublicGallery(items) {
                         <ul class="package-features">
                             ${featuresHtml}
                         </ul>
-                        <a href="https://wa.me/6285226210408?text=${waMsg}" target="_blank" rel="noopener noreferrer" class="btn-package">
+                        <a href="https://wa.me/${waAdminNumber}?text=${waMsg}" target="_blank" rel="noopener noreferrer" class="btn-package">
                             Konsultasi Paket <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
@@ -1189,14 +1196,20 @@ function showCartToast() {}
 // WHATSAPP DYNAMIC LOAD BALANCER & ADMIN CONTACTS (SSOT)
 // =========================================
 const ADMIN_CONTACTS = {
-    mila: { name: "Admin 1 (Mila Elmeida)", phone: "6285226210408", role: "Reservasi Meja & Menu" },
-    bukhori: { name: "Admin 2 (M. Bukhori)", phone: "6282329384594", role: "Operasional, Rute & Pelayanan" }
+    admin1: { name: "Admin 1", phone: "6282323535747", role: "Reservasi Meja & Menu" },
+    admin2: { name: "Admin 2", phone: "6285290462715", role: "Operasional, Rute & Pelayanan" }
 };
+ADMIN_CONTACTS.mila = ADMIN_CONTACTS.admin1;
+ADMIN_CONTACTS.bukhori = ADMIN_CONTACTS.admin2;
 
 function getAssignedAdmin(mode = "auto") {
-    if (mode === "mila") return ADMIN_CONTACTS.mila.phone;
-    if (mode === "bukhori") return ADMIN_CONTACTS.bukhori.phone;
-    return ADMIN_CONTACTS.mila.phone;
+    if (mode === "auto") {
+        return Math.random() < 0.5 ? ADMIN_CONTACTS.admin1.phone : ADMIN_CONTACTS.admin2.phone;
+    }
+    if (mode === ADMIN_CONTACTS.admin1.phone || mode === "admin1" || mode === "mila") return ADMIN_CONTACTS.admin1.phone;
+    if (mode === ADMIN_CONTACTS.admin2.phone || mode === "admin2" || mode === "bukhori") return ADMIN_CONTACTS.admin2.phone;
+    if (/^\d+$/.test(mode)) return mode;
+    return ADMIN_CONTACTS.admin1.phone;
 }
 
 // Stub Kompatibilitas Voucher Promo (Web Profil)
@@ -2302,10 +2315,10 @@ function handleAiActionClick(actionStr) {
         const url = actionStr.replace('external:', '');
         window.open(url, '_blank');
     } else if (actionStr.startsWith('wa')) {
-        if (actionStr === 'wa:mila') {
-            directToWaAdmin('6285226210408', 'Admin 1 (Mila)');
-        } else if (actionStr === 'wa:bukhori') {
-            directToWaAdmin('6282329384594', 'Admin 2 (Bukhori)');
+        if (actionStr === 'wa:admin1' || actionStr === 'wa:mila') {
+            directToWaAdmin('6282323535747', 'Admin 1');
+        } else if (actionStr === 'wa:admin2' || actionStr === 'wa:bukhori') {
+            directToWaAdmin('6285290462715', 'Admin 2');
         } else {
             // Sebelum direct ke WA, buka pilihan 2 nomor WA
             openWaChooserModal(actionStr);
@@ -2420,16 +2433,16 @@ function generateAiKnowledgeResponse(query) {
     }
 
     // 7. Kontak Admin WhatsApp Langsung
-    if (/(wa|whatsapp|kontak|admin|nomor|telepon|cs|mila|bukhori|hubungi|chat)/i.test(q)) {
+    if (/(wa|whatsapp|kontak|admin|nomor|telepon|cs|hubungi|chat)/i.test(q)) {
         return {
             text: "Silakan pilih kontak WhatsApp Admin resmi Bukit Padangan sesuai kebutuhan Anda:\n\n" +
-                  "• 👩 **Admin 1 — Mila Elmeida** (`0852-2621-0408`)\n" +
-                  "  Khusus: Reservasi Meja, Pilihan Menu, Transfer DP & Paket Acara\n\n" +
-                  "• 👨 **Admin 2 — M. Bukhori** (`0823-2938-4594`)\n" +
-                  "  Khusus: Informasi Umum, Rute Kendaraan, Parkir Bus & Operasional Resto",
+                  "• 📱 **Admin 1** (`0823-2353-5747`)\n" +
+                  "  Layanan Reservasi Meja, Pilihan Menu, Transfer DP & Paket Acara\n\n" +
+                  "• 📱 **Admin 2** (`0852-9046-2715`)\n" +
+                  "  Layanan Informasi Umum, Rute Kendaraan, Parkir Bus & Operasional Resto",
             actions: [
-                { label: "👩 Chat Admin 1 (Mila)", action: "wa:mila" },
-                { label: "👨 Chat Admin 2 (Bukhori)", action: "wa:bukhori" },
+                { label: "📱 Chat Admin 1", action: "wa:admin1" },
+                { label: "📱 Chat Admin 2", action: "wa:admin2" },
                 { label: "💬 Buka Pilihan Admin", action: "func:openWaChooserModal" }
             ]
         };
