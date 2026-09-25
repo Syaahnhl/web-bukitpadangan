@@ -1196,8 +1196,8 @@ function showCartToast() {}
 // WHATSAPP DYNAMIC LOAD BALANCER & ADMIN CONTACTS (SSOT)
 // =========================================
 const ADMIN_CONTACTS = {
-    admin1: { name: "Admin 1", phone: "6282323535747", role: "Reservasi Meja & Menu" },
-    admin2: { name: "Admin 2", phone: "6285290462715", role: "Operasional, Rute & Pelayanan" }
+    admin1: { name: "Admin 1", phone: "6282323535747" },
+    admin2: { name: "Admin 2", phone: "6285290462715" }
 };
 ADMIN_CONTACTS.mila = ADMIN_CONTACTS.admin1;
 ADMIN_CONTACTS.bukhori = ADMIN_CONTACTS.admin2;
@@ -2435,11 +2435,9 @@ function generateAiKnowledgeResponse(query) {
     // 7. Kontak Admin WhatsApp Langsung
     if (/(wa|whatsapp|kontak|admin|nomor|telepon|cs|hubungi|chat)/i.test(q)) {
         return {
-            text: "Silakan pilih kontak WhatsApp Admin resmi Bukit Padangan sesuai kebutuhan Anda:\n\n" +
-                  "• 📱 **Admin 1** (`0823-2353-5747`)\n" +
-                  "  Layanan Reservasi Meja, Pilihan Menu, Transfer DP & Paket Acara\n\n" +
-                  "• 📱 **Admin 2** (`0852-9046-2715`)\n" +
-                  "  Layanan Informasi Umum, Rute Kendaraan, Parkir Bus & Operasional Resto",
+            text: "Silakan hubungi kontak WhatsApp Admin Bukit Padangan:\n\n" +
+                  "• 📱 **Admin 1**: `0823-2353-5747`\n" +
+                  "• 📱 **Admin 2**: `0852-9046-2715`",
             actions: [
                 { label: "📱 Chat Admin 1", action: "wa:admin1" },
                 { label: "📱 Chat Admin 2", action: "wa:admin2" },
