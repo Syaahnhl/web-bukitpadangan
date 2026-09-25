@@ -733,18 +733,20 @@
                 <h2 class="section-title">Apa Kata Tamu Bukit Padangan</h2>
                 <p class="section-desc">Pengalaman nyata dari para tamu yang telah menikmati suasana alam perbukitan, pelataran outdoor tepi jalan, dan hidangan autentik lereng Gunungwungkal.</p>
                 
-                <!-- Google Rating Scorecard -->
+                <!-- Google Rating Scorecard (Tanpa Angka Rating Sesuai Arahan Tuan) -->
                 <div class="google-scorecard">
                     <div class="score-stars-col">
-                        <span class="score-num">4.8</span>
-                        <div class="score-stars">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        <div class="google-badge-icon">
+                            <i class="fab fa-google" style="color: #4285F4; font-size: 1.25rem;"></i>
                         </div>
-                        <span class="score-total">Berdasarkan 240+ Ulasan Google Maps</span>
+                        <div class="score-stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <span class="score-total">Ulasan Asli Pengunjung Google Maps</span>
                     </div>
                     <div class="score-action-col">
                         <a href="https://maps.app.goo.gl/Jy3esudVxSzx93m48" target="_blank" class="btn btn-outline-gold btn-sm">
-                            <i class="fab fa-google"></i> Beri Ulasan di Google
+                            <i class="fab fa-google"></i> Baca & Tulis Ulasan di Google
                         </a>
                     </div>
                 </div>
@@ -752,9 +754,9 @@
                 <!-- Review Filter Pills -->
                 <div class="review-filter-pills">
                     <button class="review-pill active" onclick="filterReviews('all', event)">Semua Ulasan (7)</button>
-                    <button class="review-pill" onclick="filterReviews('rasa', event)">Ayam Bledos & Rasa (3)</button>
-                    <button class="review-pill" onclick="filterReviews('suasana', event)">Suasana & Sunset (4)</button>
-                    <button class="review-pill" onclick="filterReviews('keluarga', event)">Keluarga & Fasilitas (3)</button>
+                    <button class="review-pill" onclick="filterReviews('keluarga', event)">Keluarga & Acara (5)</button>
+                    <button class="review-pill" onclick="filterReviews('suasana', event)">Suasana & Panorama (6)</button>
+                    <button class="review-pill" onclick="filterReviews('rasa', event)">Menu & Kuliner (3)</button>
                 </div>
             </div>
 
@@ -776,123 +778,130 @@
             <!-- Review Cards Track (Horizontal Scroll / Swipe to Right) -->
             <div class="reviews-carousel-wrapper">
                 <div class="reviews-grid" id="reviewsGrid">
-                    <div class="review-card show" data-type="rasa keluarga">
+                    <!-- Ulasan Asli Google Maps 1: Faisal Fikri -->
+                    <div class="review-card show" data-type="keluarga suasana rasa">
                         <div class="review-card-top">
                             <div class="reviewer-meta">
-                                <div class="reviewer-avatar">HG</div>
+                                <div class="reviewer-avatar">FF</div>
                                 <div class="reviewer-info">
-                                    <h5>Hendra Gunawan</h5>
-                                    <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Local Guide Level 6</span>
+                                    <h5>Faisal Fikri</h5>
+                                    <span class="reviewer-tag"><i class="fab fa-google text-gold"></i> Google Maps Review</span>
                                 </div>
                             </div>
                             <div class="review-rating">
                                 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                         </div>
-                        <p class="review-text">"Ayam Bledosnya juara banget! Pedas rempahnya mantap meresap, lalapan kembang turinya segar. Suasana outdoor pinggir jalan dan pemandangan bukitnya sejuk bikin betah. Anak-anak seneng banget main di kolam terapi ikan gratisnya."</p>
-                        <span class="review-date"><i class="far fa-calendar-alt"></i> Kunjungan Keluarga • 2 minggu lalu</span>
+                        <p class="review-text">"Lokasinya arah Gunungwungkal, jalan desa Ngablak-Bangsal. Tempatnya cocok untuk acara pribadi, keluarga atau kantor. Makanan bersih, menu cukup variatif, enak, terjangkau, suasananya menyatu dengan pemandangan alam menjadi daya tarik tersendiri. Untuk parkir luas dan gratis, toilet dan air bersih cukup tersedia, ada musholla bersih dan terapi ikan. Kalo kemari cobain kopi santan juga. Pelayanan cepat dan ramah."</p>
+                        <span class="review-date"><i class="far fa-calendar-alt"></i> 3 bulan lalu • Google Maps Terverifikasi</span>
                     </div>
 
+                    <!-- Ulasan Asli Google Maps 2: Amelia Putri -->
                     <div class="review-card show" data-type="keluarga rasa">
                         <div class="review-card-top">
                             <div class="reviewer-meta">
-                                <div class="reviewer-avatar">SN</div>
+                                <div class="reviewer-avatar">AP</div>
                                 <div class="reviewer-info">
-                                    <h5>Siti Nurhaliza</h5>
-                                    <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Rombongan Arisan</span>
+                                    <h5>Amelia Putri</h5>
+                                    <span class="reviewer-tag"><i class="fab fa-google text-gold"></i> Google Maps Review</span>
                                 </div>
                             </div>
                             <div class="review-rating">
                                 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                         </div>
-                        <p class="review-text">"Tempat terbaik di Gunungwungkal buat kumpul keluarga besar dan arisan. Kopi santan khas Patinya gurih dan harum. Parkiran luas banget, muat rombongan 2 elf kami tanpa susah putar balik."</p>
-                        <span class="review-date"><i class="far fa-calendar-alt"></i> Rombongan 30 Pax • 1 bulan lalu</span>
+                        <p class="review-text">"Tempatnya luas, bersih, dan suasananya nyaman buat family time. Menu makanannya beragam, rasanya enak. Penyajiannya juga cukup cepat meskipun datang rame-rame. Makanan beratnya better sharing deh soalnya porsinya mantap bikin kenyang. Intinya Recommended!"</p>
+                        <span class="review-date"><i class="far fa-calendar-alt"></i> 2 bulan lalu • Google Maps Terverifikasi</span>
                     </div>
 
-                    <div class="review-card show" data-type="suasana">
-                        <div class="review-card-top">
-                            <div class="reviewer-meta">
-                                <div class="reviewer-avatar">DP</div>
-                                <div class="reviewer-info">
-                                    <h5>Dimas Prasetyo</h5>
-                                    <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Pengunjung Luar Kota</span>
-                                </div>
-                            </div>
-                            <div class="review-rating">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                        <p class="review-text">"Pemandangan matahari terbenam dari Saung nomor 1 luar biasa magis saat golden hour jam 5 sore. Pelayanan ramah, pesanan datang tepat waktu. Cocok banget buat yang mau healing dari hiruk pikuk kota."</p>
-                        <span class="review-date"><i class="far fa-calendar-alt"></i> Bersama Pasangan • 3 minggu lalu</span>
-                    </div>
-
-                    <div class="review-card show" data-type="rasa keluarga">
-                        <div class="review-card-top">
-                            <div class="reviewer-meta">
-                                <div class="reviewer-avatar">RW</div>
-                                <div class="reviewer-info">
-                                    <h5>Ratna Wulandari</h5>
-                                    <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Warga Pati Kota</span>
-                                </div>
-                            </div>
-                            <div class="review-rating">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                        <p class="review-text">"Fasilitas lengkap banget, ada area mewarnai buat si kecil dan kolam terapi ikan. Pesan Ayam Ingkung Utuh komplit buat ulang tahun ibu, bumbunya empuk dan gurih pol. Sangat recommended!"</p>
-                        <span class="review-date"><i class="far fa-calendar-alt"></i> Acara Ultah Keluarga • 1 bulan lalu</span>
-                    </div>
-
-                    <div class="review-card show" data-type="suasana">
-                        <div class="review-card-top">
-                            <div class="reviewer-meta">
-                                <div class="reviewer-avatar">BS</div>
-                                <div class="reviewer-info">
-                                    <h5>Budi Santoso</h5>
-                                    <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Komunitas Sepeda</span>
-                                </div>
-                            </div>
-                            <div class="review-rating">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                        <p class="review-text">"Jalur gowes lewat Gunungwungkal terus mampir sarapan di Bukit Padangan. Udara pagi lereng bukit segar banget, wedang uwuh dan polo pendem bentul rebusnya pas buat memulihkan tenaga."</p>
-                        <span class="review-date"><i class="far fa-calendar-alt"></i> Gowes Akhir Pekan • 2 minggu lalu</span>
-                    </div>
-
+                    <!-- Ulasan Asli Google Maps 3: Regina Rahardjo -->
                     <div class="review-card show" data-type="suasana rasa">
                         <div class="review-card-top">
                             <div class="reviewer-meta">
-                                <div class="reviewer-avatar">JS</div>
+                                <div class="reviewer-avatar">RR</div>
                                 <div class="reviewer-info">
-                                    <h5>Joko Susanto</h5>
-                                    <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Pengunjung Akhir Pekan</span>
+                                    <h5>Regina Rahardjo</h5>
+                                    <span class="reviewer-tag"><i class="fab fa-google text-gold"></i> Google Maps Review</span>
                                 </div>
                             </div>
                             <div class="review-rating">
                                 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                         </div>
-                        <p class="review-text">"Nyaman banget nongkrong di pelataran outdoor sambil santap malam. Ditambah alunan live music akustik malam minggu yang bikin suasana makin syahdu dan betah. Nasi goreng dan tempe mendoannya mantap!"</p>
-                        <span class="review-date"><i class="far fa-calendar-alt"></i> Kunjungan Weekend • 1 minggu lalu</span>
+                        <p class="review-text">"Resto diatas bukit di jalan mau ke obyek pengungsen di desa Gunungwungkal Pati. View bagus, pelayanan cepat, harga murah, bersih, parkir luas. Ada tempat makan di dalam dan ada yang terbuka. Top rekomended!"</p>
+                        <span class="review-date"><i class="far fa-calendar-alt"></i> Setahun lalu • Google Maps Terverifikasi</span>
                     </div>
 
+                    <!-- Ulasan Asli Google Maps 4: S Tn -->
                     <div class="review-card show" data-type="keluarga suasana">
                         <div class="review-card-top">
                             <div class="reviewer-meta">
-                                <div class="reviewer-avatar">MA</div>
+                                <div class="reviewer-avatar">ST</div>
                                 <div class="reviewer-info">
-                                    <h5>Maya Anggraini</h5>
-                                    <span class="reviewer-tag"><i class="fas fa-check-circle text-gold"></i> Local Foodie</span>
+                                    <h5>S Tn</h5>
+                                    <span class="reviewer-tag"><i class="fab fa-google text-gold"></i> Google Maps Review</span>
                                 </div>
                             </div>
                             <div class="review-rating">
                                 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                             </div>
                         </div>
-                        <p class="review-text">"Pemandangan sawah terasering dan bukitnya luar biasa adem di mata. Saungnya bersih, musala dan toilet sangat terawat. Pas banget buat istirahat sejenak dari rutinitas kerja."</p>
-                        <span class="review-date"><i class="far fa-calendar-alt"></i> Santap Siang • 3 minggu lalu</span>
+                        <p class="review-text">"Perdana ke sini... tempat parkir luas, menu banyak pilihan, pelayanan cepat dan ramah, mushola & toilet bersih, ada terapi ikan. Makin kalau malam enak banget buat nongkrong-nongkrong santai sambil ngopi."</p>
+                        <span class="review-date"><i class="far fa-calendar-alt"></i> 11 bulan lalu • Google Maps Terverifikasi</span>
+                    </div>
+
+                    <!-- Ulasan Asli Google Maps 5: mas Dian -->
+                    <div class="review-card show" data-type="suasana">
+                        <div class="review-card-top">
+                            <div class="reviewer-meta">
+                                <div class="reviewer-avatar">MD</div>
+                                <div class="reviewer-info">
+                                    <h5>mas Dian</h5>
+                                    <span class="reviewer-tag"><i class="fab fa-google text-gold"></i> Google Maps Review</span>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="review-text">"Tempatnya enak buat santai, pemandangan kalau sore bagus banget berpadu dengan udara sejuk perbukitan Gunungwungkal."</p>
+                        <span class="review-date"><i class="far fa-calendar-alt"></i> 9 bulan lalu • Google Maps Terverifikasi</span>
+                    </div>
+
+                    <!-- Ulasan Asli Google Maps 6: istianatun ni'mah -->
+                    <div class="review-card show" data-type="keluarga suasana">
+                        <div class="review-card-top">
+                            <div class="reviewer-meta">
+                                <div class="reviewer-avatar">IN</div>
+                                <div class="reviewer-info">
+                                    <h5>istianatun ni'mah</h5>
+                                    <span class="reviewer-tag"><i class="fab fa-google text-gold"></i> Google Maps Review</span>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="review-text">"Lumayan sih di daerah Gunungwungkal ada tempat asri buat bikin acara atau kumpul-kumpul bareng keluarga dan teman. View perbukitannya juga oke dan adem."</p>
+                        <span class="review-date"><i class="far fa-calendar-alt"></i> 2 bulan lalu • Google Maps Terverifikasi</span>
+                    </div>
+
+                    <!-- Ulasan Asli Google Maps 7: Diajeng Hastie -->
+                    <div class="review-card show" data-type="keluarga suasana">
+                        <div class="review-card-top">
+                            <div class="reviewer-meta">
+                                <div class="reviewer-avatar">DH</div>
+                                <div class="reviewer-info">
+                                    <h5>Diajeng Hastie</h5>
+                                    <span class="reviewer-tag"><i class="fab fa-google text-gold"></i> Google Maps Review</span>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="review-text">"Suasananya asri dan udaranya segar khas perbukitan. Tempatnya luas dan nyaman buat istirahat sejenak sambil menikmati kuliner bersama keluarga."</p>
+                        <span class="review-date"><i class="far fa-calendar-alt"></i> 4 bulan lalu • Google Maps Terverifikasi</span>
                     </div>
                 </div>
             </div>
