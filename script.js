@@ -1983,7 +1983,7 @@ function toggleAiChat(forceOpen = null) {
     if (isAiChatOpen) {
         chatWin.style.display = 'flex';
         chatWin.setAttribute('aria-hidden', 'false');
-        if (floatWidget && window.innerWidth <= 768) {
+        if (floatWidget) {
             floatWidget.style.display = 'none';
         }
         if (!isAiChatInitialized) {
