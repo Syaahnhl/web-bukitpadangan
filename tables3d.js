@@ -28,12 +28,12 @@ const CAMERA_PRESETS = {
         target: { x: -10.5, y: 1.6, z: -2.5 }
     },
     stage: {
-        pos: { x: 10, y: 7.5, z: 9.5 },
-        target: { x: 10, y: 1.0, z: 1.0 }
+        pos: { x: 10, y: 8.5, z: 7.2 },
+        target: { x: 10, y: 0.5, z: 0.2 }
     },
     east: {
-        pos: { x: 10, y: 7.5, z: 9.5 },
-        target: { x: 10, y: 1.0, z: 1.0 }
+        pos: { x: 10, y: 8.5, z: 7.2 },
+        target: { x: 10, y: 0.5, z: 0.2 }
     },
     facilities: {
         pos: { x: -3, y: 5.5, z: 0 },
@@ -1447,111 +1447,125 @@ function buildCashierStation() {
  */
 function buildIndoorTimur1() {
     const group = new THREE.Group();
-    group.position.set(10, 0, 1);
+    // Posisi acuan global Indoor Timur (X = 10, Z = 0)
+    group.position.set(10, 0, 0);
 
     const teakMat  = new THREE.MeshStandardMaterial({ color: 0x4a2e1b, roughness: 0.6, metalness: 0.05 });
     const beamMat  = new THREE.MeshStandardMaterial({ color: 0x331c0e, roughness: 0.7, metalness: 0.05 });
     const floorMat = new THREE.MeshStandardMaterial({ color: 0x5a3d24, roughness: 0.7, metalness: 0.05 });
+    const plinthMat = new THREE.MeshStandardMaterial({ color: 0x2b170a, roughness: 0.8 });
+    const balustradeMat = new THREE.MeshStandardMaterial({ color: 0x3d2314, roughness: 0.7 });
 
-    // 1. Lantai Bangunan Persegi Panjang (9.6m x 0.25m x 10.4m)
-    const floorGeo = new THREE.BoxGeometry(9.6, 0.25, 10.4);
+    // Dimensi Ruangan Persegi Panjang (Width: 9.8m, Depth: 4.1m)
+    // Z membentang dari Z = -1.90 (Dinding Atas) sampai Z = +2.20 (Dinding Bawah)
+    // Titik tengah Z ruangan = +0.15m
+    const roomW = 9.8;
+    const roomD = 4.1;
+    const roomCenterZ = 0.15;
+
+    // 1. Lantai Bangunan Persegi Panjang Sederhana (9.8m x 0.22m x 4.1m)
+    const floorGeo = new THREE.BoxGeometry(roomW, 0.22, roomD);
     const floor = new THREE.Mesh(floorGeo, floorMat);
-    floor.position.y = 0.125;
+    floor.position.set(0, 0.11, roomCenterZ);
     floor.receiveShadow = false;
     group.add(floor);
 
-    // List Plin Lantai Kayu Sekeliling Ruangan
-    const plinthMat = new THREE.MeshStandardMaterial({ color: 0x2b170a, roughness: 0.8 });
-    const plinthNorth = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.12, 0.08), plinthMat);
-    plinthNorth.position.set(0, 0.31, -5.16);
+    // List Plin Lantai Kayu Sekeliling Ruangan (Memperjelas bentuk persegi panjang)
+    const plinthNorth = new THREE.Mesh(new THREE.BoxGeometry(roomW, 0.12, 0.08), plinthMat);
+    plinthNorth.position.set(0, 0.28, -1.86);
     group.add(plinthNorth);
 
-    const plinthSouth = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.12, 0.08), plinthMat);
-    plinthSouth.position.set(0, 0.31, 5.16);
+    const plinthSouth = new THREE.Mesh(new THREE.BoxGeometry(roomW, 0.12, 0.08), plinthMat);
+    plinthSouth.position.set(0, 0.28, 2.16);
     group.add(plinthSouth);
 
-    const plinthWest = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.12, 10.4), plinthMat);
-    plinthWest.position.set(-4.76, 0.31, 0);
+    const plinthWest = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.12, roomD), plinthMat);
+    plinthWest.position.set(-4.86, 0.28, roomCenterZ);
     group.add(plinthWest);
 
-    const plinthEast = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.12, 10.4), plinthMat);
-    plinthEast.position.set(4.76, 0.31, 0);
+    const plinthEast = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.12, roomD), plinthMat);
+    plinthEast.position.set(4.86, 0.28, roomCenterZ);
     group.add(plinthEast);
 
-    // 2. Tiang Struktural Kayu Jati Solid Persegi (6 Kolom Utama Penopang)
-    const postGeo = new THREE.BoxGeometry(0.24, 3.2, 0.24);
+    // 2. Dinding Pembatas Rendah Sejajar (Rustic Balustrade h: 0.95m, Dinding Kiri-Kanan & Atas-Bawah Sejajar)
+    // Dinding Barat (Kiri) - Sejajar lurus dengan sumbu Z
+    const westWall = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.95, roomD - 0.1), balustradeMat);
+    westWall.position.set(-4.83, 0.695, roomCenterZ);
+    group.add(westWall);
+
+    const westRail = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.08, roomD), teakMat);
+    westRail.position.set(-4.83, 1.21, roomCenterZ);
+    group.add(westRail);
+
+    // Dinding Timur (Kanan) - Sejajar lurus dengan dinding kiri
+    const eastWall = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.95, roomD - 0.1), balustradeMat);
+    eastWall.position.set(4.83, 0.695, roomCenterZ);
+    group.add(eastWall);
+
+    const eastRail = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.08, roomD), teakMat);
+    eastRail.position.set(4.83, 1.21, roomCenterZ);
+    group.add(eastRail);
+
+    // Dinding Utara (Atas / Belakang Jalur Akses) - Sejajar lurus dengan sumbu X
+    const northWall = new THREE.Mesh(new THREE.BoxGeometry(roomW - 0.2, 0.95, 0.14), balustradeMat);
+    northWall.position.set(0, 0.695, -1.83);
+    group.add(northWall);
+
+    const northRail = new THREE.Mesh(new THREE.BoxGeometry(roomW, 0.08, 0.22), teakMat);
+    northRail.position.set(0, 1.21, -1.83);
+    group.add(northRail);
+
+    // Dinding Selatan (Bawah / Mepet Belakang Meja) - Sejajar lurus dengan dinding atas
+    const southWall = new THREE.Mesh(new THREE.BoxGeometry(roomW - 0.2, 0.95, 0.14), balustradeMat);
+    southWall.position.set(0, 0.695, 2.13);
+    group.add(southWall);
+
+    const southRail = new THREE.Mesh(new THREE.BoxGeometry(roomW, 0.08, 0.22), teakMat);
+    southRail.position.set(0, 1.21, 2.13);
+    group.add(southRail);
+
+    // 3. Tiang Struktural Kayu Jati Solid Persegi (6 Kolom Kokoh Pembentuk Ruang)
+    const postGeo = new THREE.BoxGeometry(0.20, 2.8, 0.20);
     const postCoords = [
-        [-4.7, -5.1], [4.7, -5.1], // Sudut Belakang (Utara)
-        [-4.7, 0.0],  [4.7, 0.0],  // Tengah
-        [-4.7, 5.1],  [4.7, 5.1]   // Sudut Depan (Selatan)
+        [-4.75, -1.80], [0.0, -1.80], [4.75, -1.80], // 3 Tiang Dinding Atas
+        [-4.75,  2.10], [0.0,  2.10], [4.75,  2.10]  // 3 Tiang Dinding Bawah
     ];
 
     postCoords.forEach(([px, pz]) => {
         const post = new THREE.Mesh(postGeo, teakMat);
-        post.position.set(px, 1.6, pz);
+        post.position.set(px, 1.51, pz);
         group.add(post);
 
         // Umpak / Alas Batu Tiang
-        const baseStone = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.20, 0.36), plinthMat);
-        baseStone.position.set(px, 0.25, pz);
+        const baseStone = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.18, 0.32), plinthMat);
+        baseStone.position.set(px, 0.20, pz);
         group.add(baseStone);
     });
 
-    // 3. Balok Ring Keliling & Pengikat Atas (Perimeter Beams)
-    const bNorth = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.20, 0.20), beamMat);
-    bNorth.position.set(0, 3.1, -5.1);
+    // 4. Balok Perimeter Atas (Ring Beam Rangka Atas Terbuka Plong)
+    const bNorth = new THREE.Mesh(new THREE.BoxGeometry(roomW, 0.16, 0.16), beamMat);
+    bNorth.position.set(0, 2.83, -1.80);
     group.add(bNorth);
 
-    const bSouth = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.20, 0.20), beamMat);
-    bSouth.position.set(0, 3.1, 5.1);
+    const bSouth = new THREE.Mesh(new THREE.BoxGeometry(roomW, 0.16, 0.16), beamMat);
+    bSouth.position.set(0, 2.83, 2.10);
     group.add(bSouth);
 
-    const bWest = new THREE.Mesh(new THREE.BoxGeometry(0.20, 0.20, 10.4), beamMat);
-    bWest.position.set(-4.7, 3.1, 0);
+    const bWest = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.16, roomD), beamMat);
+    bWest.position.set(-4.75, 2.83, roomCenterZ);
     group.add(bWest);
 
-    const bEast = new THREE.Mesh(new THREE.BoxGeometry(0.20, 0.20, 10.4), beamMat);
-    bEast.position.set(4.7, 3.1, 0);
+    const bEast = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.16, roomD), beamMat);
+    bEast.position.set(4.75, 2.83, roomCenterZ);
     group.add(bEast);
 
-    const bCenter = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.20, 0.20), beamMat);
-    bCenter.position.set(0, 3.1, 0);
-    group.add(bCenter);
-
-    // 4. Dinding Pagar Rendah Kayu Sederhana (Rustic Low Balustrade h: 0.85m)
-    const balustradeMat = new THREE.MeshStandardMaterial({ color: 0x3d2314, roughness: 0.7 });
-    
-    // Pagar Barat
-    const westFence = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.85, 10.2), balustradeMat);
-    westFence.position.set(-4.75, 0.675, 0);
-    group.add(westFence);
-
-    // Pagar Timur
-    const eastFence = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.85, 10.2), balustradeMat);
-    eastFence.position.set(4.75, 0.675, 0);
-    group.add(eastFence);
-
-    // Pagar Utara (Belakang)
-    const northFence = new THREE.Mesh(new THREE.BoxGeometry(9.4, 0.85, 0.08), balustradeMat);
-    northFence.position.set(0, 0.675, -5.1);
-    group.add(northFence);
-
-    // Pagar Depan Kiri & Kanan (Bukaan Pintu Masuk di Tengah)
-    const frontFenceL = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.85, 0.08), balustradeMat);
-    frontFenceL.position.set(-3.2, 0.675, 5.1);
-    group.add(frontFenceL);
-
-    const frontFenceR = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.85, 0.08), balustradeMat);
-    frontFenceR.position.set(3.2, 0.675, 5.1);
-    group.add(frontFenceR);
-
     // 5. Pencahayaan Lembut & Plang Nama Ruangan
-    const roomLight = new THREE.PointLight(0xffbe6b, 2.2, 16);
-    roomLight.position.set(0, 3.0, 1.0);
+    const roomLight = new THREE.PointLight(0xffbe6b, 2.0, 12);
+    roomLight.position.set(0, 2.6, roomCenterZ);
     group.add(roomLight);
 
-    const headerSign = create3DSignboard("INDOOR TIMUR", 4.2, 0.8);
-    headerSign.position.set(0, 3.55, 5.25);
+    const headerSign = create3DSignboard("INDOOR TIMUR", 3.8, 0.7);
+    headerSign.position.set(0, 3.25, 2.18);
     group.add(headerSign);
 
     scene3D.add(group);
