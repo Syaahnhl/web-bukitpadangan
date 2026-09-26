@@ -110,51 +110,54 @@
   {
     "id": "TI-01",
     "number": 7,
-    "name": "Meja Terapi Ikan 1",
+    "name": "Spot Duduk Terapi 01",
     "area": "Terapi Ikan",
     "zone": "terapi",
-    "zoneName": "Area Terapi Ikan & Ramah Anak",
+    "zoneName": "Area Terapi Ikan & Kandang Labi-Labi",
     "capacity": 4,
     "status": "tersedia",
-    "description": "Meja santai tepat di pinggir kolam terapi ikan, nikmati sensasi gigitan ikan terapi sambil bersantap.",
+    "description": "Spot duduk santai di pinggir kolam terapi ikan, nikmati relaksasi celup kaki di kolam dengan pemandangan alami dan kandang labi-labi.",
     "facilities": [
-      "Pinggir Kolam Terapi Ikan",
-      "Dekat Area Mewarnai Anak",
-      "Suasana Santai"
+      "Dudukan Kayu Pinggir Kolam",
+      "Relaksasi Celup Kaki",
+      "Kandang Labi-Labi 1 Ekor",
+      "Jalur Akses 2 Orang"
     ],
     "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "TI-02",
     "number": 8,
-    "name": "Meja Terapi Ikan 2",
+    "name": "Spot Duduk Terapi 02",
     "area": "Terapi Ikan",
     "zone": "terapi",
-    "zoneName": "Area Terapi Ikan & Ramah Anak",
+    "zoneName": "Area Terapi Ikan & Kandang Labi-Labi",
     "capacity": 4,
     "status": "tersedia",
-    "description": "Spot relaksasi alami untuk keluarga, anak-anak dapat bermain mewarnai atau menikmati terapi ikan santai.",
+    "description": "Spot duduk tengah pinggir kolam terapi ikan, nikmati relaksasi celup kaki di kolam dengan pemandangan alami dan kandang labi-labi.",
     "facilities": [
-      "Pinggir Kolam Terapi Ikan",
-      "Relaksasi Kaki Alami",
-      "Kids Friendly"
+      "Dudukan Kayu Pinggir Kolam",
+      "Relaksasi Celup Kaki",
+      "Kandang Labi-Labi 1 Ekor",
+      "Jalur Akses 2 Orang"
     ],
     "image": "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "TI-03",
     "number": 9,
-    "name": "Meja Terapi Ikan 3",
+    "name": "Spot Duduk Terapi 03",
     "area": "Terapi Ikan",
     "zone": "terapi",
-    "zoneName": "Area Terapi Ikan & Ramah Anak",
+    "zoneName": "Area Terapi Ikan & Kandang Labi-Labi",
     "capacity": 4,
     "status": "tersedia",
-    "description": "Meja lesehan di sisi kolam terapi dengan naungan rindang dan akses cepat ke fasilitas bermain anak.",
+    "description": "Spot duduk pinggir kolam terapi ikan di sisi timur, nikmati relaksasi celup kaki di kolam dengan pemandangan alami dan kandang labi-labi.",
     "facilities": [
-      "Pinggir Kolam Terapi Ikan",
-      "Akses Cepat Area Anak",
-      "Colokan Listrik"
+      "Dudukan Kayu Pinggir Kolam",
+      "Relaksasi Celup Kaki",
+      "Kandang Labi-Labi 1 Ekor",
+      "Jalur Akses 2 Orang"
     ],
     "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
   },
@@ -263,13 +266,13 @@
   {
     "id": "IT1-13",
     "number": 16,
-    "name": "Meja 13 (Indoor Timur)",
-    "area": "Indoor Timur",
+    "name": "Meja 13 (Indoor Timur 1)",
+    "area": "Indoor Timur 1",
     "zone": "vip",
-    "zoneName": "Indoor Timur",
+    "zoneName": "Indoor Timur 1",
     "capacity": 6,
     "status": "tersedia",
-    "description": "Set meja makan kayu panjang rustic dengan bangku kayu sederhana, kapasitas 4–6 orang di area Indoor Timur.",
+    "description": "Set meja makan kayu panjang rustic dengan bangku kayu sederhana, kapasitas 4–6 orang di area Indoor Timur 1.",
     "facilities": [
       "Meja Kayu Panjang Rustic",
       "Bangku Kayu Santai",
@@ -281,13 +284,13 @@
   {
     "id": "IT1-14",
     "number": 17,
-    "name": "Meja 14 (Indoor Timur)",
-    "area": "Indoor Timur",
+    "name": "Meja 14 (Indoor Timur 1)",
+    "area": "Indoor Timur 1",
     "zone": "vip",
-    "zoneName": "Indoor Timur",
+    "zoneName": "Indoor Timur 1",
     "capacity": 6,
     "status": "tersedia",
-    "description": "Set meja makan kayu panjang rustic dengan bangku kayu sederhana, kapasitas 4–6 orang di area Indoor Timur.",
+    "description": "Set meja makan kayu panjang rustic dengan bangku kayu sederhana, kapasitas 4–6 orang di area Indoor Timur 1.",
     "facilities": [
       "Meja Kayu Panjang Rustic",
       "Bangku Kayu Santai",
@@ -299,13 +302,13 @@
   {
     "id": "IT1-15",
     "number": 18,
-    "name": "Meja 15 (Indoor Timur)",
-    "area": "Indoor Timur",
+    "name": "Meja 15 (Indoor Timur 1)",
+    "area": "Indoor Timur 1",
     "zone": "vip",
-    "zoneName": "Indoor Timur",
+    "zoneName": "Indoor Timur 1",
     "capacity": 6,
     "status": "tersedia",
-    "description": "Set meja makan kayu panjang rustic dengan bangku kayu sederhana, kapasitas 4–6 orang di area Indoor Timur.",
+    "description": "Set meja makan kayu panjang rustic dengan bangku kayu sederhana, kapasitas 4–6 orang di area Indoor Timur 1.",
     "facilities": [
       "Meja Kayu Panjang Rustic",
       "Bangku Kayu Santai",
@@ -316,16 +319,17 @@
   },
   {
     "id": "IT2-17",
-    "number": 20,
+    "number": 19,
     "name": "Meja 17 (Indoor Timur 2)",
     "area": "Indoor Timur 2",
     "zone": "vip",
     "zoneName": "Indoor Timur 2",
     "capacity": 6,
     "status": "tersedia",
-    "description": "Meja berkapasitas 4-6 orang di sayap timur 2 dengan pandangan ke taman samping.",
+    "description": "Set meja makan kayu panjang rustic dengan bangku kayu sederhana, kapasitas 4–6 orang di area Indoor Timur 2.",
     "facilities": [
-      "Sayap Timur 2",
+      "Meja Kayu Panjang Rustic",
+      "Bangku Kayu Santai",
       "Kapasitas 4-6 Orang",
       "Colokan Listrik"
     ],
@@ -333,53 +337,20 @@
   },
   {
     "id": "IT2-18",
-    "number": 21,
+    "number": 20,
     "name": "Meja 18 (Indoor Timur 2)",
     "area": "Indoor Timur 2",
     "zone": "vip",
     "zoneName": "Indoor Timur 2",
     "capacity": 6,
     "status": "tersedia",
-    "description": "Meja luas 4-6 orang yang pas untuk makan malam santai bersama teman dan keluarga.",
+    "description": "Set meja makan kayu panjang rustic dengan bangku kayu sederhana, kapasitas 4–6 orang di area Indoor Timur 2.",
     "facilities": [
-      "Sayap Timur 2",
+      "Meja Kayu Panjang Rustic",
+      "Bangku Kayu Santai",
       "Kapasitas 4-6 Orang",
       "Colokan Listrik"
     ],
     "image": "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop"
-  },
-  {
-    "id": "IT2-19",
-    "number": 22,
-    "name": "Meja 19 (Indoor Timur 2)",
-    "area": "Indoor Timur 2",
-    "zone": "vip",
-    "zoneName": "Indoor Timur 2",
-    "capacity": 4,
-    "status": "tersedia",
-    "description": "Meja intim untuk 4 orang di sudut sayap timur 2 dengan suasana privat yang tenang.",
-    "facilities": [
-      "Sayap Timur 2",
-      "Kapasitas 4 Orang",
-      "Suasana Privat"
-    ],
-    "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
-  },
-  {
-    "id": "IT2-20",
-    "number": 23,
-    "name": "Meja 20 (Indoor Timur 2)",
-    "area": "Indoor Timur 2",
-    "zone": "vip",
-    "zoneName": "Indoor Timur 2",
-    "capacity": 4,
-    "status": "tersedia",
-    "description": "Meja 4 orang dengan sirkulasi udara sejuk terbuka mengarah ke lanskap bukit.",
-    "facilities": [
-      "Sayap Timur 2",
-      "Kapasitas 4 Orang",
-      "Colokan Listrik"
-    ],
-    "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
   }
 ]
