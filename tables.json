@@ -263,16 +263,17 @@
   {
     "id": "IT1-13",
     "number": 16,
-    "name": "Meja 13 (Indoor Timur 1)",
-    "area": "Indoor Timur 1",
+    "name": "Meja 13 (Indoor Timur)",
+    "area": "Indoor Timur",
     "zone": "vip",
-    "zoneName": "Indoor Timur 1",
-    "capacity": 4,
+    "zoneName": "Indoor Timur",
+    "capacity": 6,
     "status": "tersedia",
-    "description": "Meja 4 orang di sayap timur 1, suasana tenang cocok untuk obrolan santai.",
+    "description": "Set meja makan kayu panjang rustic dengan bangku kayu sederhana, kapasitas 4–6 orang di area Indoor Timur.",
     "facilities": [
-      "Sayap Timur Tenang",
-      "Kapasitas 4 Orang",
+      "Meja Kayu Panjang Rustic",
+      "Bangku Kayu Santai",
+      "Kapasitas 4-6 Orang",
       "Colokan Listrik"
     ],
     "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
@@ -280,16 +281,17 @@
   {
     "id": "IT1-14",
     "number": 17,
-    "name": "Meja 14 (Indoor Timur 1)",
-    "area": "Indoor Timur 1",
+    "name": "Meja 14 (Indoor Timur)",
+    "area": "Indoor Timur",
     "zone": "vip",
-    "zoneName": "Indoor Timur 1",
-    "capacity": 4,
+    "zoneName": "Indoor Timur",
+    "capacity": 6,
     "status": "tersedia",
-    "description": "Meja makan 4 orang dengan pencahayaan hangat dan sirkulasi angin sejuk lereng bukit.",
+    "description": "Set meja makan kayu panjang rustic dengan bangku kayu sederhana, kapasitas 4–6 orang di area Indoor Timur.",
     "facilities": [
-      "Sayap Timur Tenang",
-      "Kapasitas 4 Orang",
+      "Meja Kayu Panjang Rustic",
+      "Bangku Kayu Santai",
+      "Kapasitas 4-6 Orang",
       "Colokan Listrik"
     ],
     "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop"
@@ -297,36 +299,20 @@
   {
     "id": "IT1-15",
     "number": 18,
-    "name": "Meja 15 (Indoor Timur 1)",
-    "area": "Indoor Timur 1",
+    "name": "Meja 15 (Indoor Timur)",
+    "area": "Indoor Timur",
     "zone": "vip",
-    "zoneName": "Indoor Timur 1",
-    "capacity": 4,
+    "zoneName": "Indoor Timur",
+    "capacity": 6,
     "status": "tersedia",
-    "description": "Meja nyaman 4 orang untuk santap siang atau ngopi santai di sore hari.",
+    "description": "Set meja makan kayu panjang rustic dengan bangku kayu sederhana, kapasitas 4–6 orang di area Indoor Timur.",
     "facilities": [
-      "Sayap Timur Tenang",
-      "Kapasitas 4 Orang",
+      "Meja Kayu Panjang Rustic",
+      "Bangku Kayu Santai",
+      "Kapasitas 4-6 Orang",
       "Colokan Listrik"
     ],
     "image": "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=800&auto=format&fit=crop"
-  },
-  {
-    "id": "IT1-16",
-    "number": 19,
-    "name": "Meja 16 (Indoor Timur 1)",
-    "area": "Indoor Timur 1",
-    "zone": "vip",
-    "zoneName": "Indoor Timur 1",
-    "capacity": 4,
-    "status": "tersedia",
-    "description": "Meja sayap timur dengan pandangan ke arah panggung live music.",
-    "facilities": [
-      "Sayap Timur Tenang",
-      "Kapasitas 4 Orang",
-      "Dekat Panggung Live"
-    ],
-    "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "IT2-17",

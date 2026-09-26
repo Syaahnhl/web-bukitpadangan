@@ -28,12 +28,12 @@ const CAMERA_PRESETS = {
         target: { x: -10.5, y: 1.6, z: -2.5 }
     },
     stage: {
-        pos: { x: 10, y: 2.8, z: 6.8 },
-        target: { x: 10, y: 1.5, z: -2.0 }
+        pos: { x: 10, y: 7.5, z: 9.5 },
+        target: { x: 10, y: 1.0, z: 1.0 }
     },
     east: {
-        pos: { x: 10, y: 2.8, z: 6.8 },
-        target: { x: 10, y: 1.5, z: -2.0 }
+        pos: { x: 10, y: 7.5, z: 9.5 },
+        target: { x: 10, y: 1.0, z: 1.0 }
     },
     facilities: {
         pos: { x: -3, y: 5.5, z: 0 },
@@ -85,11 +85,10 @@ const TABLE_3D_LAYOUT = {
     "TI-02": { x: 20, z: 1,  zone: "outdoor", rotation: 0, umbrella: false },
     "TI-03": { x: 17, z: 4,  zone: "outdoor", rotation: 0, umbrella: false },
 
-    // Lingkaran Biru (Kiri): Zona Indoor Timur 1 (IT1-13 s/d IT1-16)
-    "IT1-13": { x: 8,  z: 0.6, zone: "vip", rotation: 0 },
-    "IT1-14": { x: 12, z: 0.6, zone: "vip", rotation: 0 },
-    "IT1-15": { x: 8,  z: 3.6, zone: "vip", rotation: 0 },
-    "IT1-16": { x: 12, z: 3.6, zone: "vip", rotation: 0 },
+    // Zona Indoor Timur (3 Set Meja Tersusun Menyamping / Berjajar dalam 1 Arah)
+    "IT1-13": { x: 7.2,  z: 1.0, zone: "vip", type: "rustic-timur", rotation: 0 },
+    "IT1-14": { x: 10.0, z: 1.0, zone: "vip", type: "rustic-timur", rotation: 0 },
+    "IT1-15": { x: 12.8, z: 1.0, zone: "vip", type: "rustic-timur", rotation: 0 },
 
     // Lingkaran Biru (Kanan): Zona Indoor Timur 2 (IT2-17 s/d IT2-20)
     "IT2-17": { x: 26, z: -2, zone: "vip", rotation: 0 },
@@ -1439,448 +1438,125 @@ function buildCashierStation() {
  * - Area penonton lantai batu alam lempeng acak dengan bangku & meja kayu
  */
 /**
- * Build Indoor Timur 1 (Panggung Pertunjukan Musik / Acoustic Live Stage Hall)
- * Sesuai foto riil Warung Makan Bukit Padangan (img_ee137fc07575.jpg):
- * - Panggung utama kayu solid (elevated wooden stage h: 0.22m)
- * - Dinding latar bilah bambu vertikal (polished bamboo slats / pelupuh)
- * - Plafon balok kayu ekspos & rangka kayu tradisional terbuka
- * - 2 Pintu ganda backstage kiri & kanan dengan plang 'KHUSUS KARYAWAN'
- * - Sepeda onthel antik hitam klasik (roadster bicycle) di sisi kanan panggung
- * - Unit sound system trolley speaker portabel ber-LED dengan 'Kotak Apresiasi'
- * - Tripod stand mikrofon & instrumen musik, tumpukan kursi panggung
- * - Instalasi seni akustik dinding: tampah/nyiru aneka ukuran, kukusan, boboko, caping
- * - 2 Lampu gantung kap anyaman bambu kerucut tradisional (cahaya hangat 2700K)
- * - Area penonton lantai batu alam lempeng acak dengan bangku & meja kayu
+ * Build Indoor Timur (Ruangan Makan Persegi Panjang Sederhana)
+ * Sesuai arahan revisi aktual Bukit Padangan:
+ * - Bangunan persegi panjang sederhana dengan arsitektur kayu tradisional terbuka (open-top cutaway)
+ * - Tanpa panggung, tanpa live stage, tanpa area musik/speaker/mic/properti panggung fiktif
+ * - Fokus murni pada area makan dengan meja dan kursi kayu
+ * - Memuat 3 set meja makan kayu yang tersusun menyamping/berjajar dalam 1 arah (IT1-13, IT1-14, IT1-15)
  */
 function buildIndoorTimur1() {
     const group = new THREE.Group();
     group.position.set(10, 0, 1);
 
-    const teakMat   = new THREE.MeshStandardMaterial({ color: 0x4a2e1b, roughness: 0.6, metalness: 0.05 });
-    const beamMat   = new THREE.MeshStandardMaterial({ color: 0x331c0e, roughness: 0.7, metalness: 0.05 });
-    const stageMat  = new THREE.MeshStandardMaterial({ color: 0x54331a, roughness: 0.5, metalness: 0.1 });
-    const panelMat  = new THREE.MeshStandardMaterial({ color: 0x6e4324, roughness: 0.6, metalness: 0.05 });
-    const tileMat   = new THREE.MeshStandardMaterial({ color: 0x823b26, roughness: 0.8, metalness: 0.0 });
-    const metalMat  = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.4, metalness: 0.7 });
-    const chromeMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.2, metalness: 0.85 });
+    const teakMat  = new THREE.MeshStandardMaterial({ color: 0x4a2e1b, roughness: 0.6, metalness: 0.05 });
+    const beamMat  = new THREE.MeshStandardMaterial({ color: 0x331c0e, roughness: 0.7, metalness: 0.05 });
+    const floorMat = new THREE.MeshStandardMaterial({ color: 0x5a3d24, roughness: 0.7, metalness: 0.05 });
 
-    // 1. Audience Floor: Irregular Slate Flagstones (Crazy Paving)
-    const floorCanvas = document.createElement("canvas");
-    floorCanvas.width = 512;
-    floorCanvas.height = 512;
-    const fctx = floorCanvas.getContext("2d");
-    fctx.fillStyle = "#1e2430";
-    fctx.fillRect(0, 0, 512, 512);
-
-    const slateColors = ["#3a4352", "#485366", "#2f3642", "#525e73", "#3d4657", "#4a463e", "#5a544b"];
-    for (let r = 0; r < 8; r++) {
-        for (let c = 0; c < 8; c++) {
-            const x = c * 64 + 4 + (((r * 13 + c * 17) % 7) - 3);
-            const y = r * 64 + 4 + (((r * 19 + c * 11) % 7) - 3);
-            fctx.fillStyle = slateColors[(r * 5 + c * 3) % slateColors.length];
-            fctx.beginPath();
-            fctx.roundRect(x, y, 56, 56, 6);
-            fctx.fill();
-            fctx.strokeStyle = "rgba(255, 255, 255, 0.22)";
-            fctx.lineWidth = 2.5;
-            fctx.stroke();
-        }
-    }
-    const floorTex = new THREE.CanvasTexture(floorCanvas);
-    floorTex.wrapS = THREE.RepeatWrapping;
-    floorTex.wrapT = THREE.RepeatWrapping;
-    floorTex.repeat.set(3, 3);
-    floorTex.needsUpdate = true;
-
+    // 1. Lantai Bangunan Persegi Panjang (9.6m x 0.25m x 10.4m)
     const floorGeo = new THREE.BoxGeometry(9.6, 0.25, 10.4);
-    const floor = new THREE.Mesh(floorGeo, new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.7 }));
-    floor.position.y = 0.12;
-    floor.receiveShadow = true;
+    const floor = new THREE.Mesh(floorGeo, floorMat);
+    floor.position.y = 0.125;
+    floor.receiveShadow = false;
     group.add(floor);
 
-    // 2. Elevated Wooden Performance Stage (Panggung Utama Kayu Solid h: 0.24m)
-    const stageGeo = new THREE.BoxGeometry(7.8, 0.26, 3.2);
-    const stage = new THREE.Mesh(stageGeo, stageMat);
-    stage.position.set(0, 0.38, -3.2);
-    stage.receiveShadow = true;
-    group.add(stage);
+    // List Plin Lantai Kayu Sekeliling Ruangan
+    const plinthMat = new THREE.MeshStandardMaterial({ color: 0x2b170a, roughness: 0.8 });
+    const plinthNorth = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.12, 0.08), plinthMat);
+    plinthNorth.position.set(0, 0.31, -5.16);
+    group.add(plinthNorth);
 
-    // Stage Front Skirt Board (Lis Kayu Depan Panggung)
-    const skirtGeo = new THREE.BoxGeometry(7.84, 0.26, 0.08);
-    const skirt = new THREE.Mesh(skirtGeo, new THREE.MeshStandardMaterial({ color: 0x3d2110, roughness: 0.6 }));
-    skirt.position.set(0, 0.38, -1.58);
-    group.add(skirt);
+    const plinthSouth = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.12, 0.08), plinthMat);
+    plinthSouth.position.set(0, 0.31, 5.16);
+    group.add(plinthSouth);
 
-    // 3. Vertical Bamboo Slats Backdrop (Dinding Latar Bilah Bambu Pelupuh)
-    const bambooCanvas = document.createElement("canvas");
-    bambooCanvas.width = 512;
-    bambooCanvas.height = 512;
-    const bctx = bambooCanvas.getContext("2d");
-    bctx.fillStyle = "#c28f44"; // Rich warm golden bamboo
-    bctx.fillRect(0, 0, 512, 512);
+    const plinthWest = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.12, 10.4), plinthMat);
+    plinthWest.position.set(-4.76, 0.31, 0);
+    group.add(plinthWest);
 
-    for (let bx = 0; bx < 512; bx += 8) {
-        const tone = ((bx * 7) % 35) - 17;
-        bctx.fillStyle = `rgb(${194 + tone}, ${143 + tone}, ${68 + tone})`;
-        bctx.fillRect(bx, 0, 7, 512);
+    const plinthEast = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.12, 10.4), plinthMat);
+    plinthEast.position.set(4.76, 0.31, 0);
+    group.add(plinthEast);
 
-        bctx.fillStyle = "rgba(45, 25, 10, 0.7)";
-        bctx.fillRect(bx + 6.5, 0, 1.5, 512);
+    // 2. Tiang Struktural Kayu Jati Solid Persegi (6 Kolom Utama Penopang)
+    const postGeo = new THREE.BoxGeometry(0.24, 3.2, 0.24);
+    const postCoords = [
+        [-4.7, -5.1], [4.7, -5.1], // Sudut Belakang (Utara)
+        [-4.7, 0.0],  [4.7, 0.0],  // Tengah
+        [-4.7, 5.1],  [4.7, 5.1]   // Sudut Depan (Selatan)
+    ];
 
-        for (let ny = 60; ny < 512; ny += 95) {
-            bctx.fillStyle = "rgba(80, 48, 20, 0.4)";
-            bctx.fillRect(bx, ny + ((bx * 3) % 7), 7, 3);
-        }
-    }
-    const bambooTex = new THREE.CanvasTexture(bambooCanvas);
-    bambooTex.wrapS = THREE.RepeatWrapping;
-    bambooTex.wrapT = THREE.RepeatWrapping;
-    bambooTex.repeat.set(2, 1);
-    bambooTex.needsUpdate = true;
+    postCoords.forEach(([px, pz]) => {
+        const post = new THREE.Mesh(postGeo, teakMat);
+        post.position.set(px, 1.6, pz);
+        group.add(post);
 
-    const backWallMat = new THREE.MeshStandardMaterial({ map: bambooTex, roughness: 0.55 });
-    const backWall = new THREE.Mesh(new THREE.BoxGeometry(7.8, 3.6, 0.16), backWallMat);
-    backWall.position.set(0, 2.05, -4.75);
-    backWall.receiveShadow = true;
-    group.add(backWall);
-
-    // 4. Symmetrical Backstage Doors ("KHUSUS KARYAWAN")
-    function createKaryawanSign() {
-        const c = document.createElement("canvas");
-        c.width = 256;
-        c.height = 64;
-        const ctx = c.getContext("2d");
-        ctx.fillStyle = "#0c502b";
-        ctx.fillRect(0, 0, 256, 64);
-        ctx.strokeStyle = "#ffffff";
-        ctx.lineWidth = 6;
-        ctx.strokeRect(4, 4, 248, 56);
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 20px sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText("KHUSUS KARYAWAN", 128, 32);
-
-        const tex = new THREE.CanvasTexture(c);
-        tex.needsUpdate = true;
-        const sign = new THREE.Mesh(new THREE.PlaneGeometry(0.95, 0.25), new THREE.MeshBasicMaterial({ map: tex }));
-        return sign;
-    }
-
-    // Left Doorway (Equipment rack / backstage)
-    const leftDoorFrame = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2.5, 0.2), beamMat);
-    leftDoorFrame.position.set(-4.2, 1.5, -4.72);
-    group.add(leftDoorFrame);
-
-    const leftDoorOpening = new THREE.Mesh(new THREE.BoxGeometry(1.0, 2.3, 0.14), new THREE.MeshStandardMaterial({ color: 0x181e28, roughness: 0.8 }));
-    leftDoorOpening.position.set(-4.2, 1.4, -4.74);
-    group.add(leftDoorOpening);
-
-    const signLeft = createKaryawanSign();
-    signLeft.position.set(-4.2, 2.75, -4.6);
-    group.add(signLeft);
-
-    // Right Doorway (Wood panel door)
-    const rightDoorFrame = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2.5, 0.2), beamMat);
-    rightDoorFrame.position.set(4.2, 1.5, -4.72);
-    group.add(rightDoorFrame);
-
-    const rightDoorPanel = new THREE.Mesh(new THREE.BoxGeometry(1.0, 2.3, 0.1), panelMat);
-    rightDoorPanel.position.set(4.2, 1.4, -4.74);
-    group.add(rightDoorPanel);
-
-    const signRight = createKaryawanSign();
-    signRight.position.set(4.2, 2.75, -4.6);
-    group.add(signRight);
-
-    // 5. Open-Air Rustic Side Walls (Setengah Badan Kayu Jati / Balustrade 1.1m)
-    // Sisi kiri & kanan dibuat terbuka di bagian atas agar pencahayaan alami & pemandangan lereng tetap masuk
-    const westBalustrade = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1.1, 10.2), panelMat);
-    westBalustrade.position.set(-4.75, 0.75, 0);
-    westBalustrade.receiveShadow = true;
-    group.add(westBalustrade);
-
-    const eastBalustrade = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1.1, 10.2), panelMat);
-    eastBalustrade.position.set(4.75, 0.75, 0);
-    eastBalustrade.receiveShadow = true;
-    group.add(eastBalustrade);
-
-    // Structural Timber Posts (Tiang Kayu Penopang)
-    [-4.7, 4.7].forEach(px => {
-        [-4.7, 0, 4.7].forEach(pz => {
-            const post = new THREE.Mesh(new THREE.BoxGeometry(0.3, 3.8, 0.3), teakMat);
-            post.position.set(px, 2.0, pz);
-            group.add(post);
-        });
+        // Umpak / Alas Batu Tiang
+        const baseStone = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.20, 0.36), plinthMat);
+        baseStone.position.set(px, 0.25, pz);
+        group.add(baseStone);
     });
 
-    // 6. Perimeter Roof Beams & Cross Ties
-    const bNorth = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.28, 0.26), beamMat);
-    bNorth.position.set(0, 3.75, -4.75);
+    // 3. Balok Ring Keliling & Pengikat Atas (Perimeter Beams)
+    const bNorth = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.20, 0.20), beamMat);
+    bNorth.position.set(0, 3.1, -5.1);
     group.add(bNorth);
 
-    const bSouth = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.28, 0.26), beamMat);
-    bSouth.position.set(0, 3.75, 4.75);
+    const bSouth = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.20, 0.20), beamMat);
+    bSouth.position.set(0, 3.1, 5.1);
     group.add(bSouth);
 
-    const bWest = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.28, 10.2), beamMat);
-    bWest.position.set(-4.75, 3.75, 0);
+    const bWest = new THREE.Mesh(new THREE.BoxGeometry(0.20, 0.20, 10.4), beamMat);
+    bWest.position.set(-4.7, 3.1, 0);
     group.add(bWest);
 
-    const bEast = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.28, 10.2), beamMat);
-    bEast.position.set(4.75, 3.75, 0);
+    const bEast = new THREE.Mesh(new THREE.BoxGeometry(0.20, 0.20, 10.4), beamMat);
+    bEast.position.set(4.7, 3.1, 0);
     group.add(bEast);
 
-    const bCenter = new THREE.Mesh(new THREE.BoxGeometry(9.4, 0.24, 0.24), beamMat);
-    bCenter.position.set(0, 3.75, 0);
+    const bCenter = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.20, 0.20), beamMat);
+    bCenter.position.set(0, 3.1, 0);
     group.add(bCenter);
 
-    // Traditional Indoor Timur 1 - Open-Top Architecture (Tanpa atap genteng agar meja IT1-13 s/d IT1-16 bebas diakses)
+    // 4. Dinding Pagar Rendah Kayu Sederhana (Rustic Low Balustrade h: 0.85m)
+    const balustradeMat = new THREE.MeshStandardMaterial({ color: 0x3d2314, roughness: 0.7 });
+    
+    // Pagar Barat
+    const westFence = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.85, 10.2), balustradeMat);
+    westFence.position.set(-4.75, 0.675, 0);
+    group.add(westFence);
 
-    // 7. Vintage Sepeda Onthel (Lightweight Low-Poly Decorative Art Prop)
-    const bikeGroup = new THREE.Group();
-    bikeGroup.position.set(0, 0.40, -3.1);
-    bikeGroup.rotation.y = 0.16;
+    // Pagar Timur
+    const eastFence = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.85, 10.2), balustradeMat);
+    eastFence.position.set(4.75, 0.675, 0);
+    group.add(eastFence);
 
-    const bikeMat = new THREE.MeshLambertMaterial({ color: 0x1a1c20 });
-    const wheelMat = new THREE.MeshLambertMaterial({ color: 0x2b2d32 });
+    // Pagar Utara (Belakang)
+    const northFence = new THREE.Mesh(new THREE.BoxGeometry(9.4, 0.85, 0.08), balustradeMat);
+    northFence.position.set(0, 0.675, -5.1);
+    group.add(northFence);
 
-    // Wheels
-    [-0.74, 0.74].forEach(wx => {
-        const wheel = new THREE.Mesh(new THREE.TorusGeometry(0.38, 0.025, 8, 24), wheelMat);
-        wheel.position.set(wx, 0.38, 0);
-        bikeGroup.add(wheel);
-    });
+    // Pagar Depan Kiri & Kanan (Bukaan Pintu Masuk di Tengah)
+    const frontFenceL = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.85, 0.08), balustradeMat);
+    frontFenceL.position.set(-3.2, 0.675, 5.1);
+    group.add(frontFenceL);
 
-    // Frame tubes (Diamond frame)
-    const frameTubes = [
-        { geo: [0.03, 0.03, 0.76, 8], pos: [0, 0.52, 0], rot: [0, 0, 0] },
-        { geo: [0.03, 0.03, 0.78, 8], pos: [0.38, 0.52, 0], rot: [0, 0, -0.42] },
-        { geo: [0.03, 0.03, 0.74, 8], pos: [0.36, 0.78, 0], rot: [0, 0, 1.57] },
-        { geo: [0.03, 0.03, 0.76, 8], pos: [-0.37, 0.38, 0], rot: [0, 0, 1.57] }
-    ];
-    frameTubes.forEach(t => {
-        const m = new THREE.Mesh(new THREE.CylinderGeometry(...t.geo), bikeMat);
-        m.position.set(...t.pos);
-        m.rotation.set(...t.rot);
-        bikeGroup.add(m);
-    });
+    const frontFenceR = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.85, 0.08), balustradeMat);
+    frontFenceR.position.set(3.2, 0.675, 5.1);
+    group.add(frontFenceR);
 
-    // Handlebar & Saddle
-    const handlebar = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.04, 0.46), bikeMat);
-    handlebar.position.set(0.72, 0.88, 0);
-    bikeGroup.add(handlebar);
+    // 5. Pencahayaan Lembut & Plang Nama Ruangan
+    const roomLight = new THREE.PointLight(0xffbe6b, 2.2, 16);
+    roomLight.position.set(0, 3.0, 1.0);
+    group.add(roomLight);
 
-    const saddle = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.06, 0.18), new THREE.MeshLambertMaterial({ color: 0x4a2e1b }));
-    saddle.position.set(-0.02, 0.82, 0);
-    bikeGroup.add(saddle);
-
-    group.add(bikeGroup);
-
-    // 8. Stage Monitor Speaker & "Kotak Apresiasi" Akustik (Stage Right)
-    const soundGroup = new THREE.Group();
-    soundGroup.position.set(2.2, 0.52, -3.4);
-
-    const speakerBox = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.88, 0.46), new THREE.MeshStandardMaterial({ color: 0x181a20, roughness: 0.55 }));
-    speakerBox.position.y = 0.44;
-    soundGroup.add(speakerBox);
-
-    const cone1 = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.02, 32), new THREE.MeshBasicMaterial({ color: 0x0f1115 }));
-    cone1.position.set(0, 0.62, 0.24);
-    cone1.rotation.x = Math.PI / 2;
-    soundGroup.add(cone1);
-
-    const ledRing = new THREE.Mesh(new THREE.RingGeometry(0.18, 0.21, 32), new THREE.MeshBasicMaterial({ color: 0x38bdf8 }));
-    ledRing.position.set(0, 0.62, 0.252);
-    soundGroup.add(ledRing);
-
-    // Kotak Apresiasi Kayu Jati Klasik
-    const tipBox = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.18, 0.2), new THREE.MeshStandardMaterial({ color: 0xd4a373, roughness: 0.4 }));
-    tipBox.position.set(0, 0.98, 0);
-    soundGroup.add(tipBox);
-
-    const tipSlot = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.02, 0.02), new THREE.MeshBasicMaterial({ color: 0x111111 }));
-    tipSlot.position.set(0, 1.075, 0);
-    soundGroup.add(tipSlot);
-
-    group.add(soundGroup);
-
-    // 9. Stage Performance Setup (Stage Left: Grounded Acoustic Chair & Realistic Vocal Mic Stand)
-    // Vocal Microphone Stand with Grounded Tripod & Swivel Boom Arm (Natural human height 1.25m)
-    const tripod1 = new THREE.Group();
-    tripod1.position.set(-1.6, 0.51, -2.6);
-
-    // 3 Grounded Tripod Base Legs
-    for (let fi = 0; fi < 3; fi++) {
-        const angle = (fi * Math.PI * 2) / 3;
-        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.36, 16), metalMat);
-        leg.position.set(Math.cos(angle) * 0.15, 0.065, Math.sin(angle) * 0.15);
-        leg.rotation.y = -angle;
-        leg.rotation.z = 0.92;
-        tripod1.add(leg);
-    }
-
-    // Vertical Telescoping Shaft (0.85m above stage floor)
-    const pole1 = new THREE.Mesh(new THREE.CylinderGeometry(0.013, 0.013, 0.85, 20), chromeMat);
-    pole1.position.y = 0.425;
-    tripod1.add(pole1);
-
-    // Swivel Knuckle Joint
-    const swivel = new THREE.Mesh(new THREE.SphereGeometry(0.020, 16, 16), metalMat);
-    swivel.position.set(0, 0.85, 0);
-    tripod1.add(swivel);
-
-    // Boom Arm Group extending toward performer
-    const boomGroup = new THREE.Group();
-    boomGroup.position.set(0, 0.85, 0);
-    boomGroup.rotation.y = 0.40;
-    boomGroup.rotation.z = -0.38;
-
-    const micBoom = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.52, 16), metalMat);
-    micBoom.position.y = 0.26;
-    boomGroup.add(micBoom);
-
-    // Dynamic Microphone Capsule seamlessly attached to boom tip
-    const micCapsule = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.012, 0.08, 16), chromeMat);
-    micCapsule.position.y = 0.53;
-    boomGroup.add(micCapsule);
-
-    // Foam Windscreen (Black)
-    const micFoam = new THREE.Mesh(new THREE.SphereGeometry(0.018, 16, 16), new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.9 }));
-    micFoam.position.y = 0.57;
-    boomGroup.add(micFoam);
-
-    tripod1.add(boomGroup);
-    group.add(tripod1);
-
-    // Acoustic Guitar Music Stand (Disimpan di samping kursi pemain, rapi & terpisah dari sepeda)
-    const tripod2 = new THREE.Group();
-    tripod2.position.set(-2.5, 0.51, -2.8);
-
-    for (let fi = 0; fi < 3; fi++) {
-        const angle = (fi * Math.PI * 2) / 3 + 0.5;
-        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.007, 0.007, 0.32, 16), metalMat);
-        leg.position.set(Math.cos(angle) * 0.13, 0.06, Math.sin(angle) * 0.13);
-        leg.rotation.y = -angle;
-        leg.rotation.z = 0.92;
-        tripod2.add(leg);
-    }
-    const pole2 = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.75, 16), metalMat);
-    pole2.position.y = 0.375;
-    tripod2.add(pole2);
-
-    const musicDesk = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.26, 0.015), metalMat);
-    musicDesk.position.set(0, 0.76, 0);
-    musicDesk.rotation.x = -0.38;
-    tripod2.add(musicDesk);
-
-    const musicSheet = new THREE.Mesh(new THREE.PlaneGeometry(0.32, 0.22), new THREE.MeshBasicMaterial({ color: 0xfafafa }));
-    musicSheet.position.set(0, 0.76, 0.010);
-    musicSheet.rotation.x = -0.38;
-    tripod2.add(musicSheet);
-
-    group.add(tripod2);
-
-    // Performance Chair (Kursi Kayu Jati Akustik: 4 Kaki Flush di Atas Panggung y=0.51)
-    const chairGroup = new THREE.Group();
-    chairGroup.position.set(-2.0, 0.51, -3.2);
-
-    const chairLegMat = new THREE.MeshStandardMaterial({ color: 0x3d2314, roughness: 0.6 });
-    [[-0.18, -0.18], [0.18, -0.18], [-0.18, 0.18], [0.18, 0.18]].forEach(([lx, lz]) => {
-        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.013, 0.44, 16), chairLegMat);
-        leg.position.set(lx, 0.22, lz);
-        chairGroup.add(leg);
-    });
-
-    const chairSeat = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.04, 0.44), new THREE.MeshStandardMaterial({ color: 0xd4a373, roughness: 0.45 }));
-    chairSeat.position.y = 0.44;
-    chairGroup.add(chairSeat);
-
-    const chairBack = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.36, 0.03), chairLegMat);
-    chairBack.position.set(0, 0.66, -0.19);
-    chairGroup.add(chairBack);
-
-    group.add(chairGroup);
-
-    // Tumpukan Kursi Cadangan Lipat di Ujung Kanan Panggung
-    const chairStack = new THREE.Group();
-    chairStack.position.set(2.8, 0.51, -3.7);
-    for (let ci = 0; ci < 4; ci++) {
-        const folded = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.82, 0.05), new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.4 }));
-        folded.position.set(0, 0.41, ci * 0.065);
-        folded.rotation.x = -0.15;
-        chairStack.add(folded);
-    }
-    group.add(chairStack);
-    // 10. Traditional Acoustic Wall Installations (Tampah / Nyiru, Kukusan)
-    const tampahMat = new THREE.MeshStandardMaterial({ color: 0xe0b26a, roughness: 0.6 });
-    const kukusanMat = new THREE.MeshStandardMaterial({ color: 0xd49b4c, roughness: 0.6 });
-
-    const tampahConfigs = [
-        { x: -2.8, y: 2.7, r: 0.54 },
-        { x: -2.1, y: 2.1, r: 0.40 },
-        { x: -3.2, y: 1.8, r: 0.34 },
-        { x: -1.3, y: 2.9, r: 0.46 },
-        { x: 1.4,  y: 2.8, r: 0.50 },
-        { x: 2.4,  y: 2.4, r: 0.40 },
-        { x: 3.1,  y: 1.9, r: 0.34 }
-    ];
-
-    tampahConfigs.forEach(tc => {
-        const tray = new THREE.Mesh(new THREE.CylinderGeometry(tc.r, tc.r, 0.04, 18), tampahMat);
-        tray.rotation.x = Math.PI / 2;
-        tray.position.set(tc.x, tc.y, -4.65);
-        group.add(tray);
-    });
-
-    [-2.5, 2.0].forEach(kx => {
-        const kukusan = new THREE.Mesh(new THREE.ConeGeometry(0.24, 0.48, 14), kukusanMat);
-        kukusan.rotation.x = -Math.PI / 2;
-        kukusan.position.set(kx, 1.9, -4.63);
-        group.add(kukusan);
-    });
-
-    // 11. Two Hanging Conical Woven Bamboo Lamps (Cahaya Hangat 2700K)
-    [-2.2, 2.2].forEach(lx => {
-        const lamp = new THREE.Group();
-        lamp.position.set(lx, 2.4, -2.6);
-
-        const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.4), new THREE.MeshStandardMaterial({ color: 0x111111 }));
-        cord.position.y = 0.7;
-        lamp.add(cord);
-
-        const shade = new THREE.Mesh(new THREE.ConeGeometry(0.46, 0.38, 16, 1, true), kukusanMat);
-        shade.position.y = 0;
-        lamp.add(shade);
-
-        const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.09, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffe8a3 }));
-        bulb.position.y = -0.06;
-        lamp.add(bulb);
-
-        group.add(lamp);
-    });
-
-    // Dedicated Stage & Hall Illuminations (Warm Amber Ambiance)
-    const stageLight = new THREE.PointLight(0xffbe6b, 3.5, 16);
-    stageLight.position.set(0, 3.2, -2.2);
-    group.add(stageLight);
-
-    const hallLight = new THREE.PointLight(0xffbe6b, 3.0, 18);
-    hallLight.position.set(0, 3.2, 2.2);
-    group.add(hallLight);
-
-    // 12. Front Header Wooden Signboard: "INDOOR TIMUR 1 (LIVE STAGE HALL)"
-    const headerSign = create3DSignboard("INDOOR TIMUR 1 (LIVE STAGE HALL)", 5.6, 0.85);
-    headerSign.position.set(0, 3.88, 5.25);
+    const headerSign = create3DSignboard("INDOOR TIMUR", 4.2, 0.8);
+    headerSign.position.set(0, 3.55, 5.25);
     group.add(headerSign);
 
     scene3D.add(group);
 }
 
-/**
- * Build Kolam Terapi Ikan (Lingkaran Biru Tengah)
- * Houses tables TI-01 s/d TI-03
- */
 function buildFishTherapyPool() {
     const group = new THREE.Group();
     group.position.set(19.5, 0, 1);
@@ -2223,7 +1899,9 @@ function populate3DTables() {
         tableGroup.userData = { table: table };
 
         // Construct 3D Physical Geometry based on Zone
-        if (layout.zone === "gazebo" || layout.zone === "outdoor") {
+        if (layout.type === "rustic-timur" || (layout.zone === "vip" && (table.id === "IT1-13" || table.id === "IT1-14" || table.id === "IT1-15"))) {
+            buildIndoorTimurRusticTable3D(tableGroup, table);
+        } else if (layout.zone === "gazebo" || layout.zone === "outdoor") {
             buildOutdoorTable3D(tableGroup, table, true);
         } else if (layout.zone === "outdoor") {
             buildOutdoorTable3D(tableGroup, table, layout.umbrella);
@@ -2379,6 +2057,112 @@ function buildOutdoorTable3D(group, table, hasUmbrella = false) {
 
     // Outdoor Dining - Open Sky (Kanopi payung ditiadakan agar meja outdoor OD-01 s/d OD-06 bebas terhalang)
 }
+
+/**
+ * Build Indoor Timur Rustic Table 3D
+ * Meja makan kayu sederhana memanjang dengan tampilan rustic/tradisional,
+ * dilengkapi bangku kayu panjang sederhana di 2 sisi (masing-masing 2-3 orang).
+ * Kapasitas total 4-6 orang per meja, tanpa ornamen modern berlebih.
+ */
+function buildIndoorTimurRusticTable3D(group, table) {
+    const tableMat = new THREE.MeshLambertMaterial({ color: 0x54361e }); // Kayu Jati Rustic Alami
+    const legMat   = new THREE.MeshLambertMaterial({ color: 0x3d2513 }); // Rangka & Kaki Kayu Solid
+    const benchMat = new THREE.MeshLambertMaterial({ color: 0x5c3d23 }); // Papan Dudukan Bangku
+
+    // 1. Meja Makan Kayu Panjang Sederhana (2.15m x 0.08m x 0.85m)
+    const topGeo = new THREE.BoxGeometry(2.15, 0.08, 0.85);
+    const topMesh = new THREE.Mesh(topGeo, tableMat);
+    topMesh.position.y = 0.74;
+    topMesh.castShadow = false;
+    topMesh.receiveShadow = false;
+    topMesh.name = "TableMesh_" + table.id;
+    group.add(topMesh);
+
+    // Subframe / Apron di Bawah Meja
+    const apron = new THREE.Mesh(new THREE.BoxGeometry(1.95, 0.06, 0.68), legMat);
+    apron.position.y = 0.67;
+    group.add(apron);
+
+    // 4 Kaki Meja Kayu Solid Kokoh (Square Legs 10cm x 10cm)
+    const legGeo = new THREE.BoxGeometry(0.10, 0.70, 0.10);
+    const legX = 0.90;
+    const legZ = 0.31;
+    [
+        [-legX, legZ],
+        [legX, legZ],
+        [-legX, -legZ],
+        [legX, -legZ]
+    ].forEach(([lx, lz]) => {
+        const leg = new THREE.Mesh(legGeo, legMat);
+        leg.position.set(lx, 0.35, lz);
+        group.add(leg);
+    });
+
+    // Palang Penguat Kaki Bawah Meja (Stretcher Rail)
+    const railX = new THREE.Mesh(new THREE.BoxGeometry(1.72, 0.05, 0.05), legMat);
+    railX.position.set(0, 0.18, 0);
+    group.add(railX);
+
+    // Ornamen Meja Sederhana: Wadah Tisu Kayu Rustic & Tempat Sendok Kayu
+    const tissueBox = new THREE.Mesh(new THREE.BoxGeometry(0.20, 0.08, 0.12), legMat);
+    tissueBox.position.set(0.65, 0.82, 0);
+    group.add(tissueBox);
+
+    const cutleryHolder = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.04, 0.09, 12), legMat);
+    cutleryHolder.position.set(0.40, 0.82, 0);
+    group.add(cutleryHolder);
+
+    // 2. Bangku Kayu Panjang Sederhana (2 Sisi: Utara & Selatan)
+    // 1 sisi menampung 2–3 orang -> Total kapasitas 4–6 orang per meja
+    [-0.66, 0.66].forEach((benchZ, bIdx) => {
+        const benchGroup = new THREE.Group();
+        benchGroup.position.set(0, 0, benchZ);
+
+        // Alas Duduk Kayu Panjang (2.05m x 0.06m x 0.32m)
+        const seatGeo = new THREE.BoxGeometry(2.05, 0.06, 0.32);
+        const seat = new THREE.Mesh(seatGeo, benchMat);
+        seat.position.y = 0.44;
+        benchGroup.add(seat);
+
+        // 4 Kaki Bangku Kayu
+        const bLegGeo = new THREE.BoxGeometry(0.06, 0.41, 0.06);
+        const bLegX = 0.88;
+        const bLegZ = 0.10;
+        [
+            [-bLegX, bLegZ],
+            [bLegX, bLegZ],
+            [-bLegX, -bLegZ],
+            [bLegX, -bLegZ]
+        ].forEach(([blx, blz]) => {
+            const bLeg = new THREE.Mesh(bLegGeo, legMat);
+            bLeg.position.set(blx, 0.205, blz);
+            benchGroup.add(bLeg);
+        });
+
+        // Penguat Kaki Bangku
+        const bRail = new THREE.Mesh(new THREE.BoxGeometry(1.70, 0.04, 0.04), legMat);
+        bRail.position.set(0, 0.15, 0);
+        benchGroup.add(bRail);
+
+        // Sandaran Bangku Kayu Sederhana (Rustic Backrest)
+        const backSign = bIdx === 0 ? -1 : 1; // Menghadap ke meja
+        const backrest = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.22, 0.04), benchMat);
+        backrest.position.set(0, 0.66, backSign * 0.14);
+        backrest.rotation.x = backSign * 0.10;
+        benchGroup.add(backrest);
+
+        // 3 Tiang Penyangga Sandaran
+        [-0.85, 0, 0.85].forEach(postX => {
+            const post = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.40, 0.04), legMat);
+            post.position.set(postX, 0.52, backSign * 0.13);
+            post.rotation.x = backSign * 0.10;
+            benchGroup.add(post);
+        });
+
+        group.add(benchGroup);
+    });
+}
+
 
 /**
  * 3D VIP Table Builder (Meja 21 - 26)
