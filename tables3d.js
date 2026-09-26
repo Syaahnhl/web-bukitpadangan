@@ -20,8 +20,8 @@ const CAMERA_PRESETS = {
         target: { x: 2, y: -1, z: 6 }
     },
     outdoor: {
-        pos: { x: -8, y: 22, z: 54 },
-        target: { x: -8, y: 1.0, z: 24 }
+        pos: { x: -8, y: 17, z: 44 },
+        target: { x: -8, y: 1.0, z: 23 }
     },
     indoor: {
         pos: { x: -16.5, y: 2.1, z: 4.8 },
@@ -60,21 +60,23 @@ const CAMERA_PRESETS = {
 
 // Table Positions Map in 3D Space (X, Z)
 const TABLE_3D_LAYOUT = {
-    // Lingkaran Hijau: Area Outdoor Dekat Jalan Raya (OD-01 s/d OD-06) - Tepi Jl. Gunungwungkal
-    "OD-01": { x: -14, z: 19, zone: "outdoor", rotation: 0, umbrella: true },
-    "OD-02": { x: -8,  z: 19, zone: "outdoor", rotation: 0, umbrella: true },
-    "OD-03": { x: -2,  z: 19, zone: "outdoor", rotation: 0, umbrella: true },
-    "OD-04": { x: -14, z: 25, zone: "outdoor", rotation: 0, umbrella: true },
-    "OD-05": { x: -8,  z: 25, zone: "outdoor", rotation: 0, umbrella: true },
-    "OD-06": { x: -2,  z: 25, zone: "outdoor", rotation: 0, umbrella: true },
+    // Lingkaran Hijau: Area Outdoor Dekat Jalan Raya (OD-01 s/d OD-06) - Meja Bar Compact Menempel Pagar
+    // Perimeter Barat (Sunset View): OD-01 s/d OD-03 (menempel pagar Barat X: -18.75, menghadap Barat ke sawah)
+    "OD-01": { x: -18.45, z: 18.0, zone: "outdoor", type: "outdoor-bar", rotation: -Math.PI / 2 },
+    "OD-02": { x: -18.45, z: 22.0, zone: "outdoor", type: "outdoor-bar", rotation: -Math.PI / 2 },
+    "OD-03": { x: -18.45, z: 26.0, zone: "outdoor", type: "outdoor-bar", rotation: -Math.PI / 2 },
+    // Perimeter Selatan (Roadside View): OD-04 s/d OD-06 (menempel pagar Selatan Z: 28.25, menghadap Selatan ke jalan raya)
+    "OD-04": { x: -15.50, z: 27.95, zone: "outdoor", type: "outdoor-bar", rotation: 0 },
+    "OD-05": { x: -12.00, z: 27.95, zone: "outdoor", type: "outdoor-bar", rotation: 0 },
+    "OD-06": { x: -2.50,  z: 27.95, zone: "outdoor", type: "outdoor-bar", rotation: 0 },
 
     // Backward compatibility aliases
-    "S-01": { x: -14, z: 19, zone: "outdoor", rotation: 0, umbrella: true },
-    "S-02": { x: -8,  z: 20, zone: "outdoor", rotation: 0, umbrella: true },
-    "S-03": { x: -2,  z: 19, zone: "outdoor", rotation: 0, umbrella: true },
-    "S-04": { x: -14, z: 25, zone: "outdoor", rotation: 0, umbrella: true },
-    "S-05": { x: -8,  z: 25, zone: "outdoor", rotation: 0, umbrella: true },
-    "S-06": { x: -2,  z: 25, zone: "outdoor", rotation: 0, umbrella: true },
+    "S-01": { x: -18.45, z: 18.0, zone: "outdoor", type: "outdoor-bar", rotation: -Math.PI / 2 },
+    "S-02": { x: -18.45, z: 22.0, zone: "outdoor", type: "outdoor-bar", rotation: -Math.PI / 2 },
+    "S-03": { x: -18.45, z: 26.0, zone: "outdoor", type: "outdoor-bar", rotation: -Math.PI / 2 },
+    "S-04": { x: -15.50, z: 27.95, zone: "outdoor", type: "outdoor-bar", rotation: 0 },
+    "S-05": { x: -12.00, z: 27.95, zone: "outdoor", type: "outdoor-bar", rotation: 0 },
+    "S-06": { x: -2.50,  z: 27.95, zone: "outdoor", type: "outdoor-bar", rotation: 0 },
 
     // Lingkaran Putih: Zona Indoor Utama (IU-07 s/d IU-12) - Barat Daya
     "IU-07": { x: -16, z: -4, zone: "vip", rotation: 0, type: "vip-large" },
@@ -725,26 +727,109 @@ function buildOutdoorRoadsidePlaza() {
     steps.receiveShadow = true;
     group.add(steps);
 
-    // 3. Flower Planter Troughs along roadside edge
+    // 3. Outdoor Perimeter Railing & Fence (Pagar Pembatas Minimalis Kayu & Besi)
+    // Runs along West edge (X: -18.75), South roadside edge (Z: 28.25, with entrance gap), and East edge (X: 2.75)
+    // Handrail top at Y: 1.38 (height 1.03m above deck), 2 horizontal dark steel sub-rails, dark square steel posts.
+    const fencePostMat = new THREE.MeshLambertMaterial({ color: 0x242830 }); // Dark powder-coated steel posts
+    const fenceRailWoodMat = new THREE.MeshLambertMaterial({ color: 0x5c3d23 }); // Solid teak wood handrail
+    const fenceSubRailMat = new THREE.MeshLambertMaterial({ color: 0x1b1e24 }); // Horizontal dark metal sub-bars
+    const fenceBaseMat = new THREE.MeshLambertMaterial({ color: 0x181a20 }); // Base curb plate
+
+    function createFenceSegment(p1, p2, postSpacing = 2.45) {
+        const segGroup = new THREE.Group();
+        const start = new THREE.Vector3(p1.x, 0.35, p1.z);
+        const end = new THREE.Vector3(p2.x, 0.35, p2.z);
+        const diff = end.clone().sub(start);
+        const length = diff.length();
+        const center = start.clone().add(end).multiplyScalar(0.5);
+        const angleY = Math.atan2(diff.x, diff.z);
+
+        // 1. Teak Wood Handrail (Top Rail at Y: 1.38m)
+        const railGeo = new THREE.BoxGeometry(0.12, 0.05, length);
+        const rail = new THREE.Mesh(railGeo, fenceRailWoodMat);
+        rail.position.set(center.x, 1.38, center.z);
+        rail.rotation.y = angleY;
+        rail.castShadow = true;
+        segGroup.add(rail);
+
+        // 2. Mid & Lower Horizontal Steel Sub-Rails
+        [0.72, 1.05].forEach(ry => {
+            const subGeo = new THREE.CylinderGeometry(0.016, 0.016, length, 8);
+            const sub = new THREE.Mesh(subGeo, fenceSubRailMat);
+            sub.position.set(center.x, ry, center.z);
+            sub.rotation.y = angleY;
+            sub.rotation.x = Math.PI / 2;
+            segGroup.add(sub);
+        });
+
+        // 3. Base Metal Plinth / Curb Strip
+        const baseGeo = new THREE.BoxGeometry(0.14, 0.04, length);
+        const base = new THREE.Mesh(baseGeo, fenceBaseMat);
+        base.position.set(center.x, 0.37, center.z);
+        base.rotation.y = angleY;
+        segGroup.add(base);
+
+        // 4. Fence Posts
+        const numPosts = Math.max(2, Math.round(length / postSpacing) + 1);
+        for (let i = 0; i < numPosts; i++) {
+            const t = i / (numPosts - 1);
+            const pos = start.clone().lerp(end, t);
+
+            // Steel square post
+            const postGeo = new THREE.BoxGeometry(0.08, 1.05, 0.08);
+            const post = new THREE.Mesh(postGeo, fencePostMat);
+            post.position.set(pos.x, 0.35 + 1.05 / 2, pos.z);
+            post.castShadow = true;
+            segGroup.add(post);
+
+            // Post cap
+            const capGeo = new THREE.BoxGeometry(0.10, 0.03, 0.10);
+            const cap = new THREE.Mesh(capGeo, fenceRailWoodMat);
+            cap.position.set(pos.x, 1.41, pos.z);
+            segGroup.add(cap);
+
+            // Floor mounting flange
+            const flangeGeo = new THREE.BoxGeometry(0.12, 0.02, 0.12);
+            const flange = new THREE.Mesh(flangeGeo, fencePostMat);
+            flange.position.set(pos.x, 0.36, pos.z);
+            segGroup.add(flange);
+        }
+
+        return segGroup;
+    }
+
+    // West perimeter fence (facing sunset & sawah valley)
+    group.add(createFenceSegment({ x: -18.75, z: 15.8 }, { x: -18.75, z: 28.25 }, 2.45));
+
+    // South perimeter fence - West Wing
+    group.add(createFenceSegment({ x: -18.75, z: 28.25 }, { x: -11.0, z: 28.25 }, 2.4));
+
+    // South perimeter fence - East Wing (Central gap -11.0 to -5.0 remains open for entrance stairs)
+    group.add(createFenceSegment({ x: -5.0, z: 28.25 }, { x: 2.75, z: 28.25 }, 2.4));
+
+    // East perimeter fence (facing garden)
+    group.add(createFenceSegment({ x: 2.75, z: 15.8 }, { x: 2.75, z: 28.25 }, 2.45));
+
+    // 4. Exterior Flower Planter Troughs along roadside curb (outside the fence at Z: 28.85)
     const planterMat = new THREE.MeshLambertMaterial({ color: 0x4a3424 }); // Dark wood planter box
     const shrubMat = new THREE.MeshLambertMaterial({ color: 0x2d5a27 }); // Lush green shrub
     const flowerMat = new THREE.MeshLambertMaterial({ color: 0xe5a342 }); // Golden yellow flowers
 
-    const planterPositions = [-17, -13, -3, 1];
+    const planterPositions = [-16.5, -13.5, -2.5, 0.5];
     planterPositions.forEach(px => {
-        const box = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.5, 0.8), planterMat);
-        box.position.set(px, 0.55, 28.2);
+        const box = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.45, 0.5), planterMat);
+        box.position.set(px, 0.52, 28.85);
         box.castShadow = true;
         group.add(box);
 
-        const shrub = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.45, 0.7), shrubMat);
-        shrub.position.set(px, 0.85, 28.2);
+        const shrub = new THREE.Mesh(new THREE.BoxGeometry(2.25, 0.40, 0.42), shrubMat);
+        shrub.position.set(px, 0.80, 28.85);
         group.add(shrub);
 
         // Flower accents
-        for (let fx = -1.1; fx <= 1.1; fx += 0.55) {
-            const fl = new THREE.Mesh(new THREE.SphereGeometry(0.12, 6, 6), flowerMat);
-            fl.position.set(px + fx, 1.12, 28.2);
+        for (let fx = -0.8; fx <= 0.8; fx += 0.4) {
+            const fl = new THREE.Mesh(new THREE.SphereGeometry(0.09, 5, 5), flowerMat);
+            fl.position.set(px + fx, 1.04, 28.85 + (fx % 0.8 === 0 ? 0.04 : -0.04));
             group.add(fl);
         }
     });
@@ -2380,10 +2465,8 @@ function populate3DTables() {
             buildIndoorTimurRusticTable3D(tableGroup, table);
         } else if (layout.type === "terapi-seat" || layout.zone === "terapi" || (table.id && table.id.startsWith("TI-"))) {
             buildTerapiSeat3D(tableGroup, table);
-        } else if (layout.zone === "gazebo" || layout.zone === "outdoor") {
-            buildOutdoorTable3D(tableGroup, table, true);
-        } else if (layout.zone === "outdoor") {
-            buildOutdoorTable3D(tableGroup, table, layout.umbrella);
+        } else if (layout.type === "outdoor-bar" || layout.zone === "outdoor" || layout.zone === "gazebo" || (table.id && table.id.startsWith("OD-"))) {
+            buildOutdoorFenceBarTable3D(tableGroup, table, layout);
         } else if (layout.zone === "vip") {
             buildVipTable3D(tableGroup, table, layout.type);
         }
@@ -2392,8 +2475,9 @@ function populate3DTables() {
         const statusColor = getStatusColor(table.status);
         
         // Ground Status Ring
-        const ringRadius = (layout.type === "terapi-seat") ? 0.65 : 1.2;
-        const ringOuter  = (layout.type === "terapi-seat") ? 0.85 : 1.45;
+        const isCompact = (layout.type === "terapi-seat" || layout.type === "outdoor-bar" || (table.id && (table.id.startsWith("OD-") || table.id.startsWith("TI-"))));
+        const ringRadius = (layout.type === "terapi-seat") ? 0.65 : (isCompact ? 0.55 : 1.2);
+        const ringOuter  = (layout.type === "terapi-seat") ? 0.85 : (isCompact ? 0.75 : 1.45);
         const ringGeo = new THREE.RingGeometry(ringRadius, ringOuter, 32);
         const ringMat = new THREE.MeshBasicMaterial({
             color: statusColor,
@@ -2408,9 +2492,9 @@ function populate3DTables() {
         tableGroup.userData.glowRing = ring;
 
         // Floating 3D Table Sprite Badge right above each table (Clean open-top layout)
-        const badgeY = (layout.type === "terapi-seat") ? 1.45 : 2.2;
-        const badgeScaleX = (layout.type === "terapi-seat") ? 2.2 : 2.8;
-        const badgeScaleY = (layout.type === "terapi-seat") ? 0.95 : 1.2;
+        const badgeY = (layout.type === "terapi-seat") ? 1.45 : (isCompact ? 1.75 : 2.2);
+        const badgeScaleX = isCompact ? 2.2 : 2.8;
+        const badgeScaleY = isCompact ? 0.95 : 1.2;
 
         const sprite = createTableSpriteBadge(table, statusColor);
         sprite.position.set(0, badgeY, 0);
@@ -2419,7 +2503,7 @@ function populate3DTables() {
         tableGroup.userData.sprite = sprite;
 
         // Interaction Hitbox (Invisible bounding box for smooth touch & click)
-        const hitBoxGeo = new THREE.BoxGeometry(3.6, 3.2, 3.6);
+        const hitBoxGeo = isCompact ? new THREE.BoxGeometry(2.0, 2.4, 2.0) : new THREE.BoxGeometry(3.6, 3.2, 3.6);
         const hitBoxMat = new THREE.MeshBasicMaterial({ visible: false });
         const hitBox = new THREE.Mesh(hitBoxGeo, hitBoxMat);
         hitBox.position.y = 1.6;
@@ -2491,52 +2575,180 @@ function buildGazebo3D(group, table) {
 }
 
 /**
- * 3D Outdoor Table Builder (Meja 09 - 20)
+ * 3D Outdoor Perimeter Bar Table & High Stool Builder (OD-01 s/d OD-06)
+ * Meja-meja kecil compact yang menempel langsung pada pagar perimeter outdoor.
+ * Dilengkapi tepat 1 kursi tinggi (high bar stool) untuk 1 orang per meja.
+ * Material natural: daun meja kayu jati rustic, braket & rangka kaki metal industrial,
+ * dudukan kursi kayu bulat dengan pijakan kaki (footrest ring).
+ * Tidak ada kursi berpasangan atau meja 2-4 orang.
  */
-function buildOutdoorTable3D(group, table, hasUmbrella = false) {
-    const woodMat = new THREE.MeshLambertMaterial({ color: 0x5c4028 });
-    const chairMat = new THREE.MeshLambertMaterial({ color: 0x3d2918 });
+function buildOutdoorFenceBarTable3D(group, table, layout = {}) {
+    const rotY = (layout && typeof layout.rotation === "number") ? layout.rotation : 0;
+    const model = new THREE.Group();
+    model.rotation.y = rotY;
+    group.add(model);
 
-    // Round Dining Table
-    const tableTop = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.0, 0.1, 20), woodMat);
-    tableTop.position.y = 1.25;
-    tableTop.castShadow = true;
-    group.add(tableTop);
+    // Materials
+    const woodMat = new THREE.MeshLambertMaterial({ color: 0x5a3818 });     // Teak slab tabletop
+    const woodTrimMat = new THREE.MeshLambertMaterial({ color: 0x472c12 }); // Edge bevel trim
+    const seatWoodMat = new THREE.MeshLambertMaterial({ color: 0x6e492b }); // High stool wooden round seat
+    const steelMat = new THREE.MeshLambertMaterial({ color: 0x22252a });    // Dark charcoal powder-coated steel
+    const chromeMat = new THREE.MeshLambertMaterial({ color: 0x50535a });   // Rubber / glide caps
 
-    const tableLeg = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 0.8, 12), woodMat);
-    tableLeg.position.y = 0.8;
-    tableLeg.castShadow = true;
-    group.add(tableLeg);
+    // -------------------------------------------------------------------------
+    // 1. MEJA COMPACT MENEMPEL PADA PAGAR (Compact Bar Ledge)
+    // In local space:
+    // Pagar perimeter berada di z = +0.24 (tepat di belakang meja).
+    // Meja berukuran 0.95m x 0.48m, tebal 0.045m, tinggi y = 1.02m di atas lantai dek.
+    // Sisi belakang meja menempel erat dan terhubung langsung ke pagar perimeter.
+    // -------------------------------------------------------------------------
+    const topGeo = new THREE.BoxGeometry(0.95, 0.045, 0.48);
+    const topMesh = new THREE.Mesh(topGeo, woodMat);
+    topMesh.position.set(0, 1.02, 0);
+    topMesh.castShadow = true;
+    topMesh.receiveShadow = true;
+    model.add(topMesh);
 
-    // Warm table centerpiece lamp
-    const lampMat = new THREE.MeshBasicMaterial({ color: 0xffe29a });
-    const lamp = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.08, 0.18, 8), lampMat);
-    lamp.position.y = 1.38;
-    group.add(lamp);
+    // Front edge rounded bevel trim
+    const frontTrimGeo = new THREE.BoxGeometry(0.96, 0.048, 0.03);
+    const frontTrim = new THREE.Mesh(frontTrimGeo, woodTrimMat);
+    frontTrim.position.set(0, 1.02, -0.23);
+    model.add(frontTrim);
 
-    const tableGlow = new THREE.PointLight(0xffb86c, 0.7, 3.5);
-    tableGlow.position.y = 1.42;
-    group.add(tableGlow);
+    // Heavy-duty steel mounting L-brackets connecting tabletop securely to fence
+    [-0.32, 0.32].forEach(bx => {
+        // Horizontal under-table mounting plate
+        const horizPlate = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.015, 0.36), steelMat);
+        horizPlate.position.set(bx, 0.99, 0.05);
+        model.add(horizPlate);
 
-    // 4 Dining Chairs Around Table
-    const chairAngles = [0, Math.PI / 2, Math.PI, Math.PI * 1.5];
-    chairAngles.forEach(ang => {
-        const chair = new THREE.Group();
-        const seat = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.08, 0.45), chairMat);
-        seat.position.y = 0.8;
-        chair.add(seat);
+        // Vertical bracket flange clamping directly to fence handrail/post
+        const vertFlange = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.28, 0.02), steelMat);
+        vertFlange.position.set(bx, 0.88, 0.23);
+        model.add(vertFlange);
 
-        const back = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.5, 0.08), chairMat);
-        back.position.set(0, 1.1, -0.2);
-        chair.add(back);
-
-        chair.position.set(Math.cos(ang) * 1.3, 0, Math.sin(ang) * 1.3);
-        chair.rotation.y = -ang - Math.PI / 2;
-        chair.castShadow = true;
-        group.add(chair);
+        // Cantilever diagonal strut brace back to fence
+        const strut = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.46, 6), steelMat);
+        strut.position.set(bx, 0.82, 0.02);
+        strut.rotation.x = 0.58;
+        model.add(strut);
     });
 
-    // Outdoor Dining - Open Sky (Kanopi payung ditiadakan agar meja outdoor OD-01 s/d OD-06 bebas terhalang)
+    // Central slim vertical support leg to deck floor
+    const centerLeg = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.99, 8), steelMat);
+    centerLeg.position.set(0, 0.495, 0.04);
+    model.add(centerLeg);
+
+    const legFlange = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.07, 0.02, 8), steelMat);
+    legFlange.position.set(0, 0.01, 0.04);
+    model.add(legFlange);
+
+    // Living Cafe Tabletop Accessories
+    // Brass table ID plaque
+    const plaqueMat = new THREE.MeshLambertMaterial({ color: 0xd4af37 });
+    const plaque = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.01, 0.06), plaqueMat);
+    plaque.position.set(-0.35, 1.048, 0.16);
+    model.add(plaque);
+
+    // Ceramic coffee cup & saucer
+    const cupMat = new THREE.MeshLambertMaterial({ color: 0xf4f0e6 });
+    const coffeeMat = new THREE.MeshLambertMaterial({ color: 0x3b2111 });
+
+    const saucer = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.05, 0.01, 12), cupMat);
+    saucer.position.set(0.24, 1.048, -0.06);
+    model.add(saucer);
+
+    const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.038, 0.03, 0.055, 12), cupMat);
+    cup.position.set(0.24, 1.075, -0.06);
+    model.add(cup);
+
+    const coffee = new THREE.Mesh(new THREE.CylinderGeometry(0.034, 0.034, 0.005, 12), coffeeMat);
+    coffee.position.set(0.24, 1.098, -0.06);
+    model.add(coffee);
+
+    // Mini green succulent pot
+    const potMat = new THREE.MeshLambertMaterial({ color: 0x88bb99, transparent: true, opacity: 0.85 });
+    const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.02, 0.065, 8), potMat);
+    pot.position.set(-0.18, 1.075, 0.12);
+    model.add(pot);
+
+    const plant = new THREE.Mesh(new THREE.SphereGeometry(0.032, 6, 6), new THREE.MeshLambertMaterial({ color: 0x3a7d44 }));
+    plant.position.set(-0.18, 1.12, 0.12);
+    model.add(plant);
+
+    // -------------------------------------------------------------------------
+    // 2. TEPAT 1 KURSI TINGGI / BAR STOOL (High Stool untuk 1 Orang)
+    // Terletak di sisi luar meja (z = -0.58) menghadap meja dan area outdoor.
+    // Tinggi dudukan y = 0.74m di atas dek (standar kursi bar tinggi, bukan kursi makan biasa).
+    // Kaki metal ramping splayed, footrest ring melingkar, dan low lumbar backrest.
+    // -------------------------------------------------------------------------
+    const stoolZ = -0.58;
+
+    // Solid Teak Wood Round Seat Disc
+    const seat = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.035, 16), seatWoodMat);
+    seat.position.set(0, 0.74, stoolZ);
+    seat.castShadow = true;
+    model.add(seat);
+
+    // Under-seat mounting hub
+    const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.015, 12), steelMat);
+    hub.position.set(0, 0.718, stoolZ);
+    model.add(hub);
+
+    // 4 Splayed Industrial Metal Legs
+    const legCoords = [
+        { tx: -0.09, tz: -0.09, bx: -0.16, bz: -0.16 },
+        { tx:  0.09, tz: -0.09, bx:  0.16, bz: -0.16 },
+        { tx: -0.09, tz:  0.09, bx: -0.16, bz:  0.16 },
+        { tx:  0.09, tz:  0.09, bx:  0.16, bz:  0.16 }
+    ];
+
+    legCoords.forEach(c => {
+        const topPt = new THREE.Vector3(c.tx, 0.71, stoolZ + c.tz);
+        const botPt = new THREE.Vector3(c.bx, 0.01, stoolZ + c.bz);
+        const length = topPt.distanceTo(botPt);
+
+        const legBar = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.010, length, 8), steelMat);
+        legBar.position.copy(topPt).add(botPt).multiplyScalar(0.5);
+        legBar.quaternion.setFromUnitVectors(
+            new THREE.Vector3(0, 1, 0),
+            topPt.clone().sub(botPt).normalize()
+        );
+        model.add(legBar);
+
+        // Floor rubber glide
+        const glide = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.018, 0.02, 8), chromeMat);
+        glide.position.set(c.bx, 0.01, stoolZ + c.bz);
+        model.add(glide);
+    });
+
+    // Horizontal Circular Metal Footrest Ring
+    const footRing = new THREE.Mesh(new THREE.TorusGeometry(0.14, 0.011, 8, 16), steelMat);
+    footRing.position.set(0, 0.28, stoolZ);
+    footRing.rotation.x = Math.PI / 2;
+    model.add(footRing);
+
+    // Low Minimalist Lumbar Backrest Tab (facing front towards table)
+    const backArch = new THREE.Mesh(new THREE.TorusGeometry(0.15, 0.01, 6, 12, Math.PI), steelMat);
+    backArch.position.set(0, 0.86, stoolZ - 0.12);
+    backArch.rotation.x = 0.2;
+    model.add(backArch);
+
+    [-0.11, 0.11].forEach(ux => {
+        const backPost = new THREE.Mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.16, 6), steelMat);
+        backPost.position.set(ux, 0.79, stoolZ - 0.11);
+        model.add(backPost);
+    });
+
+    // Subtle Warm Under-table Mood Light
+    const microLight = new THREE.PointLight(0xffb86c, 0.35, 2.5);
+    microLight.position.set(0, 0.95, -0.15);
+    model.add(microLight);
+}
+
+// Backward-compatibility alias
+function buildOutdoorTable3D(group, table, hasUmbrella = false) {
+    buildOutdoorFenceBarTable3D(group, table, { rotation: 0 });
 }
 
 /**
