@@ -1910,6 +1910,19 @@ async function fetchOpenMeteoWeather(isManual = false) {
 
             if (condEl) condEl.textContent = condText;
             if (iconWrap) iconWrap.innerHTML = `<i class="${iconClass}"></i>`;
+
+            const descEl = document.getElementById("weatherMicroDesc");
+            if (descEl) {
+                if (code >= 51) {
+                    descEl.textContent = "Hawa sejuk berkabut khas perbukitan, sangat nikmat untuk hidangan kuah hangat & kopi santan.";
+                } else if (temp <= 25) {
+                    descEl.textContent = "Hawa sejuk lereng perbukitan, sangat nyaman untuk makan santai di area lesehan & terapi ikan.";
+                } else if (temp >= 29) {
+                    descEl.textContent = "Suasana cerah lereng Gunungwungkal, waktu ideal menikmati es kopi segar & panorama perbukitan.";
+                } else {
+                    descEl.textContent = "Hawa sejuk perbukitan lereng Gunungwungkal, sangat nyaman untuk santap santai di area lesehan & outdoor.";
+                }
+            }
         }
     } catch (err) {
         console.warn("Menggunakan baseline cuaca lereng Gunungwungkal:", err.message);
@@ -1929,6 +1942,7 @@ async function fetchOpenMeteoWeather(isManual = false) {
 function refreshWeatherWidget(isManual = true) {
     fetchOpenMeteoWeather(isManual);
 }
+window.refreshWeatherData = () => refreshWeatherWidget(true);
 
 function initWeatherWidget() {
     fetchOpenMeteoWeather(false);

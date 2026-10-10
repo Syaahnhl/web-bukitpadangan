@@ -114,47 +114,87 @@
 
 
     <!-- WEATHER & GOLDEN HOUR LIVE WIDGET (LERENG GUNUNGWUNGKAL) -->
-    <div class="weather-sunset-banner">
+    <section class="weather-sunset-banner" id="weatherBanner">
         <div class="container">
-            <div id="weatherWidget" class="weather-widget-card" style="margin-bottom: 0;">
-                <div class="weather-card-topbar">
-                    <div class="weather-location-pill">
-                        <span class="pulse-green"></span>
-                        <span class="weather-loc-text"><i class="fas fa-mountain"></i> Lereng Gunungwungkal, Pati • <span id="weatherElev">245 mdpl</span></span>
-                    </div>
-                    <button type="button" class="btn-refresh-weather" onclick="refreshWeatherWidget(true)" title="Perbarui Data Cuaca Live">
-                        <i class="fas fa-sync-alt" id="weatherRefreshIcon"></i>
-                    </button>
-                </div>
-                <div class="weather-widget-body">
-                    <div class="weather-icon-wrap" id="weatherIconWrap">
-                        <i class="fas fa-cloud-sun weather-icon-sun"></i>
-                    </div>
-                    <div class="weather-info-primary">
-                        <div class="weather-temp-row">
-                            <span class="weather-temp" id="weatherTemp">24.5°C</span>
-                            <span class="weather-condition" id="weatherCondition">Sejuk & Segar</span>
+            <div id="weatherWidget" class="weather-resort-capsule">
+                <!-- Ambient Backdrop Glow -->
+                <div class="weather-ambient-glow" aria-hidden="true"></div>
+
+                <!-- Top Header Bar -->
+                <div class="weather-capsule-header">
+                    <div class="weather-location-tag">
+                        <span class="live-pulse-dot" title="Data Cuaca Terkoneksi Real-time"></span>
+                        <div class="location-details">
+                            <span class="loc-name"><i class="fas fa-mountain-sun"></i> Lereng Gunungwungkal, Pati</span>
+                            <span class="loc-elevation"><i class="fas fa-arrow-trend-up"></i> <span id="weatherElev">245 mdpl</span></span>
                         </div>
-                        <p class="weather-micro-desc" id="weatherMicroDesc">Udara perbukitan sejuk alami, sangat nyaman untuk santap santai di area outdoor maupun indoor.</p>
+                    </div>
+                    <div class="weather-header-actions">
+                        <span class="weather-live-badge"><i class="fas fa-satellite-dish"></i> Live Sensor</span>
+                        <button type="button" class="btn-refresh-weather-modern" onclick="refreshWeatherWidget(true)" title="Perbarui Data Cuaca Live">
+                            <i class="fas fa-sync-alt" id="weatherRefreshIcon"></i>
+                            <span class="refresh-label">Perbarui</span>
+                        </button>
                     </div>
                 </div>
-                <div class="weather-widget-meta">
-                    <div class="weather-stat-item">
-                        <span class="stat-label"><i class="fas fa-wind"></i> Angin Lereng</span>
-                        <strong class="stat-value" id="weatherWind">5.5 km/h</strong>
+
+                <!-- Main Content Split: Left (Climate & Mood) vs Right (Golden Hour Sunset & Metrics) -->
+                <div class="weather-capsule-content">
+                    <!-- Left Wing: Real-Time Atmosphere & Temperature -->
+                    <div class="weather-left-atmosphere">
+                        <div class="weather-hero-row">
+                            <div class="weather-hero-icon" id="weatherIconWrap">
+                                <i class="fas fa-cloud-sun" id="weatherIcon"></i>
+                            </div>
+                            <div class="weather-hero-data">
+                                <div class="temp-badge-group">
+                                    <span class="weather-temp-hero" id="weatherTemp">24.5°C</span>
+                                    <span class="weather-condition-pill" id="weatherCondition">Sejuk & Segar</span>
+                                </div>
+                                <p class="weather-mood-desc" id="weatherMicroDesc">Hawa sejuk perbukitan lereng Gunungwungkal, sangat nyaman untuk santap santai di area lesehan & terapi ikan.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="weather-stat-item">
-                        <span class="stat-label"><i class="fas fa-tint"></i> Kelembapan</span>
-                        <strong class="stat-value" id="weatherHumidity">88%</strong>
-                    </div>
-                    <div class="weather-stat-item weather-stat-highlight">
-                        <span class="stat-label"><i class="fas fa-sun"></i> Golden Hour Sunset</span>
-                        <strong class="stat-value">16:30 - 17:45 WIB</strong>
+
+                    <!-- Right Wing: Sunset Golden Hour & Environmental Chips -->
+                    <div class="weather-right-sunset">
+                        <!-- Sunset Highlight Card -->
+                        <div class="sunset-featured-box">
+                            <div class="sunset-icon-box">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <div class="sunset-details">
+                                <div class="sunset-header-row">
+                                    <span class="sunset-label">Golden Hour Sunset</span>
+                                    <span class="sunset-tag">Panorama Terbaik</span>
+                                </div>
+                                <div class="sunset-time-display" id="weatherSunset">16:30 – 17:45 WIB</div>
+                                <span class="sunset-subtext">Waktu favorit foto senja & pemandangan lereng bukit</span>
+                            </div>
+                        </div>
+
+                        <!-- Climate Micro Stats (Wind & Humidity) -->
+                        <div class="weather-micro-metrics">
+                            <div class="metric-pill">
+                                <div class="metric-icon"><i class="fas fa-wind"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-label">Angin Lereng</span>
+                                    <strong class="metric-val" id="weatherWind">5.5 km/h</strong>
+                                </div>
+                            </div>
+                            <div class="metric-pill">
+                                <div class="metric-icon"><i class="fas fa-water"></i></div>
+                                <div class="metric-info">
+                                    <span class="metric-label">Kelembapan</span>
+                                    <strong class="metric-val" id="weatherHumidity">88%</strong>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- ABOUT SECTION -->
     <section id="about" class="section-padding">
