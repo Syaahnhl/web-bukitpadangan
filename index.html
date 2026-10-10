@@ -396,12 +396,29 @@
                 <div class="menu-search-row">
                     <div class="menu-search-wrapper">
                         <i class="fas fa-search menu-search-icon"></i>
-                        <input type="text" id="menuSearchInput" class="menu-search-input" placeholder="Cari menu lezat..." oninput="searchMenu(this.value)">
+                        <input type="text" id="menuSearchInput" class="menu-search-input" placeholder="Cari menu lezat (contoh: ayam bledos, kopi santan, mendoan)..." oninput="searchMenu(this.value)">
                         <button type="button" id="clearMenuSearch" class="btn-clear-search" onclick="clearMenuSearch()" style="display: none;" title="Hapus pencarian">&times;</button>
                     </div>
                     <button type="button" class="btn-menu-book-action" onclick="openMenuBookModal()" title="Buka Buku Menu PDF">
                         <i class="fas fa-book-open"></i> <span>Buku Menu</span>
                     </button>
+                </div>
+                <div class="menu-tabs-wrapper" style="overflow-x: auto; padding-bottom: 8px; margin-top: 18px; -webkit-overflow-scrolling: touch;">
+                    <div class="menu-tabs" style="display: flex; gap: 10px; flex-wrap: nowrap; width: max-content; margin-bottom: 0;">
+                        <button type="button" class="tab-btn active" data-category="semua" onclick="filterMenu('semua')"><i class="fas fa-th-large"></i> Semua Menu</button>
+                        <button type="button" class="tab-btn" data-category="bu-darmisih" onclick="filterMenu('bu-darmisih')"><i class="fas fa-pepper-hot"></i> Spesial Bu Darmisih</button>
+                        <button type="button" class="tab-btn" data-category="makanan" onclick="filterMenu('makanan')"><i class="fas fa-utensils"></i> Makanan Utama</button>
+                        <button type="button" class="tab-btn" data-category="sayuran" onclick="filterMenu('sayuran')"><i class="fas fa-leaf"></i> Sayuran & Ca</button>
+                        <button type="button" class="tab-btn" data-category="mie-ayam" onclick="filterMenu('mie-ayam')"><i class="fas fa-bowl-rice"></i> Mie Ayam</button>
+                        <button type="button" class="tab-btn" data-category="nasi" onclick="filterMenu('nasi')"><i class="fas fa-bowl-rice"></i> Aneka Nasi</button>
+                        <button type="button" class="tab-btn" data-category="camilan" onclick="filterMenu('camilan')"><i class="fas fa-cookie-bite"></i> Camilan & Mendoan</button>
+                        <button type="button" class="tab-btn" data-category="minuman" onclick="filterMenu('minuman')"><i class="fas fa-glass-water"></i> Minuman Segar</button>
+                        <button type="button" class="tab-btn" data-category="kopi-wedang" onclick="filterMenu('kopi-wedang')"><i class="fas fa-mug-hot"></i> Kopi Santan & Wedang</button>
+                        <button type="button" class="tab-btn" data-category="es-krim" onclick="filterMenu('es-krim')"><i class="fas fa-ice-cream"></i> Es Krim</button>
+                        <button type="button" class="tab-btn" data-category="sambal-pelengkap" onclick="filterMenu('sambal-pelengkap')"><i class="fas fa-mortar-pestle"></i> Sambal & Pelengkap</button>
+                        <button type="button" class="tab-btn" data-category="pojok-padangan" onclick="filterMenu('pojok-padangan')"><i class="fas fa-seedling"></i> Pojok Hasil Bumi</button>
+                        <button type="button" class="tab-btn" data-category="fasilitas" onclick="filterMenu('fasilitas')"><i class="fas fa-spa"></i> Fasilitas & Terapi</button>
+                    </div>
                 </div>
             </div>
 

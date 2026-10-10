@@ -1990,11 +1990,20 @@
                         <i class="fas fa-search"></i>
                         <input type="text" class="search-input" id="menuSearchInput" placeholder="Cari menu atau harga..." oninput="handleMenuSearch()">
                     </div>
-                    <div class="category-filter-chips">
+                    <div class="category-filter-chips" style="display: flex; gap: 8px; flex-wrap: wrap;">
                         <button type="button" class="chip-btn active" onclick="filterMenuCategory('all', this)">Semua</button>
-                        <button type="button" class="chip-btn" onclick="filterMenuCategory('makanan', this)">Makanan</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('bu-darmisih', this)">Spesial Bu Darmisih</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('makanan', this)">Makanan Utama</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('sayuran', this)">Sayuran</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('mie-ayam', this)">Mie Ayam</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('nasi', this)">Nasi</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('camilan', this)">Camilan</button>
                         <button type="button" class="chip-btn" onclick="filterMenuCategory('minuman', this)">Minuman</button>
-                        <button type="button" class="chip-btn" onclick="filterMenuCategory('cemilan', this)">Cemilan</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('kopi-wedang', this)">Kopi & Wedang</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('es-krim', this)">Es Krim</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('sambal-pelengkap', this)">Sambal & Pelengkap</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('pojok-padangan', this)">Hasil Bumi</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('fasilitas', this)">Fasilitas</button>
                     </div>
                 </div>
 
@@ -2197,9 +2206,20 @@
                         <div class="form-group">
                             <label class="form-label" for="menuCategory">Kategori</label>
                             <select class="form-select" id="menuCategory" required>
-                                <option value="makanan">Makanan</option>
-                                <option value="minuman">Minuman</option>
-                                <option value="cemilan">Cemilan</option>
+                                <option value="bu-darmisih">Spesial Bu Darmisih</option>
+                                <option value="makanan">Makanan Utama & Bakaran</option>
+                                <option value="sayuran">Sayuran & Tumisan</option>
+                                <option value="mie-ayam">Mie Ayam & Bakmi</option>
+                                <option value="nasi">Aneka Nasi & Porsi Keluarga</option>
+                                <option value="camilan">Camilan & Kudapan</option>
+                                <option value="minuman">Minuman Segar & Aneka Jus</option>
+                                <option value="kopi-wedang">Kopi Santan & Wedang</option>
+                                <option value="es-krim">Es Krim & Dessert</option>
+                                <option value="sambal-pelengkap">Aneka Sambal & Pelengkap</option>
+                                <option value="pojok-padangan">Pojok Hasil Bumi</option>
+                                <option value="fasilitas">Fasilitas & Layanan</option>
+                                <option value="mainan">Mainan & Suvenir</option>
+                                <option value="rokok">Rokok & Kasir</option>
                             </select>
                         </div>
                         <div class="form-group">

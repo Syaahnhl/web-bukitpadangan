@@ -235,22 +235,88 @@ function renderMenuGrid(items) {
 
     const categoriesConfig = [
         {
+            key: "bu-darmisih",
+            title: "Olahan Spesial Bu Darmisih",
+            icon: '<i class="fas fa-pepper-hot"></i>',
+            subtitle: "Ayam & bebek bledos pedas rempah mantap, swike, rica-rica & masakan khas resep dapur"
+        },
+        {
             key: "makanan",
-            title: "Makanan Utama & Olahan Khas",
+            title: "Makanan Utama & Bakaran",
             icon: '<i class="fas fa-utensils"></i>',
-            subtitle: "Ayam bledos, bebek ungkep, nila segar & sayuran lereng bukit"
+            subtitle: "Ayam kampung, nila, lele, gurami bakar & goreng, belut, udang & olahan lezat lereng bukit"
+        },
+        {
+            key: "sayuran",
+            title: "Sayuran & Tumisan Segar",
+            icon: '<i class="fas fa-leaf"></i>',
+            subtitle: "Ca kangkung, ca brokoli, ca tauge, terong bakar & sayur kuah pedesaan"
+        },
+        {
+            key: "mie-ayam",
+            title: "Mie Ayam & Bakmi",
+            icon: '<i class="fas fa-bowl-rice"></i>',
+            subtitle: "Mie ayam gurih, yamin manis & mie level pedas nampol"
+        },
+        {
+            key: "nasi",
+            title: "Aneka Nasi & Porsi Keluarga",
+            icon: '<i class="fas fa-bowl-rice"></i>',
+            subtitle: "Nasi putih pulen, nasi liwet gurih aroma daun & sajian 1 bakul porsi keluarga"
+        },
+        {
+            key: "camilan",
+            title: "Camilan, Mendoan & Kudapan Santai",
+            icon: '<i class="fas fa-cookie-bite"></i>',
+            subtitle: "Tempe mendoan hangat, pisang goreng krispi, singkong keju, cireng & aneka gorengan"
         },
         {
             key: "minuman",
-            title: "Minuman Segar & Tradisional",
-            icon: '<i class="fas fa-mug-hot"></i>',
-            subtitle: "Kopi santan khas Pati, seduhan herbal & kelapa muda"
+            title: "Minuman Segar & Aneka Jus",
+            icon: '<i class="fas fa-glass-water"></i>',
+            subtitle: "Kelapa muda lereng bukit, aneka jus buah segar asli, squash, milkshake & teh segar"
         },
         {
-            key: "cemilan",
-            title: "Camilan & Kudapan Santai",
-            icon: '<i class="fas fa-cookie-bite"></i>',
-            subtitle: "Tempe mendoan hangat, pisang krispi & singkong merekah"
+            key: "kopi-wedang",
+            title: "Kopi Santan & Wedang Tradisional",
+            icon: '<i class="fas fa-mug-hot"></i>',
+            subtitle: "Kopi santan khas Pati, seduhan wedang uwuh, jahe rempah wangi & seduhan hangat"
+        },
+        {
+            key: "es-krim",
+            title: "Es Krim & Dessert Dingin",
+            icon: '<i class="fas fa-ice-cream"></i>',
+            subtitle: "Pilihan es krim Hula Hula, Neapolitan, Cone krispi & penyegar suasana santai"
+        },
+        {
+            key: "sambal-pelengkap",
+            title: "Aneka Sambal & Pelengkap",
+            icon: '<i class="fas fa-mortar-pestle"></i>',
+            subtitle: "Sambal trasi matang/mentah, sambal bawang pedas, sambal kecap, pete bakar & lalapan segar"
+        },
+        {
+            key: "pojok-padangan",
+            title: "Pojok Hasil Bumi & Buah Kebun",
+            icon: '<i class="fas fa-seedling"></i>',
+            subtitle: "Alpukat segar petik kebun, buah naga lereng bukit, buah potong & hasil panen lokal"
+        },
+        {
+            key: "fasilitas",
+            title: "Fasilitas & Wahana Santai",
+            icon: '<i class="fas fa-umbrella-beach"></i>',
+            subtitle: "Kolam terapi ikan alami, paket sewa tempat indoor, proyektor, sound & wahana mewarnai"
+        },
+        {
+            key: "mainan",
+            title: "Mainan & Suvenir Anak",
+            icon: '<i class="fas fa-gift"></i>',
+            subtitle: "Blindbox, gantungan kunci & mainan seru untuk si kecil"
+        },
+        {
+            key: "rokok",
+            title: "Rokok & Kasir",
+            icon: '<i class="fas fa-smoking"></i>',
+            subtitle: "Pilihan rokok & perlengkapan kasir"
         }
     ];
 
@@ -303,7 +369,7 @@ function renderMenuCardCarousel(item) {
     } else if (item.flavor === 'khas') {
         flavorBadgeHtml = `<span class="menu-item-flavor-badge badge-flavor-khas"><i class="fas fa-mountain"></i> Khas</span>`;
     }
-    const priceFormatted = formatRupiah(item.price);
+    const priceFormatted = formatRupiah(item.price) + (item.unit === 'Gram' ? ' <small style="font-size:0.75rem;font-weight:normal;color:#94a3b8;">/gr</small>' : '');
 
     return `
         <div class="menu-card-carousel" data-category="${item.category}" data-flavor="${item.flavor || ''}" data-id="${item.id}" onclick="openMenuDetailModal('${item.id}')" title="Klik untuk lihat detail rasa & isi ${item.name}">
@@ -391,16 +457,27 @@ function openMenuDetailModal(menuId) {
     const catEl = document.getElementById("menuDetailCategoryPill");
     if (catEl) {
         const catMap = {
-            makanan: "Makanan Utama",
-            minuman: "Minuman Segar & Tradisional",
-            cemilan: "Camilan Tradisional"
+            "bu-darmisih": "Olahan Spesial Bu Darmisih",
+            "makanan": "Makanan Utama & Bakaran",
+            "sayuran": "Sayuran & Tumisan",
+            "mie-ayam": "Mie Ayam & Bakmi",
+            "nasi": "Aneka Nasi",
+            "camilan": "Camilan & Kudapan",
+            "minuman": "Minuman Segar & Aneka Jus",
+            "kopi-wedang": "Kopi Santan & Wedang Tradisional",
+            "es-krim": "Es Krim & Dessert",
+            "sambal-pelengkap": "Aneka Sambal & Pelengkap",
+            "pojok-padangan": "Pojok Hasil Bumi Lokal",
+            "fasilitas": "Fasilitas & Wahana",
+            "mainan": "Mainan & Suvenir",
+            "rokok": "Rokok & Kasir"
         };
         catEl.textContent = catMap[item.category] || "Menu Pilihan";
     }
 
     // Harga
     const priceEl = document.getElementById("menuDetailPrice");
-    if (priceEl) priceEl.textContent = formatRupiah(item.price);
+    if (priceEl) priceEl.textContent = formatRupiah(item.price) + (item.unit === 'Gram' ? ' / gr' : '');
 
     // Level Pedas & Porsi
     const spiceEl = document.getElementById("menuDetailSpice");
