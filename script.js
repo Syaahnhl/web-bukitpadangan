@@ -374,7 +374,7 @@ function renderMenuCardCarousel(item) {
     return `
         <div class="menu-card-carousel" data-category="${item.category}" data-flavor="${item.flavor || ''}" data-id="${item.id}" onclick="openMenuDetailModal('${item.id}')" title="Klik untuk lihat detail rasa & isi ${item.name}">
             <div class="menu-card-img-wrap">
-                <img src="${item.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop'}" alt="${item.name}" loading="lazy">
+                <img src="${item.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop'}" alt="${item.name}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop';">
                 <div class="menu-card-badges">
                     ${badgeHtml}
                     ${flavorBadgeHtml}
@@ -416,6 +416,10 @@ function openMenuDetailModal(menuId) {
     const imgEl = document.getElementById("menuDetailImg");
     if (imgEl) {
         imgEl.src = item.img || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop";
+        imgEl.onerror = function() {
+            this.onerror = null;
+            this.src = "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop";
+        };
         imgEl.alt = item.name;
     }
 
@@ -680,7 +684,9 @@ function updateHeaderOffset() {
 
 window.addEventListener("resize", updateHeaderOffset);
 window.addEventListener("DOMContentLoaded", updateHeaderOffset);
-window.addEventListener("load", updateHeaderOffset);
+window.addEventListener("load", () => {
+    updateHeaderOffset();
+});
 
 function closePromoBar() {
     const promoBar = document.getElementById("promoBar");
