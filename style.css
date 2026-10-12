@@ -656,22 +656,12 @@ section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     width: 100%;
 }
 
 .category-badge-icon {
-    width: 46px;
-    height: 46px;
-    border-radius: 14px;
-    background: rgba(212, 163, 115, 0.12);
-    border: 1px solid rgba(212, 163, 115, 0.28);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    color: var(--accent-gold);
-    flex-shrink: 0;
+    display: none;
 }
 
 .category-title {
@@ -4507,10 +4497,7 @@ input:focus, select:focus {
     }
 
     .category-badge-icon {
-        width: 36px;
-        height: 36px;
-        font-size: 1rem;
-        border-radius: 10px;
+        display: none;
     }
 
     .category-nav-arrows {

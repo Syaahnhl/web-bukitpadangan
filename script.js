@@ -334,11 +334,8 @@ function renderMenuGrid(items) {
             <div class="menu-category-block ${isShortCatalog ? 'is-short-catalog' : ''}" data-category="${cat.key}" data-item-count="${catItems.length}" id="cat-section-${cat.key}">
                 <div class="menu-category-header">
                     <div class="category-header-info">
-                        <span class="category-badge-icon">${cat.icon}</span>
-                        <div>
-                            <h3 class="category-title">${cat.title}</h3>
-                            <span class="category-subtitle">${cat.subtitle}</span>
-                        </div>
+                        <h3 class="category-title">${cat.title}</h3>
+                        <span class="category-subtitle">${cat.subtitle}</span>
                     </div>
                     <div class="category-header-actions">
                         <span class="category-count-badge">${catItems.length} Sajian</span>
