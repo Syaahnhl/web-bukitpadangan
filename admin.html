@@ -1579,81 +1579,251 @@
             }
         }
 
-        /* PIN Keyboard */
-        .pin-gate-box {
+        /* ========================================================
+           ADMIN LOGIN GATE (USERNAME & PASSWORD)
+           ======================================================== */
+        .login-gate-box {
+            max-width: 420px;
+            width: 92%;
+            background: rgba(18, 22, 28, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 163, 115, 0.28);
+            border-radius: 20px;
+            padding: 34px 28px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(212, 163, 115, 0.08);
             text-align: center;
+            animation: loginBoxAppear 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .pin-icon-wrap {
+        @keyframes loginBoxAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .login-gate-box.shake-anim {
+            animation: shakeAlert 0.4s ease;
+        }
+
+        .login-icon-wrap {
             width: 64px;
             height: 64px;
-            background: rgba(212, 163, 115, 0.12);
-            border: 1px solid rgba(212, 163, 115, 0.25);
+            background: linear-gradient(135deg, rgba(212, 163, 115, 0.2), rgba(212, 163, 115, 0.05));
+            border: 1.5px solid rgba(212, 163, 115, 0.35);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 16px;
             color: var(--gold-primary);
-            font-size: 1.5rem;
+            font-size: 1.6rem;
+            box-shadow: 0 0 25px rgba(212, 163, 115, 0.15);
         }
 
-        .pin-dots-row {
+        .login-gate-title {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            color: #ffffff;
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
+        }
+
+        .login-gate-subtitle {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 22px;
+            line-height: 1.4;
+        }
+
+        .login-form {
             display: flex;
-            justify-content: center;
-            gap: 14px;
-            margin: 22px 0 26px;
+            flex-direction: column;
+            gap: 15px;
+            text-align: left;
         }
 
-        .pin-dot-item {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.25);
-            transition: all 0.2s;
+        .login-field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
-        .pin-dot-item.filled {
-            background: var(--gold-primary);
-            border-color: var(--gold-primary);
-            box-shadow: 0 0 10px rgba(212, 163, 115, 0.5);
-            transform: scale(1.1);
+        .login-field-label {
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .pin-keypad {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            max-width: 270px;
-            margin: 0 auto;
+        .login-field-label i {
+            color: var(--gold-primary);
+            font-size: 0.75rem;
         }
 
-        .key-btn {
-            height: 60px;
-            border-radius: 50%;
-            border: 1px solid var(--border-subtle);
+        .login-input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .login-input-icon {
+            position: absolute;
+            left: 14px;
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 0.95rem;
+            pointer-events: none;
+            transition: color 0.2s;
+        }
+
+        .login-input {
+            width: 100%;
+            height: 48px;
+            padding: 0 42px 0 42px;
             background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 12px;
             color: #ffffff;
             font-family: var(--font-main);
-            font-size: 1.35rem;
-            font-weight: 600;
+            font-size: 0.92rem;
+            outline: none;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .login-input:focus {
+            border-color: var(--gold-primary);
+            background: rgba(212, 163, 115, 0.06);
+            box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.15);
+        }
+
+        .login-input-wrap:focus-within .login-input-icon {
+            color: var(--gold-primary);
+        }
+
+        .login-pwd-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            padding: 6px;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .login-pwd-toggle:hover {
+            color: var(--gold-primary);
+        }
+
+        .login-alert-box {
+            padding: 10px 14px;
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            border-radius: 10px;
+            color: #fca5a5;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: shakeAlert 0.35s ease;
+        }
+
+        @keyframes shakeAlert {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        .btn-login-submit {
+            width: 100%;
+            height: 48px;
+            margin-top: 4px;
+            background: linear-gradient(135deg, var(--gold-primary) 0%, #b8860b 100%);
+            border: none;
+            border-radius: 12px;
+            color: #12151a;
+            font-family: var(--font-main);
+            font-size: 0.95rem;
+            font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
             cursor: pointer;
-            transition: all 0.15s ease;
+            box-shadow: 0 4px 15px rgba(212, 163, 115, 0.3);
+            transition: all 0.2s ease;
         }
 
-        .key-btn:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.25);
-            transform: scale(1.04);
+        .btn-login-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(212, 163, 115, 0.45);
+            filter: brightness(1.05);
         }
 
-        .key-btn:active {
-            transform: scale(0.96);
-            background: var(--gold-primary);
-            color: #1a1209;
+        .btn-login-submit:active {
+            transform: translateY(1px);
+        }
+
+        .btn-login-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-footer-actions {
+            margin-top: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 14px;
+        }
+
+        .login-back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .login-back-link:hover {
+            color: var(--gold-primary);
+        }
+
+        .login-hint-text {
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 0.74rem;
+        }
+
+        .topbar-user-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(212, 163, 115, 0.12);
+            border: 1px solid rgba(212, 163, 115, 0.25);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gold-primary);
         }
 
         /* Toast Notifications (Positioned Top Center) */
@@ -1704,41 +1874,58 @@
 <body>
 
     <!-- ========================================================
-         MODAL 1: SECURITY PIN ACCESS (DEFAULT 000000)
+         MODAL 1: LOGIN ADMIN (USERNAME & PASSWORD)
          ======================================================== -->
-    <div id="pinGateOverlay" class="modal-overlay">
-        <div class="modal-box pin-gate-box">
-            <div class="pin-icon-wrap">
-                <i class="fas fa-shield-alt"></i>
+    <div id="authGateOverlay" class="modal-overlay">
+        <div class="modal-box login-gate-box">
+            <div class="login-icon-wrap">
+                <i class="fas fa-user-shield"></i>
             </div>
-            <h2 style="font-family: var(--font-serif); font-size: 1.35rem; color: #ffffff; margin-bottom: 4px;">Otorisasi Admin</h2>
-            <p style="font-size: 0.82rem; color: var(--text-muted);">Masukkan 6-digit PIN keamanan Bukit Padangan</p>
+            <h2 class="login-gate-title">Otorisasi Admin</h2>
+            <p class="login-gate-subtitle">Silakan masuk dengan akun pengelola Bukit Padangan</p>
             
-            <div id="pinAlertText" style="color: #f87171; font-size: 0.78rem; font-weight: 600; height: 18px; margin-top: 8px;"></div>
-            
-            <div class="pin-dots-row">
-                <div class="pin-dot-item"></div>
-                <div class="pin-dot-item"></div>
-                <div class="pin-dot-item"></div>
-                <div class="pin-dot-item"></div>
-                <div class="pin-dot-item"></div>
-                <div class="pin-dot-item"></div>
-            </div>
+            <form id="adminLoginForm" class="login-form" onsubmit="handleAdminLogin(event)" autocomplete="on">
+                <div class="login-field-group">
+                    <label class="login-field-label" for="loginUsername">
+                        <i class="fas fa-user"></i> Username
+                    </label>
+                    <div class="login-input-wrap">
+                        <i class="fas fa-user-circle login-input-icon"></i>
+                        <input type="text" id="loginUsername" class="login-input" placeholder="Masukkan username" required autocomplete="username" spellcheck="false">
+                    </div>
+                </div>
 
-            <div class="pin-keypad">
-                <button type="button" class="key-btn" onclick="pressPinKey(1)">1</button>
-                <button type="button" class="key-btn" onclick="pressPinKey(2)">2</button>
-                <button type="button" class="key-btn" onclick="pressPinKey(3)">3</button>
-                <button type="button" class="key-btn" onclick="pressPinKey(4)">4</button>
-                <button type="button" class="key-btn" onclick="pressPinKey(5)">5</button>
-                <button type="button" class="key-btn" onclick="pressPinKey(6)">6</button>
-                <button type="button" class="key-btn" onclick="pressPinKey(7)">7</button>
-                <button type="button" class="key-btn" onclick="pressPinKey(8)">8</button>
-                <button type="button" class="key-btn" onclick="pressPinKey(9)">9</button>
-                <button type="button" class="key-btn" onclick="pressPinKey('clear')" style="font-size: 0.95rem; color: var(--text-muted);"><i class="fas fa-redo"></i></button>
-                <button type="button" class="key-btn" onclick="pressPinKey(0)">0</button>
-                <button type="button" class="key-btn" onclick="pressPinKey('backspace')" style="font-size: 0.95rem; color: var(--text-muted);"><i class="fas fa-backspace"></i></button>
-            </div>
+                <div class="login-field-group">
+                    <label class="login-field-label" for="loginPassword">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <div class="login-input-wrap">
+                        <i class="fas fa-key login-input-icon"></i>
+                        <input type="password" id="loginPassword" class="login-input" placeholder="Masukkan password" required autocomplete="current-password">
+                        <button type="button" class="login-pwd-toggle" onclick="togglePasswordVisibility()" title="Lihat/Sembunyikan Password" tabindex="-1">
+                            <i class="fas fa-eye" id="pwdToggleIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="loginAlertBox" class="login-alert-box" style="display: none;">
+                    <i class="fas fa-circle-exclamation"></i>
+                    <span id="loginAlertText">Username atau password salah!</span>
+                </div>
+
+                <button type="submit" id="btnLoginSubmit" class="btn-login-submit">
+                    <i class="fas fa-right-to-bracket"></i> Masuk ke Portal
+                </button>
+
+                <div class="login-footer-actions">
+                    <a href="index.html" class="login-back-link">
+                        <i class="fas fa-arrow-left"></i> Web Publik
+                    </a>
+                    <span class="login-hint-text">
+                        <i class="fas fa-shield-halved"></i> Akses Terproteksi
+                    </span>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -1766,6 +1953,9 @@
                 </div>
 
                 <div class="topbar-actions">
+                    <span class="topbar-user-badge" title="Pengguna Aktif">
+                        <i class="fas fa-user-circle"></i> <span id="currentLoggedUser">admin</span>
+                    </span>
                     <a href="index.html" target="_blank" class="btn-topbar-action" title="Lihat Website Publik">
                         <i class="fas fa-arrow-up-right-from-square"></i>
                         <span class="btn-action-label">Web Publik</span>
@@ -2431,10 +2621,15 @@
          JAVASCRIPT LOGIC & GITHUB API SINKRONISASI
          ======================================================== -->
     <script>
-        const CORRECT_PIN = "000000";
-        let enteredPin = "";
-        const dots = document.querySelectorAll(".pin-dot-item");
-        const pinAlert = document.getElementById("pinAlertText");
+        // DAFTAR AKUN PENGELOLA BUKIT PADANGAN
+        const ADMIN_ACCOUNTS = [
+            { username: "admin", passwords: ["admin", "bukitpadangan", "padangan2024", "123456", "000000"] },
+            { username: "bukitpadangan", passwords: ["bukitpadangan", "padangan2024", "admin"] },
+            { username: "syahnahl", passwords: ["admin", "bukitpadangan", "padangan2024"] },
+            { username: "owner", passwords: ["owner", "bukitpadangan"] },
+            { username: "kasir", passwords: ["kasir", "bukitpadangan"] },
+            { username: "pengelola", passwords: ["pengelola", "bukitpadangan"] }
+        ];
 
         const REPO_OWNER = "Syaahnhl";
         const REPO_NAME = "web-bukitpadangan";
@@ -2452,6 +2647,8 @@
         window.addEventListener("DOMContentLoaded", () => {
             if (sessionStorage.getItem("bp_admin_auth") === "true") {
                 unlockWorkspace();
+            } else {
+                showLoginModal();
             }
 
             // Restore GitHub PAT jika sudah tersimpan
@@ -2463,45 +2660,107 @@
             }
         });
 
-        function pressPinKey(val) {
-            pinAlert.innerText = "";
-            if (val === 'clear') {
-                enteredPin = "";
-            } else if (val === 'backspace') {
-                enteredPin = enteredPin.slice(0, -1);
+        function showLoginModal() {
+            const overlay = document.getElementById("authGateOverlay") || document.getElementById("pinGateOverlay");
+            if (overlay) {
+                overlay.style.display = "flex";
+                overlay.classList.add("active");
+                setTimeout(() => {
+                    const uInput = document.getElementById("loginUsername");
+                    if (uInput) uInput.focus();
+                }, 100);
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById("loginPassword");
+            const toggleIcon = document.getElementById("pwdToggleIcon");
+            if (!pwdInput) return;
+            if (pwdInput.type === "password") {
+                pwdInput.type = "text";
+                if (toggleIcon) {
+                    toggleIcon.classList.remove("fa-eye");
+                    toggleIcon.classList.add("fa-eye-slash");
+                }
             } else {
-                if (enteredPin.length < 6) {
-                    enteredPin += val;
+                pwdInput.type = "password";
+                if (toggleIcon) {
+                    toggleIcon.classList.remove("fa-eye-slash");
+                    toggleIcon.classList.add("fa-eye");
                 }
             }
+        }
 
-            // Update Dot visual
-            dots.forEach((dot, idx) => {
-                if (idx < enteredPin.length) {
-                    dot.classList.add("filled");
-                } else {
-                    dot.classList.remove("filled");
+        function handleAdminLogin(event) {
+            if (event) event.preventDefault();
+            const uInput = document.getElementById("loginUsername");
+            const pInput = document.getElementById("loginPassword");
+            const alertBox = document.getElementById("loginAlertBox");
+            const alertText = document.getElementById("loginAlertText");
+            const submitBtn = document.getElementById("btnLoginSubmit");
+
+            const enteredUser = (uInput ? uInput.value : "").trim().toLowerCase();
+            const enteredPass = (pInput ? pInput.value : "").trim();
+
+            if (!enteredUser || !enteredPass) {
+                if (alertBox && alertText) {
+                    alertText.innerText = "Username dan password wajib diisi!";
+                    alertBox.style.display = "flex";
                 }
-            });
+                return false;
+            }
 
-            // Evaluasi saat mencapai 6 digit
-            if (enteredPin.length === 6) {
+            // Verifikasi kecocokan akun
+            const matchedAccount = ADMIN_ACCOUNTS.find(acc => acc.username.toLowerCase() === enteredUser);
+            const isValid = matchedAccount && matchedAccount.passwords.includes(enteredPass);
+
+            if (isValid) {
+                if (alertBox) alertBox.style.display = "none";
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Memverifikasi...';
+                }
+
+                sessionStorage.setItem("bp_admin_auth", "true");
+                sessionStorage.setItem("bp_admin_user", enteredUser);
+
                 setTimeout(() => {
-                    if (enteredPin === CORRECT_PIN) {
-                        sessionStorage.setItem("bp_admin_auth", "true");
-                        unlockWorkspace();
-                    } else {
-                        pinAlert.innerText = "PIN Salah! Silakan coba lagi.";
-                        enteredPin = "";
-                        dots.forEach(d => d.classList.remove("filled"));
-                    }
-                }, 200);
+                    unlockWorkspace();
+                    showToast("Selamat datang, " + (matchedAccount ? matchedAccount.username : enteredUser) + "!", true);
+                }, 300);
+                return true;
+            } else {
+                if (alertBox && alertText) {
+                    alertText.innerText = "Username atau password salah! Silakan coba lagi.";
+                    alertBox.style.display = "flex";
+                }
+                if (pInput) {
+                    pInput.value = "";
+                    pInput.focus();
+                }
+                const gateBox = document.querySelector(".login-gate-box");
+                if (gateBox) {
+                    gateBox.style.animation = "none";
+                    void gateBox.offsetWidth;
+                    gateBox.style.animation = "shakeAlert 0.4s ease";
+                }
+                return false;
             }
         }
 
         function unlockWorkspace() {
-            document.getElementById("pinGateOverlay").style.display = "none";
-            document.getElementById("adminAppWorkspace").style.display = "block";
+            const overlay = document.getElementById("authGateOverlay") || document.getElementById("pinGateOverlay");
+            if (overlay) overlay.style.display = "none";
+
+            const workspace = document.getElementById("adminAppWorkspace");
+            if (workspace) workspace.style.display = "block";
+
+            const userDisplay = document.getElementById("currentLoggedUser");
+            if (userDisplay) {
+                const currentUser = sessionStorage.getItem("bp_admin_user") || "admin";
+                userDisplay.innerText = currentUser;
+            }
+
             loadLandingContent();
             loadMenuCatalog();
             loadGalleryData();
@@ -2510,6 +2769,7 @@
 
         function adminLogout() {
             sessionStorage.removeItem("bp_admin_auth");
+            sessionStorage.removeItem("bp_admin_user");
             window.location.reload();
         }
 
