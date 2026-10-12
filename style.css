@@ -782,6 +782,39 @@ section {
     background: var(--accent-gold);
 }
 
+/* Center alignment for short catalog tracks (3 and 4 items) */
+.menu-horizontal-track.track-center {
+    justify-content: safe center;
+}
+
+@media (min-width: 860px) {
+    .menu-horizontal-track.track-count-3,
+    .menu-horizontal-track[data-count="3"] {
+        justify-content: center;
+    }
+    
+    .menu-category-block[data-item-count="3"] .category-nav-arrows {
+        display: none;
+    }
+}
+
+@media (min-width: 1140px) {
+    .menu-horizontal-track.track-count-4,
+    .menu-horizontal-track[data-count="4"] {
+        justify-content: center;
+    }
+    
+    .menu-category-block[data-item-count="4"] .category-nav-arrows {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-horizontal-track.track-center {
+        justify-content: flex-start !important;
+    }
+}
+
 /* Menu Card in Carousel */
 .menu-card-carousel {
     flex: 0 0 250px;

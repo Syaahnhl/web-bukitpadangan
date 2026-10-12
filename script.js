@@ -327,9 +327,11 @@ function renderMenuGrid(items) {
         if (catItems.length === 0) return;
 
         const cardsHtml = catItems.map(item => renderMenuCardCarousel(item)).join("");
+        const isShortCatalog = catItems.length <= 4;
+        const trackCenterClass = isShortCatalog ? `track-center track-count-${catItems.length}` : '';
 
         categoryHtmlList.push(`
-            <div class="menu-category-block" data-category="${cat.key}" id="cat-section-${cat.key}">
+            <div class="menu-category-block ${isShortCatalog ? 'is-short-catalog' : ''}" data-category="${cat.key}" data-item-count="${catItems.length}" id="cat-section-${cat.key}">
                 <div class="menu-category-header">
                     <div class="category-header-info">
                         <span class="category-badge-icon">${cat.icon}</span>
@@ -348,7 +350,7 @@ function renderMenuGrid(items) {
                 </div>
                 
                 <div class="menu-horizontal-scroll-container">
-                    <div class="menu-horizontal-track" id="track-${cat.key}">
+                    <div class="menu-horizontal-track ${trackCenterClass}" id="track-${cat.key}" data-count="${catItems.length}">
                         ${cardsHtml}
                     </div>
                 </div>
