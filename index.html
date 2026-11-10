@@ -439,8 +439,8 @@
                         <input type="text" id="menuSearchInput" class="menu-search-input" placeholder="Cari menu lezat (contoh: ayam bledos, kopi santan, mendoan)..." oninput="searchMenu(this.value)">
                         <button type="button" id="clearMenuSearch" class="btn-clear-search" onclick="clearMenuSearch()" style="display: none;" title="Hapus pencarian">&times;</button>
                     </div>
-                    <button type="button" class="btn-menu-book-action" onclick="openMenuBookModal()" title="Buka Buku Menu PDF">
-                        <i class="fas fa-book-open"></i> <span>Buku Menu</span>
+                    <button type="button" class="btn-menu-book-action" onclick="downloadMenuPdf(event)" title="Download Buku Menu Lengkap (PDF)">
+                        <i class="fas fa-file-pdf"></i> <span>Download Menu (PDF)</span>
                     </button>
                 </div>
                 <div class="menu-tabs-wrapper">
@@ -1552,8 +1552,8 @@
             </div>
 
             <div class="menu-book-footer">
-                <button type="button" class="btn btn-gold btn-sm" onclick="window.print()">
-                    <i class="fas fa-print"></i> Cetak / Unduh PDF
+                <button type="button" class="btn btn-gold btn-sm" onclick="downloadMenuPdf(event)">
+                    <i class="fas fa-file-pdf"></i> Unduh File PDF Resmi
                 </button>
                 <a href="https://wa.me/6282323535747?text=Halo%20Admin%20Bukit%20Padangan%2C%20saya%20minta%20info%20katalog%20PDF%20menu%20lengkap%20dan%20paket%20rombongan" target="_blank" class="btn btn-outline-gold btn-sm">
                     <i class="fab fa-whatsapp"></i> Minta Brosur via WA

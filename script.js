@@ -1619,7 +1619,34 @@ function initFaqAccordion() {
 // 6 ESSENTIAL RESTAURANT FEATURES INTERACTIVE LOGIC
 // ==============================================================================
 
-// Feature 1: Menu Book Modal (Katalog Lengkap & Cetak)
+// Feature 1: Menu Book Modal (Katalog Lengkap & Cetak) & Direct PDF Download
+function downloadMenuPdf(e) {
+    if (e && e.preventDefault) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    const pdfPath = 'assets/pdf/buku-menu-bukit-padangan.pdf';
+    
+    // Direct browser download
+    const link = document.createElement('a');
+    link.href = pdfPath;
+    link.download = 'Buku-Menu-Bukit-Padangan.pdf';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Visual feedback on the trigger element
+    if (e && e.currentTarget) {
+        const btn = e.currentTarget;
+        const originalContent = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check-circle" style="color: #10b981;"></i> <span>Mengunduh PDF...</span>';
+        setTimeout(() => {
+            btn.innerHTML = originalContent;
+        }, 2500);
+    }
+}
+
 function openMenuBookModal() {
     const modal = document.getElementById("menuBookModal");
     if (modal) {
