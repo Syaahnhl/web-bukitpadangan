@@ -1937,52 +1937,67 @@
     <!-- MODAL BANTUAN & RESET PASSWORD ADMIN -->
     <div id="forgotPwdModal" class="modal-overlay" style="display: none; z-index: 10001;">
         <div class="modal-box login-gate-box" style="max-width: 440px;">
-            <div class="login-icon-wrap" style="background: rgba(212, 163, 115, 0.15); color: var(--gold-primary);">
-                <i class="fas fa-key"></i>
+            <div class="login-icon-wrap" style="background: rgba(37, 211, 102, 0.15); color: #25d366;">
+                <i class="fab fa-whatsapp"></i>
             </div>
-            <h2 class="login-gate-title">Bantuan & Reset Password</h2>
-            <p class="login-gate-subtitle">Pilih metode pemulihan akses akun portal pengelola</p>
+            <h2 class="login-gate-title">Pemulihan Password</h2>
+            <p class="login-gate-subtitle">Hubungi penanggung jawab teknis sistem untuk reset kata sandi</p>
 
             <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 18px; text-align: left;">
-                <!-- OPSI 1: HUBUNGI VIA WHATSAPP (Sesuai Permintaan Tuan) -->
-                <div style="background: rgba(37, 211, 102, 0.08); border: 1px solid rgba(37, 211, 102, 0.3); border-radius: 12px; padding: 14px;">
-                    <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: #4ade80; font-size: 0.88rem; margin-bottom: 6px;">
-                        <i class="fab fa-whatsapp" style="font-size: 1.1rem;"></i> Opsi 1: Hubungi Penanggung Jawab
+                <!-- KARTU KONTAK UTAMA: SYAHNAHL VIA WHATSAPP (OPSI A) -->
+                <div style="background: rgba(37, 211, 102, 0.08); border: 1px solid rgba(37, 211, 102, 0.35); border-radius: 14px; padding: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #4ade80; letter-spacing: 0.5px;">
+                            <i class="fas fa-user-shield"></i> Penanggung Jawab Sistem
+                        </span>
+                        <span style="font-size: 0.72rem; background: rgba(37, 211, 102, 0.2); color: #4ade80; padding: 2px 8px; border-radius: 10px; font-weight: 600;">
+                            Online
+                        </span>
                     </div>
-                    <p style="font-size: 0.8rem; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
-                        Kirim pesan otomatis via WhatsApp ke kontak penanggung jawab/Tuan untuk mendapatkan atau me-reset kata sandi baru.
+                    
+                    <div style="font-size: 1.15rem; font-weight: 700; color: #ffffff; margin-bottom: 2px;">
+                        Syahnahl
+                    </div>
+                    <div style="font-size: 0.9rem; color: #cbd5e1; font-family: monospace; letter-spacing: 0.5px; margin-bottom: 12px;">
+                        <i class="fas fa-phone-alt" style="font-size: 0.8rem; color: #4ade80; margin-right: 4px;"></i> 0823-2354-8482
+                    </div>
+
+                    <p style="font-size: 0.82rem; color: #cbd5e1; margin: 0 0 12px 0; line-height: 1.45;">
+                        Klik tombol di bawah untuk langsung membuka obrolan WhatsApp dengan Syahnahl untuk konfirmasi reset akun admin.
                     </p>
-                    <a href="https://wa.me/6282323535747?text=Halo%20Admin%20Bukit%20Padangan,%20saya%20pengelola%20restoran%20lupa%20password%20portal%20admin%20(Username:%20admin).%20Mohon%20bantuan%20reset%20kata%20sandi." target="_blank" class="btn-login-submit" style="text-decoration: none; background: linear-gradient(135deg, #25d366 0%, #1eaf53 100%); padding: 10px 14px; font-size: 0.88rem;">
-                        <i class="fab fa-whatsapp"></i> Hubungi via WhatsApp (0823-2353-5747)
+
+                    <a href="https://wa.me/6282323548482?text=Halo%20Syahnahl,%20saya%20pengelola%20Bukit%20Padangan%20lupa%20password%20portal%20admin%20(Username:%20admin).%20Mohon%20bantuan%20reset%20kata%20sandi." target="_blank" class="btn-login-submit" style="text-decoration: none; background: linear-gradient(135deg, #25d366 0%, #1eaf53 100%); padding: 12px 16px; font-size: 0.92rem; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35); display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fab fa-whatsapp" style="font-size: 1.2rem;"></i> Chat WhatsApp Syahnahl
                     </a>
                 </div>
 
-                <!-- OPSI 2: CARA LEBIH SIMPEL (RESET CEPAT MANDIRI DENGAN KODE KEAMANAN) -->
-                <div style="background: rgba(212, 163, 115, 0.08); border: 1px solid rgba(212, 163, 115, 0.25); border-radius: 12px; padding: 14px;">
-                    <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--gold-primary, #d4a373); font-size: 0.88rem; margin-bottom: 6px;">
-                        <i class="fas fa-bolt-lightning"></i> Opsi 2: Reset Mandiri Cepat
+                <!-- OPSI CADANGAN: RESET MANDIRI VIA PIN KEAMANAN -->
+                <div style="background: rgba(24, 30, 42, 0.6); border: 1px solid rgba(212, 163, 115, 0.2); border-radius: 10px; padding: 10px 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleEmergencyPinBox()">
+                        <span style="font-size: 0.78rem; color: #cbd5e1; font-weight: 500;">
+                            <i class="fas fa-key" style="color: var(--gold-primary, #d4a373);"></i> Reset Cepat Mandiri (PIN Resto)
+                        </span>
+                        <i class="fas fa-chevron-down" id="pinToggleIcon" style="font-size: 0.75rem; color: #94a3b8; transition: transform 0.2s;"></i>
                     </div>
-                    <p style="font-size: 0.8rem; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
-                        Masukkan PIN keamanan darurat resto (<strong>123456</strong> atau <strong>padangan2024</strong>) untuk otomatis mengembalikan password ke default:
-                    </p>
-                    <div style="display: flex; gap: 8px;">
-                        <input type="password" id="quickResetPinInput" placeholder="PIN Keamanan" style="flex: 1; padding: 9px 12px; border-radius: 8px; border: 1px solid rgba(212, 163, 115, 0.35); background: #0c0f16; color: #fff; font-size: 0.85rem;">
-                        <button type="button" onclick="handleQuickResetPassword()" style="padding: 9px 14px; background: var(--gold-primary, #d4a373); color: #0c0f16; border: none; border-radius: 8px; font-weight: 700; font-size: 0.82rem; cursor: pointer; white-space: nowrap;">
-                            <i class="fas fa-rotate-left"></i> Reset
-                        </button>
+                    <div id="emergencyPinBox" style="display: none; margin-top: 10px;">
+                        <div style="display: flex; gap: 8px;">
+                            <input type="password" id="quickResetPinInput" placeholder="PIN Keamanan (123456)" style="flex: 1; padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(212, 163, 115, 0.3); background: #0c0f16; color: #fff; font-size: 0.82rem;">
+                            <button type="button" onclick="handleQuickResetPassword()" style="padding: 8px 12px; background: var(--gold-primary, #d4a373); color: #0c0f16; border: none; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer;">
+                                Reset
+                            </button>
+                        </div>
+                        <div id="quickResetResult" style="display: none; margin-top: 8px; font-size: 0.78rem; padding: 6px 8px; border-radius: 6px;"></div>
                     </div>
-                    <div id="quickResetResult" style="display: none; margin-top: 8px; font-size: 0.78rem; padding: 6px 10px; border-radius: 6px;"></div>
                 </div>
             </div>
 
             <div style="margin-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 12px; text-align: center;">
                 <button type="button" onclick="closeForgotPwdModal()" style="background: none; border: 1px solid rgba(255, 255, 255, 0.2); color: #94a3b8; padding: 7px 18px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">
-                    <i class="fas fa-arrow-left"></i> Kembali ke Login
+                    <i class="fas fa-arrow-left"></i> Kembali ke Form Login
                 </button>
             </div>
         </div>
     </div>
-
     <!-- ========================================================
          MAIN APP CONTAINER (SHOWN AFTER AUTH)
          ======================================================== -->
@@ -2782,6 +2797,18 @@
                 updateTokenStatusText("Token GitHub aktif tersimpan di peramban.", true);
             }
         });
+
+        function toggleEmergencyPinBox() {
+            const box = document.getElementById("emergencyPinBox");
+            const icon = document.getElementById("pinToggleIcon");
+            if (box) {
+                const isOpen = box.style.display !== "none";
+                box.style.display = isOpen ? "none" : "block";
+                if (icon) {
+                    icon.style.transform = isOpen ? "rotate(0deg)" : "rotate(180deg)";
+                }
+            }
+        }
 
         function openForgotPwdModal() {
             const m = document.getElementById("forgotPwdModal");
