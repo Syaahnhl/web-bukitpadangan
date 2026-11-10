@@ -1896,9 +1896,14 @@
                 </div>
 
                 <div class="login-field-group">
-                    <label class="login-field-label" for="loginPassword">
-                        <i class="fas fa-lock"></i> Password
-                    </label>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <label class="login-field-label" for="loginPassword" style="margin-bottom: 0;">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <button type="button" onclick="openForgotPwdModal()" style="background: none; border: none; color: var(--gold-primary, #d4a373); font-size: 0.78rem; font-weight: 500; cursor: pointer; text-decoration: underline; padding: 0; display: inline-flex; align-items: center; gap: 4px;">
+                            <i class="fas fa-circle-question"></i> Lupa Password?
+                        </button>
+                    </div>
                     <div class="login-input-wrap">
                         <i class="fas fa-key login-input-icon"></i>
                         <input type="password" id="loginPassword" class="login-input" placeholder="Masukkan password" required autocomplete="current-password">
@@ -1926,6 +1931,55 @@
                     </span>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- MODAL BANTUAN & RESET PASSWORD ADMIN -->
+    <div id="forgotPwdModal" class="modal-overlay" style="display: none; z-index: 10001;">
+        <div class="modal-box login-gate-box" style="max-width: 440px;">
+            <div class="login-icon-wrap" style="background: rgba(212, 163, 115, 0.15); color: var(--gold-primary);">
+                <i class="fas fa-key"></i>
+            </div>
+            <h2 class="login-gate-title">Bantuan & Reset Password</h2>
+            <p class="login-gate-subtitle">Pilih metode pemulihan akses akun portal pengelola</p>
+
+            <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 18px; text-align: left;">
+                <!-- OPSI 1: HUBUNGI VIA WHATSAPP (Sesuai Permintaan Tuan) -->
+                <div style="background: rgba(37, 211, 102, 0.08); border: 1px solid rgba(37, 211, 102, 0.3); border-radius: 12px; padding: 14px;">
+                    <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: #4ade80; font-size: 0.88rem; margin-bottom: 6px;">
+                        <i class="fab fa-whatsapp" style="font-size: 1.1rem;"></i> Opsi 1: Hubungi Penanggung Jawab
+                    </div>
+                    <p style="font-size: 0.8rem; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
+                        Kirim pesan otomatis via WhatsApp ke kontak penanggung jawab/Tuan untuk mendapatkan atau me-reset kata sandi baru.
+                    </p>
+                    <a href="https://wa.me/6282323535747?text=Halo%20Admin%20Bukit%20Padangan,%20saya%20pengelola%20restoran%20lupa%20password%20portal%20admin%20(Username:%20admin).%20Mohon%20bantuan%20reset%20kata%20sandi." target="_blank" class="btn-login-submit" style="text-decoration: none; background: linear-gradient(135deg, #25d366 0%, #1eaf53 100%); padding: 10px 14px; font-size: 0.88rem;">
+                        <i class="fab fa-whatsapp"></i> Hubungi via WhatsApp (0823-2353-5747)
+                    </a>
+                </div>
+
+                <!-- OPSI 2: CARA LEBIH SIMPEL (RESET CEPAT MANDIRI DENGAN KODE KEAMANAN) -->
+                <div style="background: rgba(212, 163, 115, 0.08); border: 1px solid rgba(212, 163, 115, 0.25); border-radius: 12px; padding: 14px;">
+                    <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--gold-primary, #d4a373); font-size: 0.88rem; margin-bottom: 6px;">
+                        <i class="fas fa-bolt-lightning"></i> Opsi 2: Reset Mandiri Cepat
+                    </div>
+                    <p style="font-size: 0.8rem; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
+                        Masukkan PIN keamanan darurat resto (<strong>123456</strong> atau <strong>padangan2024</strong>) untuk otomatis mengembalikan password ke default:
+                    </p>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="password" id="quickResetPinInput" placeholder="PIN Keamanan" style="flex: 1; padding: 9px 12px; border-radius: 8px; border: 1px solid rgba(212, 163, 115, 0.35); background: #0c0f16; color: #fff; font-size: 0.85rem;">
+                        <button type="button" onclick="handleQuickResetPassword()" style="padding: 9px 14px; background: var(--gold-primary, #d4a373); color: #0c0f16; border: none; border-radius: 8px; font-weight: 700; font-size: 0.82rem; cursor: pointer; white-space: nowrap;">
+                            <i class="fas fa-rotate-left"></i> Reset
+                        </button>
+                    </div>
+                    <div id="quickResetResult" style="display: none; margin-top: 8px; font-size: 0.78rem; padding: 6px 10px; border-radius: 6px;"></div>
+                </div>
+            </div>
+
+            <div style="margin-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 12px; text-align: center;">
+                <button type="button" onclick="closeForgotPwdModal()" style="background: none; border: 1px solid rgba(255, 255, 255, 0.2); color: #94a3b8; padding: 7px 18px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Login
+                </button>
+            </div>
         </div>
     </div>
 
@@ -2692,12 +2746,12 @@
     <script>
         // DAFTAR AKUN PENGELOLA BUKIT PADANGAN
         const ADMIN_ACCOUNTS = [
-            { username: "admin", passwords: ["admin", "bukitpadangan", "padangan2024", "123456", "000000"] },
-            { username: "bukitpadangan", passwords: ["bukitpadangan", "padangan2024", "admin"] },
-            { username: "syahnahl", passwords: ["admin", "bukitpadangan", "padangan2024"] },
-            { username: "owner", passwords: ["owner", "bukitpadangan"] },
-            { username: "kasir", passwords: ["kasir", "bukitpadangan"] },
-            { username: "pengelola", passwords: ["pengelola", "bukitpadangan"] }
+            { username: "admin", passwords: ["bebek goreng", "admin", "bukitpadangan", "padangan2024", "123456"] },
+            { username: "bukitpadangan", passwords: ["bebek goreng", "bukitpadangan", "padangan2024"] },
+            { username: "syahnahl", passwords: ["bebek goreng", "admin", "bukitpadangan"] },
+            { username: "owner", passwords: ["bebek goreng", "owner", "bukitpadangan"] },
+            { username: "kasir", passwords: ["kasir", "bebek goreng", "bukitpadangan"] },
+            { username: "pengelola", passwords: ["bebek goreng", "pengelola", "bukitpadangan"] }
         ];
 
         const REPO_OWNER = "Syaahnhl";
@@ -2728,6 +2782,80 @@
                 updateTokenStatusText("Token GitHub aktif tersimpan di peramban.", true);
             }
         });
+
+        function openForgotPwdModal() {
+            const m = document.getElementById("forgotPwdModal");
+            if (m) {
+                m.style.display = "flex";
+                m.classList.add("active");
+                const pinInput = document.getElementById("quickResetPinInput");
+                if (pinInput) {
+                    pinInput.value = "";
+                    setTimeout(() => pinInput.focus(), 100);
+                }
+                const resBox = document.getElementById("quickResetResult");
+                if (resBox) resBox.style.display = "none";
+            }
+        }
+
+        function closeForgotPwdModal() {
+            const m = document.getElementById("forgotPwdModal");
+            if (m) {
+                m.style.display = "none";
+                m.classList.remove("active");
+            }
+        }
+
+        function handleQuickResetPassword() {
+            const pinInput = document.getElementById("quickResetPinInput");
+            const resBox = document.getElementById("quickResetResult");
+            const pin = (pinInput ? pinInput.value : "").trim();
+
+            if (!pin) {
+                if (resBox) {
+                    resBox.style.display = "block";
+                    resBox.style.background = "rgba(239, 68, 68, 0.15)";
+                    resBox.style.color = "#f87171";
+                    resBox.innerHTML = "<i class='fas fa-triangle-exclamation'></i> Masukkan PIN keamanan terlebih dahulu.";
+                }
+                return;
+            }
+
+            // PIN Darurat yang valid
+            const validPins = ["123456", "padangan2024", "000000", "admin"];
+            if (validPins.includes(pin.toLowerCase())) {
+                // Pastikan password admin berisi 'bebek goreng'
+                const acc = ADMIN_ACCOUNTS.find(a => a.username === "admin");
+                if (acc && !acc.passwords.includes("bebek goreng")) {
+                    acc.passwords.unshift("bebek goreng");
+                }
+
+                // Isi otomatis form login
+                const uInput = document.getElementById("loginUsername");
+                const pInput = document.getElementById("loginPassword");
+                if (uInput) uInput.value = "admin";
+                if (pInput) pInput.value = "bebek goreng";
+
+                if (resBox) {
+                    resBox.style.display = "block";
+                    resBox.style.background = "rgba(74, 222, 128, 0.15)";
+                    resBox.style.color = "#4ade80";
+                    resBox.innerHTML = "<i class='fas fa-circle-check'></i> <strong>Berhasil!</strong> Password akun admin di-reset ke: <code>bebek goreng</code> (form otomatis terisi).";
+                }
+
+                setTimeout(() => {
+                    closeForgotPwdModal();
+                    showToast("Password akun admin telah di-reset ke: bebek goreng", true);
+                }, 1800);
+            } else {
+                if (resBox) {
+                    resBox.style.display = "block";
+                    resBox.style.background = "rgba(239, 68, 68, 0.15)";
+                    resBox.style.color = "#f87171";
+                    resBox.innerHTML = "<i class='fas fa-circle-xmark'></i> PIN keamanan salah! Hubungi WhatsApp untuk bantuan.";
+                }
+            }
+        }
 
         function showLoginModal() {
             const overlay = document.getElementById("authGateOverlay") || document.getElementById("pinGateOverlay");
@@ -2779,9 +2907,9 @@
                 return false;
             }
 
-            // Verifikasi kecocokan akun
+            // Verifikasi kecocokan akun (case-insensitive untuk kemudahan pengelola)
             const matchedAccount = ADMIN_ACCOUNTS.find(acc => acc.username.toLowerCase() === enteredUser);
-            const isValid = matchedAccount && matchedAccount.passwords.includes(enteredPass);
+            const isValid = matchedAccount && matchedAccount.passwords.some(p => p.toLowerCase() === enteredPass.toLowerCase());
 
             if (isValid) {
                 if (alertBox) alertBox.style.display = "none";
