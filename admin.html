@@ -99,33 +99,293 @@
         }
 
         /* ========================================================
-           UNIFIED SLIM STICKY TOPBAR (MOBILE & DESKTOP)
+           ADMIN APP LAYOUT & COLLAPSIBLE SIDEBAR NAV (LEFT NAVBAR)
+           ======================================================== */
+        .admin-app-layout {
+            display: flex;
+            min-height: 100vh;
+            background: var(--bg-deep, #0b0f15);
+            position: relative;
+            width: 100%;
+        }
+
+        /* Sidebar Backdrop (Mobile & Tablet) */
+        .admin-sidebar-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(5, 8, 12, 0.75);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 1090;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.28s ease;
+        }
+        .admin-sidebar-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Sidebar Navigation Drawer (Navbar di Kiri - Bisa Dibuka Tutup) */
+        .admin-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 275px;
+            height: 100vh;
+            background: #0f141c;
+            border-right: 1px solid var(--border-subtle, rgba(212, 163, 115, 0.15));
+            box-shadow: 6px 0 30px rgba(0, 0, 0, 0.55);
+            z-index: 1100;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(212, 163, 115, 0.2) transparent;
+        }
+
+        /* Open state on mobile/tablet */
+        .admin-sidebar.open {
+            transform: translateX(0);
+        }
+
+        /* Desktop layout (>= 1024px) */
+        @media (min-width: 1024px) {
+            .admin-sidebar {
+                transform: translateX(0);
+                box-shadow: none;
+            }
+            body.sidebar-collapsed .admin-sidebar {
+                transform: translateX(-100%);
+            }
+            .admin-main-wrap {
+                margin-left: 275px;
+                transition: margin-left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            body.sidebar-collapsed .admin-main-wrap {
+                margin-left: 0;
+            }
+        }
+
+        /* Main Content Wrapper */
+        .admin-main-wrap {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            background: var(--bg-deep, #0b0f15);
+        }
+
+        .app-content-container {
+            max-width: 1120px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 16px;
+        }
+        @media (min-width: 768px) {
+            .app-content-container {
+                padding: 24px;
+            }
+        }
+
+        /* ========================================================
+           SIDEBAR INTERIOR STYLES
+           ======================================================== */
+        .sidebar-header {
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(11, 15, 21, 0.7);
+        }
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sidebar-close-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .sidebar-close-btn:hover {
+            color: #fff;
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+        @media (min-width: 1024px) {
+            .sidebar-close-btn {
+                display: none;
+            }
+        }
+
+        /* User Profile Status Card in Sidebar */
+        .sidebar-user-card {
+            margin: 14px 14px 6px 14px;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 163, 115, 0.18);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sidebar-user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(212, 163, 115, 0.25), rgba(138, 90, 46, 0.15));
+            border: 1px solid rgba(212, 163, 115, 0.35);
+            color: var(--gold-primary, #d4a373);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+        .sidebar-user-details {
+            flex: 1;
+            min-width: 0;
+        }
+        .sidebar-user-name {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sidebar-user-role {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 2px;
+        }
+
+        /* Sidebar Section Titles */
+        .sidebar-section-title {
+            padding: 14px 18px 6px 18px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #64748b;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        /* Sidebar Navigation Menu */
+        .sidebar-nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 0 10px;
+        }
+        .sidebar-nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: #94a3b8;
+            font-size: 0.86rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            font-family: var(--font-main, inherit);
+        }
+        .sidebar-nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.08);
+            transform: translateX(2px);
+        }
+        .sidebar-nav-item.active {
+            background: linear-gradient(135deg, rgba(212, 163, 115, 0.18), rgba(212, 163, 115, 0.06)) !important;
+            color: var(--gold-primary, #d4a373) !important;
+            border-color: rgba(212, 163, 115, 0.4) !important;
+            font-weight: 700 !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+        }
+        .sidebar-nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sidebar-nav-item .nav-icon {
+            font-size: 1.05rem;
+            width: 22px;
+            text-align: center;
+            color: inherit;
+        }
+        .sidebar-nav-item.active .nav-icon {
+            color: var(--gold-primary, #d4a373);
+        }
+
+        /* Sidebar Footer */
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 14px 10px 18px 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background: rgba(11, 15, 21, 0.45);
+        }
+        .sidebar-logout-btn {
+            color: #f87171 !important;
+            background: rgba(239, 68, 68, 0.08) !important;
+            border-color: rgba(239, 68, 68, 0.2) !important;
+        }
+        .sidebar-logout-btn:hover {
+            background: rgba(239, 68, 68, 0.2) !important;
+            color: #fff !important;
+            border-color: rgba(239, 68, 68, 0.4) !important;
+        }
+
+        /* ========================================================
+           TOPBAR WITH HAMBURGER BUTTON AT TOP-LEFT
            ======================================================== */
         .admin-topbar-wrapper {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(15, 20, 28, 0.92);
+            background: rgba(15, 20, 28, 0.94);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle, rgba(212, 163, 115, 0.15));
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
-            margin: -16px -16px 16px -16px;
-            padding: 8px 12px 6px 12px;
+            padding: 10px 14px;
             display: flex;
-            flex-direction: column;
-            gap: 6px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
         }
-
-        @media (min-width: 860px) {
+        @media (min-width: 768px) {
             .admin-topbar-wrapper {
-                margin: -24px -24px 24px -24px;
-                padding: 0 24px;
-                height: 60px;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                gap: 16px;
+                padding: 12px 24px;
             }
         }
 
@@ -134,19 +394,47 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
+            gap: 12px;
         }
 
-        @media (min-width: 860px) {
-            .topbar-header-row {
-                width: auto;
-                display: contents;
-            }
+        .topbar-left-cluster {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        /* TOMBOL BUKA / TUTUP NAVBAR DI KIRI ATAS */
+        .btn-sidebar-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(212, 163, 115, 0.12);
+            border: 1px solid rgba(212, 163, 115, 0.35);
+            color: var(--gold-primary, #d4a373);
+            font-size: 1.15rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .btn-sidebar-toggle:hover {
+            background: var(--gold-primary, #d4a373);
+            color: #0b0f15;
+            border-color: var(--gold-primary, #d4a373);
+            box-shadow: 0 0 14px rgba(212, 163, 115, 0.45);
+        }
+        .btn-sidebar-toggle:active {
+            transform: scale(0.92);
         }
 
         .topbar-brand {
             display: flex;
             align-items: center;
             gap: 10px;
+            min-width: 0;
         }
 
         .brand-logo-icon {
@@ -180,6 +468,39 @@
             white-space: nowrap;
         }
 
+        .brand-subtitle {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            display: block;
+            margin-top: 2px;
+        }
+        @media (max-width: 600px) {
+            .brand-subtitle {
+                display: none;
+            }
+        }
+
+        .topbar-active-pill {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(212, 163, 115, 0.12);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            color: var(--gold-primary, #d4a373);
+            font-size: 0.76rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        @media (min-width: 640px) {
+            .topbar-active-pill {
+                display: inline-flex;
+            }
+        }
+
         .status-dot-pulse {
             display: inline-flex;
             align-items: center;
@@ -208,21 +529,6 @@
             100% { transform: scale(0.95); opacity: 0.8; }
         }
 
-        .brand-subtitle {
-            font-size: 0.68rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            display: block;
-            margin-top: 2px;
-        }
-
-        @media (max-width: 859px) {
-            .brand-subtitle {
-                display: none;
-            }
-        }
-
         .topbar-actions {
             display: flex;
             align-items: center;
@@ -230,13 +536,31 @@
             flex-shrink: 0;
         }
 
+        .topbar-user-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: var(--gold-light);
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+        @media (max-width: 480px) {
+            .topbar-user-badge {
+                display: none;
+            }
+        }
+
         .btn-topbar-action {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            height: 32px;
-            padding: 0 10px;
+            height: 36px;
+            padding: 0 12px;
             border-radius: 8px;
             font-size: 0.78rem;
             font-weight: 600;
@@ -248,7 +572,6 @@
             text-decoration: none;
             font-family: var(--font-main);
         }
-
         .btn-topbar-action:hover {
             background: rgba(255, 255, 255, 0.08);
             color: #fff;
@@ -260,109 +583,38 @@
             color: #f87171;
             border-color: rgba(239, 68, 68, 0.25);
         }
-
         .btn-topbar-logout:hover {
             background: rgba(239, 68, 68, 0.22);
             color: #fff;
             border-color: rgba(239, 68, 68, 0.4);
         }
 
-        @media (max-width: 859px) {
+        @media (max-width: 640px) {
             .btn-topbar-action {
-                width: 32px;
-                height: 32px;
+                width: 36px;
+                height: 36px;
                 padding: 0;
-                border-radius: 8px;
             }
             .btn-action-label {
                 display: none;
             }
         }
 
-        /* NAV TABS */
-        .admin-tabs-nav {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-
-        .admin-tabs-nav::-webkit-scrollbar {
-            display: none;
-        }
-
-        @media (min-width: 860px) {
-            .admin-tabs-nav {
-                order: 2;
-                background: var(--bg-surface);
-                padding: 4px;
-                border-radius: var(--radius-sm);
-                border: 1px solid var(--border-subtle);
-            }
-            .topbar-brand {
-                order: 1;
-            }
-            .topbar-actions {
-                order: 3;
-            }
-        }
-
-        .tab-btn {
-            flex-shrink: 0;
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border-radius: 8px;
-            border: 1px solid transparent;
-            background: rgba(255, 255, 255, 0.04);
-            color: var(--text-secondary);
-            font-family: var(--font-main);
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @media (min-width: 860px) {
-            .tab-btn {
-                background: transparent;
-                padding: 6px 14px;
-                font-size: 0.82rem;
-            }
-        }
-
-        .tab-btn:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .tab-btn.active {
-            background: #d4a373 !important;
-            color: #111418 !important;
-            font-weight: 700 !important;
-            border-color: #f3c292 !important;
-            box-shadow: 0 2px 8px rgba(212, 163, 115, 0.35) !important;
-        }
-
         .tab-badge {
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.35);
             color: inherit;
             font-size: 0.68rem;
             font-weight: 700;
-            padding: 1px 5px;
+            padding: 2px 7px;
             border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        .tab-btn.active .tab-badge {
+        .sidebar-nav-item.active .tab-badge {
             background: #111418;
             color: #d4a373;
+            border-color: rgba(212, 163, 115, 0.4);
         }
-
+        
         /* Tab Content Panel */
         .tab-panel {
             display: none;
@@ -2001,62 +2253,154 @@
     <!-- ========================================================
          MAIN APP CONTAINER (SHOWN AFTER AUTH)
          ======================================================== -->
-    <div class="app-container" id="adminAppWorkspace" style="display: none;">
+    <div class="admin-app-layout" id="adminAppWorkspace" style="display: none;">
         
-        <!-- UNIFIED SLIM STICKY TOPBAR -->
-        <header class="admin-topbar-wrapper">
-            <div class="topbar-header-row">
-                <div class="topbar-brand">
+        <!-- SIDEBAR BACKDROP UNTUK MENUTUP NAVBAR DI MOBILE/TABLET -->
+        <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop" onclick="closeAdminSidebar()"></div>
+
+        <!-- NAVBAR DI KIRI (SIDEBAR DRAWER BISA DIBUKA TUTUP) -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <!-- HEADER SIDEBAR -->
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
                     <div class="brand-logo-icon">
                         <i class="fas fa-mountain-sun"></i>
                     </div>
-                    <div class="brand-info">
-                        <div class="brand-title-wrap">
-                            <h1 class="brand-title">Bukit Padangan</h1>
-                            <span class="status-dot-pulse" title="Terkoneksi Server">
-                                <span class="pulse-circle"></span> Live
-                            </span>
-                        </div>
+                    <div>
+                        <div class="brand-title">Bukit Padangan</div>
                         <span class="brand-subtitle">Portal Pengelola</span>
                     </div>
                 </div>
+                <button type="button" class="sidebar-close-btn" onclick="closeAdminSidebar()" title="Tutup Navigasi">
+                    <i class="fas fa-xmark"></i>
+                </button>
+            </div>
 
-                <div class="topbar-actions">
-                    <span class="topbar-user-badge" title="Pengguna Aktif">
-                        <i class="fas fa-user-circle"></i> <span id="currentLoggedUser">admin</span>
-                    </span>
-                    <a href="index.html" target="_blank" class="btn-topbar-action" title="Lihat Website Publik">
-                        <i class="fas fa-arrow-up-right-from-square"></i>
-                        <span class="btn-action-label">Web Publik</span>
-                    </a>
-                    <button type="button" class="btn-topbar-action btn-topbar-logout" onclick="adminLogout()" title="Keluar dari Admin">
-                        <i class="fas fa-right-from-bracket"></i>
-                        <span class="btn-action-label">Logout</span>
-                    </button>
+            <!-- KARTU STATUS USER ADMIN -->
+            <div class="sidebar-user-card">
+                <div class="sidebar-user-avatar">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="sidebar-user-details">
+                    <div class="sidebar-user-name" id="sidebarUserName">admin</div>
+                    <div class="sidebar-user-role">
+                        <span class="status-dot-pulse" style="padding: 1px 6px; font-size: 0.65rem;">
+                            <span class="pulse-circle"></span> Online
+                        </span>
+                        <span>Administrator</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- TABS NAVIGASI -->
-            <nav class="admin-tabs-nav">
-                <button type="button" class="tab-btn active" id="tabBtnContent" onclick="switchTab('tab-content')">
-                    <i class="fas fa-file-pen"></i> Konten
+            <!-- DAFTAR MENU UTAMA SIDEBAR -->
+            <div class="sidebar-section-title">Menu Navigasi</div>
+            <nav class="sidebar-nav-menu">
+                <button type="button" class="sidebar-nav-item tab-btn active" id="tabBtnContent" onclick="switchTab('tab-content')">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-file-pen nav-icon"></i>
+                        <span>Konten Landing Page</span>
+                    </div>
                 </button>
-                <button type="button" class="tab-btn" id="tabBtnMenu" onclick="switchTab('tab-menu')">
-                    <i class="fas fa-utensils"></i> Menu <span class="tab-badge" id="menuCountBadge">0</span>
+                <button type="button" class="sidebar-nav-item tab-btn" id="tabBtnMenu" onclick="switchTab('tab-menu')">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-utensils nav-icon"></i>
+                        <span>Menu & Buku PDF</span>
+                    </div>
+                    <span class="tab-badge" id="menuCountBadge">0</span>
                 </button>
-                <button type="button" class="tab-btn" id="tabBtnGallery" onclick="switchTab('tab-gallery')">
-                    <i class="fas fa-camera-retro"></i> Galeri & Foto <span class="tab-badge" id="galleryCountBadge">0</span>
+                <button type="button" class="sidebar-nav-item tab-btn" id="tabBtnGallery" onclick="switchTab('tab-gallery')">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-camera-retro nav-icon"></i>
+                        <span>Galeri Foto & Suasana</span>
+                    </div>
+                    <span class="tab-badge" id="galleryCountBadge">0</span>
                 </button>
-                <button type="button" class="tab-btn" id="tabBtnTables" onclick="switchTab('tab-tables')">
-                    <i class="fas fa-chair"></i> Meja <span class="tab-badge" id="tablesCountBadge">23</span>
+                <button type="button" class="sidebar-nav-item tab-btn" id="tabBtnTables" onclick="switchTab('tab-tables')">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-chair nav-icon"></i>
+                        <span>Denah & Meja Resto</span>
+                    </div>
+                    <span class="tab-badge" id="tablesCountBadge">23</span>
                 </button>
-                <button type="button" class="tab-btn" id="tabBtnSettings" onclick="switchTab('tab-settings')">
-                    <i class="fab fa-github"></i> PAT
+                <button type="button" class="sidebar-nav-item tab-btn" id="tabBtnSettings" onclick="switchTab('tab-settings')">
+                    <div class="sidebar-nav-left">
+                        <i class="fab fa-github nav-icon"></i>
+                        <span>Token GitHub PAT</span>
+                    </div>
                 </button>
             </nav>
-        </header>
 
-        <!-- ========================================================
+            <!-- FOOTER SIDEBAR DENGAN PINTASAN WEB PUBLIK & LOGOUT -->
+            <div class="sidebar-footer">
+                <a href="index.html" target="_blank" class="sidebar-nav-item" style="color: #cbd5e1;" title="Buka website publik">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-arrow-up-right-from-square nav-icon"></i>
+                        <span>Lihat Web Publik</span>
+                    </div>
+                </a>
+                <button type="button" class="sidebar-nav-item sidebar-logout-btn" onclick="adminLogout()" title="Keluar dari Portal Admin">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-right-from-bracket nav-icon"></i>
+                        <span>Keluar / Logout</span>
+                    </div>
+                </button>
+                <div style="font-size: 0.68rem; color: #64748b; text-align: center; margin-top: 6px;">
+                    Bukit Padangan &copy; 2026 • v2.4
+                </div>
+            </div>
+        </aside>
+
+        <!-- KONTEN UTAMA DI SEBELAH KANAN SIDEBAR -->
+        <div class="admin-main-wrap" id="adminMainWrap">
+            <!-- TOPBAR SLIM DENGAN TOMBOL MENU DI KIRI ATAS -->
+            <header class="admin-topbar-wrapper">
+                <div class="topbar-header-row">
+                    <div class="topbar-left-cluster">
+                        <!-- TOMBOL DI KIRI ATAS: BUKA / TUTUP NAVBAR -->
+                        <button type="button" class="btn-sidebar-toggle" id="btnSidebarToggle" onclick="toggleAdminSidebar()" title="Buka/Tutup Menu Navigasi" aria-label="Menu Navigasi">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        
+                        <div class="topbar-brand">
+                            <div class="brand-logo-icon">
+                                <i class="fas fa-mountain-sun"></i>
+                            </div>
+                            <div class="brand-info">
+                                <div class="brand-title-wrap">
+                                    <h1 class="brand-title">Bukit Padangan</h1>
+                                    <span class="status-dot-pulse" title="Terkoneksi Server">
+                                        <span class="pulse-circle"></span> Live
+                                    </span>
+                                </div>
+                                <span class="brand-subtitle" id="topbarSectionSubtitle">Portal Pengelola</span>
+                            </div>
+                        </div>
+
+                        <!-- BADGE INDIKATOR SECTION AKTIF -->
+                        <div class="topbar-active-pill" id="topbarActivePill">
+                            <i class="fas fa-file-pen"></i> <span id="topbarPillText">Konten</span>
+                        </div>
+                    </div>
+
+                    <div class="topbar-actions">
+                        <span class="topbar-user-badge" title="Pengguna Aktif">
+                            <i class="fas fa-user-circle"></i> <span id="currentLoggedUser">admin</span>
+                        </span>
+                        <a href="index.html" target="_blank" class="btn-topbar-action" title="Lihat Website Publik">
+                            <i class="fas fa-arrow-up-right-from-square"></i>
+                            <span class="btn-action-label">Web Publik</span>
+                        </a>
+                        <button type="button" class="btn-topbar-action btn-topbar-logout" onclick="adminLogout()" title="Keluar dari Admin">
+                            <i class="fas fa-right-from-bracket"></i>
+                            <span class="btn-action-label">Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="app-content-container">
+            
+            <!-- ========================================================
              TAB 1: KONTEN LANDING PAGE & PROMO
              ======================================================== -->
         <div id="tab-content" class="tab-panel active">
@@ -2503,7 +2847,9 @@
             </div>
         </div>
 
-    </div>
+            </div> <!-- .app-content-container -->
+        </div> <!-- .admin-main-wrap -->
+    </div> <!-- #adminAppWorkspace -->
 
     <!-- ========================================================
          MODAL 2: FORM TAMBAH / EDIT MENU (CLEAN POPUP)
@@ -2977,13 +3323,24 @@
             if (overlay) overlay.style.display = "none";
 
             const workspace = document.getElementById("adminAppWorkspace");
-            if (workspace) workspace.style.display = "block";
+            if (workspace) workspace.style.display = "flex";
 
+            const currentUser = sessionStorage.getItem("bp_admin_user") || "admin";
             const userDisplay = document.getElementById("currentLoggedUser");
             if (userDisplay) {
-                const currentUser = sessionStorage.getItem("bp_admin_user") || "admin";
                 userDisplay.innerText = currentUser;
             }
+            const sidebarUser = document.getElementById("sidebarUserName");
+            if (sidebarUser) {
+                sidebarUser.innerText = currentUser;
+            }
+
+            // Restore desktop sidebar collapsed preference
+            try {
+                if (window.innerWidth >= 1024 && localStorage.getItem("bp_sidebar_collapsed") === "1") {
+                    document.body.classList.add("sidebar-collapsed");
+                }
+            } catch(e) {}
 
             loadLandingContent();
             loadMenuCatalog();
@@ -2998,7 +3355,74 @@
             window.location.reload();
         }
 
-        // 2. NAVIGASI TABS
+        // ========================================================
+        // 2. NAVIGASI TABS & KONTROL SIDEBAR (NAVBAR DI KIRI)
+        // ========================================================
+        const tabMeta = {
+            'tab-content': { label: 'Konten Landing', icon: 'fas fa-file-pen' },
+            'tab-menu': { label: 'Menu & PDF', icon: 'fas fa-utensils' },
+            'tab-gallery': { label: 'Galeri Foto', icon: 'fas fa-camera-retro' },
+            'tab-tables': { label: 'Denah & Meja', icon: 'fas fa-chair' },
+            'tab-settings': { label: 'Token PAT', icon: 'fab fa-github' }
+        };
+
+        function updateTopbarPill(tabId) {
+            const pill = document.getElementById("topbarActivePill");
+            const pillText = document.getElementById("topbarPillText");
+            const sectionSub = document.getElementById("topbarSectionSubtitle");
+            if (tabMeta[tabId]) {
+                if (pillText) pillText.innerText = tabMeta[tabId].label;
+                if (pill) {
+                    const icon = pill.querySelector("i");
+                    if (icon) icon.className = tabMeta[tabId].icon;
+                }
+                if (sectionSub) sectionSub.innerText = tabMeta[tabId].label;
+            }
+        }
+
+        function toggleAdminSidebar() {
+            const sidebar = document.getElementById("adminSidebar");
+            const isMobile = window.innerWidth < 1024;
+            
+            if (isMobile) {
+                if (sidebar) {
+                    if (sidebar.classList.contains("open")) {
+                        closeAdminSidebar();
+                    } else {
+                        openAdminSidebar();
+                    }
+                }
+            } else {
+                document.body.classList.toggle("sidebar-collapsed");
+                const isCollapsed = document.body.classList.contains("sidebar-collapsed");
+                try {
+                    localStorage.setItem("bp_sidebar_collapsed", isCollapsed ? "1" : "0");
+                } catch(e) {}
+            }
+        }
+
+        function openAdminSidebar() {
+            const sidebar = document.getElementById("adminSidebar");
+            const backdrop = document.getElementById("adminSidebarBackdrop");
+            if (sidebar) sidebar.classList.add("open");
+            if (backdrop) backdrop.classList.add("active");
+            document.body.style.overflow = (window.innerWidth < 1024) ? "hidden" : "";
+        }
+
+        function closeAdminSidebar() {
+            const sidebar = document.getElementById("adminSidebar");
+            const backdrop = document.getElementById("adminSidebarBackdrop");
+            if (sidebar) sidebar.classList.remove("open");
+            if (backdrop) backdrop.classList.remove("active");
+            document.body.style.overflow = "";
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeAdminSidebar();
+            }
+        });
+
         function switchTab(tabId) {
             document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
             document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
@@ -3011,6 +3435,13 @@
             if (tabId === 'tab-gallery') document.getElementById("tabBtnGallery").classList.add("active");
             if (tabId === 'tab-tables') document.getElementById("tabBtnTables").classList.add("active");
             if (tabId === 'tab-settings') document.getElementById("tabBtnSettings").classList.add("active");
+
+            updateTopbarPill(tabId);
+
+            // Pada perangkat mobile / tablet (<1024px), otomatis tutup sidebar drawer setelah memilih tab
+            if (window.innerWidth < 1024) {
+                closeAdminSidebar();
+            }
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
