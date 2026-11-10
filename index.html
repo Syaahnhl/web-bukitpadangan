@@ -1563,110 +1563,177 @@
         </div>
     </div>
 
-    <!-- RESERVATION MODAL (INTERAKTIF FORM) -->
-    <div id="reservationModal" class="modal">
-        <div class="modal-content">
+    <!-- RESERVATION MODAL (INTERAKTIF FORM LUXURY) -->
+    <div id="reservationModal" class="modal modal-reservation-overlay">
+        <div class="modal-content reservation-modal-content">
             <div class="modal-sheet-handle"></div>
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <div class="modal-header-text">
-                <h3>Form Reservasi Tempat / Meja</h3>
-                <p>Lengkapi formulir reservasi Anda di bawah ini untuk konfirmasi cepat via WhatsApp admin:</p>
+            
+            <!-- Sticky Modal Header -->
+            <div class="res-modal-header">
+                <div class="res-modal-header-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="res-modal-header-info">
+                    <h3>Reservasi Meja & Tempat</h3>
+                    <p>Restoran Bukit Padangan • Konfirmasi Instan via WhatsApp</p>
+                </div>
+                <button type="button" class="close-btn res-modal-close" onclick="closeModal()" aria-label="Tutup Modal">&times;</button>
             </div>
 
-            <!-- Notifikasi Ketentuan DP & Rekening Mandiri -->
-            <div class="reservation-dp-notice">
-                <div class="dp-badge"><i class="fas fa-money-bill-wave"></i> Ketentuan Reservasi & Konfirmasi DP</div>
-                <p class="dp-rule">Batas pemesanan hari-H maksimal pukul <strong>14.00 WIB</strong>.</p>
-                <div class="dp-bank-card">
-                    <div class="bank-info-left">
-                        <span class="bank-title">Rekening Transfer DP:</span>
-                        <div class="bank-num-wrap">
-                            <span class="bank-num">1840011559968</span>
-                            <button type="button" class="btn-copy-acc" onclick="navigator.clipboard.writeText('1840011559968'); alert('Nomor rekening Mandiri berhasil disalin!')"><i class="fas fa-copy"></i> Salin</button>
+            <form id="reservationForm" onsubmit="submitReservation(event)" class="res-form-wrapper">
+                <!-- Scrollable Body Container -->
+                <div class="res-modal-body">
+                    
+                    <!-- STEP 1: PEMILIHAN MEJA & AREA -->
+                    <div class="res-section-card">
+                        <div class="res-section-title">
+                            <span class="res-step-pill">1</span>
+                            <span>Pilihan Meja & Suasana</span>
                         </div>
-                        <span class="bank-holder">Bank Mandiri a.n. Mila Elmeida</span>
+
+                        <!-- Selected Table State (If Table is Chosen) -->
+                        <div id="formSelectedTableBadge" class="selected-table-callout" style="display: none;">
+                            <div class="table-callout-icon">
+                                <i class="fas fa-chair"></i>
+                            </div>
+                            <div class="table-callout-text">
+                                <span class="table-status-tag"><i class="fas fa-check-circle"></i> Meja Dipilih</span>
+                                <strong id="badgeTableName">Meja 10 (Indoor Utama)</strong>
+                                <p id="badgeTableZone">Indoor Utama (6x6 m) • 6 Kursi</p>
+                            </div>
+                            <button type="button" class="btn-clear-table" onclick="clearSelectedTable()" title="Ganti Meja">
+                                <i class="fas fa-undo"></i> Ganti
+                            </button>
+                        </div>
+
+                        <!-- Dropdown & Floorplan Action -->
+                        <div id="formTableSelectGroup" class="form-group table-select-group">
+                            <label for="resTableSelect">Pilih Nomor Meja Spesifik (Opsional)</label>
+                            <div class="table-select-row">
+                                <select id="resTableSelect" onchange="handleManualTableSelect()">
+                                    <option value="">-- Bebas / Ditentukan Petugas Saat Datang --</option>
+                                    <!-- Diisi dinamis -->
+                                </select>
+                                <button type="button" class="btn-pick-denah" onclick="closeModal(); document.getElementById('tables').scrollIntoView({behavior: 'smooth'})">
+                                    <i class="fas fa-map-marked-alt"></i> Denah 3D/2D
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Pilihan Area -->
+                        <div id="formAreaGroup" class="form-group" style="margin-bottom: 0;">
+                            <label for="resArea">Preferensi Area Suasana</label>
+                            <select id="resArea" required>
+                                <option value="Outdoor (View Persawahan & Sungai)">Outdoor (View Persawahan & Sungai)</option>
+                                <option value="Area Terapi Ikan & Ramah Anak">Area Terapi Ikan & Ramah Anak</option>
+                                <option value="Indoor Utama (6x6 m)">Indoor Utama (6x6 m)</option>
+                                <option value="Indoor Timur (Sayap 1 & 2)">Indoor Timur (Sayap 1 & 2)</option>
+                            </select>
+                        </div>
                     </div>
+
+                    <!-- STEP 2: DATA PEMESAN & JADWAL -->
+                    <div class="res-section-card">
+                        <div class="res-section-title">
+                            <span class="res-step-pill">2</span>
+                            <span>Data Pemesan & Waktu Kedatangan</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="resName">Nama Lengkap Pemesan <span class="required-star" style="color: #ef4444;">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-user input-icon"></i>
+                                <input type="text" id="resName" required placeholder="Contoh: Budi Santoso" autocomplete="name">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="resDate">Tanggal Kunjungan <span class="required-star" style="color: #ef4444;">*</span></label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-calendar-alt input-icon"></i>
+                                    <input type="date" id="resDate" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="resTime">Jam Kedatangan <span class="required-star" style="color: #ef4444;">*</span></label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-clock input-icon"></i>
+                                    <input type="time" id="resTime" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="resGuests">Jumlah Tamu / Orang <span class="required-star" style="color: #ef4444;">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-users input-icon"></i>
+                                <input type="number" id="resGuests" min="1" max="50" required placeholder="Contoh: 4">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="resNotes">Catatan Khusus / Permintaan (Opsional)</label>
+                            <textarea id="resNotes" rows="2" placeholder="Contoh: Meja dekat panggung live music / bawa kursi bayi / acara keluarga"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: KETENTUAN DP & REKENING RESMI -->
+                    <div class="res-section-card res-dp-section">
+                        <div class="res-section-title">
+                            <span class="res-step-pill">3</span>
+                            <span>Ketentuan Reservasi & Transfer DP</span>
+                        </div>
+                        
+                        <div class="dp-policy-alert">
+                            <i class="fas fa-info-circle"></i>
+                            <div>
+                                <p>Batas konfirmasi pemesanan hari-H maksimal pukul <strong>14.00 WIB</strong>.</p>
+                                <p class="dp-policy-sub">Nominal DP dikonfirmasi admin via WhatsApp setelah slot meja diverifikasi.</p>
+                            </div>
+                        </div>
+
+                        <div class="dp-bank-card-luxury">
+                            <div class="bank-luxury-header">
+                                <div class="bank-brand-wrap">
+                                    <span class="bank-badge">BANK MANDIRI</span>
+                                    <span class="bank-holder-label">Rekening Resmi Reservasi</span>
+                                </div>
+                                <span class="verified-pill"><i class="fas fa-shield-alt"></i> Terverifikasi</span>
+                            </div>
+
+                            <div class="bank-num-copy-row">
+                                <div class="bank-acc-info">
+                                    <span class="bank-acc-label">Nomor Rekening DP:</span>
+                                    <span class="bank-acc-number">1840011559968</span>
+                                    <span class="bank-acc-name">a.n. <strong>Mila Elmeida</strong></span>
+                                </div>
+                                <button type="button" class="btn-copy-acc-luxury" onclick="navigator.clipboard.writeText('1840011559968'); alert('Nomor rekening Mandiri (1840011559968 a.n. Mila Elmeida) berhasil disalin!')">
+                                    <i class="fas fa-copy"></i> Salin
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="dp-upload-shortcut-row">
+                            <span>Sudah pernah transfer DP sebelumnya?</span>
+                            <button type="button" class="btn-confirm-dp-shortcut-clean" onclick="openConfirmDpModal()">
+                                <i class="fas fa-file-invoice-dollar"></i> Upload Bukti Transfer di Sini
+                            </button>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="resAdmin" value="6282323535747">
                 </div>
-                <div style="margin-top: 10px; text-align: center;">
-                    <button type="button" class="btn-confirm-dp-shortcut" onclick="openConfirmDpModal()">
-                        <i class="fas fa-file-invoice-dollar"></i> Sudah Transfer DP? Upload Bukti di Sini
+
+                <!-- Sticky Locked Footer -->
+                <div class="res-modal-footer">
+                    <button type="submit" class="btn-submit-res-luxury">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>Lanjutkan Reservasi via WhatsApp</span>
                     </button>
-                </div>
-            </div>
-
-            <!-- Selected table badge in reservation modal -->
-            <div id="formSelectedTableBadge" class="selected-table-callout" style="display: none;">
-                <i class="fas fa-chair"></i>
-                <div style="flex: 1;">
-                    <strong id="badgeTableName">Meja 01</strong>
-                    <p id="badgeTableZone" style="font-size: 0.8rem; color: #94a3b8;">Area Terapi Ikan & Ramah Anak</p>
-                </div>
-                <button type="button" class="btn-clear-table" onclick="clearSelectedTable()">Hapus Meja</button>
-            </div>
-
-            <form id="reservationForm" onsubmit="submitReservation(event)">
-                <div class="form-group">
-                    <label for="resTableSelect">Pilihan Nomor Meja (Opsional)</label>
-                    <div class="table-select-row">
-                        <select id="resTableSelect" onchange="handleManualTableSelect()">
-                            <option value="">-- Bebas / Ditentukan Petugas --</option>
-                            <!-- Diisi dinamis -->
-                        </select>
-                        <button type="button" class="btn-pick-denah" onclick="closeModal(); document.getElementById('tables').scrollIntoView({behavior: 'smooth'})">
-                            <i class="fas fa-map"></i> Pilih di Denah
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="resName">Nama Lengkap</label>
-                    <input type="text" id="resName" required placeholder="Contoh: Budi Santoso">
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="resDate">Tanggal Kunjungan</label>
-                        <input type="date" id="resDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="resTime">Jam Kedatangan</label>
-                        <input type="time" id="resTime" required>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="resGuests">Jumlah Orang</label>
-                        <input type="number" id="resGuests" min="1" max="50" required placeholder="2">
-                    </div>
-                    <div class="form-group">
-                        <label for="resArea">Pilihan Area</label>
-                        <select id="resArea" required>
-                            <option value="Outdoor (View Persawahan & Sungai)">Outdoor (View Persawahan & Sungai)</option>
-                            <option value="Area Terapi Ikan & Ramah Anak">Area Terapi Ikan & Ramah Anak</option>
-                            <option value="Indoor Utama (6x6 m)">Indoor Utama (6x6 m)</option>
-                            <option value="Indoor Timur (Sayap 1 & 2)">Indoor Timur (Sayap 1 & 2)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <input type="hidden" id="resAdmin" value="6282323535747">
-                <div class="form-group">
-                    <div style="background: rgba(22, 26, 33, 0.7); border: 1px solid rgba(212, 163, 115, 0.3); border-radius: 8px; padding: 10px 14px; font-size: 0.88rem; color: #e2e8f0; display: flex; align-items: center; gap: 8px;">
-                        <i class="fab fa-whatsapp" style="color: #25d366; font-size: 1.15rem;"></i>
-                        <span>Admin Reservasi WhatsApp: <strong>0823-2353-5747</strong> (Admin 1)</span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="resNotes">Catatan Khusus (Opsional)</label>
-                    <textarea id="resNotes" rows="2" placeholder="Contoh: Meja dekat panggung live music / bawa anak kecil"></textarea>
-                </div>
-
-                <div class="modal-form-footer">
-                    <button type="submit" class="btn-submit-res">
-                        <i class="fab fa-whatsapp"></i> Lanjutkan Reservasi via WhatsApp
-                    </button>
+                    <p class="res-footer-note">
+                        <i class="fas fa-lock"></i> Terhubung langsung ke WhatsApp Admin Resmi Bukit Padangan <span style="white-space: nowrap;">(<strong>0823-2353-5747</strong>)</span>.
+                    </p>
                 </div>
             </form>
         </div>

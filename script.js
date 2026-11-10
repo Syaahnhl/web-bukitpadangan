@@ -915,8 +915,15 @@ function formatRupiah(number) {
 // =========================================
 function openModal(event) {
     if (event) event.preventDefault();
-    closeCartDrawer();
-    if (modal) modal.style.display = "flex";
+    if (typeof closeCartDrawer === "function") closeCartDrawer();
+    if (modal) {
+        modal.style.display = "flex";
+        // Focus first input for keyboard accessibility
+        setTimeout(() => {
+            const nameInput = document.getElementById("resName");
+            if (nameInput) nameInput.focus();
+        }, 100);
+    }
     document.body.style.overflow = "hidden";
 }
 
@@ -924,6 +931,22 @@ function closeModal() {
     if (modal) modal.style.display = "none";
     document.body.style.overflow = "";
 }
+
+// Backdrop click to close reservation modal
+if (modal) {
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+    });
+}
+
+// Global escape key handler
+window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" || e.key === "Esc") {
+        if (modal && modal.style.display === "flex") {
+            closeModal();
+        }
+    }
+});
 
 // =========================================
 // 6. LOGIKA DENAH MEJA INTERAKTIF (FLOOR PLAN)
@@ -959,10 +982,12 @@ function populateTableDropdown(tables) {
     const select = document.getElementById("resTableSelect");
     if (!select) return;
     
-    let html = `<option value="">-- Bebas / Ditentukan Petugas --</option>`;
+    let html = `<option value="">-- Bebas / Ditentukan Petugas Saat Datang --</option>`;
     tables.forEach(t => {
-        const statusText = t.status === 'tersedia' ? 'Tersedia' : (t.status === 'terisi' ? 'Terisi' : 'Dipesan');
-        html += `<option value="${t.id}">${t.name} (${t.zoneName}) - ${statusText} [${t.capacity} org]</option>`;
+        const statusText = t.status === 'tersedia' ? 'Tersedia' : (t.status === 'terisi' ? 'Penuh' : 'Dipesan');
+        let cleanName = t.name.replace(/\(.*?\)/g, "").trim();
+        let cleanZone = (t.zoneName || t.area || "").replace(/\(.*?\)/g, "").trim();
+        html += `<option value="${t.id}">${cleanName} • ${cleanZone} (${t.capacity} Kursi) - [${statusText}]</option>`;
     });
     select.innerHTML = html;
 }
@@ -1173,6 +1198,12 @@ function selectThisTable(tableId, shouldOpenModal = false) {
         }
     }
 
+    // Hide redundant controls when table is selected from denah
+    const tableGroup = document.getElementById("formTableSelectGroup");
+    const areaGroup = document.getElementById("formAreaGroup");
+    if (tableGroup) tableGroup.style.display = "none";
+    if (areaGroup) areaGroup.style.display = "none";
+
     // Render ulang grid denah agar border .selected terpasang
     if (currentTableZone === "semua") {
         renderTablesGrid(tablesData);
@@ -1206,6 +1237,12 @@ function clearSelectedTable() {
 
     const select = document.getElementById("resTableSelect");
     if (select) select.value = "";
+
+    // Restore visibility of table dropdown and area when table cleared
+    const tableGroup = document.getElementById("formTableSelectGroup");
+    const areaGroup = document.getElementById("formAreaGroup");
+    if (tableGroup) tableGroup.style.display = "";
+    if (areaGroup) areaGroup.style.display = "";
 
     if (currentTableZone === "semua") {
         renderTablesGrid(tablesData);
