@@ -1,0 +1,132 @@
+    <section id="tables" class="section-padding tables-section">
+        <div class="container">
+            <div class="tables-section-header">
+                <div>
+                    <h2 class="section-title">Denah Meja Interaktif 3D</h2>
+                    <p class="section-desc">Eksplorasi tata letak denah meja 3D Bukit Padangan. Sentuh & putar denah, atau klik meja langsung untuk reservasi!</p>
+                </div>
+                <!-- View Mode Switcher -->
+                <div class="table-view-mode-toggle">
+                    <button id="btnView3D" class="view-mode-btn active" onclick="switchTableViewMode('3d')">
+                        <i class="fas fa-cube"></i> Denah 3D Interaktif
+                    </button>
+                    <button id="btnViewGrid" class="view-mode-btn" onclick="switchTableViewMode('grid')">
+                        <i class="fas fa-th-large"></i> Daftar Kartu Meja
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3D INTERACTIVE CANVAS WRAPPER -->
+            <div id="floorPlan3DContainer" class="floorplan-3d-wrapper">
+                <div id="webglCanvasContainer" class="webgl-canvas-container">
+                    <div id="canvas3DLoading" class="canvas-loading">
+                        <div class="spinner"></div>
+                        <p>Memuat Denah 3D Bukit Padangan...</p>
+                    </div>
+                </div>
+
+                <!-- 3D Overlay HUD Controls -->
+                <div class="hud-top-bar">
+                    <div class="hud-zone-shortcuts">
+                        <button class="cam-preset-btn active" data-zone="all" onclick="focus3DZone('all')">
+                            <i class="fas fa-globe"></i> Semua Area
+                        </button>
+                        <button class="cam-preset-btn" data-zone="outdoor" onclick="focus3DZone('outdoor')">
+                            <i class="fas fa-chair"></i> Outdoor Perimeter Bar (OD-01 s/d OD-06)
+                        </button>
+                        <button class="cam-preset-btn" data-zone="indoor" onclick="focus3DZone('indoor')">
+                            <i class="fas fa-store-alt"></i> Indoor Utama & Kasir (IU-07 s/d IU-12)
+                        </button>
+                        <button class="cam-preset-btn" data-zone="east" onclick="focus3DZone('east')">
+                            <i class="fas fa-fish"></i> Terapi Ikan & Indoor Timur (TI-01 s/d IT2-18)
+                        </button>
+                        <button class="cam-preset-btn" data-zone="facilities" onclick="focus3DZone('facilities')">
+                            <i class="fas fa-mosque"></i> Mushola & Toilet
+                        </button>
+                    </div>
+
+                    <div class="hud-action-tools">
+                        <button class="hud-tool-btn" onclick="reset3DCamera()" title="Reset Sudut Kamera">
+                            <i class="fas fa-undo-alt"></i> Reset
+                        </button>
+                        <button class="hud-tool-btn btn-3d-fullscreen" onclick="toggle3DFullscreen()" title="Layar Penuh">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- HUD Bottom Hint & Quick Legend -->
+                <div class="hud-bottom-bar">
+                    <div class="hud-nav-hint">
+                        <i class="fas fa-hand-pointer"></i> 
+                        <span class="desktop-hint">Klik & geser mouse untuk memutar sudut | Scroll zoom | Klik meja untuk detail</span>
+                        <span class="mobile-hint">Geser 1 jari untuk memutar | Cubit zoom | Sentuh meja</span>
+                    </div>
+                    <div class="hud-status-legend">
+                        <span class="hud-leg-item"><span class="leg-indicator status-available"></span> Tersedia</span>
+                        <span class="hud-leg-item"><span class="leg-indicator status-occupied"></span> Terisi</span>
+                        <span class="hud-leg-item"><span class="leg-indicator status-reserved"></span> Dipesan</span>
+                    </div>
+                </div>
+
+                <!-- 3D Interactive Hover Tooltip -->
+                <div id="table3DTooltip" class="table-3d-tooltip" style="display: none;">
+                    <div class="tooltip-top-row">
+                        <h4 id="tooltipTableName">Meja 01</h4>
+                        <span id="tooltipTableStatus" class="table-status-pill tersedia">TERSEDIA</span>
+                    </div>
+                    <div class="tooltip-meta-row">
+                        <span id="tooltipTableZone"><i class="fas fa-map-marker-alt"></i> Area Terapi Ikan</span>
+                        <span id="tooltipTableCap"><i class="fas fa-users"></i> 4 Orang</span>
+                    </div>
+                    <div class="tooltip-footer-row">
+                        <span>Klik untuk detail & pesan <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CLASSIC GRID VIEW WRAPPER -->
+            <div id="floorPlanGridContainer" class="floorplan-grid-wrapper" style="display: none;">
+                <!-- Status Legend -->
+                <div class="table-legend">
+                    <div class="legend-item"><span class="legend-dot status-available"></span> Tersedia (Siap Dipesan)</div>
+                    <div class="legend-item"><span class="legend-dot status-occupied"></span> Terisi (Sedang Digunakan)</div>
+                    <div class="legend-item"><span class="legend-dot status-reserved"></span> Dipesan (Reserved)</div>
+                </div>
+
+                <!-- Zone Filter Tabs -->
+                <div class="table-zone-tabs">
+                    <button class="zone-tab-btn active" onclick="filterTablesZone('semua')">Semua Area (20 Meja)</button>
+                    <button class="zone-tab-btn" onclick="filterTablesZone('outdoor')"><i class="fas fa-chair"></i> Outdoor Perimeter Bar (OD-01 s/d OD-06)</button>
+                    <button class="zone-tab-btn" onclick="filterTablesZone('indoor')"><i class="fas fa-store-alt"></i> Indoor Utama (IU-07 s/d IU-12)</button>
+                    <button class="zone-tab-btn" onclick="filterTablesZone('terapi')"><i class="fas fa-fish"></i> Kolam Terapi Ikan (TI-01 s/d TI-03)</button>
+                    <button class="zone-tab-btn" onclick="filterTablesZone('timur')"><i class="fas fa-chair"></i> Indoor Timur (IT1-13 s/d IT2-18)</button>
+                </div>
+
+                <!-- Interactive Tables Grid -->
+                <div id="tablesGrid" class="tables-grid">
+                    <!-- Dimuat secara dinamis dari tables.json -->
+                </div>
+            </div>
+
+            <!-- Selected Table Floating Banner -->
+            <div id="selectedTableBanner" class="selected-table-banner" style="display: none;">
+                <div class="selected-banner-info">
+                    <i class="fas fa-check-circle" style="color: var(--accent-gold);"></i>
+                    <div>
+                        <span class="selected-banner-title">Meja Terpilih: <strong id="selectedTableBannerName">-</strong></span>
+                        <span class="selected-banner-zone" id="selectedTableBannerZone">-</span>
+                    </div>
+                </div>
+                <div class="selected-banner-actions" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                    <a id="selectedBannerKachingBtn" href="https://kaching.id/order/toko/1/public" target="_blank" rel="noopener noreferrer" class="btn-reservasi" style="background: linear-gradient(135deg, #e5b382 0%, #d4a373 100%); color: #0c0e12; font-weight: 700; text-decoration: none; padding: 8px 16px; border-radius: 20px; font-size: 0.88rem; display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fas fa-utensils"></i> Pesan Menu di Meja Ini
+                    </a>
+                    <button class="btn-reservasi" onclick="proceedReservationWithTable()" style="padding: 8px 16px; font-size: 0.88rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px;">
+                        <i class="fab fa-whatsapp"></i> Booking Jadwal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+

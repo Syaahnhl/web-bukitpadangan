@@ -1,0 +1,99 @@
+        <!-- SIDEBAR BACKDROP UNTUK MENUTUP NAVBAR DI MOBILE/TABLET -->
+        <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop" onclick="closeAdminSidebar()"></div>
+
+        <!-- NAVBAR DI KIRI (SIDEBAR DRAWER BISA DIBUKA TUTUP) -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <!-- HEADER SIDEBAR -->
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="brand-logo-icon">
+                        <i class="fas fa-mountain-sun"></i>
+                    </div>
+                    <div>
+                        <div class="brand-title">Bukit Padangan</div>
+                        <span class="brand-subtitle">Portal Pengelola</span>
+                    </div>
+                </div>
+                <button type="button" class="sidebar-close-btn" onclick="closeAdminSidebar()" title="Tutup Navigasi">
+                    <i class="fas fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- KARTU STATUS USER ADMIN -->
+            <div class="sidebar-user-card">
+                <div class="sidebar-user-avatar">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="sidebar-user-details">
+                    <div class="sidebar-user-name" id="sidebarUserName">admin</div>
+                    <div class="sidebar-user-role">
+                        <span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #10b981; margin-right: 5px;"></span>
+                        <span style="color: #cbd5e1;">Pengelola Resto</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DAFTAR MENU UTAMA SIDEBAR -->
+            <div class="sidebar-section-title">Menu Navigasi</div>
+            <nav class="sidebar-nav-menu">
+                <button type="button" class="sidebar-nav-item tab-btn active" id="tabBtnOverview" onclick="switchTab('tab-overview')">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-chart-pie nav-icon"></i>
+                        <span>Ringkasan Resto</span>
+                    </div>
+                </button>
+                <button type="button" class="sidebar-nav-item tab-btn" id="tabBtnMenu" onclick="switchTab('tab-menu')">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-utensils nav-icon"></i>
+                        <span>Menu & Buku PDF</span>
+                    </div>
+                    <span class="tab-badge" id="menuCountBadge">0</span>
+                </button>
+                <button type="button" class="sidebar-nav-item tab-btn" id="tabBtnTables" onclick="switchTab('tab-tables')">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-chair nav-icon"></i>
+                        <span>Denah & Meja Resto</span>
+                    </div>
+                    <span class="tab-badge" id="tablesCountBadge">23</span>
+                </button>
+                <button type="button" class="sidebar-nav-item tab-btn" id="tabBtnGallery" onclick="switchTab('tab-gallery')">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-camera-retro nav-icon"></i>
+                        <span>Galeri Foto & Suasana</span>
+                    </div>
+                    <span class="tab-badge" id="galleryCountBadge">0</span>
+                </button>
+                <button type="button" class="sidebar-nav-item tab-btn" id="tabBtnContent" onclick="switchTab('tab-content')">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-file-pen nav-icon"></i>
+                        <span>Teks & Promo Web</span>
+                    </div>
+                </button>
+                <button type="button" class="sidebar-nav-item tab-btn" id="tabBtnSettings" onclick="switchTab('tab-settings')">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-sliders nav-icon"></i>
+                        <span>Akun & Sistem</span>
+                    </div>
+                </button>
+            </nav>
+
+            <!-- FOOTER SIDEBAR DENGAN PINTASAN WEB PUBLIK & LOGOUT -->
+            <div class="sidebar-footer">
+                <a href="index.html" target="_blank" class="sidebar-nav-item" style="color: #cbd5e1;" title="Buka website publik">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-arrow-up-right-from-square nav-icon"></i>
+                        <span>Lihat Web Publik</span>
+                    </div>
+                </a>
+                <button type="button" class="sidebar-nav-item sidebar-logout-btn" onclick="adminLogout()" title="Keluar dari Portal Admin">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-right-from-bracket nav-icon"></i>
+                        <span>Keluar / Logout</span>
+                    </div>
+                </button>
+                <div style="font-size: 0.68rem; color: #64748b; text-align: center; margin-top: 6px;">
+                    Bukit Padangan &copy; 2026 • v2.4
+                </div>
+            </div>
+        </aside>
+

@@ -1,0 +1,38 @@
+    <!-- TABLE DETAIL PREVIEW MODAL -->
+    <div id="tableModal" class="modal">
+        <div class="modal-content table-preview-content">
+            <div class="modal-sheet-handle"></div>
+            <span class="close-btn" onclick="closeTableModal()">&times;</span>
+            <div class="table-preview-img-wrapper">
+                <img id="tableModalImg" src="" alt="Spot Meja">
+                <span id="tableModalStatusBadge" class="table-status-pill">Tersedia</span>
+            </div>
+            <div class="table-preview-body">
+                <div class="table-preview-header">
+                    <div>
+                        <h3 id="tableModalTitle">Meja 01</h3>
+                        <span id="tableModalZone" class="table-zone-label">Area Terapi Ikan & Ramah Anak</span>
+                    </div>
+                    <div class="table-capacity-tag">
+                        <i class="fas fa-users"></i> <span id="tableModalCapacity">4 Orang</span>
+                    </div>
+                </div>
+                <p id="tableModalDesc" class="table-preview-desc">Meja santai nyaman dengan udara sejuk perbukitan...</p>
+                <div class="table-facilities-section">
+                    <h5>Fasilitas Spot Ini:</h5>
+                    <div id="tableModalFacilities" class="table-facilities-list">
+                        <!-- Dynamic chips -->
+                    </div>
+                </div>
+                <div class="table-preview-footer" style="display: flex; flex-direction: column; gap: 10px;">
+                    <a id="btnOrderKachingTable" href="https://kaching.id/order/toko/1/public" target="_blank" rel="noopener noreferrer" class="btn-table-order-kaching">
+                        <i class="fas fa-utensils"></i> Pesan Menu di Meja Ini (Kaching Web Order)
+                    </a>
+                    <button id="btnSelectThisTable" class="btn-select-table" onclick="confirmSelectTable()">
+                        <i class="fab fa-whatsapp"></i> Reservasi Jadwal Meja Ini
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+

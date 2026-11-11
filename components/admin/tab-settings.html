@@ -1,0 +1,81 @@
+        <div id="tab-settings" class="tab-panel">
+            <!-- PENGATURAN KREDENSIAL & AKUN PENGELOLA -->
+            <div class="admin-card">
+                <div class="card-header" style="border-bottom: 1px solid #1e293b; padding-bottom: 14px; margin-bottom: 18px;">
+                    <div>
+                        <h3 class="card-title" style="font-size: 1.15rem; color: #f8fafc; font-weight: 700;">Keamanan & Akses Akun Pengelola</h3>
+                        <p class="card-subtitle" style="color: #94a3b8; font-size: 0.86rem; margin-top: 4px;">Informasi akun resmi login admin dan kontak bantuan darurat.</p>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                    <div style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 16px;">
+                        <div style="font-size: 0.78rem; color: #94a3b8; text-transform: uppercase; font-weight: 600; margin-bottom: 6px;">Akun Admin Aktif</div>
+                        <div style="font-size: 1.1rem; font-weight: 700; color: #f8fafc; margin-bottom: 4px;">admin</div>
+                        <div style="font-size: 0.82rem; color: #cbd5e1;">Kata sandi resmi: <code>bebek goreng</code></div>
+                    </div>
+                    <div style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 16px;">
+                        <div style="font-size: 0.78rem; color: #94a3b8; text-transform: uppercase; font-weight: 600; margin-bottom: 6px;">Bantuan Pemulihan Password</div>
+                        <div style="font-size: 1.1rem; font-weight: 700; color: #f8fafc; margin-bottom: 4px;">082323548482 (Syahnahl)</div>
+                        <a href="https://wa.me/6282323548482?text=Halo%20Syahnahl,%20saya%20pengelola%20Bukit%20Padangan%20lupa%20password%20portal%20admin." target="_blank" class="btn-secondary" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; font-size: 0.8rem; margin-top: 8px; text-decoration: none;">
+                            <i class="fab fa-whatsapp" style="color: #25d366;"></i> Hubungi Syahnahl via WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SINKRONISASI CLOUD OTOMATIS -->
+            <div class="admin-card">
+                <div class="card-header" style="border-bottom: 1px solid #1e293b; padding-bottom: 14px; margin-bottom: 18px;">
+                    <div>
+                        <h3 class="card-title" style="font-size: 1.15rem; color: #f8fafc; font-weight: 700;">Sinkronisasi Cloud GitHub Pages</h3>
+                        <p class="card-subtitle" style="color: #94a3b8; font-size: 0.86rem; margin-top: 4px;">Status koneksi otomatis untuk mempublikasikan menu PDF dan konten langsung ke server.</p>
+                    </div>
+                    <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3);">
+                        <i class="fas fa-check-circle"></i> Terkoneksi Otomatis
+                    </span>
+                </div>
+
+                <div style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                    <div style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6;">
+                        <strong>Sistem Direct Cloud Sync Aktif:</strong> Setiap kali Anda mengunggah buku menu PDF atau mengubah katalog menu, sistem langsung menyimpannya ke repositori GitHub Pages tanpa mewajibkan Anda memasukkan token secara manual.
+                    </div>
+                </div>
+
+                <!-- OPSI LANJUTAN: CUSTOM TOKEN OVERRIDE (OPSIONAL) -->
+                <details style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 14px;">
+                    <summary style="font-size: 0.86rem; font-weight: 600; color: #94a3b8; cursor: pointer;">
+                        <i class="fas fa-gear" style="margin-right: 6px;"></i> Pengaturan Lanjutan: Token Cloud Kustom (Khusus Pengembang)
+                    </summary>
+                    <div style="margin-top: 14px;">
+                        <p style="font-size: 0.82rem; color: #94a3b8; margin-bottom: 10px;">
+                            Jika Anda ingin menggunakan Personal Access Token (PAT) pribadi di peramban ini:
+                        </p>
+                        <div class="token-input-wrapper" style="position: relative; display: flex; align-items: center; margin-bottom: 10px;">
+                            <input type="password" class="form-input" id="gitToken" placeholder="«redacted:ghp_…»" style="font-family: monospace; font-size: 0.88rem; padding-right: 44px; width: 100%;">
+                            <button type="button" id="btnToggleTokenVisibility" onclick="toggleTokenVisibility()" style="position: absolute; right: 10px; background: transparent; border: none; color: #94a3b8; cursor: pointer; padding: 6px;" title="Lihat / Sembunyikan Token">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button type="button" class="btn-secondary" style="padding: 8px 14px; font-size: 0.82rem;" onclick="saveGitToken()">
+                                <i class="fas fa-key"></i> Simpan Token Kustom
+                            </button>
+                            <button type="button" class="btn-secondary" id="btnTestGitToken" style="padding: 8px 14px; font-size: 0.82rem;" onclick="testGitConnection()">
+                                <i class="fas fa-plug"></i> Tes Koneksi
+                            </button>
+                        </div>
+                        <div id="tokenStatusText" style="font-size: 0.82rem; font-weight: 600; margin-top: 8px;"></div>
+                        <div id="gitTestFeedback" style="display: none; padding: 10px 12px; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; margin-top: 10px;"></div>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+            </div> <!-- .app-content-container -->
+        </div> <!-- .admin-main-wrap -->
+    </div> <!-- #adminAppWorkspace -->
+
+    <!-- ========================================================
+         MODAL 2: FORM TAMBAH / EDIT MENU (CLEAN POPUP)
+         ======================================================== -->

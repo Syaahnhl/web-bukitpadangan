@@ -1,0 +1,117 @@
+            <div id="tab-overview" class="tab-panel active">
+                <!-- HERO RINGKASAN -->
+                <div class="overview-hero-card">
+                    <div class="overview-hero-content">
+                        <div class="overview-badge">
+                            <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10b981;margin-right:6px;"></span> Sistem Operasional Terhubung
+                        </div>
+                        <h2 class="overview-title">Dashboard Pengelola Bukit Padangan</h2>
+                        <p class="overview-subtitle">Pusat kendali resmi untuk mengelola buku menu PDF, katalog harga, denah 23 meja, dan informasi website.</p>
+                    </div>
+                    <div class="overview-hero-actions">
+                        <a href="index.html" target="_blank" class="btn-secondary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 10px 16px;">
+                            <i class="fas fa-arrow-up-right-from-square"></i> Buka Web Publik
+                        </a>
+                        <button type="button" class="btn-primary" onclick="switchTab('tab-menu')" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px;">
+                            <i class="fas fa-utensils"></i> Kelola Menu & PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 4 KARTU STATUS OPERASIONAL (CLEAN MATTE GRID) -->
+                <div class="overview-metrics-grid">
+                    <!-- METRIK 1: BUKU MENU PDF -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-label">Buku Menu PDF Resmi</span>
+                            <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3);">Live di Web</span>
+                        </div>
+                        <div class="metric-value">11.5 MB</div>
+                        <div class="metric-desc">MENU BUKIT PADANGAN–JUNI 2026.pdf</div>
+                        <div class="metric-footer">
+                            <button type="button" class="btn-secondary" onclick="switchTab('tab-menu'); setTimeout(showInlinePdfPreview, 120);" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-eye"></i> Pratinjau PDF
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="switchTab('tab-menu')" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-upload"></i> Ganti PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- METRIK 2: KATALOG MENU -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-label">Katalog Menu & Harga</span>
+                            <span class="badge" id="overviewMenuCountBadge" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);">Katalog Aktif</span>
+                        </div>
+                        <div class="metric-value" id="overviewMenuCountVal">24 Menu</div>
+                        <div class="metric-desc">Makanan Tradisional, Minuman & Cemilan</div>
+                        <div class="metric-footer">
+                            <button type="button" class="btn-secondary" onclick="switchTab('tab-menu')" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-list-check"></i> Edit Daftar Menu
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- METRIK 3: DENAH MEJA -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-label">Kapasitas Tempat</span>
+                            <span class="badge" style="background: rgba(212, 163, 115, 0.15); color: #e2b88b; border: 1px solid rgba(212, 163, 115, 0.3);">Terverifikasi</span>
+                        </div>
+                        <div class="metric-value">23 Meja Resto</div>
+                        <div class="metric-desc">Area Joglo, Gazebo, & Semi-Outdoor</div>
+                        <div class="metric-footer">
+                            <button type="button" class="btn-secondary" onclick="switchTab('tab-tables')" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-chair"></i> Buka Denah Meja
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- METRIK 4: TAMPILAN WEB -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-label">Status Website Publik</span>
+                            <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3);">Online</span>
+                        </div>
+                        <div class="metric-value">GitHub Pages</div>
+                        <div class="metric-desc">Banner Promo, Hero, & Kontak Operasional</div>
+                        <div class="metric-footer">
+                            <button type="button" class="btn-secondary" onclick="switchTab('tab-content')" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-pen-to-square"></i> Edit Pengumuman
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INFORMASI OPERASIONAL & REFERENSI BAKU -->
+                <div class="admin-card" style="margin-top: 6px;">
+                    <div style="font-weight: 600; font-size: 0.95rem; color: #f8fafc; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 10px;">
+                        <span><i class="fas fa-circle-info" style="color: var(--gold-primary, #d4a373); margin-right: 8px;"></i>Informasi Operasional & Rekening Resmi</span>
+                        <span style="font-size: 0.78rem; color: #94a3b8; font-weight: normal;">Bukit Padangan SSOT</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px;">
+                        <div style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 12px 14px;">
+                            <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px;">Jam Operasional Restoran</div>
+                            <div style="font-weight: 600; color: #f8fafc; font-size: 0.9rem;">Setiap Hari • 08.00 - 21.00 WIB</div>
+                            <div style="font-size: 0.78rem; color: #cbd5e1; margin-top: 2px;">Lereng Perbukitan Padangan</div>
+                        </div>
+                        <div style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 12px 14px;">
+                            <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px;">Kebijakan Reservasi Meja</div>
+                            <div style="font-weight: 600; color: #22c55e; font-size: 0.9rem;"><i class="fas fa-check-circle"></i> Bebas DP (Tanpa Uang Muka)</div>
+                            <div style="font-size: 0.78rem; color: #cbd5e1; margin-top: 2px;">Pesan menu langsung di kasir Kaching</div>
+                        </div>
+                        <div style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 12px 14px;">
+                            <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px;">WhatsApp Konfirmasi Tamu</div>
+                            <div style="font-weight: 600; color: #f8fafc; font-size: 0.9rem;">0823-2353-5747</div>
+                            <div style="font-size: 0.78rem; color: #cbd5e1; margin-top: 2px;">Layanan Reservasi Meja</div>
+                        </div>
+                        <div style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 12px 14px;">
+                            <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px;">Kontak Bantuan Pengelola</div>
+                            <div style="font-weight: 600; color: #f8fafc; font-size: 0.9rem;">082323548482</div>
+                            <div style="font-size: 0.78rem; color: #cbd5e1; margin-top: 2px;">Syahnahl (Pemulihan Akses)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+

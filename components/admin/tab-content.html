@@ -1,0 +1,169 @@
+            <div id="tab-content" class="tab-panel">
+            <form id="contentEditorForm" onsubmit="handleSaveContent(event)">
+                
+                <!-- 1. BANNER PROMO -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <div class="card-icon"><i class="fas fa-bullhorn"></i></div>
+                            <div>
+                                <h3 class="card-title">Banner Promo & Pengumuman</h3>
+                                <p class="card-subtitle">Muncul di strip bagian paling atas halaman website.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="toggle-card" onclick="toggleCheckbox('showPromo')">
+                        <div class="toggle-label-wrap">
+                            <span class="toggle-title">Tampilkan Banner Promo Teratas</span>
+                            <span class="toggle-desc">Aktifkan untuk memberikan info promo atau penawaran spesial</span>
+                        </div>
+                        <label class="switch" onclick="event.stopPropagation()">
+                            <input type="checkbox" id="showPromo">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="promoText"><i class="fas fa-pen-fancy"></i> Teks Pengumuman Promo</label>
+                        <input type="text" class="form-input" id="promoText" placeholder="Contoh: Nikmati Seduhan Kopi Muria & Diskon Reservasi Rombongan!">
+                        <span class="form-hint">Dapat dikosongkan jika banner dinonaktifkan.</span>
+                    </div>
+                </div>
+
+                <!-- 2. HERO LANDING -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <div class="card-icon"><i class="fas fa-heading"></i></div>
+                            <div>
+                                <h3 class="card-title">Tampilan Utama (Hero Section)</h3>
+                                <p class="card-subtitle">Judul dan sambutan pembuka yang pertama kali dilihat pengunjung.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-grid form-grid-2" style="margin-bottom: 16px;">
+                        <div class="form-group">
+                            <label class="form-label" for="heroSubtitle">Sub-judul Pembuka</label>
+                            <input type="text" class="form-input" id="heroSubtitle" required placeholder="Selamat Datang di">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="heroTitle">Nama Tempat / Brand</label>
+                            <input type="text" class="form-input" id="heroTitle" required placeholder="Bukit Padangan">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="heroDesc">Slogan Singkat Autentik Tradisional</label>
+                        <textarea class="form-textarea" id="heroDesc" rows="3" required placeholder="Nikmati hidangan lezat dengan suasana asri perbukitan yang menenangkan dan cita rasa autentik tradisional nusantara."></textarea>
+                    </div>
+                </div>
+
+                <!-- 3. ABOUT RESTO -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <div class="card-icon"><i class="fas fa-store"></i></div>
+                            <div>
+                                <h3 class="card-title">Profil & Konsep Resto (Tentang Kami)</h3>
+                                <p class="card-subtitle">Penjelasan nilai keasrian alam dan masakan tradisional pedesaan.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label class="form-label" for="aboutTitle">Judul Seksi Profil</label>
+                        <input type="text" class="form-input" id="aboutTitle" required placeholder="Suasana Alam & Rasa Otentik">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="aboutDesc">Deskripsi Narasi Resto</label>
+                        <textarea class="form-textarea" id="aboutDesc" rows="4" required placeholder="Terletak di jalur sejuk Gunungwungkal, Bukit Padangan menghadirkan pengalaman kuliner tradisional nusantara..."></textarea>
+                    </div>
+                </div>
+
+                <!-- 4. ACARA KHUSUS / EVENT -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <div class="card-icon"><i class="fas fa-calendar-star"></i></div>
+                            <div>
+                                <h3 class="card-title">Agenda Acara & Live Performance</h3>
+                                <p class="card-subtitle">Pengumuman pertunjukan musik akhir pekan atau acara musiman.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="toggle-card" onclick="toggleCheckbox('showEvent')">
+                        <div class="toggle-label-wrap">
+                            <span class="toggle-title">Aktifkan Seksi Acara Khusus</span>
+                            <span class="toggle-desc">Tampilkan kartu info event di halaman utama website</span>
+                        </div>
+                        <label class="switch" onclick="event.stopPropagation()">
+                            <input type="checkbox" id="showEvent">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="eventTitle">Judul Acara</label>
+                            <input type="text" class="form-input" id="eventTitle" placeholder="Contoh: Akustik Akhir Pekan Lereng Gunung">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="eventDesc">Detail Waktu & Keterangan</label>
+                            <input type="text" class="form-input" id="eventDesc" placeholder="Contoh: Setiap Sabtu malam mulai pukul 19.00 WIB">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. KONTAK & SOSMED -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <div class="card-icon"><i class="fas fa-address-book"></i></div>
+                            <div>
+                                <h3 class="card-title">Layanan Pelanggan & Media Sosial</h3>
+                                <p class="card-subtitle">Nomor WhatsApp tujuan reservasi dan akun media sosial resmi.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-grid form-grid-2" style="margin-bottom: 16px;">
+                        <div class="form-group">
+                            <label class="form-label" for="waAdmin1"><i class="fab fa-whatsapp" style="color: #25d366;"></i> WhatsApp Admin 1</label>
+                            <input type="text" class="form-input" id="waAdmin1" required placeholder="6282323535747">
+                            <span class="form-hint">Gunakan kode negara 62 tanpa spasi atau strip.</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="waAdmin2"><i class="fab fa-whatsapp" style="color: #25d366;"></i> WhatsApp Admin 2</label>
+                            <input type="text" class="form-input" id="waAdmin2" required placeholder="6285290462715">
+                            <span class="form-hint">Nomor cadangan untuk penerimaan reservasi.</span>
+                        </div>
+                    </div>
+
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="igLink"><i class="fab fa-instagram" style="color: #e1306c;"></i> Tautan Instagram</label>
+                            <input type="text" class="form-input" id="igLink" required placeholder="https://instagram.com/bukitpadangan.id">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="fbLink"><i class="fab fa-facebook" style="color: #1877f2;"></i> Tautan Facebook</label>
+                            <input type="text" class="form-input" id="fbLink" required placeholder="https://facebook.com/bukitpadangan">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBMIT BUTTON -->
+                <div style="margin-top: 10px; margin-bottom: 40px;">
+                    <button type="submit" class="btn-primary" id="btnSaveContentSubmit">
+                        <i class="fas fa-cloud-arrow-up"></i> Simpan & Perbarui Teks Website
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ========================================================
+             TAB 2: KATALOG MENU (MODERN CARDS & MODAL CRUD)
+             ======================================================== -->

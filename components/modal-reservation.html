@@ -1,0 +1,162 @@
+    <!-- RESERVATION MODAL (INTERAKTIF FORM LUXURY) -->
+    <div id="reservationModal" class="modal modal-reservation-overlay">
+        <div class="modal-content reservation-modal-content">
+            <div class="modal-sheet-handle"></div>
+            
+            <!-- Sticky Modal Header -->
+            <div class="res-modal-header">
+                <div class="res-modal-header-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="res-modal-header-info">
+                    <h3>Reservasi Meja & Tempat</h3>
+                    <p>Restoran Bukit Padangan • Konfirmasi Instan via WhatsApp</p>
+                </div>
+                <button type="button" class="close-btn res-modal-close" onclick="closeModal()" aria-label="Tutup Modal">&times;</button>
+            </div>
+
+            <form id="reservationForm" onsubmit="submitReservation(event)" class="res-form-wrapper">
+                <!-- Scrollable Body Container -->
+                <div class="res-modal-body">
+                    
+                    <!-- STEP 1: PEMILIHAN MEJA & AREA -->
+                    <div class="res-section-card">
+                        <div class="res-section-title">
+                            <span class="res-step-pill">1</span>
+                            <span>Pilihan Meja & Suasana</span>
+                        </div>
+
+                        <!-- Selected Table State (If Table is Chosen) -->
+                        <div id="formSelectedTableBadge" class="selected-table-callout" style="display: none;">
+                            <div class="table-callout-icon">
+                                <i class="fas fa-chair"></i>
+                            </div>
+                            <div class="table-callout-text">
+                                <span class="table-status-tag"><i class="fas fa-check-circle"></i> Meja Dipilih</span>
+                                <strong id="badgeTableName">Meja 10 (Indoor Utama)</strong>
+                                <p id="badgeTableZone">Indoor Utama (6x6 m) • 6 Kursi</p>
+                            </div>
+                            <button type="button" class="btn-clear-table" onclick="clearSelectedTable()" title="Ganti Meja">
+                                <i class="fas fa-undo"></i> Ganti
+                            </button>
+                        </div>
+
+                        <!-- Dropdown & Floorplan Action -->
+                        <div id="formTableSelectGroup" class="form-group table-select-group">
+                            <label for="resTableSelect">Pilih Nomor Meja Spesifik (Opsional)</label>
+                            <div class="table-select-row">
+                                <select id="resTableSelect" onchange="handleManualTableSelect()">
+                                    <option value="">-- Bebas / Ditentukan Petugas Saat Datang --</option>
+                                    <!-- Diisi dinamis -->
+                                </select>
+                                <button type="button" class="btn-pick-denah" onclick="closeModal(); document.getElementById('tables').scrollIntoView({behavior: 'smooth'})">
+                                    <i class="fas fa-map-marked-alt"></i> Denah 3D/2D
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Pilihan Area -->
+                        <div id="formAreaGroup" class="form-group" style="margin-bottom: 0;">
+                            <label for="resArea">Preferensi Area Suasana</label>
+                            <select id="resArea" required>
+                                <option value="Outdoor (View Persawahan & Sungai)">Outdoor (View Persawahan & Sungai)</option>
+                                <option value="Area Terapi Ikan & Ramah Anak">Area Terapi Ikan & Ramah Anak</option>
+                                <option value="Indoor Utama (6x6 m)">Indoor Utama (6x6 m)</option>
+                                <option value="Indoor Timur (Sayap 1 & 2)">Indoor Timur (Sayap 1 & 2)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: DATA PEMESAN & JADWAL -->
+                    <div class="res-section-card">
+                        <div class="res-section-title">
+                            <span class="res-step-pill">2</span>
+                            <span>Data Pemesan & Waktu Kedatangan</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="resName">Nama Lengkap Pemesan <span class="required-star" style="color: #ef4444;">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-user input-icon"></i>
+                                <input type="text" id="resName" required placeholder="Contoh: Budi Santoso" autocomplete="name">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="resDate">Tanggal Kunjungan <span class="required-star" style="color: #ef4444;">*</span></label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-calendar-alt input-icon"></i>
+                                    <input type="date" id="resDate" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="resTime">Jam Kedatangan <span class="required-star" style="color: #ef4444;">*</span></label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-clock input-icon"></i>
+                                    <input type="time" id="resTime" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="resGuests">Jumlah Tamu / Orang <span class="required-star" style="color: #ef4444;">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-users input-icon"></i>
+                                <input type="number" id="resGuests" min="1" max="50" required placeholder="Contoh: 4">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="resNotes">Catatan Khusus / Permintaan (Opsional)</label>
+                            <textarea id="resNotes" rows="2" placeholder="Contoh: Meja dekat panggung live music / bawa kursi bayi / acara keluarga"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: KETENTUAN RESERVASI & PESANAN MENU -->
+                    <div class="res-section-card">
+                        <div class="res-section-title">
+                            <span class="res-step-pill">3</span>
+                            <span>Ketentuan Reservasi & Pesanan Menu</span>
+                        </div>
+                        
+                        <div class="res-policy-clean-box" style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(212, 163, 115, 0.25); border-radius: 10px; padding: 14px 16px; margin-top: 10px;">
+                            <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                                <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(34, 197, 94, 0.15); color: #22c55e; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div>
+                                    <strong style="color: #f8fafc; font-size: 0.95rem; display: block; margin-bottom: 3px;">Reservasi Meja Bebas DP (Tanpa Uang Muka)</strong>
+                                    <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.45; margin: 0;">Pemesanan meja melalui website atau WhatsApp tidak dipungut biaya uang muka (DP). Slot meja akan langsung diamankan oleh Admin Resto.</p>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; align-items: flex-start; gap: 12px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                                <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(212, 163, 115, 0.15); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <div>
+                                    <strong style="color: #f8fafc; font-size: 0.95rem; display: block; margin-bottom: 3px;">Pesan Menu Makanan Langsung di Tempat</strong>
+                                    <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.45; margin: 0;">Menu makanan & minuman bebas dipilih dan dipesan langsung setibanya di restoran melalui kasir Kaching POS atau memesan langsung di meja.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="resAdmin" value="6282323535747">
+                </div>
+
+                <!-- Sticky Locked Footer -->
+                <div class="res-modal-footer">
+                    <button type="submit" class="btn-submit-res-luxury">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>Lanjutkan Reservasi Meja via WhatsApp (Bebas DP)</span>
+                    </button>
+                    <p class="res-footer-note">
+                        <i class="fas fa-lock"></i> Terhubung langsung ke WhatsApp Admin Resmi Bukit Padangan <span style="white-space: nowrap;">(<strong>0823-2353-5747</strong>)</span>.
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+

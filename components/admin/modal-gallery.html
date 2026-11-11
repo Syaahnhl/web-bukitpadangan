@@ -1,0 +1,110 @@
+    <div id="galleryModalOverlay" class="modal-overlay" style="display: none;">
+        <div class="modal-box modal-flex-box" style="max-width: 540px; width: 100%;">
+            <div class="modal-flex-header">
+                <h3 class="modal-title" id="galleryModalHeaderTitle">Tambah Foto Galeri Baru</h3>
+                <button type="button" class="btn-modal-close" onclick="closeGalleryModal()">&times;</button>
+            </div>
+            
+            <form id="galleryForm" class="modal-flex-form" onsubmit="handleGallerySubmit(event)">
+                <input type="hidden" id="galleryModalMode" value="add">
+                <input type="hidden" id="galleryItemIndex" value="-1">
+                <input type="hidden" id="galleryItemId" value="">
+
+                <div class="modal-flex-body">
+                    <!-- KATEGORI FOTO -->
+                    <div class="form-group">
+                        <label class="form-label" for="galleryCategory">Kategori Penempatan Foto</label>
+                        <select class="form-input" id="galleryCategory" required onchange="handleGalleryCategoryChange(this.value)">
+                            <option value="reuni">Foto Reuni & Paket Acara (Gathering / Arisan / Rapat)</option>
+                            <option value="pemandangan">Pemandangan & Sunset Bukit (Panorama / Sawah)</option>
+                            <option value="galeri">Galeri Suasana & Spot Foto (Saung / Sungai / Malam)</option>
+                        </select>
+                        <span class="form-input-help">Foto akan otomatis tayang di seksi beranda yang sesuai.</span>
+                    </div>
+
+                    <!-- JUDUL FOTO -->
+                    <div class="form-group">
+                        <label class="form-label" for="galleryTitle">Judul / Nama Acara / Spot Foto</label>
+                        <input type="text" class="form-input" id="galleryTitle" required placeholder="Contoh: Reuni Temu Kangen Alumni, Sunset Sawah...">
+                    </div>
+
+                    <!-- BADGE LABEL -->
+                    <div class="form-group">
+                        <label class="form-label" for="galleryBadge">Label Badge (Opsional)</label>
+                        <input type="text" class="form-input" id="galleryBadge" placeholder="Contoh: Reuni & Gathering, Golden Hour 16:45, Saung Lesehan...">
+                    </div>
+
+                    <!-- UPLOAD ATAU GANTI FOTO DENGAN PREVIEW -->
+                    <div class="form-group">
+                        <label class="form-label">Foto Dokumentasi</label>
+                        
+                        <input type="file" id="galleryImgFileInput" accept="image/*" style="display: none;" onchange="handleGalleryPhotoFile(this)">
+
+                        <div class="menu-photo-box">
+                            <!-- Preview State (when photo exists) -->
+                            <div id="galleryPhotoPreviewBox" class="menu-photo-preview-wrap" style="display: none;">
+                                <div class="menu-photo-thumb-container" style="width: 100px; height: 75px; border-radius: 8px;">
+                                    <img id="galleryImgPreview" src="" alt="Pratinjau Foto Galeri">
+                                </div>
+                                <div class="menu-photo-details">
+                                    <div class="photo-title-wrap">
+                                        <span class="photo-ready-badge" id="galleryPhotoBadge"><i class="fas fa-check-circle"></i> Foto Terpasang</span>
+                                        <span class="preview-file-source" id="galleryPhotoSourceLabel" style="font-size: 0.72rem; color: #94a3b8; margin-left: 6px;">Siap</span>
+                                    </div>
+                                    <div class="photo-btn-group">
+                                        <button type="button" class="btn-photo-sm" onclick="document.getElementById('galleryImgFileInput').click()">
+                                            <i class="fas fa-camera-rotate"></i> Ganti Foto
+                                        </button>
+                                        <button type="button" class="btn-photo-sm btn-photo-danger" onclick="removeGalleryPhoto()">
+                                            <i class="fas fa-trash-can"></i> Hapus Foto
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Empty Upload State (when no photo) -->
+                            <div id="galleryPhotoEmptyPrompt" class="menu-photo-empty-prompt" onclick="document.getElementById('galleryImgFileInput').click()">
+                                <div class="upload-pulse-icon">
+                                    <i class="fas fa-cloud-arrow-up"></i>
+                                </div>
+                                <div class="upload-prompt-text">
+                                    <span class="prompt-main">Pilih / Upload Foto Galeri</span>
+                                    <span class="prompt-sub">Dari Galeri HP, Jepret Kamera, atau File Komputer (JPG, PNG, WebP)</span>
+                                </div>
+                                <button type="button" class="btn-select-file-pill">
+                                    <i class="fas fa-folder-open"></i> Pilih File
+                                </button>
+                            </div>
+
+                            <!-- Manual URL / Link Accordion Toggle -->
+                            <div class="menu-photo-url-accordion">
+                                <button type="button" class="btn-toggle-url-field" onclick="toggleGalleryUrlField()">
+                                    <span><i class="fas fa-link"></i> <span id="toggleGalleryUrlLabel">Atau masukkan URL tautan gambar online</span></span>
+                                    <i class="fas fa-chevron-down" id="toggleGalleryUrlIcon"></i>
+                                </button>
+                                <div id="galleryUrlInputContainer" class="menu-url-input-container" style="display: none;">
+                                    <input type="text" class="form-input" id="galleryImg" placeholder="https://images.unsplash.com/... atau assets/..." oninput="handleManualGalleryUrlInput(this.value)">
+                                    <span class="form-input-help">Tautan online Unsplash, Wikimedia, atau ImgBB dapat langsung digunakan.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DESKRIPSI -->
+                    <div class="form-group" style="margin-bottom: 4px;">
+                        <label class="form-label" for="galleryDesc">Keterangan / Deskripsi Singkat</label>
+                        <textarea class="form-textarea" id="galleryDesc" rows="3" required placeholder="Deskripsi suasana acara, spot santai, atau lanskap pemandangan..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-flex-footer">
+                    <button type="button" class="btn-secondary" style="flex: 1; padding: 12px 16px;" onclick="closeGalleryModal()">Batal</button>
+                    <button type="submit" class="btn-primary" style="flex: 2; padding: 12px 16px;">
+                        <i class="fas fa-check"></i> Simpan ke Galeri
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->

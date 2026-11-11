@@ -1,0 +1,47 @@
+        <div id="tab-gallery" class="tab-panel">
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon"><i class="fas fa-camera-retro"></i></div>
+                        <div>
+                            <h3 class="card-title">Manajemen Galeri & Foto Dokumentasi</h3>
+                            <p class="card-subtitle">Ganti dan tambah foto reuni acara, pemandangan sunset bukit, dan galeri spot suasana.</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary btn-success" onclick="openGalleryModal('add')">
+                        <i class="fas fa-plus-circle"></i> Tambah Foto Baru
+                    </button>
+                </div>
+
+                <!-- TOOLBAR PENCARIAN & FILTER KATEGORI -->
+                <div class="catalog-toolbar">
+                    <div class="search-box-wrap">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="search-input" id="gallerySearchInput" placeholder="Cari judul foto, spot, atau kategori..." oninput="handleGallerySearch()">
+                    </div>
+                    <div class="category-filter-chips">
+                        <button type="button" class="chip-btn active" onclick="filterGalleryCategory('all', this)">Semua Foto (<span id="countAllGallery">0</span>)</button>
+                        <button type="button" class="chip-btn" onclick="filterGalleryCategory('reuni', this)"><i class="fas fa-user-friends"></i> Foto Reuni & Acara (<span id="countReuniGallery">0</span>)</button>
+                        <button type="button" class="chip-btn" onclick="filterGalleryCategory('pemandangan', this)"><i class="fas fa-mountain-sun"></i> Pemandangan & Sunset (<span id="countPemandanganGallery">0</span>)</button>
+                        <button type="button" class="chip-btn" onclick="filterGalleryCategory('galeri', this)"><i class="fas fa-images"></i> Galeri Suasana & Spot (<span id="countGaleriGallery">0</span>)</button>
+                    </div>
+                </div>
+
+                <!-- GRID DAFTAR FOTO -->
+                <div class="gallery-admin-grid" id="galleryCardsContainer">
+                    <div class="empty-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Memuat galeri foto...</p>
+                    </div>
+                </div>
+
+                <!-- SUBMIT BUTTON COMMIT GALLERY -->
+                <button type="button" class="btn-primary" id="btnSaveGallerySubmit" onclick="saveGalleryToGithub()">
+                    <i class="fas fa-floppy-disk"></i> Terapkan Perubahan Foto ke Server Live
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================================
+             TAB 3: STATUS DENAH MEJA (26 MEJA)
+             ======================================================== -->

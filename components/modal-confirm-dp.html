@@ -1,0 +1,106 @@
+    <!-- CONFIRM DP TRANSFER MODAL -->
+    <div id="confirmDpModal" class="modal" style="display: none;">
+        <div class="modal-content confirm-dp-modal-content">
+            <div class="modal-sheet-handle"></div>
+            <span class="close-btn" onclick="closeConfirmDpModal()">&times;</span>
+            <div class="modal-header-text">
+                <div class="badge-gold"><i class="fas fa-receipt"></i> Konfirmasi Pembayaran DP</div>
+                <h3>Konfirmasi Bukti Transfer Mandiri</h3>
+                <p>Kirimkan bukti transfer Down Payment (DP) Anda agar admin segera memvalidasi dan mengunci slot reservasi meja Anda:</p>
+            </div>
+
+            <!-- Rekening DP Card Luxury -->
+            <div class="dp-bank-card-luxury">
+                <div class="bank-luxury-header">
+                    <span class="bank-tag"><i class="fas fa-university"></i> Rekening Resmi Tujuan DP</span>
+                    <span class="bank-secure-badge"><i class="fas fa-shield-alt"></i> Terverifikasi</span>
+                </div>
+                <div class="bank-luxury-body">
+                    <div class="bank-luxury-logo">MANDIRI</div>
+                    <div class="bank-luxury-info">
+                        <span class="bank-acc-label">Nomor Rekening Mandiri:</span>
+                        <div class="bank-num-copy-row">
+                            <strong class="bank-acc-number">1840011559968</strong>
+                            <button type="button" class="btn-copy-gold" onclick="copyMandiriAccount()" title="Salin Nomor Rekening">
+                                <i class="fas fa-copy"></i> Salin
+                            </button>
+                        </div>
+                        <span class="bank-acc-name">a.n. <strong>Mila Elmeida</strong> (Bank Mandiri)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Konfirmasi -->
+            <form id="confirmDpForm" onsubmit="handleConfirmDpSubmit(event)">
+                <div class="form-group">
+                    <label for="dpSenderName">Nama Pengirim / Pemesan <span class="required">*</span></label>
+                    <input type="text" id="dpSenderName" required placeholder="Contoh: Budi Santoso (sesuai rekening)">
+                </div>
+
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="dpSenderPhone">Nomor WhatsApp <span class="required">*</span></label>
+                        <input type="tel" id="dpSenderPhone" required placeholder="08123456789">
+                    </div>
+                    <div class="form-group">
+                        <label for="dpArrivalDate">Tanggal & Jam Kedatangan <span class="required">*</span></label>
+                        <input type="text" id="dpArrivalDate" required placeholder="Contoh: Sabtu, 26 Sept 2026 - 17:00 WIB">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dpTableInfo">Pilihan Meja / Area Reservasi</label>
+                    <input type="text" id="dpTableInfo" placeholder="Belum ada meja dipilih (opsional)" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Nominal Transfer DP <span class="required">*</span></label>
+                    <div class="dp-chips-group">
+                        <button type="button" class="dp-chip" onclick="selectDpNominal(50000)">Rp 50.000</button>
+                        <button type="button" class="dp-chip active" onclick="selectDpNominal(100000)">Rp 100.000</button>
+                        <button type="button" class="dp-chip" onclick="selectDpNominal(200000)">Rp 200.000</button>
+                        <button type="button" class="dp-chip" onclick="selectDpNominal('custom')">Nominal Lain</button>
+                    </div>
+                    <input type="number" id="dpAmountInput" value="100000" min="10000" step="5000" required placeholder="Masukkan nominal DP (contoh: 100000)">
+                </div>
+
+                <!-- Upload Struk File Zone -->
+                <div class="form-group">
+                    <label>Lampirkan Foto Struk / Bukti Transfer (Opsional)</label>
+                    <div class="file-drop-zone" id="dpFileDropZone" onclick="document.getElementById('dpReceiptFileInput').click()">
+                        <input type="file" id="dpReceiptFileInput" accept="image/*" style="display: none;" onchange="handleReceiptFileSelect(this)">
+                        <div id="dropZonePrompt" class="drop-zone-prompt">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p><strong>Klik untuk pilih foto struk</strong> atau tarik file ke sini</p>
+                            <span class="file-hint">Format JPG, PNG, WebP (Maks. 5MB)</span>
+                        </div>
+                        <div id="dropZonePreview" class="drop-zone-preview" style="display: none;">
+                            <img id="receiptPreviewImg" src="" alt="Preview Struk">
+                            <div class="receipt-preview-info">
+                                <span id="receiptFileName">struk-transfer.jpg</span>
+                                <button type="button" class="btn-remove-receipt" onclick="removeReceiptFile(event)"><i class="fas fa-trash"></i> Hapus</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dpNotes">Catatan Tambahan (Opsional)</label>
+                    <textarea id="dpNotes" rows="2" placeholder="Contoh: Sudah pesan menu via keranjang / meja outdoor tepi sawah"></textarea>
+                </div>
+
+                <div class="confirm-dp-footer">
+                    <button type="submit" class="btn-submit-dp">
+                        <i class="fab fa-whatsapp"></i> Kirim Konfirmasi ke WhatsApp Admin
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification for Add-to-Cart -->
+    <div id="cartToast" class="cart-toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="cartToastMsg">Item berhasil ditambahkan ke keranjang</span>
+    </div>
+

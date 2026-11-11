@@ -1,0 +1,164 @@
+        <div id="tab-menu" class="tab-panel">
+            <!-- KARTU KHUSUS: UPLOAD & KELOLA BUKU MENU PDF RESMI -->
+            <div class="admin-card" style="margin-bottom: 24px; ">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;"><i class="fas fa-file-pdf"></i></div>
+                        <div>
+                            <h3 class="card-title">Upload & Kelola Buku Menu PDF Resmi</h3>
+                            <p class="card-subtitle">Unggah berkas katalog PDF (.pdf) untuk tombol unduh otomatis di website publik.</p>
+                        </div>
+                    </div>
+                    <span class="badge" id="menuPdfStatusBadge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fas fa-check-circle"></i> File PDF Aktif Tersedia
+                    </span>
+                </div>
+
+                <div class="pdf-management-box" style="background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 20px; margin-top: 16px;">
+                    <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                        <div style="width: 60px; height: 60px; background: rgba(239, 68, 68, 0.15); border: 2px dashed #ef4444; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #ef4444; flex-shrink: 0;">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div style="flex: 1; min-width: 250px;">
+                            <div style="font-weight: 700; font-size: 1.05rem; color: #f8fafc; margin-bottom: 4px;" id="currentPdfName">
+                                MENU BUKIT PADANGAN–JUNI 2026.pdf
+                            </div>
+                            <div style="font-size: 0.85rem; color: #94a3b8; display: flex; gap: 14px; flex-wrap: wrap;" id="currentPdfMeta">
+                                <span><i class="fas fa-folder-open"></i> assets/pdf/buku-menu-bukit-padangan.pdf</span>
+                                <span><i class="fas fa-database"></i> ~11,250 KB (Menu Resmi Aktif)</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button type="button" class="btn-primary" onclick="toggleInlinePdfPreview()" id="btnTogglePdfPreview" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; font-size: 0.88rem; background: #2563eb; font-weight: 600;">
+                                <i class="fas fa-eye"></i> <span id="btnTogglePdfPreviewText">Pratinjau PDF</span>
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="testDownloadMenuPdfDirect()" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; font-size: 0.88rem;">
+                                <i class="fas fa-download"></i> Tes Download PDF
+                            </button>
+                            <a href="assets/pdf/buku-menu-bukit-padangan.pdf" id="btnOpenNewTabPdf" target="_blank" class="btn-secondary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 10px 14px; font-size: 0.88rem;" title="Buka PDF di Tab Baru">
+                                <i class="fas fa-arrow-up-right-from-square"></i> Tab Baru
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- DROPZONE / FILE INPUT -->
+                    <div style="margin-top: 18px; padding: 20px; border: 2px dashed #475569; border-radius: 10px; background: rgba(30, 41, 59, 0.5); text-align: center; cursor: pointer; transition: all 0.2s;" id="pdfDropzone" onclick="document.getElementById('menuPdfFileInput').click()">
+                        <input type="file" id="menuPdfFileInput" accept="application/pdf" style="display: none;" onchange="handleMenuPdfSelected(this)">
+                        <i class="fas fa-cloud-arrow-up" style="font-size: 32px; color: #38bdf8; margin-bottom: 8px;"></i>
+                        <div style="font-weight: 600; color: #f1f5f9; font-size: 0.95rem;">
+                            Klik untuk memilih berkas PDF baru atau seret file PDF ke sini
+                        </div>
+                        <div style="font-size: 0.82rem; color: #64748b; margin-top: 4px;">
+                            Format berkas: <strong>.pdf</strong> (Maks. 25 MB). Menggantikan file PDF resmi yang diunduh tamu.
+                        </div>
+                    </div>
+
+                    <!-- PREVIEW FILE YANG BARU DIPILIH -->
+                    <div id="selectedPdfBox" style="display: none; margin-top: 16px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px; padding: 14px 18px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <i class="fas fa-file-circle-check" style="color: #38bdf8; font-size: 22px;"></i>
+                            <div>
+                                <div style="font-weight: 600; color: #f8fafc; font-size: 0.92rem;" id="selectedPdfFileName">-</div>
+                                <div style="font-size: 0.8rem; color: #94a3b8;" id="selectedPdfFileSize">-</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button type="button" class="btn-secondary" id="btnPreviewSelectedPdf" onclick="previewPendingSelectedPdf()" style="padding: 9px 14px; font-size: 0.88rem; display: inline-flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-eye"></i> Pratinjau Berkas Ini
+                            </button>
+                            <button type="button" class="btn-primary" id="btnUploadPdfGithub" onclick="uploadMenuPdfToGithub()" style="padding: 9px 18px; font-size: 0.88rem; background: #0284c7; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-cloud-arrow-up"></i> Upload & Simpan PDF Langsung
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="cancelSelectedPdf()" style="padding: 9px 14px; font-size: 0.88rem;">
+                                Batal
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- INLINE LIVE PDF PREVIEW CONTAINER -->
+                    <div id="pdfInlinePreviewCard" style="display: none; margin-top: 18px; background: #0b1329; border: 1px solid #1e293b; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; background: #1e293b; border-bottom: 1px solid #334155; flex-wrap: wrap; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(239, 68, 68, 0.2); color: #ef4444; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <span style="font-weight: 600; color: #f8fafc; font-size: 0.92rem;" id="inlinePdfPreviewTitle">Pratinjau PDF: MENU BUKIT PADANGAN–JUNI 2026.pdf</span>
+                            </div>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <a href="assets/pdf/buku-menu-bukit-padangan.pdf" target="_blank" id="inlinePdfExternalLink" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                                    <i class="fas fa-arrow-up-right-from-square"></i> Buka Penuh
+                                </a>
+                                <button type="button" class="btn-secondary" onclick="refreshPdfPreview()" style="padding: 6px 10px; font-size: 0.8rem;" title="Muat Ulang Pratinjau">
+                                    <i class="fas fa-rotate-right"></i>
+                                </button>
+                                <button type="button" class="btn-secondary" onclick="closeInlinePdfPreview()" style="padding: 6px 10px; font-size: 0.8rem; color: #f87171;" title="Tutup Pratinjau">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div style="position: relative; width: 100%; height: 620px; background: #0f172a;" id="pdfViewerWrapper">
+                            <iframe id="pdfPreviewIframe" src="" style="width: 100%; height: 100%; border: none;" allow="autoplay"></iframe>
+                        </div>
+                        <div id="pdfMobileFallbackNotice" style="padding: 12px 18px; text-align: center; background: #0f172a; border-top: 1px solid #1e293b; font-size: 0.82rem; color: #94a3b8;">
+                            <span>Tampilan pratinjau interaktif aktif. Jika ingin melihat halaman penuh di tab terpisah:</span>
+                            <a href="assets/pdf/buku-menu-bukit-padangan.pdf" target="_blank" id="pdfMobileDirectBtn" style="color: #38bdf8; font-weight: 600; margin-left: 6px; text-decoration: underline;">Buka di Tab Baru</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon"><i class="fas fa-bowl-food"></i></div>
+                        <div>
+                            <h3 class="card-title">Manajemen Menu & Harga</h3>
+                            <p class="card-subtitle">Perbarui daftar makanan, minuman tradisional, dan cemilan.</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary btn-success" onclick="openMenuModal('add')">
+                        <i class="fas fa-plus-circle"></i> Tambah Menu Baru
+                    </button>
+                </div>
+
+                <!-- TOOLBAR PENCARIAN & FILTER -->
+                <div class="catalog-toolbar">
+                    <div class="search-box-wrap">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="search-input" id="menuSearchInput" placeholder="Cari menu atau harga..." oninput="handleMenuSearch()">
+                    </div>
+                    <div class="category-filter-chips" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button type="button" class="chip-btn active" onclick="filterMenuCategory('all', this)">Semua</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('bu-darmisih', this)">Spesial Bu Darmisih</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('makanan', this)">Makanan Utama</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('sayuran', this)">Sayuran</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('mie-ayam', this)">Mie Ayam</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('nasi', this)">Nasi</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('camilan', this)">Camilan</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('minuman', this)">Minuman</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('kopi-wedang', this)">Kopi & Wedang</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('es-krim', this)">Es Krim</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('sambal-pelengkap', this)">Sambal & Pelengkap</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('pojok-padangan', this)">Hasil Bumi</button>
+                        <button type="button" class="chip-btn" onclick="filterMenuCategory('fasilitas', this)">Fasilitas</button>
+                    </div>
+                </div>
+
+                <!-- GRID DAFTAR MENU -->
+                <div class="menu-grid" id="menuCardsContainer">
+                    <div class="empty-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Memuat katalog menu...</p>
+                    </div>
+                </div>
+
+                <!-- SUBMIT BUTTON COMMIT MENU -->
+                <button type="button" class="btn-primary" id="btnSaveMenuSubmit" onclick="saveMenuToGithub()">
+                    <i class="fas fa-floppy-disk"></i> Terapkan Perubahan Menu ke Server Live
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================================
+             TAB: GALERI & FOTO DOKUMENTASI (REUNI, PEMANDANGAN, SUASANA)
+             ======================================================== -->

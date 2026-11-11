@@ -1,0 +1,38 @@
+    <!-- SITE HEADER (PROMO BAR + NAVBAR) -->
+    <header class="site-header" id="siteHeader">
+        <!-- TOP PROMO BAR -->
+        <div id="promoBar" class="promo-bar" style="display: none;">
+            <div class="promo-content">
+                <span class="promo-tag">INFO PROMO</span>
+                <p id="promoText">Diskon 10% untuk Pre-order Menu makanan khusus reservasi online hari ini! 🎉</p>
+            </div>
+            <span class="close-promo" onclick="closePromoBar()">&times;</span>
+        </div>
+
+        <!-- NAVBAR -->
+        <nav class="navbar" id="mainNavbar">
+            <div class="logo">Bukit <span>Padangan</span></div>
+            <div class="nav-backdrop" id="navBackdrop" onclick="toggleNavMenu()"></div>
+            <ul class="nav-links" id="navLinks">
+                <li class="nav-drawer-header">
+                    <div class="logo">Bukit <span>Padangan</span></div>
+                    <button type="button" class="nav-drawer-close" onclick="toggleNavMenu()">&times;</button>
+                </li>
+                <li><a href="#tables" onclick="closeNavMenu()"><i class="fas fa-th-large"></i> Pilih Meja</a></li>
+                <li><a href="#menu" onclick="closeNavMenu()"><i class="fas fa-utensils"></i> Menu Resto</a></li>
+                <li><a href="#event" onclick="closeNavMenu()"><i class="fas fa-glass-cheers"></i> Paket Acara</a></li>
+                <li><a href="javascript:void(0)" onclick="openMenuBookModal(); closeNavMenu();"><i class="fas fa-book-open"></i> Buku Menu PDF</a></li>
+                <li><a href="admin.html" class="nav-admin-link"><i class="fas fa-shield-alt"></i> Login Admin</a></li>
+                <li class="nav-desktop-cta"><a href="#" class="btn-reservasi" onclick="openModal(event)">Reservasi</a></li>
+                <li class="nav-drawer-footer">
+                    <a href="#" class="btn-drawer-reservasi" onclick="closeNavMenu(); openModal(event);">
+                        <i class="fas fa-calendar-check"></i> Reservasi Meja Sekarang
+                    </a>
+                </li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle" aria-label="Menu Navigasi" role="button" tabindex="0">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+

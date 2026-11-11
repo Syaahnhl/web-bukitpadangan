@@ -201,7 +201,9 @@ async function loadDynamicContent() {
     }
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+async function initApp() {
+    if (window.componentsReady) await window.componentsReady;
+    updateHeaderOffset();
     loadDynamicContent();
     if (typeof loadMenuData === 'function') loadMenuData();
     if (typeof loadGalleryData === 'function') loadGalleryData();
@@ -232,4 +234,10 @@ window.addEventListener('DOMContentLoaded', () => {
             if (typeof closeModal === 'function') closeModal();
         }
     });
-});
+}
+
+if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}

@@ -1,0 +1,67 @@
+        <div id="tab-tables" class="tab-panel">
+            <div class="admin-card">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <div class="card-icon"><i class="fas fa-map-location-dot"></i></div>
+                        <div>
+                            <h3 class="card-title">Status Ketersediaan <span id="totalTablesCount">23</span> Meja</h3>
+                            <p class="card-subtitle">Sinkronisasi status real-time untuk visualisasi denah interaktif 3D.</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" class="btn-secondary btn-success" onclick="setBulkTableStatus('tersedia')">
+                            <i class="fas fa-check-double"></i> Semua Tersedia
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STATS COUNTER -->
+                <div class="stats-summary-grid">
+                    <div class="stat-card green">
+                        <div class="stat-number" id="countTersedia">0</div>
+                        <div class="stat-label">🟢 Tersedia</div>
+                    </div>
+                    <div class="stat-card yellow">
+                        <div class="stat-number" id="countTerisi">0</div>
+                        <div class="stat-label">🟡 Terisi</div>
+                    </div>
+                    <div class="stat-card red">
+                        <div class="stat-number" id="countDipesan">0</div>
+                        <div class="stat-label">🔴 Dipesan</div>
+                    </div>
+                </div>
+
+                                <!-- ZONE FILTER CHIPS -->
+                <div class="category-filter-chips" style="margin-bottom: 16px; margin-top: 14px;">
+                    <button type="button" class="chip-btn active" id="chipZoneAll" onclick="filterTablesZone('all', this)">
+                        Semua (<span id="countZoneAll">23</span>)
+                    </button>
+                    <button type="button" class="chip-btn" id="chipZoneOutdoor" onclick="filterTablesZone('outdoor', this)">
+                        Pelataran Terbuka (<span id="countZoneOutdoor">6</span>)
+                    </button>
+                    <button type="button" class="chip-btn" id="chipZoneTerapi" onclick="filterTablesZone('terapi', this)">
+                        Terapi Ikan (<span id="countZoneTerapi">3</span>)
+                    </button>
+                    <button type="button" class="chip-btn" id="chipZoneVip" onclick="filterTablesZone('vip', this)">
+                        Tradisional Timur (<span id="countZoneVip">14</span>)
+                    </button>
+                </div>
+
+                <!-- GRID LIST MEJA -->
+                <div class="tables-grid" id="tablesCardContainer">
+                    <div class="empty-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Memuat status denah meja...</p>
+                    </div>
+                </div>
+
+                <!-- SUBMIT BUTTON COMMIT MEJA -->
+                <button type="button" class="btn-primary" id="btnSaveTablesSubmit" onclick="saveTablesToGithub()">
+                    <i class="fas fa-floppy-disk"></i> Terapkan Status Denah Meja ke Server Live
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================================
+             TAB 4: KREDENSIAL PAT & PENGATURAN
+             ======================================================== -->

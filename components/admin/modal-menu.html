@@ -1,0 +1,132 @@
+    <div id="menuModalOverlay" class="modal-overlay" style="display: none;">
+        <div class="modal-box modal-flex-box" style="max-width: 520px; width: 100%;">
+            <div class="modal-flex-header">
+                <h3 class="modal-title" id="menuModalHeaderTitle">Tambah Menu Baru</h3>
+                <button type="button" class="btn-modal-close" onclick="closeMenuModal()">&times;</button>
+            </div>
+
+            <form id="menuEditorForm" class="modal-flex-form" onsubmit="handleMenuSubmit(event)">
+                <input type="hidden" id="editMenuIndex">
+
+                <div class="modal-flex-body">
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label class="form-label" for="menuId">ID Unik Menu (Huruf kecil & strip)</label>
+                        <input type="text" class="form-input" id="menuId" required placeholder="contoh: kopi-susu-muria">
+                        <span class="form-hint">Digunakan oleh sistem keranjang, tidak boleh kembar.</span>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label class="form-label" for="menuName">Nama Menu</label>
+                        <input type="text" class="form-input" id="menuName" required placeholder="contoh: Kopi Susu Muria Gula Aren">
+                    </div>
+
+                    <div class="form-grid form-grid-2" style="margin-bottom: 14px;">
+                        <div class="form-group">
+                            <label class="form-label" for="menuCategory">Kategori</label>
+                            <select class="form-select" id="menuCategory" required>
+                                <option value="bu-darmisih">Spesial Bu Darmisih</option>
+                                <option value="makanan">Makanan Utama & Bakaran</option>
+                                <option value="sayuran">Sayuran & Tumisan</option>
+                                <option value="mie-ayam">Mie Ayam & Bakmi</option>
+                                <option value="nasi">Aneka Nasi & Porsi Keluarga</option>
+                                <option value="camilan">Camilan & Kudapan</option>
+                                <option value="minuman">Minuman Segar & Aneka Jus</option>
+                                <option value="kopi-wedang">Kopi Santan & Wedang</option>
+                                <option value="es-krim">Es Krim & Dessert</option>
+                                <option value="sambal-pelengkap">Aneka Sambal & Pelengkap</option>
+                                <option value="pojok-padangan">Pojok Hasil Bumi</option>
+                                <option value="fasilitas">Fasilitas & Layanan</option>
+                                <option value="mainan">Mainan & Suvenir</option>
+                                <option value="rokok">Rokok & Kasir</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="menuPrice">Harga (Rp)</label>
+                            <input type="number" class="form-input" id="menuPrice" required placeholder="15000">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label class="form-label" for="menuBadge">Badge Label (Opsional)</label>
+                        <input type="text" class="form-input" id="menuBadge" placeholder="Favorit / Spesial / Baru">
+                    </div>
+
+                    <!-- FOTO MENU UPLOAD & PREVIEW SECTION -->
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span><i class="fas fa-camera" style="color: var(--gold-primary);"></i> Foto Menu</span>
+                            <span id="photoStatusText" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">Bisa upload galeri atau URL</span>
+                        </label>
+                        
+                        <!-- Hidden File Input for Native Camera / Gallery Picker -->
+                        <input type="file" id="menuImgFileInput" accept="image/*" style="display: none;" onchange="handleMenuPhotoFile(this)">
+                        
+                        <!-- Main Photo Upload Box -->
+                        <div class="menu-photo-box">
+                            <!-- Preview State (when photo exists) -->
+                            <div id="menuPhotoPreviewWrap" class="menu-photo-preview-wrap" style="display: none;">
+                                <div class="menu-photo-thumb-container">
+                                    <img id="menuPhotoPreviewImg" src="" alt="Preview Foto Menu">
+                                </div>
+                                <div class="menu-photo-details">
+                                    <div class="photo-title-wrap">
+                                        <span class="photo-ready-badge"><i class="fas fa-check-circle"></i> Foto Terpasang</span>
+                                    </div>
+                                    <div class="photo-btn-group">
+                                        <button type="button" class="btn-photo-sm" onclick="document.getElementById('menuImgFileInput').click()">
+                                            <i class="fas fa-camera-rotate"></i> Ganti Foto (Galeri/Kamera)
+                                        </button>
+                                        <button type="button" class="btn-photo-sm btn-photo-danger" onclick="removeMenuPhoto()">
+                                            <i class="fas fa-trash-can"></i> Hapus Foto
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Empty Upload State (when no photo) -->
+                            <div id="menuPhotoEmptyPrompt" class="menu-photo-empty-prompt" onclick="document.getElementById('menuImgFileInput').click()">
+                                <div class="upload-pulse-icon">
+                                    <i class="fas fa-cloud-arrow-up"></i>
+                                </div>
+                                <div class="upload-prompt-text">
+                                    <span class="prompt-main">Pilih / Upload Foto Menu</span>
+                                    <span class="prompt-sub">Dari Galeri HP, Kamera, atau File Komputer (JPG, PNG, WebP)</span>
+                                </div>
+                                <button type="button" class="btn-select-file-pill">
+                                    <i class="fas fa-folder-open"></i> Pilih File
+                                </button>
+                            </div>
+
+                            <!-- Manual URL / Link Accordion Toggle -->
+                            <div class="menu-photo-url-accordion">
+                                <button type="button" class="btn-toggle-url-field" onclick="toggleMenuUrlField()">
+                                    <span><i class="fas fa-link"></i> <span id="toggleUrlLabel">Atau masukkan URL gambar online</span></span>
+                                    <i class="fas fa-chevron-down" id="toggleUrlIcon"></i>
+                                </button>
+                                <div id="menuUrlInputContainer" class="menu-url-input-container" style="display: none;">
+                                    <input type="text" class="form-input" id="menuImg" placeholder="https://images.unsplash.com/..." oninput="handleManualUrlInput(this.value)">
+                                    <span class="form-input-help">Tautan online Unsplash, ImgBB, atau Cloudinary dapat tetap digunakan.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 4px;">
+                        <label class="form-label" for="menuDesc">Deskripsi Bahan & Rasa</label>
+                        <textarea class="form-textarea" id="menuDesc" rows="3" required placeholder="Racikan kopi robusta lereng Gunung Muria berpadu susu murni segar..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-flex-footer">
+                    <button type="button" class="btn-secondary" style="flex: 1; padding: 12px 16px;" onclick="closeMenuModal()">Batal</button>
+                    <button type="submit" class="btn-primary" style="flex: 2; padding: 12px 16px;">
+                        <i class="fas fa-check"></i> Simpan ke Daftar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL 3: FORM TAMBAH / GANTI FOTO GALERI (REUNI, PEMANDANGAN, SUASANA)
+         ======================================================== -->

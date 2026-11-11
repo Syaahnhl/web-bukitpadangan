@@ -1,0 +1,119 @@
+    <!-- Floating Bottom-Right Chat & AI Assistant Widget -->
+    <div id="floatingChatWidget" class="floating-chat-widget">
+        <!-- AI Assistant Floating Button -->
+        <button type="button" id="floatingAiBtn" class="floating-chat-btn floating-ai-btn" onclick="toggleAiChat()" title="Tanya Asisten AI Bukit Padangan" aria-label="Tanya Asisten AI Bukit Padangan">
+            <span class="floating-ai-ring"></span>
+            <i class="fas fa-robot"></i>
+            <span class="floating-chat-tooltip">Asisten AI</span>
+            <span class="floating-ai-badge">AI</span>
+        </button>
+    </div>
+
+    <!-- AI Chatbot Window Popup -->
+    <div id="aiChatWindow" class="ai-chat-window" style="display: none;" aria-hidden="true">
+        <div class="ai-chat-header">
+            <div class="ai-chat-brand">
+                <div class="ai-chat-avatar">
+                    <i class="fas fa-robot"></i>
+                    <span class="ai-online-indicator"></span>
+                </div>
+                <div class="ai-chat-info">
+                    <h4>Asisten AI Bukit Padangan</h4>
+                    <span class="ai-chat-status"><i class="fas fa-circle"></i> Online 24 Jam</span>
+                </div>
+            </div>
+            <div class="ai-chat-actions">
+                <button type="button" class="btn-ai-close" onclick="toggleAiChat()" title="Tutup Chat" aria-label="Tutup Chat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2 Pilihan Nomor WhatsApp Admin (Drawer / Overlay) -->
+        <div id="aiWaChooserModal" class="ai-wa-chooser-overlay" style="display: none;" aria-hidden="true">
+            <div class="ai-wa-chooser-card">
+                <div class="ai-wa-drawer-handle"></div>
+                <div class="ai-wa-chooser-header">
+                    <div class="ai-wa-chooser-title">
+                        <div class="ai-wa-chooser-icon-badge">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div>
+                            <h5>Hubungi Admin WhatsApp</h5>
+                            <p>Silakan pilih admin sesuai kebutuhan Anda:</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-ai-wa-close" onclick="closeWaChooserModal()" title="Tutup Pilihan" aria-label="Tutup Pilihan">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="ai-wa-chooser-list">
+                    <!-- Opsi 1: Admin 1 -->
+                    <button type="button" class="ai-wa-contact-item" onclick="directToWaAdmin('6282323535747', 'Admin 1')">
+                        <div class="ai-wa-contact-avatar">
+                            <i class="fab fa-whatsapp"></i>
+                            <span class="ai-wa-badge-online"></span>
+                        </div>
+                        <div class="ai-wa-contact-body">
+                            <div class="ai-wa-contact-name-row">
+                                <span class="ai-wa-contact-name">Admin 1</span>
+                            </div>
+                            <div class="ai-wa-contact-phone">0823-2353-5747</div>
+                        </div>
+                        <div class="ai-wa-contact-action">
+                            <span class="btn-wa-direct-go" title="Hubungi Admin 1 via WhatsApp"><i class="fab fa-whatsapp"></i></span>
+                        </div>
+                    </button>
+
+                    <!-- Opsi 2: Admin 2 -->
+                    <button type="button" class="ai-wa-contact-item" onclick="directToWaAdmin('6285290462715', 'Admin 2')">
+                        <div class="ai-wa-contact-avatar">
+                            <i class="fab fa-whatsapp"></i>
+                            <span class="ai-wa-badge-online"></span>
+                        </div>
+                        <div class="ai-wa-contact-body">
+                            <div class="ai-wa-contact-name-row">
+                                <span class="ai-wa-contact-name">Admin 2</span>
+                            </div>
+                            <div class="ai-wa-contact-phone">0852-9046-2715</div>
+                        </div>
+                        <div class="ai-wa-contact-action">
+                            <span class="btn-wa-direct-go" title="Hubungi Admin 2 via WhatsApp"><i class="fab fa-whatsapp"></i></span>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="ai-wa-chooser-footer">
+                    <button type="button" class="btn-ai-wa-back" onclick="closeWaChooserModal()">
+                        <i class="fas fa-arrow-left"></i> Kembali ke Percakapan AI
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="aiChatMessages" class="ai-chat-messages">
+            <!-- Messages rendered dynamically via JS -->
+        </div>
+
+        <div id="aiQuickChips" class="ai-quick-chips">
+            <button type="button" class="ai-chip" onclick="handleAiChipClick('Rekomendasi Menu Favorit')">🍛 Menu Favorit</button>
+            <button type="button" class="ai-chip" onclick="handleAiChipClick('Paket Custom Rombongan')">🎉 Paket Rombongan</button>
+            <button type="button" class="ai-chip" onclick="handleAiChipClick('Nomor Rekening DP')">💳 Info DP</button>
+            <button type="button" class="ai-chip" onclick="handleAiChipClick('Jam Buka & Lokasi')">⏰ Jam & Lokasi</button>
+        </div>
+
+        <form id="aiChatForm" class="ai-chat-input-bar" onsubmit="handleAiChatSubmit(event)">
+            <input type="text" id="aiChatInput" placeholder="Tanya menu, meja, paket..." autocomplete="off">
+            <button type="submit" id="aiChatSendBtn" aria-label="Kirim Pesan">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </form>
+        <div class="ai-chat-footer-brand">
+            <span>🍃 Bukit Padangan AI Virtual Concierge</span>
+        </div>
+    </div>
+
+    <!-- Three.js & 3D Interactive Floor Plan Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>

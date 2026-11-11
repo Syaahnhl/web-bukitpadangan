@@ -46,8 +46,9 @@
         let currentGalleryCategoryFilter = "all";
         let adminTables = [];
 
-        // 1. OTORISASI & INISIALISASI
-        window.addEventListener("DOMContentLoaded", () => {
+        // 1. OTORISASI & INISIALISASI (Hydration Safe)
+        async function initAdminAuth() {
+            if (window.componentsReady) await window.componentsReady;
             if (sessionStorage.getItem("bp_admin_auth") === "true") {
                 unlockWorkspace();
             } else {
@@ -64,7 +65,12 @@
             if (activeToken) {
                 updateTokenStatusText("✓ Mode Upload Langsung Aktif: Terkoneksi ke penyimpanan cloud restoran.", true);
             }
-        });
+        }
+        if (document.readyState === "loading") {
+            window.addEventListener("DOMContentLoaded", initAdminAuth);
+        } else {
+            initAdminAuth();
+        }
 
         function toggleEmergencyPinBox() {
             const box = document.getElementById("emergencyPinBox");
