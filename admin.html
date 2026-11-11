@@ -2558,16 +2558,22 @@
                         </div>
                         <div style="flex: 1; min-width: 250px;">
                             <div style="font-weight: 700; font-size: 1.05rem; color: #f8fafc; margin-bottom: 4px;" id="currentPdfName">
-                                Buku-Menu-Bukit-Padangan.pdf
+                                MENU BUKIT PADANGAN–JUNI 2026.pdf
                             </div>
                             <div style="font-size: 0.85rem; color: #94a3b8; display: flex; gap: 14px; flex-wrap: wrap;" id="currentPdfMeta">
                                 <span><i class="fas fa-folder-open"></i> assets/pdf/buku-menu-bukit-padangan.pdf</span>
-                                <span><i class="fas fa-database"></i> ~677 KB (Vektor A4 Resmi)</span>
+                                <span><i class="fas fa-database"></i> ~11,250 KB (Menu Resmi Aktif)</span>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            <a href="assets/pdf/buku-menu-bukit-padangan.pdf" target="_blank" download="Buku-Menu-Bukit-Padangan.pdf" class="btn-secondary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 10px 16px; font-size: 0.88rem;">
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button type="button" class="btn-primary" onclick="toggleInlinePdfPreview()" id="btnTogglePdfPreview" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; font-size: 0.88rem; background: #2563eb; font-weight: 600;">
+                                <i class="fas fa-eye"></i> <span id="btnTogglePdfPreviewText">Pratinjau PDF</span>
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="testDownloadMenuPdfDirect()" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; font-size: 0.88rem;">
                                 <i class="fas fa-download"></i> Tes Download PDF
+                            </button>
+                            <a href="assets/pdf/buku-menu-bukit-padangan.pdf" id="btnOpenNewTabPdf" target="_blank" class="btn-secondary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 10px 14px; font-size: 0.88rem;" title="Buka PDF di Tab Baru">
+                                <i class="fas fa-arrow-up-right-from-square"></i> Tab Baru
                             </a>
                         </div>
                     </div>
@@ -2593,13 +2599,46 @@
                                 <div style="font-size: 0.8rem; color: #94a3b8;" id="selectedPdfFileSize">-</div>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 8px;">
-                            <button type="button" class="btn-primary" id="btnUploadPdfGithub" onclick="uploadMenuPdfToGithub()" style="padding: 9px 18px; font-size: 0.88rem; background: #0284c7; font-weight: 600;">
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button type="button" class="btn-secondary" id="btnPreviewSelectedPdf" onclick="previewPendingSelectedPdf()" style="padding: 9px 14px; font-size: 0.88rem; display: inline-flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-eye"></i> Pratinjau Berkas Ini
+                            </button>
+                            <button type="button" class="btn-primary" id="btnUploadPdfGithub" onclick="uploadMenuPdfToGithub()" style="padding: 9px 18px; font-size: 0.88rem; background: #0284c7; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
                                 <i class="fas fa-cloud-arrow-up"></i> Upload & Simpan PDF Langsung
                             </button>
-                            <button type="button" class="btn-secondary" onclick="cancelSelectedPdf()" style="padding: 8px 12px; font-size: 0.85rem;">
+                            <button type="button" class="btn-secondary" onclick="cancelSelectedPdf()" style="padding: 9px 14px; font-size: 0.88rem;">
                                 Batal
                             </button>
+                        </div>
+                    </div>
+
+                    <!-- INLINE LIVE PDF PREVIEW CONTAINER -->
+                    <div id="pdfInlinePreviewCard" style="display: none; margin-top: 18px; background: #0b1329; border: 1px solid #1e293b; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; background: #1e293b; border-bottom: 1px solid #334155; flex-wrap: wrap; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(239, 68, 68, 0.2); color: #ef4444; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <span style="font-weight: 600; color: #f8fafc; font-size: 0.92rem;" id="inlinePdfPreviewTitle">Pratinjau PDF: MENU BUKIT PADANGAN–JUNI 2026.pdf</span>
+                            </div>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <a href="assets/pdf/buku-menu-bukit-padangan.pdf" target="_blank" id="inlinePdfExternalLink" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                                    <i class="fas fa-arrow-up-right-from-square"></i> Buka Penuh
+                                </a>
+                                <button type="button" class="btn-secondary" onclick="refreshPdfPreview()" style="padding: 6px 10px; font-size: 0.8rem;" title="Muat Ulang Pratinjau">
+                                    <i class="fas fa-rotate-right"></i>
+                                </button>
+                                <button type="button" class="btn-secondary" onclick="closeInlinePdfPreview()" style="padding: 6px 10px; font-size: 0.8rem; color: #f87171;" title="Tutup Pratinjau">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div style="position: relative; width: 100%; height: 620px; background: #0f172a;" id="pdfViewerWrapper">
+                            <iframe id="pdfPreviewIframe" src="" style="width: 100%; height: 100%; border: none;" allow="autoplay"></iframe>
+                        </div>
+                        <div id="pdfMobileFallbackNotice" style="padding: 12px 18px; text-align: center; background: #0f172a; border-top: 1px solid #1e293b; font-size: 0.82rem; color: #94a3b8;">
+                            <span>Tampilan pratinjau interaktif aktif. Jika ingin melihat halaman penuh di tab terpisah:</span>
+                            <a href="assets/pdf/buku-menu-bukit-padangan.pdf" target="_blank" id="pdfMobileDirectBtn" style="color: #38bdf8; font-weight: 600; margin-left: 6px; text-decoration: underline;">Buka di Tab Baru</a>
                         </div>
                     </div>
                 </div>
@@ -3680,6 +3719,79 @@
         // TAB 2: MANAJEMEN KATALOG MENU & UPLOAD BUKU MENU PDF
         // ========================================================
         let pendingMenuPdfFile = null;
+        let activePreviewBlobUrl = null;
+
+        function getFreshPdfUrl() {
+            return "assets/pdf/buku-menu-bukit-padangan.pdf?t=" + Date.now();
+        }
+
+        function testDownloadMenuPdfDirect() {
+            const freshUrl = getFreshPdfUrl();
+            const a = document.createElement("a");
+            a.href = freshUrl;
+            a.download = "Buku-Menu-Bukit-Padangan.pdf";
+            a.target = "_blank";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast("Mengunduh berkas PDF menu resmi terbaru...");
+        }
+
+        function showInlinePdfPreview(url, title) {
+            const card = document.getElementById("pdfInlinePreviewCard");
+            const iframe = document.getElementById("pdfPreviewIframe");
+            const titleEl = document.getElementById("inlinePdfPreviewTitle");
+            const extLink = document.getElementById("inlinePdfExternalLink");
+            const mobLink = document.getElementById("pdfMobileDirectBtn");
+            const btnText = document.getElementById("btnTogglePdfPreviewText");
+
+            const targetUrl = url || getFreshPdfUrl();
+            if (iframe) iframe.src = targetUrl;
+            if (titleEl) titleEl.innerText = "Pratinjau PDF: " + (title || "MENU BUKIT PADANGAN–JUNI 2026.pdf");
+            if (extLink) extLink.href = targetUrl;
+            if (mobLink) mobLink.href = targetUrl;
+
+            if (card) {
+                card.style.display = "block";
+                card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            }
+            if (btnText) btnText.innerText = "Tutup Pratinjau";
+        }
+
+        function closeInlinePdfPreview() {
+            const card = document.getElementById("pdfInlinePreviewCard");
+            const iframe = document.getElementById("pdfPreviewIframe");
+            const btnText = document.getElementById("btnTogglePdfPreviewText");
+
+            if (iframe) iframe.src = "";
+            if (card) card.style.display = "none";
+            if (btnText) btnText.innerText = "Pratinjau PDF";
+        }
+
+        function toggleInlinePdfPreview() {
+            const card = document.getElementById("pdfInlinePreviewCard");
+            if (card && card.style.display !== "none") {
+                closeInlinePdfPreview();
+            } else {
+                showInlinePdfPreview();
+            }
+        }
+
+        function previewPendingSelectedPdf() {
+            if (!pendingMenuPdfFile) return;
+            if (activePreviewBlobUrl) {
+                try { URL.revokeObjectURL(activePreviewBlobUrl); } catch(e) {}
+            }
+            activePreviewBlobUrl = URL.createObjectURL(pendingMenuPdfFile);
+            showInlinePdfPreview(activePreviewBlobUrl, pendingMenuPdfFile.name + " (Pratinjau Berkas Baru)");
+            showToast("Menampilkan pratinjau berkas yang dipilih.");
+        }
+
+        function refreshPdfPreview() {
+            const freshUrl = getFreshPdfUrl();
+            showInlinePdfPreview(freshUrl, "Buku Menu Aktif (Server)");
+            showToast("Pratinjau PDF dimuat ulang.");
+        }
 
         function handleMenuPdfSelected(input) {
             const file = input.files && input.files[0];
@@ -3702,10 +3814,17 @@
             document.getElementById("selectedPdfFileName").innerText = file.name;
             document.getElementById("selectedPdfFileSize").innerText = "Ukuran: " + sizeStr + " • Siap diunggah ke server GitHub";
             document.getElementById("selectedPdfBox").style.display = "flex";
+
+            // Langsung tampilkan preview berkas lokal yang dipilih
+            previewPendingSelectedPdf();
         }
 
         function cancelSelectedPdf() {
             pendingMenuPdfFile = null;
+            if (activePreviewBlobUrl) {
+                try { URL.revokeObjectURL(activePreviewBlobUrl); } catch(e) {}
+                activePreviewBlobUrl = null;
+            }
             const input = document.getElementById("menuPdfFileInput");
             if (input) input.value = "";
             document.getElementById("selectedPdfBox").style.display = "none";
@@ -3744,11 +3863,19 @@
 
                         if (ok) {
                             showToast("Buku Menu PDF berhasil diunggah & dipublikasikan ke GitHub!");
+                            const freshUrl = getFreshPdfUrl();
                             document.getElementById("currentPdfName").innerText = pendingMenuPdfFile.name;
                             document.getElementById("currentPdfMeta").innerHTML = `
                                 <span><i class="fas fa-folder-open"></i> ${filePath}</span>
                                 <span><i class="fas fa-check-circle" style="color:#10b981;"></i> Baru diunggah (${(pendingMenuPdfFile.size / 1024).toFixed(0)} KB)</span>
                             `;
+                            
+                            const btnNewTab = document.getElementById("btnOpenNewTabPdf");
+                            if (btnNewTab) btnNewTab.href = freshUrl;
+
+                            // Otomatis buka live preview PDF yang baru diunggah
+                            showInlinePdfPreview(freshUrl, pendingMenuPdfFile.name + " (Aktif di Server)");
+
                             cancelSelectedPdf();
                         } else {
                             alert("Gagal mengunggah berkas PDF ke GitHub. Pastikan token PAT memiliki hak akses 'repo'.");
@@ -3768,7 +3895,8 @@
                 };
                 reader.readAsDataURL(pendingMenuPdfFile);
             } catch (err) {
-                alert("Kesalahan pembacaan file: " + err.message);
+                console.error(err);
+                alert("Gagal membaca berkas PDF: " + err.message);
                 btn.disabled = false;
                 btn.innerHTML = originalText;
             }

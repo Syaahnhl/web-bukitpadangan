@@ -1625,7 +1625,7 @@ function downloadMenuPdf(e) {
         e.preventDefault();
         e.stopPropagation();
     }
-    const pdfPath = 'assets/pdf/buku-menu-bukit-padangan.pdf';
+    const pdfPath = 'assets/pdf/buku-menu-bukit-padangan.pdf?v=' + Date.now();
     
     // Direct browser download
     const link = document.createElement('a');
