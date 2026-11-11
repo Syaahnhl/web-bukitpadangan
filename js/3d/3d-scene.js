@@ -15,19 +15,17 @@ function init3DFloorPlan() {
     const width = canvasContainer.clientWidth || 800;
     const height = canvasContainer.clientHeight || 500;
 
-    // 1. SCENE
-    scene3D = new THREE.Scene();
+    // Scenescene3D = new THREE.Scene();
     scene3D.background = new THREE.Color(0x0a0c0f); // Luxury Night Obsidian Sky
     scene3D.fog = new THREE.FogExp2(0x0a0c0f, 0.0055);
 
-    // 2. CAMERA
-    camera3D = new THREE.PerspectiveCamera(40, width / height, 0.5, 300);
+    // Cameracamera3D = new THREE.PerspectiveCamera(40, width / height, 0.5, 300);
     camera3D.position.set(CAMERA_PRESETS.all.pos.x, CAMERA_PRESETS.all.pos.y, CAMERA_PRESETS.all.pos.z);
 
     // Detect Mobile Device
     const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768);
 
-    // 3. RENDERER (Adaptive Performance: 60 FPS on Mobile HP & Ultra-Crisp on Desktop)
+    // Renderer (adaptive Performance: 60 FPS on Mobile HP & Ultra-Crisp on Desktop)
     renderer3D = new THREE.WebGLRenderer({
         antialias: !isMobileDevice, // Mobile screens have dense 400+ PPI; disabling MSAA saves massive fillrate & memory bandwidth
         alpha: false,
@@ -51,8 +49,7 @@ function init3DFloorPlan() {
 
     canvasContainer.appendChild(renderer3D.domElement);
 
-    // 4. CONTROLS
-    controls3D = new THREE.OrbitControls(camera3D, renderer3D.domElement);
+    // Controlscontrols3D = new THREE.OrbitControls(camera3D, renderer3D.domElement);
     controls3D.enableDamping = true;
     controls3D.dampingFactor = 0.06;
     controls3D.maxPolarAngle = Math.PI / 2 - 0.06; // Don't go below ground
@@ -64,20 +61,15 @@ function init3DFloorPlan() {
     window.scene3D = scene3D;
     window.renderer3D = renderer3D;
 
-    // 5. LIGHTING
-    setup3DLighting();
+    // Lightingsetup3DLighting();
 
-    // 6. BUILD SCENERY & ENVIRONMENT
-    build3DEnvironment();
+    // Build scenery & environmentbuild3DEnvironment();
 
-    // 7. POPULATE TABLES
-    populate3DTables();
+    // Populate tablespopulate3DTables();
 
-    // 8. INTERACTION EVENTS
-    setup3DInteraction();
+    // Interaction eventssetup3DInteraction();
 
-    // 9. ANIMATION LOOP
-    is3DInitialized = true;
+    // Animation loopis3DInitialized = true;
     animate3D();
 
     window.addEventListener("resize", on3DWindowResize);
@@ -137,32 +129,32 @@ function setup3DLighting() {
  * - Sunset: Arah matahari terbenam dari kiri (barat)
  */
 function build3DEnvironment() {
-    // 1. Terrain & Southern Road (Jl. Gunungwungkal - Jepalo)
+    // Terrain & Southern Road (Jl. Gunungwungkal - Jepalo)
     buildTerrainAndRoad();
 
-    // 2. Perimeter Ring (Lingkaran Kuning)
+    // Perimeter Ring (Lingkaran Kuning)
     buildPerimeterRing();
 
     // Lingkaran Hijau: Area Outdoor Dekat Jalan Raya (Jl. Gunungwungkal)
     buildOutdoorRoadsidePlaza();
 
-    // 3. Fasilitas Ibadah & Sanitasi (Lingkaran Merah: Mushola & Toilet/Wudhu)
+    // Fasilitas Ibadah & Sanitasi (Lingkaran Merah: Mushola & Toilet/Wudhu)
     buildMushola();
     buildToiletsAndWudhu();
 
-    // 4. Area Utama (Lingkaran Putih & Hitam: Indoor Utama & Kasir)
+    // Area Utama (Lingkaran Putih & Hitam: Indoor Utama & Kasir)
     buildIndoorUtama();
     buildCashierStation();
 
-    // 5. Kompleks Timur (Lingkaran Biru: IT1, Kolam Terapi Ikan, IT2)
+    // Kompleks Timur (Lingkaran Biru: IT1, Kolam Terapi Ikan, IT2)
     buildIndoorTimur1();
     buildFishTherapyPool();
     buildIndoorTimur2();
 
-    // 6. Penanda Sunset (Barat / Kiri)
+    // Penanda Sunset (Barat / Kiri)
     buildSunsetIndicator();
 
-    // 7. Jalan Setapak & Lanskap Alami
+    // Jalan Setapak & Lanskap Alami
     buildGardenPathways();
     buildSurroundingNature();
 }
@@ -172,7 +164,6 @@ function build3DEnvironment() {
  * Sesuai Citra Satelit Google Maps (Desa Ngablak, Gunungwungkal)
  */
 let gpsBlueDotRipple = null;
-
 
 /**
  * Window Resize

@@ -265,5 +265,4 @@ function hide3DTooltip() {
     if (tooltip) tooltip.style.display = "none";
 }
 
-
 window.focus3DZone = focus3DZone;

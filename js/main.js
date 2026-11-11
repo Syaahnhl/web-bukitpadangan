@@ -121,7 +121,7 @@ async function loadDynamicContent() {
         if (!response.ok) return;
         const data = await response.json();
 
-        // 1. Promo Bar
+        // Promo Bar
         const promoBar = document.getElementById("promoBar");
         const promoText = document.getElementById("promoText");
         const navbar = document.querySelector(".navbar");
@@ -135,7 +135,7 @@ async function loadDynamicContent() {
         }
         updateHeaderOffset();
 
-        // 2. Hero Section
+        // Hero Section
         if (data.hero) {
             const hTitle = document.getElementById("heroTitleText");
             const hSub = document.getElementById("heroSubtitleText");
@@ -145,7 +145,7 @@ async function loadDynamicContent() {
             if (hDesc && data.hero.desc && hDesc.innerText !== data.hero.desc) hDesc.innerText = data.hero.desc;
         }
 
-        // 3. About Section
+        // About Section
         if (data.about) {
             const aTitle = document.getElementById("aboutTitleText");
             const aDesc = document.getElementById("aboutDescText");
@@ -154,7 +154,7 @@ async function loadDynamicContent() {
             if (aDesc && data.about.desc && aDesc.innerText !== data.about.desc) aDesc.innerText = data.about.desc;
         }
 
-        // 4. Event Section
+        // Event Section
         const eventSection = document.getElementById("event");
         const navEventLink = document.getElementById("navEventLink");
         if (data.event) {
@@ -168,7 +168,7 @@ async function loadDynamicContent() {
             }
         }
 
-        // 5. Contacts & Social Media
+        // Contacts & Social Media
         if (data.contacts) {
             waAdminNumber = data.contacts.wa_admin1;
             if (typeof ADMIN_CONTACTS !== 'undefined') {

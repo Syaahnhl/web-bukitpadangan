@@ -5,7 +5,7 @@
 function buildTerrainAndRoad() {
     const terrainGroup = new THREE.Group();
 
-    // 1. Central Ridge Knoll Plateau (Punggungan Bukit Tapak Resto Bukit Padangan)
+    // Central Ridge Knoll Plateau (Punggungan Bukit Tapak Resto Bukit Padangan)
     // Sumbu bukit membujur dari barat daya ke timur laut (SW to NE)
     const plateauGroup = new THREE.Group();
     plateauGroup.rotation.y = -0.24; // Rotasi ~13.7 derajat mengikuti sumbu bukit riil
@@ -39,13 +39,13 @@ function buildTerrainAndRoad() {
     terrainGroup.add(plateauGroup);
     scene3D.add(terrainGroup);
 
-    // 2. Terraced Rice Fields (Terasering Sawah Berundak di Sekeliling Bukit)
+    // Terraced Rice Fields (Terasering Sawah Berundak di Sekeliling Bukit)
     buildTieredRiceTerraces();
 
-    // 3. Curved Southern Mountain Road: Jl. Gunungwungkal - Jepalo
+    // Curved Southern Mountain Road: Jl. Gunungwungkal - Jepalo
     buildCurvedRoad();
 
-    // 4. Google Maps Satellite POI Pin & GPS Location Dot
+    // Google Maps Satellite POI Pin & GPS Location Dot
     buildGoogleMapsSatelliteMarkers();
 }
 
@@ -76,7 +76,7 @@ function buildTieredRiceTerraces() {
     function createPaddyPlot(x, y, z, width, depth, colorIdx) {
         const plotGroup = new THREE.Group();
 
-        // 1. Solid Step Base (Vertical Riser Wall down to lower level)
+        // Solid Step Base (Vertical Riser Wall down to lower level)
         const riserH = 2.0;
         const baseGeo = new THREE.BoxGeometry(width, riserH, depth);
         const baseMesh = new THREE.Mesh(baseGeo, riserMat);
@@ -84,7 +84,7 @@ function buildTieredRiceTerraces() {
         baseMesh.receiveShadow = true;
         plotGroup.add(baseMesh);
 
-        // 2. Top Water / Paddy Vegetative Surface
+        // Top Water / Paddy Vegetative Surface
         const padGeo = new THREE.BoxGeometry(width - 0.5, 0.1, depth - 0.5);
         const padMat = new THREE.MeshLambertMaterial({
             color: greenPaddys[colorIdx % greenPaddys.length]
@@ -94,7 +94,7 @@ function buildTieredRiceTerraces() {
         padMesh.receiveShadow = true;
         plotGroup.add(padMesh);
 
-        // 3. Perimeter Galengan Bunds (Pematang Sawah)
+        // Perimeter Galengan Bunds (Pematang Sawah)
         // North bund
         const nBund = new THREE.Mesh(new THREE.BoxGeometry(width, 0.35, 0.5), bundMat);
         nBund.position.set(x, y + 0.18, z - depth / 2 + 0.25);
@@ -118,10 +118,8 @@ function buildTieredRiceTerraces() {
         return plotGroup;
     }
 
-    // ==========================================
-    // A. UTARA & BARAT LAUT (Lembah Belakang Resto)
-    // ==========================================
-    // Tier N1 (Y: -1.6, Z: -36, depth 16) - 4 Petak Sawah
+        // A. UTARA & BARAT LAUT (Lembah Belakang Resto)
+        // Tier N1 (Y: -1.6, Z: -36, depth 16) - 4 Petak Sawah
     const n1Plots = [
         { x: -38, w: 26, c: 0 },
         { x: -14, w: 22, c: 1 },
@@ -153,10 +151,8 @@ function buildTieredRiceTerraces() {
         terracesGroup.add(createPaddyPlot(p.x, -5.6, -76, p.w, 24, p.c));
     });
 
-    // ==========================================
-    // B. TIMUR & TIMUR LAUT (Lembah Depan Sayap Timur IT1 & IT2)
-    // ==========================================
-    // Tier E1 (Y: -1.6, X: 52, width 18) - 3 Petak
+        // B. TIMUR & TIMUR LAUT (Lembah Depan Sayap Timur IT1 & IT2)
+        // Tier E1 (Y: -1.6, X: 52, width 18) - 3 Petak
     const e1Plots = [
         { z: -20, d: 22, c: 4 },
         { z: 0,   d: 18, c: 0 },
@@ -185,10 +181,8 @@ function buildTieredRiceTerraces() {
         terracesGroup.add(createPaddyPlot(94, -5.6, p.z, 22, p.d, p.c));
     });
 
-    // ==========================================
-    // C. SELATAN (Terasering Seberang Jl. Gunungwungkal - Jepalo)
-    // ==========================================
-    // Tier S1 (Y: -1.4, Z: 48, depth 16) - 4 Petak
+        // C. SELATAN (Terasering Seberang Jl. Gunungwungkal - Jepalo)
+        // Tier S1 (Y: -1.4, Z: 48, depth 16) - 4 Petak
     const s1Plots = [
         { x: -44, w: 28, c: 3 },
         { x: -16, w: 28, c: 0 },
@@ -335,7 +329,7 @@ function buildCurvedRoad() {
 function buildGoogleMapsSatelliteMarkers() {
     const group = new THREE.Group();
 
-    // 1. Google Maps POI Pin Marker ("📍 Bukit Padangan")
+    // Google Maps POI Pin Marker ("📍 Bukit Padangan")
     const pinGroup = new THREE.Group();
     pinGroup.position.set(-14, 6.5, 2);
 
@@ -361,7 +355,7 @@ function buildGoogleMapsSatelliteMarkers() {
 
     group.add(pinGroup);
 
-    // 2. Active User GPS Blue Location Dot (with pulsing ripple)
+    // Active User GPS Blue Location Dot (with pulsing ripple)
     const gpsGroup = new THREE.Group();
     gpsGroup.position.set(-8, 0.15, 6);
 
@@ -391,7 +385,6 @@ function buildGoogleMapsSatelliteMarkers() {
     scene3D.add(group);
 }
 
-
 /**
  * Build Golden Perimeter Ring (Lingkaran Kuning)
  */
@@ -402,7 +395,7 @@ function buildGoogleMapsSatelliteMarkers() {
 function buildOutdoorRoadsidePlaza() {
     const group = new THREE.Group();
 
-    // 1. Spacious Paved Terrace Platform
+    // Spacious Paved Terrace Platform
     // Spans X: -19 to 3 (width 22), Z: 15.5 to 28.5 (depth 13)
     const deckGeo = new THREE.BoxGeometry(22, 0.35, 13);
     const deckMat = new THREE.MeshLambertMaterial({ color: 0x222834 }); // Slate outdoor paving
@@ -418,7 +411,7 @@ function buildOutdoorRoadsidePlaza() {
     trim.position.set(-8, 0.15, 22);
     group.add(trim);
 
-    // 2. Roadside Access Steps / Ramp (connecting road Z: 29.5 to terrace Z: 28.5)
+    // Roadside Access Steps / Ramp (connecting road Z: 29.5 to terrace Z: 28.5)
     const stepsGeo = new THREE.BoxGeometry(8, 0.18, 1.6);
     const stepsMat = new THREE.MeshLambertMaterial({ color: 0x2e3544 });
     const steps = new THREE.Mesh(stepsGeo, stepsMat);
@@ -426,7 +419,7 @@ function buildOutdoorRoadsidePlaza() {
     steps.receiveShadow = true;
     group.add(steps);
 
-    // 3. Outdoor Perimeter Railing & Fence (Pagar Pembatas Minimalis Kayu & Besi)
+    // Outdoor Perimeter Railing & Fence (Pagar Pembatas Minimalis Kayu & Besi)
     // Runs along West edge (X: -18.75), South roadside edge (Z: 28.25, with entrance gap), and East edge (X: 2.75)
     // Handrail top at Y: 1.38 (height 1.03m above deck), 2 horizontal dark steel sub-rails, dark square steel posts.
     const fencePostMat = new THREE.MeshLambertMaterial({ color: 0x242830 }); // Dark powder-coated steel posts
@@ -443,7 +436,7 @@ function buildOutdoorRoadsidePlaza() {
         const center = start.clone().add(end).multiplyScalar(0.5);
         const angleY = Math.atan2(diff.x, diff.z);
 
-        // 1. Teak Wood Handrail (Top Rail at Y: 1.38m)
+        // Teak Wood Handrail (Top Rail at Y: 1.38m)
         const railGeo = new THREE.BoxGeometry(0.12, 0.05, length);
         const rail = new THREE.Mesh(railGeo, fenceRailWoodMat);
         rail.position.set(center.x, 1.38, center.z);
@@ -451,7 +444,7 @@ function buildOutdoorRoadsidePlaza() {
         rail.castShadow = true;
         segGroup.add(rail);
 
-        // 2. Mid & Lower Horizontal Steel Sub-Rails
+        // Mid & Lower Horizontal Steel Sub-Rails
         [0.72, 1.05].forEach(ry => {
             const subGeo = new THREE.CylinderGeometry(0.016, 0.016, length, 8);
             const sub = new THREE.Mesh(subGeo, fenceSubRailMat);
@@ -461,14 +454,14 @@ function buildOutdoorRoadsidePlaza() {
             segGroup.add(sub);
         });
 
-        // 3. Base Metal Plinth / Curb Strip
+        // Base Metal Plinth / Curb Strip
         const baseGeo = new THREE.BoxGeometry(0.14, 0.04, length);
         const base = new THREE.Mesh(baseGeo, fenceBaseMat);
         base.position.set(center.x, 0.37, center.z);
         base.rotation.y = angleY;
         segGroup.add(base);
 
-        // 4. Fence Posts
+        // Fence Posts
         const numPosts = Math.max(2, Math.round(length / postSpacing) + 1);
         for (let i = 0; i < numPosts; i++) {
             const t = i / (numPosts - 1);
@@ -509,7 +502,7 @@ function buildOutdoorRoadsidePlaza() {
     // East perimeter fence (facing garden)
     group.add(createFenceSegment({ x: 2.75, z: 15.8 }, { x: 2.75, z: 28.25 }, 2.45));
 
-    // 4. Exterior Flower Planter Troughs along roadside curb (outside the fence at Z: 28.85)
+    // Exterior Flower Planter Troughs along roadside curb (outside the fence at Z: 28.85)
     const planterMat = new THREE.MeshLambertMaterial({ color: 0x4a3424 }); // Dark wood planter box
     const shrubMat = new THREE.MeshLambertMaterial({ color: 0x2d5a27 }); // Lush green shrub
     const flowerMat = new THREE.MeshLambertMaterial({ color: 0xe5a342 }); // Golden yellow flowers
@@ -533,7 +526,7 @@ function buildOutdoorRoadsidePlaza() {
         }
     });
 
-    // 4. Festoon Bistro Light Poles at 4 corners
+    // Festoon Bistro Light Poles at 4 corners
     const poleMat = new THREE.MeshLambertMaterial({ color: 0x1f232b }); // Black iron pole
     const bulbMat = new THREE.MeshBasicMaterial({ color: 0xffd180 }); // Warm glowing bulb
     const poleCoords = [
@@ -568,7 +561,7 @@ function buildOutdoorRoadsidePlaza() {
     festoonLight2.position.set(-8, 3.8, 25);
     group.add(festoonLight2);
 
-    // 5. 3D Roadside Signboard (Facing visitors on Jl. Gunungwungkal)
+    // 3d roadside Signboard (Facing visitors on Jl. Gunungwungkal)
     const sign = create3DSignboard("AREA OUTDOOR (TEPI JL. GUNUNGWUNGKAL)", 8.2, 0.95);
     sign.position.set(-8, 2.2, 28.8);
     sign.rotation.y = 0; // facing south towards road

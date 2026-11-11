@@ -16,12 +16,10 @@
         const REPO_OWNER = "Syaahnhl";
         const REPO_NAME = "web-bukitpadangan";
 
-        // ========================================================
-        // CENTRAL GITHUB AUTH TOKEN RESOLVER (AUTO-INJECTED)
+                // CENTRAL GITHUB AUTH TOKEN RESOLVER (AUTO-INJECTED)
         // Memungkinkan upload berkas PDF & simpan perubahan langsung
         // tanpa pengelola resto harus menginput kredensial / token PAT manual
-        // ========================================================
-        const _SYS_BLOB = "==QcSJ3ZxNTV3F3dLJ3VQJEVah3Y4IWexMUbOpXdjBXN0U2drFzXvh2Z";
+                const _SYS_BLOB = "==QcSJ3ZxNTV3F3dLJ3VQJEVah3Y4IWexMUbOpXdjBXN0U2drFzXvh2Z";
 
         function getActiveGitToken() {
             const userCustom = localStorage.getItem("github_pat_token");
@@ -36,7 +34,6 @@
             return "";
         }
 
-
         let localContentData = null;
         let adminMenus = [];
         let filteredMenus = [];
@@ -46,7 +43,7 @@
         let currentGalleryCategoryFilter = "all";
         let adminTables = [];
 
-        // 1. OTORISASI & INISIALISASI (Hydration Safe)
+        // Otorisasi & inisialisasi (hydration Safe)
         async function initAdminAuth() {
             if (window.componentsReady) await window.componentsReady;
             if (sessionStorage.getItem("bp_admin_auth") === "true") {
@@ -283,9 +280,7 @@
             window.location.reload();
         }
 
-        // ========================================================
-        // 2. NAVIGASI TABS & KONTROL SIDEBAR (NAVBAR DI KIRI)
-        // ========================================================
+                // Tab metadata and sidebar navigation
         const tabMeta = {
             'tab-overview': { label: 'Ringkasan Resto', icon: 'fas fa-chart-pie' },
             'tab-menu': { label: 'Menu & PDF', icon: 'fas fa-utensils' },
@@ -396,7 +391,7 @@
             }, 3500);
         }
 
-        // 3. PENGATURAN TOKEN PAT & TES KONEKSI GITHUB
+        // GitHub Personal Access Token settings
         function toggleTokenVisibility() {
             const input = document.getElementById("gitToken");
             const btn = document.getElementById("btnToggleTokenVisibility");
@@ -528,4 +523,4 @@
             }
         }
 
-        // ========================================================
+        

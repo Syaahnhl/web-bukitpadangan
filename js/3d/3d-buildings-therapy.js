@@ -26,10 +26,8 @@ function buildFishTherapyPool() {
     baseFoundation.position.set(0, 0.06, areaCenterZ);
     group.add(baseFoundation);
 
-    // =========================================================================
-    // 1. JALUR AKSES 2 ORANG (Sisi Paling BAWAH: Z = +1.05 s/d +2.20, Depth: 1.15m)
-    // =========================================================================
-    // Lebar jalur cukup untuk 2 orang berjalan berdampingan, bebas meja makan
+        // Jalur akses 2 orang (sisi Paling BAWAH: Z = +1.05 s/d +2.20, Depth: 1.15m)
+        // Lebar jalur cukup untuk 2 orang berjalan berdampingan, bebas meja makan
     const walkwayGeo = new THREE.BoxGeometry(areaW, 0.14, 1.15);
     const walkwayMat = new THREE.MeshStandardMaterial({ color: 0x3e4854, roughness: 0.8 });
     const walkway = new THREE.Mesh(walkwayGeo, walkwayMat);
@@ -54,10 +52,8 @@ function buildFishTherapyPool() {
     walkPoolDivider.position.set(0, 0.20, 1.05);
     group.add(walkPoolDivider);
 
-    // =========================================================================
-    // 2. KOLAM TERAPI IKAN (Bagian Utama / Tengah: Z = -0.65 s/d +1.00, Depth: 1.65m)
-    // =========================================================================
-    const poolBasinW = 9.4;
+        // Kolam terapi ikan (bagian Utama / Tengah: Z = -0.65 s/d +1.00, Depth: 1.65m)
+        const poolBasinW = 9.4;
     const poolBasinD = 1.65;
     const poolCenterZ = 0.175;
 
@@ -139,10 +135,8 @@ function buildFishTherapyPool() {
     benchEast.position.set(4.45, 0.45, poolCenterZ);
     group.add(benchEast);
 
-    // =========================================================================
-    // 3. SELOKAN KECIL (Pemisah Antara Kolam dan Kandang: Z = -0.98 s/d -0.68)
-    // =========================================================================
-    // Selokan kecil memanjang horizontal mengikuti lebar area terapi ikan
+        // Selokan kecil (pemisah Antara Kolam dan Kandang: Z = -0.98 s/d -0.68)
+        // Selokan kecil memanjang horizontal mengikuti lebar area terapi ikan
     const gutterW = 9.6;
     const gutterD = 0.30;
     const gutterCenterZ = -0.83;
@@ -179,10 +173,8 @@ function buildFishTherapyPool() {
     gutterNorthBorder.position.set(0, 0.23, -0.98);
     group.add(gutterNorthBorder);
 
-    // =========================================================================
-    // 4. KANDANG LABI-LABI (Tepat DI ATAS Selokan Kecil: Z = -1.90 s/d -1.02)
-    // =========================================================================
-    // Enclosure hewan persegi panjang berpagar dengan HANYA 1 EKOR LABI-LABI
+        // Kandang labi-labi (tepat DI ATAS Selokan Kecil: Z = -1.90 s/d -1.02)
+        // Enclosure hewan persegi panjang berpagar dengan HANYA 1 EKOR LABI-LABI
     const cageW = 9.6;
     const cageD = 0.88;
     const cageCenterZ = -1.46;
@@ -287,11 +279,9 @@ function buildFishTherapyPool() {
     cageSign.position.set(0, 1.05, -1.02);
     group.add(cageSign);
 
-    // =========================================================================
-    // HANYA 1 LABI-LABI (Asiatic Softshell Turtle / Amyda cartilaginea)
+        // HANYA 1 LABI-LABI (Asiatic Softshell Turtle / Amyda cartilaginea)
     // JANGAN membuat lebih dari 1 labi-labi!
-    // =========================================================================
-    const turtleGroup = new THREE.Group();
+        const turtleGroup = new THREE.Group();
     turtleGroup.position.set(-0.35, 0.28, -1.42);
     turtleGroup.rotation.y = 0.35; // Sedikit miring menghadap ke depan
 
@@ -300,7 +290,7 @@ function buildFishTherapyPool() {
     const fleshMat  = new THREE.MeshStandardMaterial({ color: 0x556340, roughness: 0.7 });
     const snoutMat  = new THREE.MeshStandardMaterial({ color: 0x384428, roughness: 0.6 });
 
-    // 1. Tempurung Pipih Lunak (Carapace Khas Labi-Labi Bulus)
+    // Tempurung Pipih Lunak (Carapace Khas Labi-Labi Bulus)
     const carapaceGeo = new THREE.CylinderGeometry(0.24, 0.28, 0.06, 16);
     const carapace = new THREE.Mesh(carapaceGeo, turtleMat);
     carapace.scale.set(0.9, 1.0, 1.25); // Lonjong pipih
@@ -314,14 +304,14 @@ function buildFishTherapyPool() {
     skirt.position.y = 0.015;
     turtleGroup.add(skirt);
 
-    // 2. Leher Menjulur Panjang Lentur
+    // Leher Menjulur Panjang Lentur
     const neckGeo = new THREE.CylinderGeometry(0.04, 0.055, 0.16, 8);
     const neck = new THREE.Mesh(neckGeo, fleshMat);
     neck.rotation.x = Math.PI / 3;
     neck.position.set(0, 0.07, 0.36);
     turtleGroup.add(neck);
 
-    // 3. Kepala Segitiga Meruncing
+    // Kepala Segitiga Meruncing
     const headGeo = new THREE.ConeGeometry(0.05, 0.10, 8);
     const head = new THREE.Mesh(headGeo, fleshMat);
     head.rotation.x = Math.PI / 2;
@@ -346,7 +336,7 @@ function buildFishTherapyPool() {
     eyeR.position.set(0.035, 0.14, 0.44);
     turtleGroup.add(eyeR);
 
-    // 4. Kaki Berselaput Pipih Mendayung (4 Webbed Paddles)
+    // Kaki Berselaput Pipih Mendayung (4 Webbed Paddles)
     const flipperGeo = new THREE.BoxGeometry(0.12, 0.02, 0.18);
     
     // Kaki Depan Kiri & Kanan
@@ -371,7 +361,7 @@ function buildFishTherapyPool() {
     fBR.rotation.y = Math.PI / 4;
     turtleGroup.add(fBR);
 
-    // 5. Ekor Pendek Meruncing
+    // Ekor Pendek Meruncing
     const tailGeo = new THREE.ConeGeometry(0.025, 0.08, 6);
     const tail = new THREE.Mesh(tailGeo, fleshMat);
     tail.rotation.x = -Math.PI / 2;
@@ -380,10 +370,8 @@ function buildFishTherapyPool() {
 
     group.add(turtleGroup);
 
-    // =========================================================================
-    // SIGNBOARD UTAMA AREA & PENCAHAYAAN
-    // =========================================================================
-    const mainSign = create3DSignboard("KOLAM TERAPI IKAN", 4.6, 0.75);
+        // SIGNBOARD UTAMA AREA & PENCAHAYAAN
+        const mainSign = create3DSignboard("KOLAM TERAPI IKAN", 4.6, 0.75);
     mainSign.position.set(0, 2.9, 2.18);
     group.add(mainSign);
 
@@ -442,7 +430,7 @@ function buildIndoorTimur2() {
     const roomD = 4.1;
     const roomCenterZ = 0.15; // Z membentang dari -1.90 s/d +2.20
 
-    // 1. Lantai Bangunan Kayu Persegi Panjang (9.8m x 0.22m x 4.1m)
+    // Lantai Bangunan Kayu Persegi Panjang (9.8m x 0.22m x 4.1m)
     const floorGeo = new THREE.BoxGeometry(roomW, 0.22, roomD);
     const floor = new THREE.Mesh(floorGeo, floorMat);
     floor.position.set(0, 0.11, roomCenterZ);
@@ -466,7 +454,7 @@ function buildIndoorTimur2() {
     plinthEast.position.set(4.86, 0.28, roomCenterZ);
     group.add(plinthEast);
 
-    // 2. Dinding Pembatas Rendah Sejajar (Rustic Balustrade h: 0.95m sekeliling ruangan)
+    // Dinding Pembatas Rendah Sejajar (Rustic Balustrade h: 0.95m sekeliling ruangan)
     // Dinding Barat (Kiri)
     const westWall = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.95, roomD - 0.1), balustradeMat);
     westWall.position.set(-4.83, 0.695, roomCenterZ);
@@ -503,7 +491,7 @@ function buildIndoorTimur2() {
     southRail.position.set(0, 1.21, 2.13);
     group.add(southRail);
 
-    // 3. Tiang Struktural Kayu Jati Solid Persegi (6 Kolom Kokoh)
+    // Tiang Struktural Kayu Jati Solid Persegi (6 Kolom Kokoh)
     const postGeo = new THREE.BoxGeometry(0.20, 2.8, 0.20);
     const postCoords = [
         [-4.75, -1.80], [0.0, -1.80], [4.75, -1.80], // 3 Tiang Dinding Atas
@@ -521,7 +509,7 @@ function buildIndoorTimur2() {
         group.add(baseStone);
     });
 
-    // 4. Balok Perimeter Atas (Ring Beam Rangka Atas Terbuka Plong)
+    // Balok Perimeter Atas (Ring Beam Rangka Atas Terbuka Plong)
     const bNorth = new THREE.Mesh(new THREE.BoxGeometry(roomW, 0.16, 0.16), beamMat);
     bNorth.position.set(0, 2.83, -1.80);
     group.add(bNorth);
@@ -538,7 +526,7 @@ function buildIndoorTimur2() {
     bEast.position.set(4.75, 2.83, roomCenterZ);
     group.add(bEast);
 
-    // 5. Pencahayaan Lembut & Plang Nama Ruangan
+    // Pencahayaan Lembut & Plang Nama Ruangan
     const roomLight = new THREE.PointLight(0xffbe6b, 2.0, 12);
     roomLight.position.set(0, 2.6, roomCenterZ);
     group.add(roomLight);

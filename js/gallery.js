@@ -21,7 +21,7 @@ async function loadGalleryData() {
 function renderPublicGallery(items) {
     if (!items || items.length === 0) return;
 
-    // 1. Render Foto Reuni & Paket Acara (#packagesTrack)
+    // Render Foto Reuni & Paket Acara (#packagesTrack)
     const reuniItems = items.filter(i => i.category === "reuni");
     const packagesTrack = document.getElementById("packagesTrack");
     if (packagesTrack && reuniItems.length > 0) {
@@ -53,7 +53,7 @@ function renderPublicGallery(items) {
         }).join("");
     }
 
-    // 2. Render Pemandangan & Sunset (#photospotsTrack)
+    // Render Pemandangan & Sunset (#photospotsTrack)
     const pemandanganItems = items.filter(i => i.category === "pemandangan");
     const photospotsTrack = document.getElementById("photospotsTrack");
     if (photospotsTrack && pemandanganItems.length > 0) {
@@ -80,7 +80,7 @@ function renderPublicGallery(items) {
         }).join("");
     }
 
-    // 3. Render Galeri Suasana & Spot Foto (#galleryTrack)
+    // Render Galeri Suasana & Spot Foto (#galleryTrack)
     const galeriItems = items.filter(i => i.category === "galeri");
     const galleryTrack = document.getElementById("galleryTrack");
     if (galleryTrack && galeriItems.length > 0) {
@@ -102,10 +102,7 @@ function renderPublicGallery(items) {
     }
 }
 
-
-// =========================================
-// 3. LIGHTBOX GALLERY ZOOM & HORIZONTAL SLIDER
-// =========================================
+// Lightbox zoom and slider
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightboxImg");
 const lightboxCaption = document.getElementById("lightboxCaption");

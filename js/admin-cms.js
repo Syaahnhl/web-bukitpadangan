@@ -1,6 +1,5 @@
         // TAB 1: KONTEN LANDING PAGE
-        // ========================================================
-        async function loadLandingContent() {
+                async function loadLandingContent() {
             try {
                 const res = await fetch("content.json");
                 if (res.ok) {
@@ -88,4 +87,4 @@
             }
         }
 
-        // ========================================================
+        

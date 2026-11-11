@@ -3,9 +3,7 @@
  * Warung Makan Bukit Padangan
  */
 
-// =========================================
-// 6. LOGIKA DENAH MEJA INTERAKTIF (FLOOR PLAN)
-// =========================================
+// Interactive floor plan logic
 let tablesData = [];
 let selectedTable = null;
 let currentTableZone = "semua";

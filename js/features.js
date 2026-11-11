@@ -69,10 +69,7 @@ window.scrollToAmenity = function(index) {
     }
 };
 
-
-// =========================================
-// 2. TESTIMONIAL SLIDER CAROUSEL
-// =========================================
+// Testimonial slider carousel
 let currentSlideIndex = 0;
 const slides = document.querySelectorAll(".testimonial-slide");
 const dots = document.querySelectorAll(".dot");
@@ -113,9 +110,7 @@ if (slides.length > 0) {
     startAutoSlide();
 }
 
-
-// 9. LIVE OPERATING STATUS & FAQ ACCORDION
-// =========================================
+// Live operating status and hours display
 function initOperatingHoursStatus() {
     const statusPill = document.getElementById("heroLiveStatus");
     const statusText = document.getElementById("heroLiveStatusText");
@@ -173,11 +168,7 @@ function initFaqAccordion() {
     });
 }
 
-
-
-// ==============================================================================
 // 6 ESSENTIAL RESTAURANT FEATURES INTERACTIVE LOGIC
-// ==============================================================================
 
 // Feature 1: Menu Book Modal (Katalog Lengkap & Cetak) & Direct PDF Download
 function downloadMenuPdf(e) {
@@ -468,9 +459,7 @@ function initReviewsCarousel() {
     });
 }
 
-// =========================================
-// 8. REAL-TIME WEATHER WIDGET (LERENG GUNUNGWUNGKAL)
-// =========================================
+// Real-time weather widget
 let weatherRefreshTimer = null;
 
 async function fetchOpenMeteoWeather(isManual = false) {
@@ -582,9 +571,7 @@ function initWeatherWidget() {
     }, 15 * 60 * 1000);
 }
 
-// =========================================
-// 9. JADWAL LIVE MUSIC AKUSTIK & PANGGUNG
-// =========================================
+// Live music schedule
 function initLiveMusicSchedule() {
     const today = new Date().getDay(); // 0 = Minggu, 6 = Sabtu
     const liveTagSat = document.getElementById("liveBadgeSat");
@@ -598,18 +585,18 @@ function initLiveMusicSchedule() {
 }
 
 function bookTableNearStage(dayName) {
-    // 1. Fokus denah 3D jika aktif
+    // Fokus denah 3D jika aktif
     if (typeof focus3DZone === "function") {
         focus3DZone("east");
     }
-    // 2. Pilih meja panggung jika ada di dataset
+    // Pilih meja panggung jika ada di dataset
     if (Array.isArray(tablesData) && tablesData.length > 0) {
         const stageTable = tablesData.find(t => t.id.includes("IT1") || t.zone === "east");
         if (stageTable) {
             selectThisTable(stageTable.id);
         }
     }
-    // 3. Buka modal reservasi dengan catatan panggung
+    // Buka modal reservasi dengan catatan panggung
     openModal();
     const areaSelect = document.getElementById("resArea");
     if (areaSelect) {
@@ -620,7 +607,6 @@ function bookTableNearStage(dayName) {
         notesInput.value = `Reservasi Meja Dekat Panggung Live Music (${dayName} Sore/Malam)`;
     }
 }
-
 
 function locateSpotTable(spotZone, areaName) {
     const tableSection = document.getElementById("tables");

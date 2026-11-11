@@ -242,7 +242,7 @@ function buildIndoorUtama() {
     const tileMat = new THREE.MeshLambertMaterial({ color: 0x6e2f1e }); // Terracotta Clay Tiles
     const balustradeMat = new THREE.MeshLambertMaterial({ color: 0x442813 }); // Horizontal Wood Planks
 
-    // 1. Irregular Polygonal Slate Flagstone Floor (Lantai Batu Lempeng Acak / Crazy Paving Sesuai Foto Riil)
+    // Irregular Polygonal Slate Flagstone Floor (Lantai Batu Lempeng Acak / Crazy Paving Sesuai Foto Riil)
     const floorCanvas = document.createElement("canvas");
     floorCanvas.width = 1024;
     floorCanvas.height = 1024;
@@ -354,7 +354,7 @@ function buildIndoorUtama() {
     curb.position.y = 0.12;
     group.add(curb);
 
-    // 2. Half-Height Wooden Balustrade (Dinding Papan Kayu 0.95m, Atas Terbuka Plong)
+    // Half-Height Wooden Balustrade (Dinding Papan Kayu 0.95m, Atas Terbuka Plong)
     // West Wall
     const westBal = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.95, 14.2), balustradeMat);
     westBal.position.set(-8.1, 0.65, 0);
@@ -400,7 +400,7 @@ function buildIndoorUtama() {
     eastBal2.position.set(8.1, 0.65, 4.7);
     group.add(eastBal2);
 
-    // 3. Grid Kolom Tiang Kayu Jati Solid & Sokong Diagonal (Knee Braces / Skur)
+    // Grid Kolom Tiang Kayu Jati Solid & Sokong Diagonal (Knee Braces / Skur)
     const colCoords = [
         [-7.8, -6.8], [-2.6, -6.8], [2.6, -6.8], [7.8, -6.8],
         [-7.8,  0.0], [-2.6,  0.0], [2.6,  0.0], [7.8,  0.0],
@@ -435,7 +435,7 @@ function buildIndoorUtama() {
         group.add(braceZ);
     });
 
-    // 4. Horizontal Structural Tie Beams (Balok Blandar & Pengeret Kayu)
+    // Horizontal Structural Tie Beams (Balok Blandar & Pengeret Kayu)
     [-6.8, 0.0, 6.8].forEach(bz => {
         const beam = new THREE.Mesh(new THREE.BoxGeometry(16.4, 0.28, 0.24), beamMat);
         beam.position.set(0, 3.75, bz);
@@ -450,9 +450,9 @@ function buildIndoorUtama() {
         group.add(beam);
     });
 
-    // 5. Open-Top Cutaway Architecture (Atap limasan & usuk genteng ditiadakan agar seluruh meja terlihat jelas dari atas)
+    // Open-Top Cutaway Architecture (Atap limasan & usuk genteng ditiadakan agar seluruh meja terlihat jelas dari atas)
 
-    // 7. Authentic Directional Signboard: "MUSHOLA / TOILET ➔" (Sesuai Persis Foto img_bcb8e1b7e299.jpg)
+    // Authentic Directional Signboard: "MUSHOLA / TOILET ➔" (Sesuai Persis Foto img_bcb8e1b7e299.jpg)
     // Menggantung di balok kayu koridor tengah-kanan pada ketinggian pandangan mata (y = 2.2m)
     const signGroup = new THREE.Group();
     signGroup.position.set(2.2, 2.2, -2.6);
@@ -504,7 +504,7 @@ function buildIndoorUtama() {
 
     group.add(signGroup);
 
-    // 8. Flat Screen TV hanging from central tie beam
+    // Flat Screen TV hanging from central tie beam
     const tvGroup = new THREE.Group();
     tvGroup.position.set(0.8, 2.85, -6.5);
     const tvCase = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.95, 0.08), new THREE.MeshLambertMaterial({ color: 0x111827 }));
@@ -514,7 +514,7 @@ function buildIndoorUtama() {
     tvGroup.add(tvScreen);
     group.add(tvGroup);
 
-    // 9. Wall-Mounted Oscillating Fans on Timber Columns
+    // Wall-Mounted Oscillating Fans on Timber Columns
     const fanMat = new THREE.MeshLambertMaterial({ color: 0x1f2937 });
     [[-2.6, 2.5, -6.6], [2.6, 2.5, 6.6], [-7.6, 2.5, 0]].forEach(([fx, fy, fz]) => {
         const fanBase = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.25, 0.15), fanMat);
@@ -527,12 +527,12 @@ function buildIndoorUtama() {
         group.add(fanCage);
     });
 
-    // 10. Front Header Wooden Signboard: "INDOOR UTAMA"
+    // Front Header Wooden Signboard: "INDOOR UTAMA"
     const headerSign = create3DSignboard("INDOOR UTAMA (BALE MAKAN)", 6.2, 0.9);
     headerSign.position.set(0, 3.85, 7.25);
     group.add(headerSign);
 
-    // 11. Warm Ambient Lighting (Kuning Hangat Tradisional 2200K)
+    // Warm Ambient Lighting (Kuning Hangat Tradisional 2200K)
     const hallLight1 = new THREE.PointLight(0xffb248, 2.8, 22);
     hallLight1.position.set(-3.5, 3.2, -2.0);
     group.add(hallLight1);
@@ -640,7 +640,7 @@ function buildIndoorTimur1() {
     const roomD = 4.1;
     const roomCenterZ = 0.15;
 
-    // 1. Lantai Bangunan Persegi Panjang Sederhana (9.8m x 0.22m x 4.1m)
+    // Lantai Bangunan Persegi Panjang Sederhana (9.8m x 0.22m x 4.1m)
     const floorGeo = new THREE.BoxGeometry(roomW, 0.22, roomD);
     const floor = new THREE.Mesh(floorGeo, floorMat);
     floor.position.set(0, 0.11, roomCenterZ);
@@ -664,7 +664,7 @@ function buildIndoorTimur1() {
     plinthEast.position.set(4.86, 0.28, roomCenterZ);
     group.add(plinthEast);
 
-    // 2. Dinding Pembatas Rendah Sejajar (Rustic Balustrade h: 0.95m, Dinding Kiri-Kanan & Atas-Bawah Sejajar)
+    // Dinding Pembatas Rendah Sejajar (Rustic Balustrade h: 0.95m, Dinding Kiri-Kanan & Atas-Bawah Sejajar)
     // Dinding Barat (Kiri) - Sejajar lurus dengan sumbu Z
     const westWall = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.95, roomD - 0.1), balustradeMat);
     westWall.position.set(-4.83, 0.695, roomCenterZ);
@@ -701,7 +701,7 @@ function buildIndoorTimur1() {
     southRail.position.set(0, 1.21, 2.13);
     group.add(southRail);
 
-    // 3. Tiang Struktural Kayu Jati Solid Persegi (6 Kolom Kokoh Pembentuk Ruang)
+    // Tiang Struktural Kayu Jati Solid Persegi (6 Kolom Kokoh Pembentuk Ruang)
     const postGeo = new THREE.BoxGeometry(0.20, 2.8, 0.20);
     const postCoords = [
         [-4.75, -1.80], [0.0, -1.80], [4.75, -1.80], // 3 Tiang Dinding Atas
@@ -719,7 +719,7 @@ function buildIndoorTimur1() {
         group.add(baseStone);
     });
 
-    // 4. Balok Perimeter Atas (Ring Beam Rangka Atas Terbuka Plong)
+    // Balok Perimeter Atas (Ring Beam Rangka Atas Terbuka Plong)
     const bNorth = new THREE.Mesh(new THREE.BoxGeometry(roomW, 0.16, 0.16), beamMat);
     bNorth.position.set(0, 2.83, -1.80);
     group.add(bNorth);
@@ -736,7 +736,7 @@ function buildIndoorTimur1() {
     bEast.position.set(4.75, 2.83, roomCenterZ);
     group.add(bEast);
 
-    // 5. Pencahayaan Lembut & Plang Nama Ruangan
+    // Pencahayaan Lembut & Plang Nama Ruangan
     const roomLight = new THREE.PointLight(0xffbe6b, 2.0, 12);
     roomLight.position.set(0, 2.6, roomCenterZ);
     group.add(roomLight);

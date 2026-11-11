@@ -1,6 +1,5 @@
         // TAB: GALERI & FOTO MANAGEMENT (REUNI, PEMANDANGAN, SUASANA)
-        // ========================================================
-        function escapeHtml(str) {
+                function escapeHtml(str) {
             if (!str) return "";
             return String(str)
                 .replace(/&/g, "&amp;")
@@ -348,4 +347,4 @@
             }
         }
 
-        // ========================================================
+        

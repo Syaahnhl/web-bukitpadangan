@@ -1,6 +1,5 @@
         // TAB 3: STATUS KETERSEDIAAN MEJA (26 MEJA)
-        // ========================================================
-        async function loadTablesData() {
+                async function loadTablesData() {
             try {
                 const res = await fetch("tables.json");
                 if (res.ok) {
@@ -140,15 +139,13 @@
             }
         }
 
-        // ========================================================
-        // CENTRAL GITHUB API COMMIT HELPER
-        // ========================================================
-        async function pushJsonToGitHub(filePath, jsonData, commitMessage) {
+                // CENTRAL GITHUB API COMMIT HELPER
+                async function pushJsonToGitHub(filePath, jsonData, commitMessage) {
             const token = getActiveGitToken();
             const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filePath}`;
 
             try {
-                // 1. Get existing file SHA
+                // Get existing file SHA
                 const getRes = await fetch(apiUrl, {
                     headers: {
                         "Authorization": `token ${token}`,
@@ -164,7 +161,7 @@
                 const fileInfo = await getRes.json();
                 const sha = fileInfo.sha;
 
-                // 2. Put updated JSON with Unicode base64 encoding
+                // Put updated JSON with Unicode base64 encoding
                 const jsonStr = JSON.stringify(jsonData, null, 2);
                 const base64Content = btoa(unescape(encodeURIComponent(jsonStr)));
 

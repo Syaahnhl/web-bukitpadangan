@@ -1,6 +1,5 @@
         // TAB 2: MANAJEMEN KATALOG MENU & UPLOAD BUKU MENU PDF
-        // ========================================================
-        let pendingMenuPdfFile = null;
+                let pendingMenuPdfFile = null;
         let activePreviewBlobUrl = null;
 
         function getFreshPdfUrl() {
@@ -346,10 +345,8 @@
             document.getElementById("menuModalOverlay").style.display = "none";
         }
 
-        // ========================================================
-        // PHOTO UPLOAD & PREVIEW LOGIC
-        // ========================================================
-        function updateMenuPhotoUI(imgUrl) {
+                // PHOTO UPLOAD & PREVIEW LOGIC
+                function updateMenuPhotoUI(imgUrl) {
             const previewWrap = document.getElementById("menuPhotoPreviewWrap");
             const emptyPrompt = document.getElementById("menuPhotoEmptyPrompt");
             const previewImg = document.getElementById("menuPhotoPreviewImg");
@@ -541,4 +538,4 @@
             }
         }
 
-        // ========================================================
+        

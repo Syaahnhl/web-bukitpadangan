@@ -84,14 +84,14 @@ function buildGazebo3D(group, table) {
     const deckMat = new THREE.MeshLambertMaterial({ color: 0x6e4726 });   // Dark timber deck
     const roofMat = new THREE.MeshLambertMaterial({ color: 0x42362b });   // Thatched roof
 
-    // 1. Raised Wooden Deck Platform
+    // Raised Wooden Deck Platform
     const deck = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.35, 3.2), deckMat);
     deck.position.y = 0.2;
     deck.castShadow = true;
     deck.receiveShadow = true;
     group.add(deck);
 
-    // 2. Bamboo Pillars (4 corners)
+    // Bamboo Pillars (4 corners)
     const pillarPositions = [
         [-1.35, -1.35], [1.35, -1.35],
         [-1.35, 1.35],  [1.35, 1.35]
@@ -105,14 +105,14 @@ function buildGazebo3D(group, table) {
 
     // Gazebo Saung - Open-Air (Atap kerucut ditiadakan agar lesehan & meja tampak jelas dari atas)
 
-    // 4. Low Dining Table (Lesehan)
+    // Low Dining Table (Lesehan)
     const tableMat = new THREE.MeshLambertMaterial({ color: 0x8b5a2b });
     const lowTable = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.35, 1.6), tableMat);
     lowTable.position.y = 0.55;
     lowTable.castShadow = true;
     group.add(lowTable);
 
-    // 5. Floor Tatami Cushions
+    // Floor Tatami Cushions
     const cushionMat = new THREE.MeshLambertMaterial({ color: 0xb53426 });
     const cushionOffsets = [[-0.9, 0], [0.9, 0], [0, -0.9], [0, 0.9]];
     cushionOffsets.forEach(([cx, cz]) => {
@@ -121,7 +121,7 @@ function buildGazebo3D(group, table) {
         group.add(cushion);
     });
 
-    // 6. Hanging Warm Resort Amber Lantern
+    // Hanging Warm Resort Amber Lantern
     const lanternMat = new THREE.MeshBasicMaterial({ color: 0xffcc77 });
     const lantern = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 0.35, 8), lanternMat);
     lantern.position.y = 2.2;
@@ -153,14 +153,12 @@ function buildOutdoorFenceBarTable3D(group, table, layout = {}) {
     const steelMat = new THREE.MeshLambertMaterial({ color: 0x22252a });    // Dark charcoal powder-coated steel
     const chromeMat = new THREE.MeshLambertMaterial({ color: 0x50535a });   // Rubber / glide caps
 
-    // -------------------------------------------------------------------------
-    // 1. MEJA COMPACT MENEMPEL PADA PAGAR (Compact Bar Ledge)
+        // Meja compact menempel pada pagar (compact Bar Ledge)
     // In local space:
     // Pagar perimeter berada di z = +0.24 (tepat di belakang meja).
     // Meja berukuran 0.95m x 0.48m, tebal 0.045m, tinggi y = 1.02m di atas lantai dek.
     // Sisi belakang meja menempel erat dan terhubung langsung ke pagar perimeter.
-    // -------------------------------------------------------------------------
-    const topGeo = new THREE.BoxGeometry(0.95, 0.045, 0.48);
+        const topGeo = new THREE.BoxGeometry(0.95, 0.045, 0.48);
     const topMesh = new THREE.Mesh(topGeo, woodMat);
     topMesh.position.set(0, 1.02, 0);
     topMesh.castShadow = true;
@@ -234,13 +232,11 @@ function buildOutdoorFenceBarTable3D(group, table, layout = {}) {
     plant.position.set(-0.18, 1.12, 0.12);
     model.add(plant);
 
-    // -------------------------------------------------------------------------
-    // 2. TEPAT 1 KURSI TINGGI / BAR STOOL (High Stool untuk 1 Orang)
+        // Tepat 1 kursi tinggi / bar stool (high Stool untuk 1 Orang)
     // Terletak di sisi luar meja (z = -0.58) menghadap meja dan area outdoor.
     // Tinggi dudukan y = 0.74m di atas dek (standar kursi bar tinggi, bukan kursi makan biasa).
     // Kaki metal ramping splayed, footrest ring melingkar, dan low lumbar backrest.
-    // -------------------------------------------------------------------------
-    const stoolZ = -0.58;
+        const stoolZ = -0.58;
 
     // Solid Teak Wood Round Seat Disc
     const seat = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.035, 16), seatWoodMat);
@@ -320,7 +316,7 @@ function buildIndoorTimurRusticTable3D(group, table) {
     const legMat   = new THREE.MeshLambertMaterial({ color: 0x3d2513 }); // Rangka & Kaki Kayu Solid
     const benchMat = new THREE.MeshLambertMaterial({ color: 0x5c3d23 }); // Papan Dudukan Bangku
 
-    // 1. Meja Makan Kayu Panjang Sederhana (2.15m x 0.08m x 0.85m)
+    // Meja Makan Kayu Panjang Sederhana (2.15m x 0.08m x 0.85m)
     const topGeo = new THREE.BoxGeometry(2.15, 0.08, 0.85);
     const topMesh = new THREE.Mesh(topGeo, tableMat);
     topMesh.position.y = 0.74;
@@ -363,7 +359,7 @@ function buildIndoorTimurRusticTable3D(group, table) {
     cutleryHolder.position.set(0.40, 0.82, 0);
     group.add(cutleryHolder);
 
-    // 2. Bangku Kayu Panjang Sederhana (2 Sisi: Utara & Selatan)
+    // Bangku Kayu Panjang Sederhana (2 Sisi: Utara & Selatan)
     // 1 sisi menampung 2–3 orang -> Total kapasitas 4–6 orang per meja
     [-0.66, 0.66].forEach((benchZ, bIdx) => {
         const benchGroup = new THREE.Group();
@@ -426,7 +422,7 @@ function buildTerapiSeat3D(group, table) {
     const rimMat     = new THREE.MeshLambertMaterial({ color: 0x2b170a }); // List bingkai kayu jati tua
     const plateMat   = new THREE.MeshLambertMaterial({ color: 0xd97706 }); // Plat penanda spot terapi
 
-    // 1. Bantalan Duduk Pengunjung di Pinggir Kolam (0.55m x 0.06m x 0.36m)
+    // Bantalan Duduk Pengunjung di Pinggir Kolam (0.55m x 0.06m x 0.36m)
     const padGeo = new THREE.BoxGeometry(0.55, 0.06, 0.36);
     const padMesh = new THREE.Mesh(padGeo, cushionMat);
     padMesh.position.y = 0.53;
@@ -489,7 +485,7 @@ function buildVipTable3D(group, table, type = "vip-large") {
         side: THREE.DoubleSide
     });
 
-    // 1. Long Teak Dining Table (Meja Kayu Panjang Solid)
+    // Long Teak Dining Table (Meja Kayu Panjang Solid)
     const topGeo = new THREE.BoxGeometry(3.3, 0.12, 1.15);
     const tableTop = new THREE.Mesh(topGeo, tableMat);
     tableTop.position.y = 0.76;
@@ -524,7 +520,7 @@ function buildVipTable3D(group, table, type = "vip-large") {
     snackBasket.position.set(0.35, 0.91, 0);
     group.add(snackBasket);
 
-    // 2. Long Wooden Benches with Backrest (Bangku Kayu Panjang Bersandaran) on North & South Sides
+    // Long Wooden Benches with Backrest (Bangku Kayu Panjang Bersandaran) on North & South Sides
     [-0.85, 0.85].forEach((bz, bIdx) => {
         const benchGroup = new THREE.Group();
         benchGroup.position.set(0, 0, bz);

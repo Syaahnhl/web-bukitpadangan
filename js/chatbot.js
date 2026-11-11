@@ -2,9 +2,7 @@
  * chatbot.js - AI Assistant Concierge & Natural Language Q&A
  * Warung Makan Bukit Padangan
  */
-// ========================================================
-// 15. FLOATING BOTTOM-RIGHT CHAT & AI ASSISTANT CONCIERGE
-// ========================================================
+// Floating chat concierge state
 let isAiChatOpen = false;
 let isAiChatInitialized = false;
 
@@ -240,7 +238,7 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // 1. Terima Kasih & Penutup Sopan
+    // Terima Kasih & Penutup Sopan
     if (/^(makasih|terima kasih|suwun|matursuwun|thank|thanks|ok|oke|siap|baik|sip|mantap|yoi|keren)/i.test(q)) {
         return {
             text: "Sama-sama! Senang bisa membantu Anda di **Warung Makan Bukit Padangan** 🍃\n\nJika ada hal lain yang ingin ditanyakan seputar menu, reservasi, atau kunjungan Anda, silakan tanyakan kapan saja.",
@@ -252,7 +250,7 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // 2. Salam & Sapaan Awal
+    // Salam & Sapaan Awal
     if (/^(halo|hai|hi|hey|assalam|pagi|siang|sore|malam|permisi|tes|test|halo bot|halo min|halo admin)/i.test(q)) {
         return {
             text: "Halo! Selamat datang di asisten virtual **Warung Makan Bukit Padangan** 🍃\n\nAda yang bisa saya bantu untuk kunjungan Anda? Anda dapat menanyakan rekomendasi menu, jam operasional, rute lokasi lereng Muria, fasilitas, atau reservasi meja & paket acara.",
@@ -265,7 +263,7 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // 3. Menu, Makanan, Minuman, Harga, Rekomendasi, Pedas, Halal
+    // Menu, Makanan, Minuman, Harga, Rekomendasi, Pedas, Halal
     if (/(menu|makan|minum|katalog|harga|favorit|spesial|enak|rekomendasi|hidangan|lauk|masakan|pedas|sambal|ayam|bebek|ikan|gurame|nila|ingkung|bledos|madu|bakar|goreng|mendoan|tahu|tempe|lalapan|kopi|kopi muria|wedang|rempah|jahe|jus|kelapa|es kelapa|teh|jeruk|halal|higienis)/i.test(q)) {
         return {
             text: "Berikut sajian **menu andalan & favorit** di Warung Makan Bukit Padangan:\n\n" +
@@ -284,7 +282,7 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // 4. Jam Buka, Jam Operasional & Hari Buka
+    // Jam Buka, Jam Operasional & Hari Buka
     if (/(jam|buka|tutup|operasional|hari|libur|jadwal|wib|buka jam|tutup jam|hari apa|minggu buka|tanggal merah)/i.test(q)) {
         return {
             text: "⏰ **Jam Operasional Warung Makan Bukit Padangan:**\n\n" +
@@ -301,7 +299,7 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // 5. Lokasi, Alamat, Rute, Patokan & Akses Bus / Kendaraan
+    // Lokasi, Alamat, Rute, Patokan & Akses Bus / Kendaraan
     if (/(lokasi|alamat|dimana|posisi|rute|arah|jalan|patokan|daerah|wilayah|maps|google maps|gmap|akses|bus|rombongan bus|kendaraan|mobil|gunungwungkal|gulangpongge|pati|muria)/i.test(q)) {
         return {
             text: "📍 **Alamat & Akses Warung Makan Bukit Padangan:**\n\n" +
@@ -316,7 +314,7 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // 6. Fasilitas (Mushola, Toilet, Wifi, Colokan, Playground, Terapi Ikan)
+    // Fasilitas (Mushola, Toilet, Wifi, Colokan, Playground, Terapi Ikan)
     if (/(fasilitas|toilet|kamar mandi|wc|mushola|musala|sholat|solat|wudhu|wifi|internet|colokan|listrik|stopkontak|charger|anak|playground|bermain|kolam|terapi ikan|ikan|saung|gazebo|lesehan|smoking|merokok)/i.test(q)) {
         return {
             text: "🍃 **Fasilitas Lengkap di Warung Makan Bukit Padangan:**\n\n" +
@@ -333,7 +331,7 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // 7. Spot Foto & Sunset
+    // Spot Foto & Sunset
     if (/(spot foto|foto|estetik|pemandangan|view|panorama|sunset|senja|matahari terbenam|alam|sawah|bukit)/i.test(q)) {
         return {
             text: "📸 **Spot Foto & Panorama Alam Bukit Padangan:**\n\n" +
@@ -347,7 +345,7 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // 8. Live Music & Hiburan
+    // Live Music & Hiburan
     if (/(live music|musik|akustik|band|hiburan|lagu|nyanyi|malam minggu|sabtu malam)/i.test(q)) {
         return {
             text: "🎶 **Live Music Akustik Bukit Padangan:**\n\n" +
@@ -361,7 +359,7 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // 9. Paket Acara, Rombongan, Reuni, Rapat, Arisan, Bukber, Ultah, Sound System
+    // Paket Acara, Rombongan, Reuni, Rapat, Arisan, Bukber, Ultah, Sound System
     if (/(paket|rombongan|acara|reuni|rapat|dinas|kantor|arisan|bukber|buka bersama|ultah|ulang tahun|syukuran|gathering|komunitas|sound|mic|sound system|kapasitas|kustom|custom|bawa kue)/i.test(q)) {
         return {
             text: "🎉 **Paket Acara & Rombongan 100% Kustom:**\n\n" +
@@ -377,7 +375,7 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // 10. Meja, Reservasi, Booking & Denah
+    // Meja, Reservasi, Booking & Denah
     if (/(meja|reservasi|booking|pesan tempat|pesan meja|denah|3d|outdoor|indoor|saung|gazebo|lesehan|kursi)/i.test(q)) {
         return {
             text: "🪑 **Pilihan Zona Meja di Bukit Padangan:**\n\n" +
@@ -391,7 +389,7 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // 11. Pembayaran di Kasir (QRIS/Cash/Mandiri) & Reservasi Bebas DP
+    // Pembayaran di Kasir (QRIS/Cash/Mandiri) & Reservasi Bebas DP
     if (/(dp|down payment|uang muka|bayar|transfer|rekening|mandiri|bank|qris|cash|tunai|kartu|metode)/i.test(q)) {
         return {
             text: `💳 **Ketentuan Reservasi & Pembayaran:**
@@ -404,7 +402,7 @@ function generateAiKnowledgeResponse(query) {
             ]
         };
     }
-    // 12. Kontak Admin WhatsApp Langsung
+    // Kontak Admin WhatsApp Langsung
     if (/(wa|whatsapp|kontak|admin|nomor|telepon|cs|hubungi|chat)/i.test(q)) {
         return {
             text: "Silakan hubungi kontak WhatsApp Admin Bukit Padangan:\n\n" +
@@ -418,10 +416,8 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // =========================================
-    // OUT OF TOPIC (OOT) / DI LUAR BUKIT PADANGAN
-    // =========================================
-    return {
+        // OUT OF TOPIC (OOT) / DI LUAR BUKIT PADANGAN
+        return {
         text: "Maaf, saya tidak diprogram untuk menjawab itu. 🙏\n\n" +
               "Saya adalah asisten virtual resmi **Warung Makan Bukit Padangan** dan hanya dapat membantu informasi seputar resto kami, seperti rekomendasi menu, jam operasional, rute lokasi, fasilitas, reservasi meja, dan paket acara.",
         actions: [
@@ -432,5 +428,4 @@ function generateAiKnowledgeResponse(query) {
         ]
     };
 }
-
 

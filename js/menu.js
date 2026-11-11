@@ -15,7 +15,6 @@ async function loadMenuData() {
     }
 }
 
-
 function renderMenuGrid(items) {
     const grid = document.getElementById("menuGrid");
     if (!grid) return;
@@ -335,10 +334,8 @@ document.addEventListener("keydown", function(e) {
 
 // Carousel Scroll Helper for Features Section (Mobile)
 
-// =========================================
-// 7. KATALOG MENU & PEMESANAN VIA KACHING WEB ORDER
-// (Web profil tidak menyimpan keranjang/transaksi lokal)
-// =========================================
+// Katalog menu & pemesanan via kaching web order
+// (web profil tidak menyimpan keranjang/transaksi lokal)
 let currentMenuSearch = "";
 let currentMenuCategory = "semua";
 let currentMenuFlavor = "semua";

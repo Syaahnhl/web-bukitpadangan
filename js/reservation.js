@@ -39,7 +39,6 @@ window.addEventListener("keydown", (e) => {
     }
 });
 
-
 function submitReservation(event) {
     if (event) event.preventDefault();
 
