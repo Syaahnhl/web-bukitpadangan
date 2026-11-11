@@ -78,7 +78,7 @@
                 <li><a href="#tables" onclick="closeNavMenu()"><i class="fas fa-th-large"></i> Pilih Meja</a></li>
                 <li><a href="#menu" onclick="closeNavMenu()"><i class="fas fa-utensils"></i> Menu Resto</a></li>
                 <li><a href="#event" onclick="closeNavMenu()"><i class="fas fa-glass-cheers"></i> Paket Acara</a></li>
-                <li><a href="javascript:void(0)" onclick="openConfirmDpModal(); closeNavMenu();"><i class="fas fa-receipt"></i> Konfirmasi DP</a></li>
+                <li><a href="javascript:void(0)" onclick="openMenuBookModal(); closeNavMenu();"><i class="fas fa-book-open"></i> Buku Menu PDF</a></li>
                 <li><a href="admin.html" class="nav-admin-link"><i class="fas fa-shield-alt"></i> Login Admin</a></li>
                 <li class="nav-desktop-cta"><a href="#" class="btn-reservasi" onclick="openModal(event)">Reservasi</a></li>
                 <li class="nav-drawer-footer">
@@ -802,12 +802,11 @@
 
                 <div class="faq-item">
                     <button type="button" class="faq-question">
-                        <span>Berapa batas waktu reservasi dan bagaimana ketentuan transfer DP?</span>
+                        <span>Apakah reservasi meja di Bukit Padangan memerlukan Down Payment (DP)?</span>
                         <i class="fas fa-chevron-down"></i>
                     </button>
                     <div class="faq-answer">
-                        <p>Untuk kunjungan pada hari-H (same day), pemesanan reservasi dilayani maksimal pukul <strong>14.00 WIB</strong>. Untuk mengamankan meja (khususnya saat weekend atau rombongan), pembayaran Down Payment (DP) dapat ditransfer ke rekening resmi <strong>Bank Mandiri: 1840011559968 a.n. Mila Elmeida</strong>.</p>
-                    </div>
+                        <p><strong>Tidak perlu DP (bebas uang muka).</strong> Reservasi meja di Bukit Padangan ditujukan untuk memesan dan mengamankan slot meja saja via WhatsApp. Menu makanan dan minuman bebas dipesan dan dibayar langsung setibanya di restoran melalui kasir Kaching POS.</p></div>
                 </div>
 
                 <div class="faq-item">
@@ -1395,15 +1394,14 @@
                 <p><i class="fab fa-whatsapp"></i> <a id="waFooterAdmin2Link" href="https://wa.me/6285290462715" target="_blank" style="color: inherit; text-decoration: none;"><span id="waAdmin2Text">0852-9046-2715</span> (Admin 2)</a></p>
             </div>
             <div class="footer-section">
-                <h4>Rekening Resmi DP</h4>
-                <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 8px;">Batas reservasi hari-H maks. pukul 14.00 WIB:</p>
+                <h4>Reservasi & Pembayaran</h4>
+                <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 8px;">Reservasi meja bebas DP. Makanan & minuman dipesan langsung saat kedatangan:</p>
                 <div style="background: rgba(22, 26, 33, 0.9); border: 1px solid rgba(212, 163, 115, 0.35); border-radius: 8px; padding: 10px 12px; margin-bottom: 10px;">
-                    <span style="font-size: 0.75rem; color: #cbd5e1; display: block;">Bank Mandiri:</span>
-                    <strong style="font-family: 'Courier New', monospace; font-size: 1.05rem; color: #ffffff; letter-spacing: 1px; display: block; margin: 2px 0;">1840011559968</strong>
-                    <span style="font-size: 0.8rem; color: var(--accent-gold); display: block;">a.n. Mila Elmeida</span>
+                    <span style="font-size: 0.82rem; color: #22c55e; font-weight: 600; display: block; margin-bottom: 3px;"><i class="fas fa-check-circle"></i> Tanpa Uang Muka (Bebas DP)</span>
+                    <span style="font-size: 0.78rem; color: #cbd5e1; display: block;">Metode di kasir: Tunai (Cash), Mandiri, dan QRIS</span>
                 </div>
-                <button type="button" class="btn-footer-confirm-dp" onclick="openConfirmDpModal()">
-                    <i class="fas fa-receipt"></i> Konfirmasi Bukti Transfer DP
+                <button type="button" class="btn-footer-confirm-dp" onclick="openModal(event)">
+                    <i class="fas fa-calendar-check"></i> Reservasi Meja via WhatsApp
                 </button>
             </div>
         </div>
@@ -1678,47 +1676,33 @@
                         </div>
                     </div>
 
-                    <!-- STEP 3: KETENTUAN DP & REKENING RESMI -->
-                    <div class="res-section-card res-dp-section">
+                    <!-- STEP 3: KETENTUAN RESERVASI & PESANAN MENU -->
+                    <div class="res-section-card">
                         <div class="res-section-title">
                             <span class="res-step-pill">3</span>
-                            <span>Ketentuan Reservasi & Transfer DP</span>
+                            <span>Ketentuan Reservasi & Pesanan Menu</span>
                         </div>
                         
-                        <div class="dp-policy-alert">
-                            <i class="fas fa-info-circle"></i>
-                            <div>
-                                <p>Batas konfirmasi pemesanan hari-H maksimal pukul <strong>14.00 WIB</strong>.</p>
-                                <p class="dp-policy-sub">Nominal DP dikonfirmasi admin via WhatsApp setelah slot meja diverifikasi.</p>
-                            </div>
-                        </div>
-
-                        <div class="dp-bank-card-luxury">
-                            <div class="bank-luxury-header">
-                                <div class="bank-brand-wrap">
-                                    <span class="bank-badge">BANK MANDIRI</span>
-                                    <span class="bank-holder-label">Rekening Resmi Reservasi</span>
+                        <div class="res-policy-clean-box" style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(212, 163, 115, 0.25); border-radius: 10px; padding: 14px 16px; margin-top: 10px;">
+                            <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                                <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(34, 197, 94, 0.15); color: #22c55e; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;">
+                                    <i class="fas fa-check-circle"></i>
                                 </div>
-                                <span class="verified-pill"><i class="fas fa-shield-alt"></i> Terverifikasi</span>
-                            </div>
-
-                            <div class="bank-num-copy-row">
-                                <div class="bank-acc-info">
-                                    <span class="bank-acc-label">Nomor Rekening DP:</span>
-                                    <span class="bank-acc-number">1840011559968</span>
-                                    <span class="bank-acc-name">a.n. <strong>Mila Elmeida</strong></span>
+                                <div>
+                                    <strong style="color: #f8fafc; font-size: 0.95rem; display: block; margin-bottom: 3px;">Reservasi Meja Bebas DP (Tanpa Uang Muka)</strong>
+                                    <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.45; margin: 0;">Pemesanan meja melalui website atau WhatsApp tidak dipungut biaya uang muka (DP). Slot meja akan langsung diamankan oleh Admin Resto.</p>
                                 </div>
-                                <button type="button" class="btn-copy-acc-luxury" onclick="navigator.clipboard.writeText('1840011559968'); alert('Nomor rekening Mandiri (1840011559968 a.n. Mila Elmeida) berhasil disalin!')">
-                                    <i class="fas fa-copy"></i> Salin
-                                </button>
                             </div>
-                        </div>
-
-                        <div class="dp-upload-shortcut-row">
-                            <span>Sudah pernah transfer DP sebelumnya?</span>
-                            <button type="button" class="btn-confirm-dp-shortcut-clean" onclick="openConfirmDpModal()">
-                                <i class="fas fa-file-invoice-dollar"></i> Upload Bukti Transfer di Sini
-                            </button>
+                            
+                            <div style="display: flex; align-items: flex-start; gap: 12px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                                <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(212, 163, 115, 0.15); color: var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <div>
+                                    <strong style="color: #f8fafc; font-size: 0.95rem; display: block; margin-bottom: 3px;">Pesan Menu Makanan Langsung di Tempat</strong>
+                                    <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.45; margin: 0;">Menu makanan & minuman bebas dipilih dan dipesan langsung setibanya di restoran melalui kasir Kaching POS atau memesan langsung di meja.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -1729,7 +1713,7 @@
                 <div class="res-modal-footer">
                     <button type="submit" class="btn-submit-res-luxury">
                         <i class="fab fa-whatsapp"></i>
-                        <span>Lanjutkan Reservasi via WhatsApp</span>
+                        <span>Lanjutkan Reservasi Meja via WhatsApp (Bebas DP)</span>
                     </button>
                     <p class="res-footer-note">
                         <i class="fas fa-lock"></i> Terhubung langsung ke WhatsApp Admin Resmi Bukit Padangan <span style="white-space: nowrap;">(<strong>0823-2353-5747</strong>)</span>.

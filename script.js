@@ -1475,10 +1475,14 @@ function submitReservation(event) {
     }
     waText += `\n`;
 
-    waText += `💳 *Ketentuan & Konfirmasi DP:*\n`;
-    waText += `• Rekening: Bank Mandiri 1840011559968 (a.n. Mila Elmeida)\n`;
-    waText += `• Batas Konfirmasi Hari-H: Maksimal 14.00 WIB\n\n`;
-    waText += `Mohon info ketersediaan meja dan konfirmasi nominal DP yang perlu ditransfer. Terima kasih!`;
+    waText += `🍽️ *Catatan Pesanan:*
+`;
+    waText += `• Reservasi Meja Saja (Bebas DP)
+`;
+    waText += `• Pemesanan hidangan makanan & minuman akan kami pilih dan pesan langsung di tempat / kasir saat tiba.
+
+`;
+    waText += `Mohon konfirmasi ketersediaan slot meja tersebut ya Admin. Terima kasih!`;
 
     // Encode text untuk URL
     const encodedText = encodeURIComponent(waText);
@@ -2673,20 +2677,19 @@ function generateAiKnowledgeResponse(query) {
         };
     }
 
-    // 11. DP, Rekening, Pembayaran, Mandiri, Aturan Hari-H, Kasir (QRIS/Cash)
-    if (/(dp|down payment|uang muka|bayar|transfer|rekening|mandiri|bank|qris|cash|tunai|kartu|bukti|konfirmasi dp|aturan dp|batas)/i.test(q)) {
+    // 11. Pembayaran di Kasir (QRIS/Cash/Mandiri) & Reservasi Bebas DP
+    if (/(dp|down payment|uang muka|bayar|transfer|rekening|mandiri|bank|qris|cash|tunai|kartu|metode)/i.test(q)) {
         return {
-            text: "💳 **Ketentuan Pembayaran & DP Resmi:**\n\n" +
-                  "• **Rekening Resmi DP**: **Bank Mandiri: `1840011559968` a.n. Mila Elmeida**\n" +
-                  "• **Batas Reservasi Hari-H**: Konfirmasi bukti transfer DP diterima maksimal pukul **14.00 WIB** pada hari kunjungan agar meja & pesanan disiapkan prima.\n" +
-                  "• **Metode di Kasir**: Menerima Tunai (Cash), Transfer Bank Mandiri, dan QRIS.",
+            text: `💳 **Ketentuan Reservasi & Pembayaran:**
+
+• **Bebas DP**: Reservasi meja di Bukit Padangan **tanpa uang muka (bebas DP)**. Tamu cukup booking meja via WhatsApp, lalu memesan hidangan langsung di tempat.
+• **Metode di Kasir**: Menerima pembayaran Tunai (Cash), Transfer Bank Mandiri, dan QRIS di kasir Kaching POS.`,
             actions: [
-                { label: "📤 Konfirmasi Bukti DP", action: "func:openConfirmDpModal" },
-                { label: "💬 Kirim Bukti ke WA Admin", action: "wa:dp" }
+                { label: "🪑 Reservasi Meja", action: "scroll:#tables" },
+                { label: "📖 Lihat Buku Menu", action: "func:openMenuBookModal" }
             ]
         };
     }
-
     // 12. Kontak Admin WhatsApp Langsung
     if (/(wa|whatsapp|kontak|admin|nomor|telepon|cs|hubungi|chat)/i.test(q)) {
         return {
