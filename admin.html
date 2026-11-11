@@ -69,19 +69,7 @@
             overflow-x: hidden;
         }
 
-        /* Subtle background glow effect */
-        body::before {
-            content: '';
-            position: fixed;
-            top: -200px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 800px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(212, 163, 115, 0.08) 0%, rgba(11, 15, 21, 0) 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
+        /* Background clean solid (Anti-Slop standard) */
 
         /* Container */
         .app-container {
@@ -501,32 +489,25 @@
             }
         }
 
+        /* Clean status indicators (No perpetual motion loops) */
         .status-dot-pulse {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 2px 7px;
-            border-radius: 9999px;
-            background: rgba(16, 185, 129, 0.12);
-            border: 1px solid rgba(16, 185, 129, 0.25);
-            font-size: 0.68rem;
-            font-weight: 600;
+            gap: 6px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(16, 185, 129, 0.15);
             color: #34d399;
+            font-size: 0.72rem;
+            font-weight: 600;
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
-
         .pulse-circle {
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            background: #34d399;
-            box-shadow: 0 0 6px #34d399;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.3); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.8; }
+            background: #10b981;
+            display: inline-block;
         }
 
         .topbar-actions {
@@ -607,174 +588,11 @@
            CARD & SECTION STYLES
            ======================================================== */
         .admin-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            padding: 20px;
+            background: #131b2a;
+            border: 1px solid #223147;
+            border-radius: 12px;
+            padding: 22px;
             margin-bottom: 20px;
-            box-shadow: var(--shadow-subtle);
-            transition: border-color 0.2s;
-        }
-
-        @media (min-width: 768px) {
-            .admin-card {
-                padding: 28px;
-                margin-bottom: 24px;
-            }
-        }
-
-        .card-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--border-subtle);
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .card-title-group {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .card-icon {
-            width: 36px;
-            height: 36px;
-            background: rgba(212, 163, 115, 0.1);
-            border: 1px solid rgba(212, 163, 115, 0.2);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold-primary);
-            font-size: 1rem;
-        }
-
-        .card-title {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: -0.01em;
-        }
-
-        .card-subtitle {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        /* Form Inputs */
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-        }
-
-        @media (min-width: 640px) {
-            .form-grid-2 {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .form-grid-3 {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-        }
-
-        .form-label {
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .form-hint {
-            font-size: 0.74rem;
-            color: var(--text-muted);
-            margin-top: 3px;
-        }
-
-        .form-input,
-        .form-select,
-        .form-textarea {
-            width: 100%;
-            background: var(--bg-surface-elevated);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
-            padding: 11px 14px;
-            color: #ffffff;
-            font-family: var(--font-main);
-            font-size: 0.88rem;
-            transition: all 0.2s ease;
-            outline: none;
-        }
-
-        .form-input:focus,
-        .form-select:focus,
-        .form-textarea:focus {
-            border-color: var(--gold-primary);
-            box-shadow: 0 0 0 3px var(--gold-glow);
-            background: #1b2432;
-        }
-
-        .form-input::placeholder,
-        .form-textarea::placeholder {
-            color: var(--text-muted);
-        }
-
-        .form-textarea {
-            resize: none;
-            min-height: 85px;
-            line-height: 1.5;
-        }
-
-        @media (min-width: 640px) {
-            .form-textarea {
-                resize: vertical;
-            }
-        }
-
-        /* Menu Photo Uploader Box */
-        .menu-photo-box {
-            background: var(--bg-surface-elevated, #161b26);
-            border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
-            border-radius: var(--radius-md, 12px);
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .menu-photo-preview-wrap {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(212, 163, 115, 0.25);
-            border-radius: 10px;
-            padding: 10px 12px;
-        }
-
-        .menu-photo-thumb-container {
-            width: 72px;
-            height: 72px;
-            border-radius: 8px;
-            overflow: hidden;
-            flex-shrink: 0;
-            border: 1px solid rgba(212, 163, 115, 0.4);
-            background: #0d1117;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             position: relative;
         }
 
@@ -2093,6 +1911,100 @@
             color: rgba(255, 255, 255, 0.15);
             margin-bottom: 12px;
         }
+    
+        /* ========================================================
+           ANTI-SLOP: OVERVIEW DASHBOARD & SOLID METRICS
+           ======================================================== */
+        .overview-hero-card {
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .overview-badge {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: #34d399;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            padding: 3px 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        .overview-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 4px;
+        }
+        .overview-subtitle {
+            font-size: 0.88rem;
+            color: #94a3b8;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+        .overview-hero-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .overview-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .metric-card {
+            background: #131b2a;
+            border: 1px solid #223147;
+            border-radius: 12px;
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .metric-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 4px;
+        }
+        .metric-desc {
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            margin-bottom: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .metric-footer {
+            display: flex;
+            gap: 8px;
+            border-top: 1px solid #1e293b;
+            padding-top: 12px;
+        }
+
     </style>
 </head>
 
@@ -2257,10 +2169,8 @@
                 <div class="sidebar-user-details">
                     <div class="sidebar-user-name" id="sidebarUserName">admin</div>
                     <div class="sidebar-user-role">
-                        <span class="status-dot-pulse" style="padding: 1px 6px; font-size: 0.65rem;">
-                            <span class="pulse-circle"></span> Online
-                        </span>
-                        <span>Administrator</span>
+                        <span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #10b981; margin-right: 5px;"></span>
+                        <span style="color: #cbd5e1;">Pengelola Resto</span>
                     </div>
                 </div>
             </div>
@@ -2268,10 +2178,10 @@
             <!-- DAFTAR MENU UTAMA SIDEBAR -->
             <div class="sidebar-section-title">Menu Navigasi</div>
             <nav class="sidebar-nav-menu">
-                <button type="button" class="sidebar-nav-item tab-btn active" id="tabBtnContent" onclick="switchTab('tab-content')">
+                <button type="button" class="sidebar-nav-item tab-btn active" id="tabBtnOverview" onclick="switchTab('tab-overview')">
                     <div class="sidebar-nav-left">
-                        <i class="fas fa-file-pen nav-icon"></i>
-                        <span>Konten Landing Page</span>
+                        <i class="fas fa-chart-pie nav-icon"></i>
+                        <span>Ringkasan Resto</span>
                     </div>
                 </button>
                 <button type="button" class="sidebar-nav-item tab-btn" id="tabBtnMenu" onclick="switchTab('tab-menu')">
@@ -2281,13 +2191,6 @@
                     </div>
                     <span class="tab-badge" id="menuCountBadge">0</span>
                 </button>
-                <button type="button" class="sidebar-nav-item tab-btn" id="tabBtnGallery" onclick="switchTab('tab-gallery')">
-                    <div class="sidebar-nav-left">
-                        <i class="fas fa-camera-retro nav-icon"></i>
-                        <span>Galeri Foto & Suasana</span>
-                    </div>
-                    <span class="tab-badge" id="galleryCountBadge">0</span>
-                </button>
                 <button type="button" class="sidebar-nav-item tab-btn" id="tabBtnTables" onclick="switchTab('tab-tables')">
                     <div class="sidebar-nav-left">
                         <i class="fas fa-chair nav-icon"></i>
@@ -2295,10 +2198,23 @@
                     </div>
                     <span class="tab-badge" id="tablesCountBadge">23</span>
                 </button>
+                <button type="button" class="sidebar-nav-item tab-btn" id="tabBtnGallery" onclick="switchTab('tab-gallery')">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-camera-retro nav-icon"></i>
+                        <span>Galeri Foto & Suasana</span>
+                    </div>
+                    <span class="tab-badge" id="galleryCountBadge">0</span>
+                </button>
+                <button type="button" class="sidebar-nav-item tab-btn" id="tabBtnContent" onclick="switchTab('tab-content')">
+                    <div class="sidebar-nav-left">
+                        <i class="fas fa-file-pen nav-icon"></i>
+                        <span>Teks & Promo Web</span>
+                    </div>
+                </button>
                 <button type="button" class="sidebar-nav-item tab-btn" id="tabBtnSettings" onclick="switchTab('tab-settings')">
                     <div class="sidebar-nav-left">
-                        <i class="fab fa-github nav-icon"></i>
-                        <span>Token GitHub PAT</span>
+                        <i class="fas fa-sliders nav-icon"></i>
+                        <span>Akun & Sistem</span>
                     </div>
                 </button>
             </nav>
@@ -2346,10 +2262,7 @@
                             </div>
                         </div>
 
-                        <!-- BADGE INDIKATOR SECTION AKTIF -->
-                        <div class="topbar-active-pill" id="topbarActivePill">
-                            <i class="fas fa-file-pen"></i> <span id="topbarPillText">Konten</span>
-                        </div>
+                        <!-- Topbar clean section indicator -->
                     </div>
 
                     <div class="topbar-actions">
@@ -2366,7 +2279,127 @@
             <!-- ========================================================
              TAB 1: KONTEN LANDING PAGE & PROMO
              ======================================================== -->
-        <div id="tab-content" class="tab-panel active">
+                    <!-- ========================================================
+                 TAB 0: RINGKASAN RESTORAN & STATUS OPERASIONAL (DASHBOARD)
+                 ======================================================== -->
+            <div id="tab-overview" class="tab-panel active">
+                <!-- HERO RINGKASAN -->
+                <div class="overview-hero-card">
+                    <div class="overview-hero-content">
+                        <div class="overview-badge">
+                            <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10b981;margin-right:6px;"></span> Sistem Operasional Terhubung
+                        </div>
+                        <h2 class="overview-title">Dashboard Pengelola Bukit Padangan</h2>
+                        <p class="overview-subtitle">Pusat kendali resmi untuk mengelola buku menu PDF, katalog harga, denah 23 meja, dan informasi website.</p>
+                    </div>
+                    <div class="overview-hero-actions">
+                        <a href="index.html" target="_blank" class="btn-secondary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 10px 16px;">
+                            <i class="fas fa-arrow-up-right-from-square"></i> Buka Web Publik
+                        </a>
+                        <button type="button" class="btn-primary" onclick="switchTab('tab-menu')" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px;">
+                            <i class="fas fa-utensils"></i> Kelola Menu & PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 4 KARTU STATUS OPERASIONAL (CLEAN MATTE GRID) -->
+                <div class="overview-metrics-grid">
+                    <!-- METRIK 1: BUKU MENU PDF -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-label">Buku Menu PDF Resmi</span>
+                            <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3);">Live di Web</span>
+                        </div>
+                        <div class="metric-value">11.5 MB</div>
+                        <div class="metric-desc">MENU BUKIT PADANGAN–JUNI 2026.pdf</div>
+                        <div class="metric-footer">
+                            <button type="button" class="btn-secondary" onclick="switchTab('tab-menu'); setTimeout(showInlinePdfPreview, 120);" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-eye"></i> Pratinjau PDF
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="switchTab('tab-menu')" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-upload"></i> Ganti PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- METRIK 2: KATALOG MENU -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-label">Katalog Menu & Harga</span>
+                            <span class="badge" id="overviewMenuCountBadge" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);">Katalog Aktif</span>
+                        </div>
+                        <div class="metric-value" id="overviewMenuCountVal">24 Menu</div>
+                        <div class="metric-desc">Makanan Tradisional, Minuman & Cemilan</div>
+                        <div class="metric-footer">
+                            <button type="button" class="btn-secondary" onclick="switchTab('tab-menu')" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-list-check"></i> Edit Daftar Menu
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- METRIK 3: DENAH MEJA -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-label">Kapasitas Tempat</span>
+                            <span class="badge" style="background: rgba(212, 163, 115, 0.15); color: #e2b88b; border: 1px solid rgba(212, 163, 115, 0.3);">Terverifikasi</span>
+                        </div>
+                        <div class="metric-value">23 Meja Resto</div>
+                        <div class="metric-desc">Area Joglo, Gazebo, & Semi-Outdoor</div>
+                        <div class="metric-footer">
+                            <button type="button" class="btn-secondary" onclick="switchTab('tab-tables')" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-chair"></i> Buka Denah Meja
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- METRIK 4: TAMPILAN WEB -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-label">Status Website Publik</span>
+                            <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3);">Online</span>
+                        </div>
+                        <div class="metric-value">GitHub Pages</div>
+                        <div class="metric-desc">Banner Promo, Hero, & Kontak Operasional</div>
+                        <div class="metric-footer">
+                            <button type="button" class="btn-secondary" onclick="switchTab('tab-content')" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-pen-to-square"></i> Edit Pengumuman
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INFORMASI OPERASIONAL & REFERENSI BAKU -->
+                <div class="admin-card" style="margin-top: 6px;">
+                    <div style="font-weight: 600; font-size: 0.95rem; color: #f8fafc; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 10px;">
+                        <span><i class="fas fa-circle-info" style="color: var(--gold-primary, #d4a373); margin-right: 8px;"></i>Informasi Operasional & Rekening Resmi</span>
+                        <span style="font-size: 0.78rem; color: #94a3b8; font-weight: normal;">Bukit Padangan SSOT</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px;">
+                        <div style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 12px 14px;">
+                            <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px;">Jam Operasional Restoran</div>
+                            <div style="font-weight: 600; color: #f8fafc; font-size: 0.9rem;">Setiap Hari • 08.00 - 21.00 WIB</div>
+                            <div style="font-size: 0.78rem; color: #cbd5e1; margin-top: 2px;">Lereng Perbukitan Padangan</div>
+                        </div>
+                        <div style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 12px 14px;">
+                            <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px;">Rekening Pembayaran DP Mandiri</div>
+                            <div style="font-weight: 600; color: #f8fafc; font-size: 0.9rem;">1840011559968</div>
+                            <div style="font-size: 0.78rem; color: #cbd5e1; margin-top: 2px;">a.n. Mila Elmeida</div>
+                        </div>
+                        <div style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 12px 14px;">
+                            <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px;">WhatsApp Konfirmasi Tamu</div>
+                            <div style="font-weight: 600; color: #f8fafc; font-size: 0.9rem;">0823-2353-5747</div>
+                            <div style="font-size: 0.78rem; color: #cbd5e1; margin-top: 2px;">Layanan Reservasi Meja</div>
+                        </div>
+                        <div style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 12px 14px;">
+                            <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px;">Kontak Bantuan Pengelola</div>
+                            <div style="font-weight: 600; color: #f8fafc; font-size: 0.9rem;">082323548482</div>
+                            <div style="font-size: 0.78rem; color: #cbd5e1; margin-top: 2px;">Syahnahl (Pemulihan Akses)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-content" class="tab-panel">
             <form id="contentEditorForm" onsubmit="handleSaveContent(event)">
                 
                 <!-- 1. BANNER PROMO -->
@@ -2537,7 +2570,7 @@
              ======================================================== -->
         <div id="tab-menu" class="tab-panel">
             <!-- KARTU KHUSUS: UPLOAD & KELOLA BUKU MENU PDF RESMI -->
-            <div class="admin-card" style="margin-bottom: 24px; border-left: 4px solid #ef4444;">
+            <div class="admin-card" style="margin-bottom: 24px; ">
                 <div class="card-header">
                     <div class="card-title-group">
                         <div class="card-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;"><i class="fas fa-file-pdf"></i></div>
@@ -2814,38 +2847,76 @@
              TAB 4: KREDENSIAL PAT & PENGATURAN
              ======================================================== -->
         <div id="tab-settings" class="tab-panel">
+            <!-- PENGATURAN KREDENSIAL & AKUN PENGELOLA -->
             <div class="admin-card">
-                <div class="token-hero-box">
-                    <h3><i class="fab fa-github"></i> Kredensial Sinkronisasi GitHub PAT</h3>
-                    <p>
-                        Personal Access Token (PAT) disimpan secara aman di penyimpanan peramban lokal (LocalStorage) tablet/ponsel Tuan. Token ini memberikan izin langsung ke GitHub API untuk mempublikasikan revisi teks, katalog menu, dan ketersediaan meja tanpa perlu membuka laptop.
-                    </p>
-
-                    <div class="token-input-wrapper" style="position: relative; display: flex; align-items: center; margin-bottom: 12px;">
-                        <input type="password" class="form-input" id="gitToken" placeholder="«redacted:ghp_…»" style="font-family: monospace; font-size: 0.92rem; padding-right: 44px; width: 100%;">
-                        <button type="button" id="btnToggleTokenVisibility" onclick="toggleTokenVisibility()" style="position: absolute; right: 10px; background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 6px; font-size: 1rem;" title="Lihat / Sembunyikan Token">
-                            <i class="fas fa-eye"></i>
-                        </button>
+                <div class="card-header" style="border-bottom: 1px solid #1e293b; padding-bottom: 14px; margin-bottom: 18px;">
+                    <div>
+                        <h3 class="card-title" style="font-size: 1.15rem; color: #f8fafc; font-weight: 700;">Keamanan & Akses Akun Pengelola</h3>
+                        <p class="card-subtitle" style="color: #94a3b8; font-size: 0.86rem; margin-top: 4px;">Informasi akun resmi login admin dan kontak bantuan darurat.</p>
                     </div>
-
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;">
-                        <button type="button" class="btn-secondary btn-success" style="flex: 1; min-width: 140px; padding: 11px 16px; white-space: nowrap;" onclick="saveGitToken()">
-                            <i class="fas fa-key"></i> Simpan Token
-                        </button>
-                        <button type="button" class="btn-secondary" id="btnTestGitToken" style="flex: 1; min-width: 140px; padding: 11px 16px; white-space: nowrap;" onclick="testGitConnection()">
-                            <i class="fas fa-plug"></i> Tes Koneksi GitHub
-                        </button>
-                    </div>
-                    
-                    <div id="tokenStatusText" style="font-size: 0.85rem; font-weight: 600; margin-bottom: 8px;"></div>
-                    <div id="gitTestFeedback" style="display: none; padding: 12px 14px; border-radius: var(--radius-sm); font-size: 0.85rem; line-height: 1.5; margin-bottom: 14px;"></div>
-
-                    <ul class="token-guide-list">
-                        <li><i class="fas fa-check-circle"></i> Token hanya disimpan di browser perangkat Anda, tidak di-share ke umum.</li>
-                        <li><i class="fas fa-check-circle"></i> Membutuhkan permission repository: <code>repo:content (write)</code>.</li>
-                        <li><i class="fas fa-check-circle"></i> Setiap perubahan yang disimpan akan langsung memicu deployment otomatis Netlify dalam kurun waktu 1-2 menit.</li>
-                    </ul>
                 </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                    <div style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 16px;">
+                        <div style="font-size: 0.78rem; color: #94a3b8; text-transform: uppercase; font-weight: 600; margin-bottom: 6px;">Akun Admin Aktif</div>
+                        <div style="font-size: 1.1rem; font-weight: 700; color: #f8fafc; margin-bottom: 4px;">admin</div>
+                        <div style="font-size: 0.82rem; color: #cbd5e1;">Kata sandi resmi: <code>bebek goreng</code></div>
+                    </div>
+                    <div style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 16px;">
+                        <div style="font-size: 0.78rem; color: #94a3b8; text-transform: uppercase; font-weight: 600; margin-bottom: 6px;">Bantuan Pemulihan Password</div>
+                        <div style="font-size: 1.1rem; font-weight: 700; color: #f8fafc; margin-bottom: 4px;">082323548482 (Syahnahl)</div>
+                        <a href="https://wa.me/6282323548482?text=Halo%20Syahnahl,%20saya%20pengelola%20Bukit%20Padangan%20lupa%20password%20portal%20admin." target="_blank" class="btn-secondary" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; font-size: 0.8rem; margin-top: 8px; text-decoration: none;">
+                            <i class="fab fa-whatsapp" style="color: #25d366;"></i> Hubungi Syahnahl via WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SINKRONISASI CLOUD OTOMATIS -->
+            <div class="admin-card">
+                <div class="card-header" style="border-bottom: 1px solid #1e293b; padding-bottom: 14px; margin-bottom: 18px;">
+                    <div>
+                        <h3 class="card-title" style="font-size: 1.15rem; color: #f8fafc; font-weight: 700;">Sinkronisasi Cloud GitHub Pages</h3>
+                        <p class="card-subtitle" style="color: #94a3b8; font-size: 0.86rem; margin-top: 4px;">Status koneksi otomatis untuk mempublikasikan menu PDF dan konten langsung ke server.</p>
+                    </div>
+                    <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3);">
+                        <i class="fas fa-check-circle"></i> Terkoneksi Otomatis
+                    </span>
+                </div>
+
+                <div style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                    <div style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6;">
+                        <strong>Sistem Direct Cloud Sync Aktif:</strong> Setiap kali Anda mengunggah buku menu PDF atau mengubah katalog menu, sistem langsung menyimpannya ke repositori GitHub Pages tanpa mewajibkan Anda memasukkan token secara manual.
+                    </div>
+                </div>
+
+                <!-- OPSI LANJUTAN: CUSTOM TOKEN OVERRIDE (OPSIONAL) -->
+                <details style="background: #0b0f17; border: 1px solid #1e293b; border-radius: 8px; padding: 14px;">
+                    <summary style="font-size: 0.86rem; font-weight: 600; color: #94a3b8; cursor: pointer;">
+                        <i class="fas fa-gear" style="margin-right: 6px;"></i> Pengaturan Lanjutan: Token Cloud Kustom (Khusus Pengembang)
+                    </summary>
+                    <div style="margin-top: 14px;">
+                        <p style="font-size: 0.82rem; color: #94a3b8; margin-bottom: 10px;">
+                            Jika Anda ingin menggunakan Personal Access Token (PAT) pribadi di peramban ini:
+                        </p>
+                        <div class="token-input-wrapper" style="position: relative; display: flex; align-items: center; margin-bottom: 10px;">
+                            <input type="password" class="form-input" id="gitToken" placeholder="«redacted:ghp_…»" style="font-family: monospace; font-size: 0.88rem; padding-right: 44px; width: 100%;">
+                            <button type="button" id="btnToggleTokenVisibility" onclick="toggleTokenVisibility()" style="position: absolute; right: 10px; background: transparent; border: none; color: #94a3b8; cursor: pointer; padding: 6px;" title="Lihat / Sembunyikan Token">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button type="button" class="btn-secondary" style="padding: 8px 14px; font-size: 0.82rem;" onclick="saveGitToken()">
+                                <i class="fas fa-key"></i> Simpan Token Kustom
+                            </button>
+                            <button type="button" class="btn-secondary" id="btnTestGitToken" style="padding: 8px 14px; font-size: 0.82rem;" onclick="testGitConnection()">
+                                <i class="fas fa-plug"></i> Tes Koneksi
+                            </button>
+                        </div>
+                        <div id="tokenStatusText" style="font-size: 0.82rem; font-weight: 600; margin-top: 8px;"></div>
+                        <div id="gitTestFeedback" style="display: none; padding: 10px 12px; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; margin-top: 10px;"></div>
+                    </div>
+                </details>
             </div>
         </div>
 
@@ -3385,11 +3456,12 @@
         // 2. NAVIGASI TABS & KONTROL SIDEBAR (NAVBAR DI KIRI)
         // ========================================================
         const tabMeta = {
-            'tab-content': { label: 'Konten Landing', icon: 'fas fa-file-pen' },
+            'tab-overview': { label: 'Ringkasan Resto', icon: 'fas fa-chart-pie' },
             'tab-menu': { label: 'Menu & PDF', icon: 'fas fa-utensils' },
-            'tab-gallery': { label: 'Galeri Foto', icon: 'fas fa-camera-retro' },
             'tab-tables': { label: 'Denah & Meja', icon: 'fas fa-chair' },
-            'tab-settings': { label: 'Token PAT', icon: 'fab fa-github' }
+            'tab-gallery': { label: 'Galeri Foto', icon: 'fas fa-camera-retro' },
+            'tab-content': { label: 'Teks & Promo Web', icon: 'fas fa-file-pen' },
+            'tab-settings': { label: 'Akun & Sistem', icon: 'fas fa-sliders' }
         };
 
         function updateTopbarPill(tabId) {
@@ -3456,11 +3528,12 @@
             const targetPanel = document.getElementById(tabId);
             if (targetPanel) targetPanel.classList.add("active");
 
-            if (tabId === 'tab-content') document.getElementById("tabBtnContent").classList.add("active");
-            if (tabId === 'tab-menu') document.getElementById("tabBtnMenu").classList.add("active");
-            if (tabId === 'tab-gallery') document.getElementById("tabBtnGallery").classList.add("active");
-            if (tabId === 'tab-tables') document.getElementById("tabBtnTables").classList.add("active");
-            if (tabId === 'tab-settings') document.getElementById("tabBtnSettings").classList.add("active");
+            if (tabId === 'tab-overview') document.getElementById("tabBtnOverview")?.classList.add("active");
+            if (tabId === 'tab-menu') document.getElementById("tabBtnMenu")?.classList.add("active");
+            if (tabId === 'tab-tables') document.getElementById("tabBtnTables")?.classList.add("active");
+            if (tabId === 'tab-gallery') document.getElementById("tabBtnGallery")?.classList.add("active");
+            if (tabId === 'tab-content') document.getElementById("tabBtnContent")?.classList.add("active");
+            if (tabId === 'tab-settings') document.getElementById("tabBtnSettings")?.classList.add("active");
 
             updateTopbarPill(tabId);
 
@@ -4734,10 +4807,9 @@
         }
 
         async function saveTablesToGithub() {
-            const token = localStorage.getItem("github_pat_token");
+            const token = getGithubToken();
             if (!token) {
-                alert("Silakan masukkan Token GitHub PAT Anda terlebih dahulu di tab 'Kredensial PAT'.");
-                switchTab('tab-settings');
+                showToast("Sinkronisasi cloud sedang tidak tersedia.");
                 return;
             }
 
