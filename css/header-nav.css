@@ -1,0 +1,223 @@
+/* =========================================
+   1A. SITE HEADER (PROMO BAR + NAVBAR)
+   ========================================= */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+.promo-bar {
+    background: linear-gradient(135deg, #1c1813 0%, #110e0a 100%); border-bottom: 1px solid rgba(212, 163, 115, 0.25);
+    color: white;
+    padding: 8px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    font-size: 0.82rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.promo-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.promo-tag {
+    background-color: var(--accent-gold);
+    color: white;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    animation: pulse 1.5s infinite;
+}
+
+.close-promo {
+    font-size: 1.3rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    font-weight: bold;
+    padding: 0 5px;
+}
+
+.close-promo:hover {
+    opacity: 1;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* =========================================
+   2. NAVBAR
+   ========================================= */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 5%;
+    background-color: #111418;
+    position: relative;
+    z-index: 1200;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid rgba(212, 163, 115, 0.2);
+    transition: all 0.3s ease;
+}
+
+.logo {
+    font-family: var(--font-heading);
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.logo span {
+    color: var(--accent-gold);
+    text-shadow: 0 0 15px rgba(212, 163, 115, 0.45);
+}
+
+/* Hide mobile drawer items on desktop */
+@media (min-width: 769px) {
+    .nav-drawer-header,
+    .nav-drawer-footer {
+        display: none !important;
+    }
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.6rem;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    color: #f1f5f9;
+    font-weight: 500;
+    transition: 0.3s;
+    font-size: 0.95rem;
+    position: relative;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.nav-links a i {
+    display: none; /* Hide icons on desktop, show in mobile drawer */
+}
+
+.nav-links a:hover {
+    color: var(--accent-gold);
+}
+
+/* Nav Admin Link */
+.nav-links a.nav-admin-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(212, 163, 115, 0.35);
+    background: rgba(22, 26, 32, 0.6);
+    color: #e2e8f0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.nav-links a.nav-admin-link i {
+    display: inline-block !important;
+    font-size: 0.85rem;
+    color: var(--accent-gold);
+}
+
+.nav-links a.nav-admin-link:hover {
+    color: var(--accent-gold);
+    border-color: var(--accent-gold);
+    background: rgba(212, 163, 115, 0.15);
+    box-shadow: 0 0 15px rgba(212, 163, 115, 0.25);
+    transform: translateY(-1px);
+}
+
+/* Tombol Reservasi di Navbar */
+.btn-reservasi {
+    background: linear-gradient(135deg, #e5b382 0%, #d4a373 50%, #b38253 100%);
+    color: #0c0e12 !important;
+    padding: 0.65rem 1.8rem;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    font-weight: 700;
+    box-shadow: 0 4px 18px rgba(212, 163, 115, 0.35);
+    transition: 0.3s;
+}
+
+/* Nav Drawer Mobile Extras */
+.nav-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1200;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.nav-backdrop.active {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.nav-drawer-header,
+.nav-drawer-footer {
+        display: block;
+        padding: 1.2rem 1.4rem;
+        margin-top: auto;
+        border-top: 1px solid rgba(212, 163, 115, 0.2);
+        background-color: #161a20;
+        width: 100%;
+    }
+
+.nav-desktop-cta {
+    display: block;
+}
+
+.btn-reservasi:hover {
+    background: linear-gradient(135deg, #f0c294 0%, #e5b382 50%, #c4915f 100%);
+    border-color: var(--accent-gold);
+    color: #0c0e12 !important;
+    box-shadow: 0 6px 24px rgba(212, 163, 115, 0.55);
+    transform: translateY(-2px);
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    color: var(--primary-green);
+    cursor: pointer;
+}
+

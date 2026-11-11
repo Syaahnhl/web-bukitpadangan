@@ -1,0 +1,78 @@
+/* =========================================
+   1. RESET & VARIABEL (LUXURY BLACK & GOLD PALETTE)
+   ========================================= */
+:root {
+    --primary-green: #d4a373;
+    /* Warm Metallic Gold */
+    --accent-gold: #e5b882;
+    /* Radiant Champagne Gold */
+    --gold-light: #f3d9a2;
+    --gold-dark: #b8834a;
+    --bg-body: #0a0c0f;
+    /* Deep Obsidian Black */
+    --bg-surface: #12151a;
+    /* Elevated Charcoal Surface */
+    --bg-card: #161a20;
+    /* Card Container */
+    --bg-card-hover: #1f242e;
+    --bg-cream: #0a0c0f;
+    /* Remapped to Obsidian */
+    --text-dark: #f8fafc;
+    /* Crisp Pearl White */
+    --text-muted: #94a3b8;
+    /* Muted Silver */
+    --text-light: #ffffff;
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Poppins', sans-serif;
+    --wa-green: #25D366;
+    /* WhatsApp Green */
+    --kaching-blue: #d4a373;
+    /* Gold Accent for Secondary CTA */
+    --border-color: rgba(212, 163, 115, 0.2);
+    --border-gold: rgba(212, 163, 115, 0.35);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--header-height, 90px);
+    overflow-x: hidden;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-cream);
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+    padding-top: var(--header-height, 90px);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+section {
+    scroll-margin-top: calc(var(--header-height, 90px) + 20px);
+}
+

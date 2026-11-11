@@ -1,0 +1,7 @@
+/* =========================================================
+   ADMIN DASHBOARD MASTER STYLESHEET MANIFEST
+   Bukit Padangan (Modular Architecture < 1,000 LOC per file)
+   ========================================================= */
+@import url('admin-layout.css');
+@import url('admin-components.css');
+@import url('admin-modals.css');
