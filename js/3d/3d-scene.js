@@ -15,11 +15,11 @@ function init3DFloorPlan() {
     const width = canvasContainer.clientWidth || 800;
     const height = canvasContainer.clientHeight || 500;
 
-    // Scenescene3D = new THREE.Scene();
+    scene3D = new THREE.Scene();
     scene3D.background = new THREE.Color(0x0a0c0f); // Luxury Night Obsidian Sky
     scene3D.fog = new THREE.FogExp2(0x0a0c0f, 0.0055);
 
-    // Cameracamera3D = new THREE.PerspectiveCamera(40, width / height, 0.5, 300);
+    camera3D = new THREE.PerspectiveCamera(40, width / height, 0.5, 300);
     camera3D.position.set(CAMERA_PRESETS.all.pos.x, CAMERA_PRESETS.all.pos.y, CAMERA_PRESETS.all.pos.z);
 
     // Detect Mobile Device
@@ -49,7 +49,7 @@ function init3DFloorPlan() {
 
     canvasContainer.appendChild(renderer3D.domElement);
 
-    // Controlscontrols3D = new THREE.OrbitControls(camera3D, renderer3D.domElement);
+    controls3D = new THREE.OrbitControls(camera3D, renderer3D.domElement);
     controls3D.enableDamping = true;
     controls3D.dampingFactor = 0.06;
     controls3D.maxPolarAngle = Math.PI / 2 - 0.06; // Don't go below ground
@@ -61,15 +61,15 @@ function init3DFloorPlan() {
     window.scene3D = scene3D;
     window.renderer3D = renderer3D;
 
-    // Lightingsetup3DLighting();
+    setup3DLighting();
 
-    // Build scenery & environmentbuild3DEnvironment();
+    build3DEnvironment();
 
-    // Populate tablespopulate3DTables();
+    populate3DTables();
 
-    // Interaction eventssetup3DInteraction();
+    setup3DInteraction();
 
-    // Animation loopis3DInitialized = true;
+    is3DInitialized = true;
     animate3D();
 
     window.addEventListener("resize", on3DWindowResize);
