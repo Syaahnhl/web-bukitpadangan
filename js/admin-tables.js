@@ -3,7 +3,14 @@
         function saveTablesLocalOverride() {
             try {
                 const map = {};
-                adminTables.forEach(t => { map[t.id] = t.status; });
+                adminTables.forEach(t => {
+                    map[t.id] = {
+                        status: t.status || 'tersedia',
+                        bookingDate: t.bookingDate || '',
+                        bookingStartTime: t.bookingStartTime || '',
+                        bookingEndTime: t.bookingEndTime || ''
+                    };
+                });
                 localStorage.setItem(TABLES_OVERRIDE_KEY, JSON.stringify(map));
             } catch (e) {
                 console.warn("Gagal menyimpan cache meja ke localStorage:", e);
@@ -15,7 +22,18 @@
                 const raw = localStorage.getItem(TABLES_OVERRIDE_KEY);
                 if (!raw) return tables;
                 const map = JSON.parse(raw);
-                return tables.map(t => (map[t.id] ? { ...t, status: map[t.id] } : t));
+                return tables.map(t => {
+                    const ov = map[t.id];
+                    if (!ov) return t;
+                    if (typeof ov === 'string') return { ...t, status: ov };
+                    return {
+                        ...t,
+                        status: ov.status || t.status,
+                        bookingDate: ov.bookingDate || '',
+                        bookingStartTime: ov.bookingStartTime || '',
+                        bookingEndTime: ov.bookingEndTime || ''
+                    };
+                });
             } catch (e) {
                 return tables;
             }
@@ -119,6 +137,28 @@
                                 <option value="dipesan" ${st === 'dipesan' ? 'selected' : ''}>🔴 Dipesan (Reserved)</option>
                             </select>
                         </div>
+
+                        ${st !== 'tersedia' ? `
+                        <div class="table-booking-schedule">
+                            <div class="table-booking-title">
+                                <i class="fas fa-calendar-clock"></i> Jadwal Booking Meja
+                            </div>
+                            <div class="table-booking-field">
+                                <label>Tanggal</label>
+                                <input type="date" class="table-booking-input" value="${t.bookingDate || ''}" onchange="updateTableBookingSchedule('${t.id}', 'bookingDate', this.value)">
+                            </div>
+                            <div class="table-booking-time-row">
+                                <div class="table-booking-field">
+                                    <label>Dari Jam</label>
+                                    <input type="time" class="table-booking-input" value="${t.bookingStartTime || ''}" onchange="updateTableBookingSchedule('${t.id}', 'bookingStartTime', this.value)">
+                                </div>
+                                <div class="table-booking-field">
+                                    <label>Sampai Jam</label>
+                                    <input type="time" class="table-booking-input" value="${t.bookingEndTime || ''}" onchange="updateTableBookingSchedule('${t.id}', 'bookingEndTime', this.value)">
+                                </div>
+                            </div>
+                        </div>
+                        ` : ''}
                     </div>
                 `;
             }).join("");
@@ -128,16 +168,43 @@
             const t = adminTables.find(x => x.id === tableId);
             if (t) {
                 t.status = newStatus;
-                selectEl.className = `table-card-status-select status-${newStatus}`;
+                if (newStatus === 'tersedia') {
+                    t.bookingDate = '';
+                    t.bookingStartTime = '';
+                    t.bookingEndTime = '';
+                } else if (!t.bookingDate) {
+                    const now = new Date();
+                    const yyyy = now.getFullYear();
+                    const mm = String(now.getMonth() + 1).padStart(2, '0');
+                    const dd = String(now.getDate()).padStart(2, '0');
+                    t.bookingDate = `${yyyy}-${mm}-${dd}`;
+                }
                 saveTablesLocalOverride();
+                renderTablesCards();
                 updateTableStats();
                 showToast(`Status ${t.name} diubah ke ${newStatus.toUpperCase()} (tersimpan)`);
             }
         }
 
+        function updateTableBookingSchedule(tableId, field, value) {
+            const t = adminTables.find(x => x.id === tableId);
+            if (t) {
+                t[field] = value;
+                saveTablesLocalOverride();
+                showToast(`Jadwal booking ${t.name} diperbarui`);
+            }
+        }
+
         function setBulkTableStatus(status) {
             if (confirm(`Ubah status SELURUH ${adminTables.length} meja menjadi "${status.toUpperCase()}"?`)) {
-                adminTables.forEach(t => t.status = status);
+                adminTables.forEach(t => {
+                    t.status = status;
+                    if (status === 'tersedia') {
+                        t.bookingDate = '';
+                        t.bookingStartTime = '';
+                        t.bookingEndTime = '';
+                    }
+                });
                 saveTablesLocalOverride();
                 renderTablesCards();
                 updateTableStats();

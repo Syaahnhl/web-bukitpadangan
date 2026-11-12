@@ -749,3 +749,41 @@ input:focus, select:focus {
     background: #334155;
     color: #ffffff;
 }
+
+.table-card-booking-pill {
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 9px;
+    border-radius: 6px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    color: #b91c1c;
+    font-size: 0.74rem;
+    font-weight: 600;
+}
+
+.table-modal-booking-info {
+    margin: 12px 0;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #991b1b;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.85rem;
+}
+
+.table-modal-booking-info i {
+    margin-top: 2px;
+    color: #dc2626;
+}
+
+.table-modal-booking-info div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}

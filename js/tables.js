@@ -10,6 +10,25 @@ let currentTableZone = "semua";
 const tableModal = document.getElementById("tableModal");
 let activePreviewTableId = null;
 
+function formatBookingSchedule(table) {
+    if (!table || table.status === 'tersedia') return '';
+    const d = table.bookingDate || '';
+    const s = table.bookingStartTime || '';
+    const e = table.bookingEndTime || '';
+    if (!d && !s && !e) return '';
+    let dateLabel = d;
+    if (d && /^\d{4}-\d{2}-\d{2}$/.test(d)) {
+        const [y, m, day] = d.split('-');
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        dateLabel = `${Number(day)} ${months[Number(m) - 1] || m} ${y}`;
+    }
+    let timeLabel = '';
+    if (s && e) timeLabel = `${s} - ${e} WIB`;
+    else if (s) timeLabel = `Mulai ${s} WIB`;
+    else if (e) timeLabel = `s/d ${e} WIB`;
+    return [dateLabel, timeLabel].filter(Boolean).join(' • ');
+}
+
 async function loadTablesData() {
     try {
         const response = await fetch(`tables.json?t=${Date.now()}`, { cache: "no-store" });
@@ -19,7 +38,18 @@ async function loadTablesData() {
             const rawOverride = localStorage.getItem("bp_tables_status_override");
             if (rawOverride) {
                 const map = JSON.parse(rawOverride);
-                loaded = loaded.map(t => (map[t.id] ? { ...t, status: map[t.id] } : t));
+                loaded = loaded.map(t => {
+                    const ov = map[t.id];
+                    if (!ov) return t;
+                    if (typeof ov === 'string') return { ...t, status: ov };
+                    return {
+                        ...t,
+                        status: ov.status || t.status,
+                        bookingDate: ov.bookingDate || '',
+                        bookingStartTime: ov.bookingStartTime || '',
+                        bookingEndTime: ov.bookingEndTime || ''
+                    };
+                });
             }
         } catch (e) {}
         tablesData = loaded;
@@ -46,9 +76,11 @@ function populateTableDropdown(tables) {
     let html = `<option value="">-- Bebas / Ditentukan Petugas Saat Datang --</option>`;
     tables.forEach(t => {
         const statusText = t.status === 'tersedia' ? 'Tersedia' : (t.status === 'terisi' ? 'Penuh' : 'Dipesan');
+        const sched = formatBookingSchedule(t);
+        const schedSuffix = sched ? ` (${sched})` : '';
         let cleanName = t.name.replace(/\(.*?\)/g, "").trim();
         let cleanZone = (t.zoneName || t.area || "").replace(/\(.*?\)/g, "").trim();
-        html += `<option value="${t.id}">${cleanName} • ${cleanZone} (${t.capacity} Kursi) - [${statusText}]</option>`;
+        html += `<option value="${t.id}">${cleanName} • ${cleanZone} (${t.capacity} Kursi) - [${statusText}${schedSuffix}]</option>`;
     });
     select.innerHTML = html;
 }
@@ -70,6 +102,7 @@ function renderTablesGrid(items) {
         else if (table.zone === "outdoor") zoneIcon = "fa-cloud-sun";
         else if (table.zone === "vip") zoneIcon = "fa-store-alt";
 
+        const schedText = formatBookingSchedule(table);
         return `
             <div class="table-card ${isSelected ? 'selected' : ''}" onclick="openTableModal('${table.id}')">
                 <div class="table-card-top">
@@ -81,6 +114,7 @@ function renderTablesGrid(items) {
                 <div class="table-card-mid">
                     <h4>${table.name}</h4>
                     <p>${table.description}</p>
+                    ${schedText ? `<div class="table-card-booking-pill"><i class="fas fa-clock"></i> ${schedText}</div>` : ''}
                 </div>
                 <div class="table-card-bottom">
                     <span class="table-capacity">
@@ -155,6 +189,18 @@ function openTableModal(tableId) {
         facilitiesContainer.innerHTML = (table.facilities || []).map(f => `
             <span class="table-facility-chip"><i class="fas fa-check-circle" style="color: var(--primary-green);"></i> ${f}</span>
         `).join("");
+    }
+
+    const bookingInfoEl = document.getElementById("tableModalBookingInfo");
+    if (bookingInfoEl) {
+        const sched = formatBookingSchedule(table);
+        if (sched) {
+            bookingInfoEl.style.display = "flex";
+            bookingInfoEl.innerHTML = `<i class="fas fa-calendar-alt"></i> <div><strong>Jadwal Terbooking:</strong><span>${sched}</span></div>`;
+        } else {
+            bookingInfoEl.style.display = "none";
+            bookingInfoEl.innerHTML = "";
+        }
     }
 
     // Tombol Kaching Web Order Meja (Otomatiskan nomor meja)
