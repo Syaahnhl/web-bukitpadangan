@@ -561,3 +561,183 @@
             background: rgba(255, 255, 255, 0.08);
         }
 
+
+/* Card Header & Typography Hierarchy */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #223147;
+    flex-wrap: wrap;
+}
+
+.card-title-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: #1a2436;
+    border: 1px solid #2b3c56;
+    color: var(--gold-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    flex-shrink: 0;
+}
+
+.card-title {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #f8fafc;
+    margin: 0 0 3px 0;
+    line-height: 1.3;
+}
+
+.card-subtitle {
+    font-size: 0.84rem;
+    color: #94a3b8;
+    margin: 0;
+    line-height: 1.45;
+}
+
+/* Form Controls (Solid Dark Slate, High Contrast) */
+.form-grid,
+.form-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+@media (max-width: 768px) {
+    .form-grid,
+    .form-grid-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 16px;
+}
+
+.form-grid .form-group,
+.form-grid-2 .form-group {
+    margin-bottom: 0;
+}
+
+.form-label {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+    width: 100%;
+    background: #0b111c;
+    border: 1px solid #2c3d57;
+    border-radius: 9px;
+    padding: 10px 14px;
+    color: #f8fafc;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: #64748b;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--gold-primary);
+    background: #0f1726;
+    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.16);
+}
+
+.form-textarea {
+    min-height: 92px;
+    resize: vertical;
+}
+
+.form-hint {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    line-height: 1.45;
+}
+
+/* Contrast & Readability Refinements */
+.brand-subtitle {
+    color: #94a3b8 !important;
+}
+
+.toggle-desc {
+    color: #94a3b8 !important;
+}
+
+.btn-topbar-profile {
+    background: #1a2436;
+    border: 1px solid #2e405b;
+    color: #f8fafc;
+}
+
+.btn-topbar-profile:hover {
+    background: #233149;
+    border-color: var(--gold-primary);
+    color: var(--gold-primary);
+}
+
+/* PDF & Photo Upload Boxes */
+.pdf-management-box {
+    background: #0f1624;
+    border: 1px solid #25344b;
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 20px;
+}
+
+.menu-photo-box {
+    background: #0f1624;
+    border: 1px solid #25344b;
+    border-radius: 10px;
+    padding: 14px;
+}
+
+.menu-photo-preview-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.photo-title-wrap {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #e2e8f0;
+}
+
+.preview-file-source {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    word-break: break-all;
+}
