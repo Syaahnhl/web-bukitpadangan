@@ -248,6 +248,14 @@ function confirmSelectTable() {
     closeTableModal();
 }
 
+function proceedReservationWithTable() {
+    if (selectedTable) {
+        selectThisTable(selectedTable.id, true);
+    } else if (typeof openModal === "function") {
+        openModal();
+    }
+}
+
 function selectThisTable(tableId, shouldOpenModal = false) {
     const cleanId = String(tableId).toLowerCase().trim();
     const table = tablesData.find(t => 
