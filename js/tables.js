@@ -7,8 +7,11 @@
 let tablesData = [];
 let selectedTable = null;
 let currentTableZone = "semua";
-const tableModal = document.getElementById("tableModal");
 let activePreviewTableId = null;
+
+function getTableModalEl() {
+    return document.getElementById("tableModal");
+}
 
 function formatBookingSchedule(table) {
     if (!table || table.status === 'tersedia') return '';
@@ -223,6 +226,7 @@ function openTableModal(tableId) {
         }
     }
 
+    const tableModal = getTableModalEl();
     if (tableModal) {
         tableModal.style.display = "flex";
         document.body.style.overflow = "hidden";
@@ -230,6 +234,7 @@ function openTableModal(tableId) {
 }
 
 function closeTableModal() {
+    const tableModal = getTableModalEl();
     if (tableModal) {
         tableModal.style.display = "none";
         document.body.style.overflow = "";
@@ -378,10 +383,12 @@ function handleManualTableSelect() {
 
 // Menutup modal jika klik area luar
 window.onclick = function (event) {
-    if (event.target == modal) {
+    const resModal = document.getElementById("reservationModal");
+    const tblModal = getTableModalEl();
+    if (resModal && event.target == resModal) {
         closeModal();
     }
-    if (event.target == tableModal) {
+    if (tblModal && event.target == tblModal) {
         closeTableModal();
     }
 }

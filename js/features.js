@@ -71,11 +71,11 @@ window.scrollToAmenity = function(index) {
 
 // Testimonial slider carousel
 let currentSlideIndex = 0;
-const slides = document.querySelectorAll(".testimonial-slide");
-const dots = document.querySelectorAll(".dot");
 let slideInterval;
 
 function showSlide(index) {
+    const slides = document.querySelectorAll(".testimonial-slide");
+    const dots = document.querySelectorAll(".dot");
     if (slides.length === 0) return;
     
     // Reset index bounds
@@ -99,16 +99,23 @@ function currentSlide(index) {
 }
 
 function startAutoSlide() {
+    clearInterval(slideInterval);
     slideInterval = setInterval(() => {
         showSlide(currentSlideIndex + 1);
     }, 6000); // Ganti slide setiap 6 detik
 }
 
-// Inisialisasi Slider
-if (slides.length > 0) {
-    showSlide(0);
-    startAutoSlide();
+function initTestimonialSlider() {
+    const slides = document.querySelectorAll(".testimonial-slide");
+    if (slides.length > 0) {
+        showSlide(0);
+        startAutoSlide();
+    }
 }
+
+// Inisialisasi Slider setelah komponen HTML ter-load
+document.addEventListener("components:loaded", initTestimonialSlider);
+if (window.componentsReady) initTestimonialSlider();
 
 // Live operating status and hours display
 function initOperatingHoursStatus() {

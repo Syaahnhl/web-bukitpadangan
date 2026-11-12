@@ -103,9 +103,6 @@ function renderPublicGallery(items) {
 }
 
 // Lightbox zoom and slider
-const lightbox = document.getElementById("lightbox");
-const lightboxImg = document.getElementById("lightboxImg");
-const lightboxCaption = document.getElementById("lightboxCaption");
 let activeImageIndex = 0;
 
 function getGalleryImages() {
@@ -113,8 +110,11 @@ function getGalleryImages() {
 }
 
 function openLightbox(index) {
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const lightboxCaption = document.getElementById("lightboxCaption");
     const images = getGalleryImages();
-    if (!lightbox || images.length === 0) return;
+    if (!lightbox || !lightboxImg || images.length === 0) return;
     activeImageIndex = (index + images.length) % images.length;
     lightbox.style.display = "flex";
     
@@ -125,10 +125,13 @@ function openLightbox(index) {
     const card = activeImg.closest(".gallery-card, .gallery-item");
     const title = card ? card.querySelector(".gallery-spot-name, .gallery-overlay span")?.innerText : "";
     const desc = card ? card.querySelector(".gallery-spot-desc")?.innerText : "";
-    lightboxCaption.innerHTML = title ? `<div style="font-size:1.15rem; font-weight:700; color:#f8fafc; margin-bottom:4px;">${title}</div>${desc ? `<div style="font-size:0.9rem; color:#cbd5e1; font-weight:400; max-width:600px; text-align:center;">${desc}</div>` : ""}` : (activeImg.alt || "Galeri Bukit Padangan");
+    if (lightboxCaption) {
+        lightboxCaption.innerHTML = title ? `<div style="font-size:1.15rem; font-weight:700; color:#f8fafc; margin-bottom:4px;">${title}</div>${desc ? `<div style="font-size:0.9rem; color:#cbd5e1; font-weight:400; max-width:600px; text-align:center;">${desc}</div>` : ""}` : (activeImg.alt || "Galeri Bukit Padangan");
+    }
 }
 
 function closeLightbox() {
+    const lightbox = document.getElementById("lightbox");
     if (lightbox) lightbox.style.display = "none";
 }
 

@@ -3,10 +3,14 @@
  * Warung Makan Bukit Padangan
  */
 
-const modal = document.getElementById("reservationModal");
+function getReservationModal() {
+    return document.getElementById("reservationModal");
+}
+
 function openModal(event) {
     if (event) event.preventDefault();
     if (typeof closeCartDrawer === "function") closeCartDrawer();
+    const modal = getReservationModal();
     if (modal) {
         modal.style.display = "flex";
         // Focus first input for keyboard accessibility
@@ -19,20 +23,21 @@ function openModal(event) {
 }
 
 function closeModal() {
+    const modal = getReservationModal();
     if (modal) modal.style.display = "none";
     document.body.style.overflow = "";
 }
 
-// Backdrop click to close reservation modal
-if (modal) {
-    modal.addEventListener("click", (e) => {
-        if (e.target === modal) closeModal();
-    });
-}
+// Backdrop click to close reservation modal (works even when modal is injected asynchronously)
+document.addEventListener("click", (e) => {
+    const modal = getReservationModal();
+    if (modal && e.target === modal) closeModal();
+});
 
 // Global escape key handler
 window.addEventListener("keydown", (e) => {
     if (e.key === "Escape" || e.key === "Esc") {
+        const modal = getReservationModal();
         if (modal && modal.style.display === "flex") {
             closeModal();
         }
