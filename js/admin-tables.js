@@ -1,9 +1,33 @@
-        // TAB 3: STATUS KETERSEDIAAN MEJA (26 MEJA)
-                async function loadTablesData() {
+        const TABLES_OVERRIDE_KEY = "bp_tables_status_override";
+
+        function saveTablesLocalOverride() {
             try {
-                const res = await fetch("tables.json");
+                const map = {};
+                adminTables.forEach(t => { map[t.id] = t.status; });
+                localStorage.setItem(TABLES_OVERRIDE_KEY, JSON.stringify(map));
+            } catch (e) {
+                console.warn("Gagal menyimpan cache meja ke localStorage:", e);
+            }
+        }
+
+        function applyTablesLocalOverride(tables) {
+            try {
+                const raw = localStorage.getItem(TABLES_OVERRIDE_KEY);
+                if (!raw) return tables;
+                const map = JSON.parse(raw);
+                return tables.map(t => (map[t.id] ? { ...t, status: map[t.id] } : t));
+            } catch (e) {
+                return tables;
+            }
+        }
+
+        // TAB 3: STATUS KETERSEDIAAN MEJA
+        async function loadTablesData() {
+            try {
+                const res = await fetch(`tables.json?t=${Date.now()}`, { cache: "no-store" });
                 if (res.ok) {
-                    adminTables = await res.json();
+                    const freshTables = await res.json();
+                    adminTables = applyTablesLocalOverride(freshTables);
                     document.getElementById("tablesCountBadge").innerText = adminTables.length;
                     renderTablesCards();
                     updateTableStats();
@@ -105,17 +129,19 @@
             if (t) {
                 t.status = newStatus;
                 selectEl.className = `table-card-status-select status-${newStatus}`;
+                saveTablesLocalOverride();
                 updateTableStats();
-                showToast(`Status ${t.name} diubah ke ${newStatus.toUpperCase()}`);
+                showToast(`Status ${t.name} diubah ke ${newStatus.toUpperCase()} (tersimpan)`);
             }
         }
 
         function setBulkTableStatus(status) {
-            if (confirm(`Ubah status SELURUH 26 meja menjadi "${status.toUpperCase()}"?`)) {
+            if (confirm(`Ubah status SELURUH ${adminTables.length} meja menjadi "${status.toUpperCase()}"?`)) {
                 adminTables.forEach(t => t.status = status);
+                saveTablesLocalOverride();
                 renderTablesCards();
                 updateTableStats();
-                showToast(`Semua meja diubah menjadi ${status.toUpperCase()}`);
+                showToast(`Semua meja diubah menjadi ${status.toUpperCase()} (tersimpan)`);
             }
         }
 

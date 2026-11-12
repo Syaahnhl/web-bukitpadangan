@@ -12,9 +12,17 @@ let activePreviewTableId = null;
 
 async function loadTablesData() {
     try {
-        const response = await fetch("tables.json");
+        const response = await fetch(`tables.json?t=${Date.now()}`, { cache: "no-store" });
         if (!response.ok) return;
-        tablesData = await response.json();
+        let loaded = await response.json();
+        try {
+            const rawOverride = localStorage.getItem("bp_tables_status_override");
+            if (rawOverride) {
+                const map = JSON.parse(rawOverride);
+                loaded = loaded.map(t => (map[t.id] ? { ...t, status: map[t.id] } : t));
+            }
+        } catch (e) {}
+        tablesData = loaded;
 
         // Populate dropdown resTableSelect di form reservasi
         populateTableDropdown(tablesData);
