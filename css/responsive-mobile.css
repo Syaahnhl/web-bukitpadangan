@@ -489,10 +489,14 @@
 
     /* Table Preview Modal on Mobile */
     .table-preview-content {
-        border-radius: 24px 24px 0 0;
-        padding: 1.25rem 1.25rem 2.2rem 1.25rem;
-        max-height: 90vh;
-        max-height: 90dvh;
+        width: min(92vw, 520px);
+        max-width: 520px;
+        margin: auto;
+        border-radius: 20px;
+        padding: 1.25rem;
+        max-height: min(88vh, 720px);
+        max-height: min(88dvh, 720px);
+        overflow-y: auto;
     }
 
     .table-preview-img-wrapper {
